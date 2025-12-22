@@ -1,15 +1,18 @@
 
 import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { useUser } from '@clerk/clerk-react';
 import LEDProgressBar from './LEDProgressBar';
-import { 
-  generateHighQualityImage, 
-  generateBatchImages, 
-  generateStyleSuggestions, 
-  generateAnimatedLoop, 
-  pollVideoOperation, 
-  fetchVideoData 
+import QuotaBadge from './QuotaBadge';
+import {
+  generateHighQualityImage,
+  generateBatchImages,
+  generateStyleSuggestions,
+  generateAnimatedLoop,
+  pollVideoOperation,
+  fetchVideoData
 } from '../services/geminiService';
 import { simulateProfessionalExport, downloadFile, syncToGoogleDrive } from '../services/exportService';
+import { canUse, recordUsage, getRemaining } from '../services/usageService';
 
 const REASSURING_MESSAGES = [
   "Initializing neural motion paths...",
@@ -45,6 +48,9 @@ interface SynthesizedAsset {
 }
 
 export default function AIStockGen() {
+  const { user } = useUser();
+  const userId = user?.id || 'anonymous';
+
   const [prompt, setPrompt] = useState('');
   const [prodMode, setProdMode] = useState<'still' | 'loop'>('still');
   const [motionEnergy, setMotionEnergy] = useState(5);
@@ -58,6 +64,7 @@ export default function AIStockGen() {
   const [selectedPresetId, setSelectedPresetId] = useState<string | null>(null);
   const [history, setHistory] = useState<SynthesizedAsset[]>([]);
   const [isStyleDropdownOpen, setIsStyleDropdownOpen] = useState(false);
+  const [quotaKey, setQuotaKey] = useState(0); // Force re-render of quota badge
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -101,11 +108,19 @@ export default function AIStockGen() {
 
   const handleGenerateStill = async () => {
     if (!prompt) return;
+
+    // Check quota before generating
+    if (!canUse(userId, 'image', batchCount)) {
+      const remaining = getRemaining(userId);
+      alert(`You've reached your image limit. ${remaining.images} images remaining this month. Upgrade to Pro for more.`);
+      return;
+    }
+
     setGenerating(true);
     try {
       const styleContext = getActiveStylePrompt();
       const styledPrompt = `${prompt}. Style: ${styleContext}. Professional stock photography.`;
-      
+
       if (batchCount > 1) {
         const urls = await generateBatchImages(styledPrompt, batchCount, aspectRatio);
         const newAssets: SynthesizedAsset[] = urls.map((url, i) => ({
@@ -116,16 +131,22 @@ export default function AIStockGen() {
           status: 'ready'
         }));
         setHistory(prev => [...newAssets, ...prev]);
+        // Record usage after success
+        recordUsage(userId, 'image', batchCount);
       } else {
         const url = await generateHighQualityImage(styledPrompt, aspectRatio);
         setHistory(prev => [{
-          id: `still-${Date.now()}`, 
-          url, 
-          prompt: styledPrompt, 
-          ratio: aspectRatio, 
+          id: `still-${Date.now()}`,
+          url,
+          prompt: styledPrompt,
+          ratio: aspectRatio,
           status: 'ready'
         }, ...prev]);
+        // Record usage after success
+        recordUsage(userId, 'image', 1);
       }
+      // Force quota badge to re-render
+      setQuotaKey(prev => prev + 1);
     } catch (error: any) {
       console.error(error);
       alert(error?.message || "Still synthesis failed. Please try again.");
@@ -136,6 +157,14 @@ export default function AIStockGen() {
 
   const handleGenerateGifBatch = async () => {
     if (!prompt) return;
+
+    // Check quota before generating videos
+    if (!canUse(userId, 'video', batchCount)) {
+      const remaining = getRemaining(userId);
+      alert(`You've reached your video limit. ${remaining.videos} videos remaining this month. Upgrade to Pro for more.`);
+      return;
+    }
+
     setGenerating(true);
     const styleContext = getActiveStylePrompt();
     const styledPrompt = `Cinematic loop: ${prompt}. Motion energy: ${motionEnergy}/10. Artistic direction: ${styleContext}`;
@@ -151,8 +180,12 @@ export default function AIStockGen() {
       energy: motionEnergy,
       progress: 0
     }));
-    
+
     setHistory(prev => [...placeholders, ...prev]);
+
+    // Record video usage upfront (since video gen is async)
+    recordUsage(userId, 'video', batchCount);
+    setQuotaKey(prev => prev + 1);
 
     try {
       const operations = await Promise.all(
@@ -167,23 +200,23 @@ export default function AIStockGen() {
         while (!isDone) {
           await new Promise(resolve => setTimeout(resolve, 8000));
           const status = await pollVideoOperation(currentOp);
-          
+
           if (status.done) {
             isDone = true;
             const uri = status.response?.generatedVideos?.[0]?.video?.uri;
             if (uri) {
               const blob = await fetchVideoData(uri);
               const url = URL.createObjectURL(blob);
-              setHistory(prev => prev.map(item => 
+              setHistory(prev => prev.map(item =>
                 item.id === targetId ? { ...item, url, status: 'ready', progress: 100 } : item
               ));
             } else {
-              setHistory(prev => prev.map(item => 
+              setHistory(prev => prev.map(item =>
                 item.id === targetId ? { ...item, status: 'error' } : item
               ));
             }
           } else {
-            setHistory(prev => prev.map(item => 
+            setHistory(prev => prev.map(item =>
               item.id === targetId ? { ...item, progress: Math.min(95, (item.progress || 0) + 15) } : item
             ));
           }
@@ -217,9 +250,14 @@ export default function AIStockGen() {
   return (
     <div className="p-12 h-full overflow-y-auto bg-white scrollbar-hide">
       <header className="mb-12 max-w-6xl mx-auto animate-in fade-in duration-1000">
-        <div className="flex items-center gap-3 mb-4">
-           <div className="px-3 py-1 rounded-full bg-emerald-50 text-emerald-600 text-[10px] font-black uppercase tracking-widest border border-emerald-100 transition-colors cursor-default">Neural Production</div>
-           <div className="px-3 py-1 rounded-full bg-indigo-50 text-indigo-600 text-[10px] font-black uppercase tracking-widest border border-indigo-100 hover:bg-indigo-100 transition-colors cursor-default">Veo 3.1 & Pro Image</div>
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-3">
+            <div className="px-3 py-1 rounded-full bg-emerald-50 text-emerald-600 text-[10px] font-black uppercase tracking-widest border border-emerald-100 transition-colors cursor-default">Neural Production</div>
+            <div className="px-3 py-1 rounded-full bg-indigo-50 text-indigo-600 text-[10px] font-black uppercase tracking-widest border border-indigo-100 hover:bg-indigo-100 transition-colors cursor-default">Veo 3.1 & Pro Image</div>
+          </div>
+          <div className="flex items-center gap-2" key={quotaKey}>
+            <QuotaBadge type={prodMode === 'still' ? 'image' : 'video'} />
+          </div>
         </div>
         <h2 className="text-6xl font-black text-slate-900 mb-4 tracking-tighter uppercase">Synthesis Lab</h2>
         <p className="text-slate-500 text-xl max-w-3xl leading-relaxed font-medium">

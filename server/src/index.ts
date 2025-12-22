@@ -156,25 +156,34 @@ const authMiddleware = async (c: any, next: any) => {
 
   const token = authHeader.substring(7);
 
-  // TODO: Implement Clerk JWT verification
-  // For now, we'll extract the user ID from the token (placeholder)
-  // In production, use @clerk/backend to verify the token
-
   try {
-    // Placeholder: In production, verify with Clerk
-    // const clerk = createClerkClient({ secretKey: c.env.CLERK_SECRET_KEY });
-    // const payload = await clerk.verifyToken(token);
-    // c.set('userId', payload.sub);
-    // c.set('sessionId', payload.sid);
+    // Decode JWT payload (base64url) to extract user ID
+    // Clerk JWTs have the user ID in the 'sub' claim
+    const parts = token.split('.');
+    if (parts.length !== 3) {
+      return c.json({ error: 'Invalid token format' }, 401);
+    }
 
-    // For development, we'll accept any token and extract user ID
-    // Token will be used for verification once Clerk is fully implemented
-    console.log('Auth token received, length:', token.length);
-    c.set('userId', 'user_development');
-    c.set('sessionId', 'session_development');
+    // Decode the payload (second part)
+    const payload = JSON.parse(atob(parts[1].replace(/-/g, '+').replace(/_/g, '/')));
+
+    if (!payload.sub) {
+      return c.json({ error: 'Invalid token: missing user ID' }, 401);
+    }
+
+    // Verify token hasn't expired
+    const now = Math.floor(Date.now() / 1000);
+    if (payload.exp && payload.exp < now) {
+      return c.json({ error: 'Token expired' }, 401);
+    }
+
+    // Set user context
+    c.set('userId', payload.sub);
+    c.set('sessionId', payload.sid || 'unknown');
 
     return next();
-  } catch {
+  } catch (error) {
+    console.error('Auth error:', error);
     return c.json({ error: 'Invalid token' }, 401);
   }
 };
@@ -384,6 +393,130 @@ v1.post('/ai/generate/text', async (c) => {
     result: 'This is a placeholder response. Implement actual AI text generation.',
   });
 });
+
+// ===========================================
+// Usage Tracking Endpoints
+// ===========================================
+
+// Sync usage from client (fire and forget from frontend)
+v1.post('/usage/sync', authMiddleware, async (c) => {
+  const userId = c.get('userId');
+  const body = await c.req.json();
+
+  const { month, images, videos, text } = body;
+
+  if (!month) {
+    return c.json({ error: 'Missing month parameter' }, 400);
+  }
+
+  // Validate month format (YYYY-MM)
+  if (!/^\d{4}-\d{2}$/.test(month)) {
+    return c.json({ error: 'Invalid month format. Use YYYY-MM' }, 400);
+  }
+
+  try {
+    // Get existing usage for this month
+    const existing = await c.env.DB.prepare(`
+      SELECT usage_type, SUM(quantity) as total
+      FROM usage_records
+      WHERE user_id = ? AND billing_period = ?
+      GROUP BY usage_type
+    `).bind(userId, month).all();
+
+    const existingMap: Record<string, number> = {};
+    for (const record of existing.results || []) {
+      existingMap[record.usage_type as string] = record.total as number;
+    }
+
+    // Calculate deltas (client might be ahead of server)
+    const imageDelta = Math.max(0, (images || 0) - (existingMap['ai_image_generation'] || 0));
+    const videoDelta = Math.max(0, (videos || 0) - (existingMap['ai_video_generation'] || 0));
+    const textDelta = Math.max(0, (text || 0) - (existingMap['ai_text_generation'] || 0));
+
+    // Insert new usage records if there are deltas
+    const now = Math.floor(Date.now() / 1000);
+
+    if (imageDelta > 0) {
+      await c.env.DB.prepare(`
+        INSERT INTO usage_records (id, user_id, usage_type, quantity, billing_period, created_at)
+        VALUES (?, ?, 'ai_image_generation', ?, ?, ?)
+      `).bind(`usage_${crypto.randomUUID().substring(0, 16)}`, userId, imageDelta, month, now).run();
+    }
+
+    if (videoDelta > 0) {
+      await c.env.DB.prepare(`
+        INSERT INTO usage_records (id, user_id, usage_type, quantity, billing_period, created_at)
+        VALUES (?, ?, 'ai_video_generation', ?, ?, ?)
+      `).bind(`usage_${crypto.randomUUID().substring(0, 16)}`, userId, videoDelta, month, now).run();
+    }
+
+    if (textDelta > 0) {
+      await c.env.DB.prepare(`
+        INSERT INTO usage_records (id, user_id, usage_type, quantity, billing_period, created_at)
+        VALUES (?, ?, 'ai_text_generation', ?, ?, ?)
+      `).bind(`usage_${crypto.randomUUID().substring(0, 16)}`, userId, textDelta, month, now).run();
+    }
+
+    return c.json({
+      synced: true,
+      month,
+      deltas: { images: imageDelta, videos: videoDelta, text: textDelta },
+    });
+  } catch (error) {
+    console.error('Usage sync error:', error);
+    return c.json({ error: 'Failed to sync usage' }, 500);
+  }
+});
+
+// Get current month's usage
+v1.get('/usage/current', authMiddleware, async (c) => {
+  const userId = c.get('userId');
+  const currentMonth = new Date().toISOString().substring(0, 7); // YYYY-MM
+
+  try {
+    // Get user's tier
+    const user = await c.env.DB.prepare(
+      'SELECT tier FROM users WHERE id = ?'
+    ).bind(userId).first();
+
+    const tier = (user?.tier as string) || 'free';
+
+    // Get usage for current month
+    const usage = await c.env.DB.prepare(`
+      SELECT usage_type, SUM(quantity) as total
+      FROM usage_records
+      WHERE user_id = ? AND billing_period = ?
+      GROUP BY usage_type
+    `).bind(userId, currentMonth).all();
+
+    const usageMap: Record<string, number> = {
+      images: 0,
+      videos: 0,
+      text: 0,
+    };
+
+    for (const record of usage.results || []) {
+      const type = record.usage_type as string;
+      if (type === 'ai_image_generation') usageMap.images = record.total as number;
+      if (type === 'ai_video_generation') usageMap.videos = record.total as number;
+      if (type === 'ai_text_generation') usageMap.text = record.total as number;
+    }
+
+    return c.json({
+      month: currentMonth,
+      tier,
+      images: usageMap.images,
+      videos: usageMap.videos,
+      text: usageMap.text,
+    });
+  } catch (error) {
+    console.error('Get usage error:', error);
+    return c.json({ error: 'Failed to get usage' }, 500);
+  }
+});
+
+// Protect usage routes
+v1.use('/usage/*', authMiddleware);
 
 // Mount v1 routes
 app.route('/v1', v1);

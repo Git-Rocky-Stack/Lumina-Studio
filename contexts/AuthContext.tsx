@@ -5,8 +5,9 @@
  * throughout the application using Clerk.
  */
 
-import React, { createContext, useContext, useMemo } from 'react';
+import React, { createContext, useContext, useMemo, useEffect } from 'react';
 import { useAuth, useUser } from '@clerk/clerk-react';
+import { loadUsageFromBackend } from '../services/usageService';
 
 interface AuthContextType {
   isAuthenticated: boolean;
@@ -26,6 +27,13 @@ const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://api.lumina-os.com'
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { isLoaded, isSignedIn, getToken } = useAuth();
   const { user } = useUser();
+
+  // Sync usage from backend when user logs in
+  useEffect(() => {
+    if (isSignedIn && user?.id) {
+      loadUsageFromBackend(user.id).catch(console.debug);
+    }
+  }, [isSignedIn, user?.id]);
 
   const value = useMemo<AuthContextType>(() => ({
     isAuthenticated: isSignedIn ?? false,
