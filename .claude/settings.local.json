@@ -13,7 +13,14 @@
       "Bash(curl:*)",
       "Bash(npm run dev:*)",
       "Bash(timeout:*)",
-      "Bash(ping:*)"
+      "Bash(ping:*)",
+      "Bash(npm run build:*)",
+      "Bash(powershell -Command \"\\(Get-Content components/AIStockGen.tsx | Select-String -Pattern ''<div'' -AllMatches\\).Matches.Count\")",
+      "WebSearch",
+      "WebFetch(domain:docs.puter.com)",
+      "WebFetch(domain:developer.puter.com)",
+      "WebFetch(domain:itsfoss.com)",
+      "Bash(cat:*)"
     ]
   }
 }

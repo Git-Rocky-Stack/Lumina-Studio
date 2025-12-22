@@ -58,24 +58,7 @@ export default function AIStockGen() {
   const [selectedPresetId, setSelectedPresetId] = useState<string | null>(null);
   const [history, setHistory] = useState<SynthesizedAsset[]>([]);
   const [isStyleDropdownOpen, setIsStyleDropdownOpen] = useState(false);
-  const [hasKey, setHasKey] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const checkKey = async () => {
-      // Mandatory API key selection check for Gemini 3 Pro Image and Veo models.
-      // @ts-ignore
-      const selected = await window.aistudio.hasSelectedApiKey();
-      setHasKey(selected);
-    };
-    checkKey();
-  }, []);
-
-  const handleKeySelect = async () => {
-    // @ts-ignore
-    await window.aistudio.openSelectKey();
-    setHasKey(true);
-  };
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -145,13 +128,7 @@ export default function AIStockGen() {
       }
     } catch (error: any) {
       console.error(error);
-      // Reset key selection if entity not found
-      if (error?.message?.includes("Requested entity was not found.")) {
-        setHasKey(false);
-        handleKeySelect();
-      } else {
-        alert("Still synthesis failed.");
-      }
+      alert(error?.message || "Still synthesis failed. Please try again.");
     } finally {
       setGenerating(false);
     }
@@ -215,10 +192,6 @@ export default function AIStockGen() {
       }));
     } catch (e: any) {
       console.error("Batch Loop Generation Error:", e);
-      if (e?.message?.includes("Requested entity was not found.")) {
-        setHasKey(false);
-        handleKeySelect();
-      }
       batchIds.forEach(id => {
         setHistory(prev => prev.map(item => item.id === id && item.status === 'pending' ? { ...item, status: 'error' } : item));
       });
@@ -238,20 +211,6 @@ export default function AIStockGen() {
     downloadFile(item.url, `Lumina_Asset_${item.id}.${item.isVideo ? 'mp4' : 'png'}`);
     setExportingId(null);
   };
-
-  if (!hasKey) {
-    return (
-      <div className="flex flex-col items-center justify-center h-full p-8 text-center bg-white text-slate-900">
-        <div className="max-w-md bg-slate-50 border border-slate-100 p-12 rounded-[4rem] shadow-3xl">
-          <i className="fas fa-key text-5xl text-accent mb-8 shadow-accent/20"></i>
-          <h2 className="text-3xl font-black mb-4 tracking-tighter uppercase">Synthesis Authenticator</h2>
-          <p className="text-slate-400 mb-10 text-sm leading-relaxed">A Paid API key is required to access Gemini 3 Pro Image and Veo synthesis.</p>
-          <button onClick={handleKeySelect} className="w-full bg-accent text-white py-5 rounded-2xl font-black hover:brightness-110 transition-all shadow-2xl uppercase tracking-widest">Activate Lab</button>
-          <a href="https://ai.google.dev/gemini-api/docs/billing" target="_blank" rel="noreferrer" className="block mt-6 text-[10px] text-slate-400 hover:text-accent transition-colors">Learn about Paid API Project Billing</a>
-        </div>
-      </div>
-    );
-  }
 
   const selectedPreset = PRESET_STYLES.find(s => s.id === selectedPresetId);
 

@@ -2,80 +2,50 @@
 import { GoogleGenAI, GenerateContentResponse, Type, Modality } from "@google/genai";
 import { VideoAspectRatio } from "../types";
 
-// Model constants - Free tier compatible
-const TEXT_FLASH = 'gemini-2.0-flash';
-const TEXT_PRO = 'gemini-1.5-pro';
-const IMAGE_PRO = 'imagen-3.0-generate-002';
-const IMAGE_FLASH = 'imagen-3.0-fast-generate-001';
-const VIDEO_MODEL = 'veo-2.0-generate-001';
-const VIDEO_HIGH_MODEL = 'veo-2.0-generate-001';
-const TTS_MODEL = 'gemini-2.0-flash';
-const LIVE_MODEL = 'gemini-2.0-flash';
+// Model constants - Gemini 3 Pro for high quality
+const TEXT_FLASH = 'gemini-3-flash-preview';
+const TEXT_PRO = 'gemini-3-pro-preview';
+const IMAGE_PRO = 'gemini-3-pro-image-preview';
+const IMAGE_FLASH = 'gemini-2.5-flash-preview-04-17';
+const VIDEO_MODEL = 'veo-3.1-fast-generate-preview';
+const VIDEO_HIGH_MODEL = 'veo-3.1-generate-preview';
+const TTS_MODEL = 'gemini-2.5-flash-preview-tts';
+const LIVE_MODEL = 'gemini-2.5-flash-native-audio-preview-09-2025';
 
-// Get API key from aistudio storage or environment
-const getApiKey = (): string => {
-  // First check window.__GEMINI_API_KEY__ (set by aistudio)
-  if ((window as any).__GEMINI_API_KEY__) {
-    return (window as any).__GEMINI_API_KEY__;
-  }
-  // Fallback to localStorage
-  const storedKey = localStorage.getItem('lumina_gemini_api_key');
-  if (storedKey) {
-    return storedKey;
-  }
-  // Fallback to env variable
-  return import.meta.env.VITE_GEMINI_API_KEY || '';
-};
-
-// Get AI client with current API key
+// Get AI client - uses build-time injected API key
 export const getAIClient = () => {
-  const apiKey = getApiKey();
+  // API key is injected at build time via vite.config.ts
+  const apiKey = process.env.API_KEY || process.env.GEMINI_API_KEY;
   if (!apiKey) {
-    throw new Error('No API key configured. Please add your Google AI API key.');
+    throw new Error('API key not configured. Set GEMINI_API_KEY in environment variables.');
   }
   return new GoogleGenAI({ apiKey });
 };
 
 /**
- * AI Image Editing using Gemini 2.0 Flash.
- * Analyzes image and provides suggestions or generates new version.
+ * AI Image Editing using Gemini 2.5 Flash Image.
+ * Supports prompting changes relative to an existing image.
  */
 export async function editImage(base64Data: string, prompt: string, mimeType: string = 'image/png') {
   const ai = getAIClient();
-
-  // Use Gemini for analysis, then Imagen for regeneration
-  const analysisResponse = await ai.models.generateContent({
-    model: TEXT_FLASH,
+  const response = await ai.models.generateContent({
+    model: IMAGE_FLASH,
     contents: {
       parts: [
         { inlineData: { data: base64Data, mimeType } },
-        { text: `Analyze this image and create a detailed prompt to recreate it with these changes: ${prompt}. Return only the image generation prompt.` }
+        { text: prompt }
       ]
     }
   });
 
-  const enhancedPrompt = analysisResponse.text || prompt;
-
-  // Generate new image with Imagen
-  try {
-    const response = await ai.models.generateImages({
-      model: IMAGE_FLASH,
-      prompt: enhancedPrompt,
-      config: {
-        numberOfImages: 1,
-        aspectRatio: "1:1",
-      }
-    });
-
-    const image = response.generatedImages?.[0];
-    if (image?.image?.imageBytes) {
-      return `data:image/png;base64,${image.image.imageBytes}`;
+  for (const part of response.candidates?.[0]?.content?.parts || []) {
+    if (part.inlineData) {
+      return `data:image/png;base64,${part.inlineData.data}`;
+    } else if (part.text) {
+      console.log("Model response text:", part.text);
     }
-    throw new Error("No image data returned");
-  } catch (error: any) {
-    console.error("Image edit error:", error);
-    throw new Error(error.message || "Image editing failed");
   }
+  throw new Error("Generative image edit failed to return image data.");
 }
 
 /**
@@ -278,31 +248,28 @@ export async function analyzeVideoContent(base64Video: string, prompt: string, m
 }
 
 /**
- * High-quality image generation with Imagen 3.
+ * High-quality 2K/4K image generation with Gemini 3 Pro Image.
  * Supports: "1:1", "3:4", "4:3", "9:16", "16:9"
  */
 export async function generateHighQualityImage(prompt: string, aspectRatio: "1:1" | "4:3" | "16:9" | "9:16" = "1:1", size: "1K" | "2K" | "4K" = "2K") {
   const ai = getAIClient();
-
-  try {
-    const response = await ai.models.generateImages({
-      model: IMAGE_PRO,
-      prompt: prompt,
-      config: {
-        numberOfImages: 1,
-        aspectRatio: aspectRatio,
+  const response = await ai.models.generateContent({
+    model: IMAGE_PRO,
+    contents: { parts: [{ text: prompt }] },
+    config: {
+      imageConfig: {
+        aspectRatio,
+        imageSize: size
       }
-    });
-
-    const image = response.generatedImages?.[0];
-    if (image?.image?.imageBytes) {
-      return `data:image/png;base64,${image.image.imageBytes}`;
     }
-    throw new Error("No image data returned");
-  } catch (error: any) {
-    console.error("Image generation error:", error);
-    throw new Error(error.message || "Image generation failed");
+  });
+
+  for (const part of response.candidates?.[0]?.content?.parts || []) {
+    if (part.inlineData) {
+      return `data:image/png;base64,${part.inlineData.data}`;
+    }
   }
+  throw new Error("Image generation failed");
 }
 
 /**
@@ -360,26 +327,23 @@ export async function generateBatchImages(prompt: string, count: number, aspectR
 export async function generateBackground(subject: string, prompt: string) {
   const ai = getAIClient();
   const fullPrompt = `Generate a cinematic high-quality background for: ${subject}. Artistic style: ${prompt}`;
-
-  try {
-    const response = await ai.models.generateImages({
-      model: IMAGE_PRO,
-      prompt: fullPrompt,
-      config: {
-        numberOfImages: 1,
+  const response = await ai.models.generateContent({
+    model: IMAGE_PRO,
+    contents: { parts: [{ text: fullPrompt }] },
+    config: {
+      imageConfig: {
         aspectRatio: "16:9",
+        imageSize: "2K"
       }
-    });
-
-    const image = response.generatedImages?.[0];
-    if (image?.image?.imageBytes) {
-      return `data:image/png;base64,${image.image.imageBytes}`;
     }
-    throw new Error("No image data returned");
-  } catch (error: any) {
-    console.error("Background generation error:", error);
-    throw new Error(error.message || "Background generation failed");
+  });
+
+  for (const part of response.candidates?.[0]?.content?.parts || []) {
+    if (part.inlineData) {
+      return `data:image/png;base64,${part.inlineData.data}`;
+    }
   }
+  throw new Error("Background generation failed");
 }
 
 // Fix for AssetHub.tsx: Add suggestAssetMetadata
@@ -480,7 +444,7 @@ export async function pollVideoOperation(operationId: any) {
 }
 
 export async function fetchVideoData(uri: string) {
-  const apiKey = getApiKey();
+  const apiKey = process.env.API_KEY || process.env.GEMINI_API_KEY;
   const response = await fetch(`${uri}&key=${apiKey}`);
   return await response.blob();
 }
