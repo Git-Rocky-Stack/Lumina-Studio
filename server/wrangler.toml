@@ -1,0 +1,85 @@
+# Lumina Studio API - Cloudflare Worker Configuration
+name = "lumina-studio-api"
+main = "src/index.ts"
+compatibility_date = "2024-12-01"
+node_compat = true
+
+# Environment variables (non-secret)
+[vars]
+ENVIRONMENT = "production"
+API_VERSION = "v1"
+ALLOWED_ORIGINS = "https://app.lumina-os.com,https://lumina-os.com"
+MAX_UPLOAD_SIZE_MB = "100"
+THUMBNAIL_SIZE = "400"
+PREVIEW_SIZE = "1200"
+
+# D1 Database binding
+[[d1_databases]]
+binding = "DB"
+database_name = "lumina-studio-db"
+database_id = "YOUR_D1_DATABASE_ID"  # Replace after creation
+
+# R2 Bucket binding
+[[r2_buckets]]
+binding = "ASSETS_BUCKET"
+bucket_name = "lumina-studio-assets"
+
+# KV Namespace for rate limiting and caching
+[[kv_namespaces]]
+binding = "RATE_LIMIT_KV"
+id = "YOUR_KV_NAMESPACE_ID"  # Replace after creation
+
+# Cloudflare AI binding (for Workers AI)
+[ai]
+binding = "AI"
+
+# Production routes
+[[routes]]
+pattern = "api.lumina-os.com/*"
+zone_name = "lumina-os.com"
+
+# Staging environment
+[env.staging]
+name = "lumina-studio-api-staging"
+vars = { ENVIRONMENT = "staging" }
+
+[[env.staging.routes]]
+pattern = "api-staging.lumina-os.com/*"
+zone_name = "lumina-os.com"
+
+[[env.staging.d1_databases]]
+binding = "DB"
+database_name = "lumina-studio-db-staging"
+database_id = "YOUR_STAGING_D1_DATABASE_ID"
+
+[[env.staging.r2_buckets]]
+binding = "ASSETS_BUCKET"
+bucket_name = "lumina-studio-assets-staging"
+
+[[env.staging.kv_namespaces]]
+binding = "RATE_LIMIT_KV"
+id = "YOUR_STAGING_KV_NAMESPACE_ID"
+
+# Development environment (local)
+[env.dev]
+name = "lumina-studio-api-dev"
+vars = { ENVIRONMENT = "development" }
+
+# Secrets to be set via `wrangler secret put`:
+# - CLERK_SECRET_KEY
+# - CLERK_WEBHOOK_SECRET
+# - CLERK_PUBLISHABLE_KEY
+# - GOOGLE_AI_API_KEY
+# - LEMONSQUEEZY_API_KEY
+# - LEMONSQUEEZY_WEBHOOK_SECRET
+# - LEMONSQUEEZY_STORE_ID
+# - SENTRY_DSN (optional)
+# - RESEND_API_KEY (optional)
+
+# Build configuration
+[build]
+command = "npm run build"
+
+# Observability
+[observability]
+enabled = true

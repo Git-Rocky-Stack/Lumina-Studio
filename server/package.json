@@ -1,0 +1,32 @@
+{
+  "name": "lumina-studio-api",
+  "version": "1.0.0",
+  "description": "Lumina Studio Backend API - Cloudflare Workers",
+  "main": "src/index.ts",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "deploy:staging": "wrangler deploy --env staging",
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src/**/*.ts",
+    "db:migrate": "wrangler d1 execute lumina-studio-db --file=./migrations/001_initial_schema.sql",
+    "db:migrate:local": "wrangler d1 execute lumina-studio-db --local --file=./migrations/001_initial_schema.sql",
+    "db:studio": "wrangler d1 execute lumina-studio-db --command \"SELECT 1\"",
+    "tail": "wrangler tail",
+    "secret:set": "wrangler secret put"
+  },
+  "dependencies": {
+    "hono": "^4.6.0",
+    "svix": "^1.37.0"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20241127.0",
+    "@types/node": "^22.0.0",
+    "typescript": "^5.7.0",
+    "wrangler": "^3.93.0"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}
