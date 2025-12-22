@@ -469,6 +469,7 @@ export default function AIStockGen() {
                   </div>
                 )}
              </div>
+            </div>
           </div>
         </div>
 
@@ -553,6 +554,4 @@ export default function AIStockGen() {
       </div>
     </div>
   );
-};
-
-export default AIStockGen;
+}
