@@ -48,7 +48,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ collapsed = false }) => {
         onClick={() => setIsOpen(!isOpen)}
         className={`
           flex items-center gap-3 w-full p-2 rounded-xl
-          hover:bg-slate-100 transition-all
+          hover:bg-white/10 transition-all
           ${collapsed ? 'justify-center' : ''}
         `}
       >
@@ -66,14 +66,14 @@ const UserMenu: React.FC<UserMenuProps> = ({ collapsed = false }) => {
 
         {!collapsed && (
           <div className="flex-1 text-left min-w-0">
-            <div className="font-semibold text-slate-900 text-sm truncate">{displayName}</div>
-            <div className="text-xs text-slate-500 truncate">{email}</div>
+            <div className="font-semibold text-white text-sm truncate">{displayName}</div>
+            <div className="text-xs text-slate-400 truncate">{email}</div>
           </div>
         )}
 
         {!collapsed && (
           <svg
-            className={`w-4 h-4 text-slate-400 transition-transform ${isOpen ? 'rotate-180' : ''}`}
+            className={`w-4 h-4 text-slate-500 transition-transform ${isOpen ? 'rotate-180' : ''}`}
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"

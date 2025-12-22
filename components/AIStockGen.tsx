@@ -553,4 +553,6 @@ export default function AIStockGen() {
       </div>
     </div>
   );
-}
+};
+
+export default AIStockGen;
