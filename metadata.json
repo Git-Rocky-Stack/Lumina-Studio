@@ -1,0 +1,9 @@
+
+{
+  "name": "Lumina Studio",
+  "description": "A comprehensive, AI-powered creative suite for professional video, image generation, PDF editing, and intelligent stock photo creation using multi-modal Gemini models.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}
