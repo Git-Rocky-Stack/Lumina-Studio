@@ -2,7 +2,7 @@
 name = "lumina-studio-api"
 main = "src/index.ts"
 compatibility_date = "2024-12-01"
-node_compat = true
+compatibility_flags = ["nodejs_compat"]
 
 # Environment variables (non-secret)
 [vars]
@@ -17,17 +17,18 @@ PREVIEW_SIZE = "1200"
 [[d1_databases]]
 binding = "DB"
 database_name = "lumina-studio-db"
-database_id = "YOUR_D1_DATABASE_ID"  # Replace after creation
+database_id = "218b5248-6587-4eaa-a2e3-755159bbb4bb"
 
 # R2 Bucket binding
-[[r2_buckets]]
-binding = "ASSETS_BUCKET"
-bucket_name = "lumina-studio-assets"
+# NOTE: Enable R2 in Cloudflare Dashboard first, then uncomment:
+# [[r2_buckets]]
+# binding = "ASSETS_BUCKET"
+# bucket_name = "lumina-studio-assets"
 
 # KV Namespace for rate limiting and caching
 [[kv_namespaces]]
 binding = "RATE_LIMIT_KV"
-id = "YOUR_KV_NAMESPACE_ID"  # Replace after creation
+id = "454e7ba8a0dd4b48a7010165f9b606d0"
 
 # Cloudflare AI binding (for Workers AI)
 [ai]

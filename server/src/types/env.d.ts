@@ -6,8 +6,8 @@ export interface Env {
   // Cloudflare D1 Database
   DB: D1Database;
 
-  // Cloudflare R2 Bucket
-  ASSETS_BUCKET: R2Bucket;
+  // Cloudflare R2 Bucket (optional - enable in Cloudflare Dashboard first)
+  ASSETS_BUCKET?: R2Bucket;
 
   // Cloudflare KV for rate limiting and caching
   RATE_LIMIT_KV: KVNamespace;

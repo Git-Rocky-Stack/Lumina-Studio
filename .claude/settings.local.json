@@ -7,7 +7,9 @@
       "Bash(git add:*)",
       "Bash(git commit:*)",
       "Bash(dir:*)",
-      "Bash(git push)"
+      "Bash(git push)",
+      "Bash(npx wrangler:*)",
+      "Bash(npm install:*)"
     ]
   }
 }

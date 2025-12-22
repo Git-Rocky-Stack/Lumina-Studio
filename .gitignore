@@ -40,3 +40,6 @@ coverage
 *.pem
 .vercel
 .wrangler
+
+# Secrets folder
+clerk/

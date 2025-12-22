@@ -120,17 +120,20 @@ v1.post('/auth/webhook', async (c) => {
     const payload = await c.req.json();
     const { type, data } = payload;
 
-    console.log(`Received Clerk webhook: ${type}`);
+    console.log(`Received Clerk webhook: ${type}`, data?.id);
 
     switch (type) {
       case 'user.created':
-        // Create user and default workspace
+        // TODO: Create user and default workspace
+        console.log('User created:', data?.email_addresses?.[0]?.email_address);
         break;
       case 'user.updated':
-        // Update user record
+        // TODO: Update user record
+        console.log('User updated:', data?.id);
         break;
       case 'user.deleted':
-        // Delete user and cascade
+        // TODO: Delete user and cascade
+        console.log('User deleted:', data?.id);
         break;
       default:
         console.log(`Unhandled webhook type: ${type}`);
@@ -165,11 +168,13 @@ const authMiddleware = async (c: any, next: any) => {
     // c.set('sessionId', payload.sid);
 
     // For development, we'll accept any token and extract user ID
+    // Token will be used for verification once Clerk is fully implemented
+    console.log('Auth token received, length:', token.length);
     c.set('userId', 'user_development');
     c.set('sessionId', 'session_development');
 
     return next();
-  } catch (error) {
+  } catch {
     return c.json({ error: 'Invalid token' }, 401);
   }
 };
@@ -336,12 +341,14 @@ v1.post('/ai/generate/image', async (c) => {
 
   // TODO: Implement actual AI image generation
   // Check quota, call AI service, store in R2, create asset record
+  console.log(`Image generation requested by ${userId}:`, body.prompt?.substring(0, 50));
 
   return c.json({
     id: `gen_${crypto.randomUUID().substring(0, 16)}`,
     status: 'processing',
     message: 'Image generation queued. This endpoint needs full implementation.',
     prompt: body.prompt,
+    requested_by: userId,
   }, 202);
 });
 
@@ -350,12 +357,14 @@ v1.post('/ai/generate/video', async (c) => {
   const body = await c.req.json();
 
   // TODO: Implement actual AI video generation
+  console.log(`Video generation requested by ${userId}:`, body.prompt?.substring(0, 50));
 
   return c.json({
     id: `gen_${crypto.randomUUID().substring(0, 16)}`,
     status: 'processing',
     message: 'Video generation queued. This endpoint needs full implementation.',
     prompt: body.prompt,
+    requested_by: userId,
   }, 202);
 });
 
@@ -364,12 +373,14 @@ v1.post('/ai/generate/text', async (c) => {
   const body = await c.req.json();
 
   // TODO: Implement actual AI text generation
+  console.log(`Text generation requested by ${userId}:`, body.prompt?.substring(0, 50));
 
   return c.json({
     id: `gen_${crypto.randomUUID().substring(0, 16)}`,
     status: 'completed',
     message: 'Text generation placeholder.',
     prompt: body.prompt,
+    requested_by: userId,
     result: 'This is a placeholder response. Implement actual AI text generation.',
   });
 });
