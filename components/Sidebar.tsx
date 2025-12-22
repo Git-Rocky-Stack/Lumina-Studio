@@ -1,7 +1,7 @@
-
 import React, { useState, useEffect } from 'react';
 import { StudioMode } from '../types';
 import LEDProgressBar from './LEDProgressBar';
+import UserMenu from './UserMenu';
 
 interface SidebarProps {
   currentMode: StudioMode;
@@ -81,7 +81,7 @@ const Sidebar: React.FC<SidebarProps> = ({
         </div>
 
         <div className="space-y-1">
-          <button 
+          <button
             onClick={() => setMode(StudioMode.PERSONALIZATION)}
             className={`w-full flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-300 group hover:bg-white/5 ${
               currentMode === StudioMode.PERSONALIZATION ? 'bg-white/10 text-white border border-white/10' : 'text-slate-400 border border-transparent'
@@ -90,7 +90,7 @@ const Sidebar: React.FC<SidebarProps> = ({
             <i className="fas fa-sliders text-lg w-6 transition-transform group-hover:rotate-12"></i>
             <span className="hidden md:block text-sm">Personalize</span>
           </button>
-          <button 
+          <button
             onClick={onDriveSync}
             disabled={isSyncing}
             className={`w-full flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-300 text-sm group ${
@@ -100,6 +100,11 @@ const Sidebar: React.FC<SidebarProps> = ({
             <i className={`fab fa-google text-lg w-6 transition-all duration-500 ${isSyncing ? 'fa-spin text-accent' : 'group-hover:scale-110 group-hover:text-accent'}`}></i>
             <span className="hidden md:block">{isSyncing ? 'Syncing...' : 'Drive Sync'}</span>
           </button>
+        </div>
+
+        {/* User profile menu */}
+        <div className="pt-4 border-t border-slate-700/50">
+          <UserMenu />
         </div>
       </div>
     </aside>
