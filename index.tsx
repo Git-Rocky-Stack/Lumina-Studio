@@ -16,6 +16,9 @@ import LandingPage from './pages/Landing';
 import SignInPage from './pages/SignIn';
 import SignUpPage from './pages/SignUp';
 
+// Initialize AI Studio key management
+import './services/aistudio';
+
 // Get Clerk publishable key from environment
 const CLERK_PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 

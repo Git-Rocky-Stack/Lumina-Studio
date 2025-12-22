@@ -12,9 +12,28 @@ const VIDEO_HIGH_MODEL = 'veo-3.1-generate-preview';
 const TTS_MODEL = 'gemini-2.5-flash-preview-tts';
 const LIVE_MODEL = 'gemini-2.5-flash-native-audio-preview-09-2025';
 
-// Always use process.env.API_KEY directly for initialization
+// Get API key from aistudio storage or environment
+const getApiKey = (): string => {
+  // First check window.__GEMINI_API_KEY__ (set by aistudio)
+  if ((window as any).__GEMINI_API_KEY__) {
+    return (window as any).__GEMINI_API_KEY__;
+  }
+  // Fallback to localStorage
+  const storedKey = localStorage.getItem('lumina_gemini_api_key');
+  if (storedKey) {
+    return storedKey;
+  }
+  // Fallback to env variable
+  return import.meta.env.VITE_GEMINI_API_KEY || '';
+};
+
+// Get AI client with current API key
 export const getAIClient = () => {
-  return new GoogleGenAI({ apiKey: process.env.API_KEY });
+  const apiKey = getApiKey();
+  if (!apiKey) {
+    throw new Error('No API key configured. Please add your Google AI API key.');
+  }
+  return new GoogleGenAI({ apiKey });
 };
 
 /**
@@ -439,7 +458,8 @@ export async function pollVideoOperation(operationId: any) {
 }
 
 export async function fetchVideoData(uri: string) {
-  const response = await fetch(`${uri}&key=${process.env.API_KEY}`);
+  const apiKey = getApiKey();
+  const response = await fetch(`${uri}&key=${apiKey}`);
   return await response.blob();
 }
 
