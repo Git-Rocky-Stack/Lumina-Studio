@@ -11,7 +11,7 @@ const footerLinks = {
     { label: 'Changelog', href: '#' },
   ],
   resources: [
-    { label: 'Documentation', href: '#' },
+    { label: 'User Guide', href: '/guide', isRoute: true },
     { label: 'Tutorials', href: '#' },
     { label: 'Blog', href: '#' },
     { label: 'Community', href: '#' },
@@ -115,13 +115,23 @@ const Footer: React.FC = () => {
             <ul className="space-y-3">
               {footerLinks.resources.map(link => (
                 <li key={link.label}>
-                  <a
-                    href={link.href}
-                    className="text-slate-500 hover:text-white transition-colors text-sm flex items-center gap-2 group"
-                  >
-                    <span className="w-0 h-px bg-indigo-500 group-hover:w-3 transition-all" />
-                    {link.label}
-                  </a>
+                  {link.isRoute ? (
+                    <Link
+                      to={link.href}
+                      className="text-slate-500 hover:text-white transition-colors text-sm flex items-center gap-2 group"
+                    >
+                      <span className="w-0 h-px bg-indigo-500 group-hover:w-3 transition-all" />
+                      {link.label}
+                    </Link>
+                  ) : (
+                    <a
+                      href={link.href}
+                      className="text-slate-500 hover:text-white transition-colors text-sm flex items-center gap-2 group"
+                    >
+                      <span className="w-0 h-px bg-indigo-500 group-hover:w-3 transition-all" />
+                      {link.label}
+                    </a>
+                  )}
                 </li>
               ))}
             </ul>

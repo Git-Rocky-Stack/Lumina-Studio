@@ -5,7 +5,7 @@ import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion'
 const navLinks = [
   { label: 'Features', href: '#features' },
   { label: 'Pricing', href: '#pricing' },
-  { label: 'Resources', href: '#resources' },
+  { label: 'Guide', href: '/guide', isRoute: true },
 ];
 
 const Navigation: React.FC = () => {
@@ -76,24 +76,43 @@ const Navigation: React.FC = () => {
             {/* Desktop nav */}
             <div className="hidden md:flex items-center">
               <div className="relative flex items-center gap-1 px-2 py-1.5 rounded-full glass-card">
-                {navLinks.map((link) => (
-                  <a
-                    key={link.label}
-                    href={link.href}
-                    onMouseEnter={() => setHoveredLink(link.label)}
-                    onMouseLeave={() => setHoveredLink(null)}
-                    className="relative px-5 py-2 text-sm font-medium text-slate-300 hover:text-white transition-colors rounded-full"
-                  >
-                    {hoveredLink === link.label && (
-                      <motion.div
-                        layoutId="navHover"
-                        className="absolute inset-0 bg-white/10 rounded-full"
-                        transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-                      />
-                    )}
-                    <span className="relative z-10">{link.label}</span>
-                  </a>
-                ))}
+                {navLinks.map((link) =>
+                  link.isRoute ? (
+                    <Link
+                      key={link.label}
+                      to={link.href}
+                      onMouseEnter={() => setHoveredLink(link.label)}
+                      onMouseLeave={() => setHoveredLink(null)}
+                      className="relative px-5 py-2 text-sm font-medium text-slate-300 hover:text-white transition-colors rounded-full"
+                    >
+                      {hoveredLink === link.label && (
+                        <motion.div
+                          layoutId="navHover"
+                          className="absolute inset-0 bg-white/10 rounded-full"
+                          transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                        />
+                      )}
+                      <span className="relative z-10">{link.label}</span>
+                    </Link>
+                  ) : (
+                    <a
+                      key={link.label}
+                      href={link.href}
+                      onMouseEnter={() => setHoveredLink(link.label)}
+                      onMouseLeave={() => setHoveredLink(null)}
+                      className="relative px-5 py-2 text-sm font-medium text-slate-300 hover:text-white transition-colors rounded-full"
+                    >
+                      {hoveredLink === link.label && (
+                        <motion.div
+                          layoutId="navHover"
+                          className="absolute inset-0 bg-white/10 rounded-full"
+                          transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                        />
+                      )}
+                      <span className="relative z-10">{link.label}</span>
+                    </a>
+                  )
+                )}
               </div>
             </div>
 
@@ -190,19 +209,36 @@ const Navigation: React.FC = () => {
             >
               <div className="glass-card rounded-3xl p-6 shadow-2xl">
                 <div className="space-y-1 mb-6">
-                  {navLinks.map((link, i) => (
-                    <motion.a
-                      key={link.label}
-                      href={link.href}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: i * 0.1 }}
-                      onClick={() => setMobileMenuOpen(false)}
-                      className="block py-4 px-4 text-lg font-medium text-slate-200 hover:text-white hover:bg-white/5 rounded-xl transition-all"
-                    >
-                      {link.label}
-                    </motion.a>
-                  ))}
+                  {navLinks.map((link, i) =>
+                    link.isRoute ? (
+                      <motion.div
+                        key={link.label}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: i * 0.1 }}
+                      >
+                        <Link
+                          to={link.href}
+                          onClick={() => setMobileMenuOpen(false)}
+                          className="block py-4 px-4 text-lg font-medium text-slate-200 hover:text-white hover:bg-white/5 rounded-xl transition-all"
+                        >
+                          {link.label}
+                        </Link>
+                      </motion.div>
+                    ) : (
+                      <motion.a
+                        key={link.label}
+                        href={link.href}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: i * 0.1 }}
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="block py-4 px-4 text-lg font-medium text-slate-200 hover:text-white hover:bg-white/5 rounded-xl transition-all"
+                      >
+                        {link.label}
+                      </motion.a>
+                    )
+                  )}
                 </div>
 
                 <div className="pt-6 border-t border-white/10 space-y-3">
