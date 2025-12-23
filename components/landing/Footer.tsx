@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 
 const footerLinks = {
   product: [
@@ -7,56 +8,85 @@ const footerLinks = {
     { label: 'Pricing', href: '#pricing' },
     { label: 'API', href: '#' },
     { label: 'Integrations', href: '#' },
+    { label: 'Changelog', href: '#' },
   ],
   resources: [
     { label: 'Documentation', href: '#' },
     { label: 'Tutorials', href: '#' },
     { label: 'Blog', href: '#' },
     { label: 'Community', href: '#' },
+    { label: 'Templates', href: '#' },
   ],
   company: [
     { label: 'About', href: '#' },
     { label: 'Careers', href: '#' },
     { label: 'Contact', href: '#' },
     { label: 'Press Kit', href: '#' },
+    { label: 'Partners', href: '#' },
   ],
   legal: [
     { label: 'Privacy', href: '#' },
     { label: 'Terms', href: '#' },
     { label: 'Security', href: '#' },
+    { label: 'Cookies', href: '#' },
   ],
 };
 
+const socialLinks = [
+  { icon: 'fa-twitter', href: '#', label: 'Twitter' },
+  { icon: 'fa-discord', href: '#', label: 'Discord' },
+  { icon: 'fa-github', href: '#', label: 'GitHub' },
+  { icon: 'fa-linkedin', href: '#', label: 'LinkedIn' },
+  { icon: 'fa-youtube', href: '#', label: 'YouTube' },
+];
+
 const Footer: React.FC = () => {
   return (
-    <footer className="py-16 px-6 border-t border-slate-800">
-      <div className="max-w-7xl mx-auto">
+    <footer className="relative pt-24 pb-12 px-6 overflow-hidden">
+      {/* Top border */}
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-slate-700/50 to-transparent" />
+
+      {/* Background */}
+      <div className="absolute inset-0 bg-slate-950" />
+      <div className="absolute inset-0 bg-grid opacity-20" />
+
+      <div className="relative max-w-7xl mx-auto">
         {/* Main footer grid */}
-        <div className="grid grid-cols-2 md:grid-cols-6 gap-8 mb-12">
+        <div className="grid grid-cols-2 md:grid-cols-6 gap-10 md:gap-8 mb-16">
           {/* Brand column */}
           <div className="col-span-2">
-            <Link to="/" className="flex items-center gap-3 mb-6">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center shadow-lg shadow-indigo-500/25">
-                <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
+            <Link to="/" className="flex items-center gap-3 mb-6 group">
+              <motion.div
+                whileHover={{ scale: 1.05, rotate: 5 }}
+                className="relative"
+              >
+                <div className="absolute inset-0 bg-gradient-to-br from-indigo-500 to-violet-600 rounded-xl blur-lg opacity-50 group-hover:opacity-80 transition-opacity" />
+                <div className="relative w-11 h-11 rounded-xl bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center shadow-lg">
+                  <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  </svg>
+                </div>
+              </motion.div>
+              <div className="flex flex-col">
+                <span className="text-xl font-bold tracking-tight leading-none">
+                  Lumina<span className="text-indigo-400">Studio</span>
+                </span>
+                <span className="text-[10px] text-slate-500 font-medium tracking-widest uppercase">Creative Suite</span>
               </div>
-              <span className="text-xl font-bold">
-                Lumina<span className="text-indigo-400">Studio</span>
-              </span>
             </Link>
-            <p className="text-slate-500 text-sm mb-6 max-w-xs">
-              The all-in-one AI creative suite for designers, marketers, and content creators.
+
+            <p className="text-slate-500 text-sm mb-8 max-w-xs leading-relaxed">
+              The all-in-one AI creative suite for designers, marketers, and content creators. Create without limits.
             </p>
 
             {/* Newsletter signup */}
-            <div className="flex gap-2">
+            <div className="relative">
               <input
                 type="email"
                 placeholder="Enter your email"
-                className="flex-1 px-4 py-2.5 rounded-xl bg-slate-800/50 border border-slate-700/50 text-sm placeholder:text-slate-500 focus:outline-none focus:border-indigo-500/50"
+                className="w-full px-5 py-4 pr-32 rounded-xl bg-slate-900/50 border border-slate-800 text-sm placeholder:text-slate-600 focus:outline-none focus:border-indigo-500/50 focus:ring-2 focus:ring-indigo-500/20 transition-all"
               />
-              <button className="px-4 py-2.5 rounded-xl bg-indigo-500 hover:bg-indigo-600 font-semibold text-sm transition-colors">
+              <button className="absolute right-2 top-1/2 -translate-y-1/2 px-5 py-2 rounded-lg bg-gradient-to-r from-indigo-500 to-violet-600 hover:from-indigo-600 hover:to-violet-700 font-semibold text-sm transition-all hover:scale-105">
                 Subscribe
               </button>
             </div>
@@ -64,11 +94,15 @@ const Footer: React.FC = () => {
 
           {/* Link columns */}
           <div>
-            <h4 className="font-semibold text-white mb-4">Product</h4>
+            <h4 className="font-semibold text-white mb-5">Product</h4>
             <ul className="space-y-3">
               {footerLinks.product.map(link => (
                 <li key={link.label}>
-                  <a href={link.href} className="text-slate-400 hover:text-white transition-colors text-sm">
+                  <a
+                    href={link.href}
+                    className="text-slate-500 hover:text-white transition-colors text-sm flex items-center gap-2 group"
+                  >
+                    <span className="w-0 h-px bg-indigo-500 group-hover:w-3 transition-all" />
                     {link.label}
                   </a>
                 </li>
@@ -77,11 +111,15 @@ const Footer: React.FC = () => {
           </div>
 
           <div>
-            <h4 className="font-semibold text-white mb-4">Resources</h4>
+            <h4 className="font-semibold text-white mb-5">Resources</h4>
             <ul className="space-y-3">
               {footerLinks.resources.map(link => (
                 <li key={link.label}>
-                  <a href={link.href} className="text-slate-400 hover:text-white transition-colors text-sm">
+                  <a
+                    href={link.href}
+                    className="text-slate-500 hover:text-white transition-colors text-sm flex items-center gap-2 group"
+                  >
+                    <span className="w-0 h-px bg-indigo-500 group-hover:w-3 transition-all" />
                     {link.label}
                   </a>
                 </li>
@@ -90,11 +128,15 @@ const Footer: React.FC = () => {
           </div>
 
           <div>
-            <h4 className="font-semibold text-white mb-4">Company</h4>
+            <h4 className="font-semibold text-white mb-5">Company</h4>
             <ul className="space-y-3">
               {footerLinks.company.map(link => (
                 <li key={link.label}>
-                  <a href={link.href} className="text-slate-400 hover:text-white transition-colors text-sm">
+                  <a
+                    href={link.href}
+                    className="text-slate-500 hover:text-white transition-colors text-sm flex items-center gap-2 group"
+                  >
+                    <span className="w-0 h-px bg-indigo-500 group-hover:w-3 transition-all" />
                     {link.label}
                   </a>
                 </li>
@@ -103,11 +145,15 @@ const Footer: React.FC = () => {
           </div>
 
           <div>
-            <h4 className="font-semibold text-white mb-4">Legal</h4>
+            <h4 className="font-semibold text-white mb-5">Legal</h4>
             <ul className="space-y-3">
               {footerLinks.legal.map(link => (
                 <li key={link.label}>
-                  <a href={link.href} className="text-slate-400 hover:text-white transition-colors text-sm">
+                  <a
+                    href={link.href}
+                    className="text-slate-500 hover:text-white transition-colors text-sm flex items-center gap-2 group"
+                  >
+                    <span className="w-0 h-px bg-indigo-500 group-hover:w-3 transition-all" />
                     {link.label}
                   </a>
                 </li>
@@ -117,31 +163,36 @@ const Footer: React.FC = () => {
         </div>
 
         {/* Bottom bar */}
-        <div className="pt-8 border-t border-slate-800 flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-6">
-            <p className="text-slate-500 text-sm">
-              &copy; 2025 Lumina Studio. All rights reserved.
-            </p>
-            <div className="flex items-center gap-2 text-sm text-emerald-400">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-              All systems operational
+        <div className="pt-10 border-t border-slate-800/50">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+            <div className="flex flex-col md:flex-row items-center gap-6">
+              <p className="text-slate-600 text-sm">
+                &copy; 2025 Lumina Studio. All rights reserved.
+              </p>
+              <div className="flex items-center gap-2 text-sm">
+                <span className="relative flex h-2.5 w-2.5">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-400" />
+                </span>
+                <span className="text-emerald-400 font-medium">All systems operational</span>
+              </div>
             </div>
-          </div>
 
-          {/* Social links */}
-          <div className="flex items-center gap-4">
-            <a href="#" className="w-10 h-10 rounded-xl bg-slate-800/50 hover:bg-slate-800 flex items-center justify-center text-slate-400 hover:text-white transition-all">
-              <i className="fab fa-twitter" />
-            </a>
-            <a href="#" className="w-10 h-10 rounded-xl bg-slate-800/50 hover:bg-slate-800 flex items-center justify-center text-slate-400 hover:text-white transition-all">
-              <i className="fab fa-discord" />
-            </a>
-            <a href="#" className="w-10 h-10 rounded-xl bg-slate-800/50 hover:bg-slate-800 flex items-center justify-center text-slate-400 hover:text-white transition-all">
-              <i className="fab fa-github" />
-            </a>
-            <a href="#" className="w-10 h-10 rounded-xl bg-slate-800/50 hover:bg-slate-800 flex items-center justify-center text-slate-400 hover:text-white transition-all">
-              <i className="fab fa-linkedin" />
-            </a>
+            {/* Social links */}
+            <div className="flex items-center gap-2">
+              {socialLinks.map((social) => (
+                <motion.a
+                  key={social.label}
+                  href={social.href}
+                  whileHover={{ scale: 1.1, y: -2 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="w-11 h-11 rounded-xl glass-card flex items-center justify-center text-slate-500 hover:text-white hover:border-indigo-500/30 transition-all"
+                  aria-label={social.label}
+                >
+                  <i className={`fab ${social.icon}`} />
+                </motion.a>
+              ))}
+            </div>
           </div>
         </div>
       </div>

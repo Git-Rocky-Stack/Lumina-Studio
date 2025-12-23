@@ -43,22 +43,36 @@ const features = [
 
 const FeatureGrid: React.FC = () => {
   return (
-    <section id="features" className="py-24 px-6">
-      <div className="max-w-7xl mx-auto">
+    <section id="features" className="py-32 px-6 relative overflow-hidden">
+      {/* Background effects */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-1/4 left-0 w-[600px] h-[600px] bg-violet-500/5 rounded-full blur-[150px]" />
+        <div className="absolute bottom-1/4 right-0 w-[500px] h-[500px] bg-indigo-500/5 rounded-full blur-[150px]" />
+      </div>
+
+      <div className="max-w-7xl mx-auto relative">
         {/* Section header */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-16"
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="text-center mb-20"
         >
-          <span className="inline-block px-4 py-1.5 rounded-full bg-violet-500/10 text-violet-400 text-sm font-semibold mb-6">
+          <motion.span
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            className="inline-flex items-center gap-2 px-5 py-2 rounded-full glass-card text-violet-400 text-sm font-semibold mb-8"
+          >
+            <i className="fas fa-sparkles text-xs" />
             Features
-          </span>
-          <h2 className="text-3xl md:text-5xl font-bold mb-6">
-            Everything You Need to Create
+          </motion.span>
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 font-display tracking-tight">
+            Everything You Need to{' '}
+            <span className="text-gradient-primary">Create</span>
           </h2>
-          <p className="text-xl text-slate-400 max-w-2xl mx-auto">
+          <p className="text-xl text-slate-400 max-w-2xl mx-auto leading-relaxed">
             A complete creative toolkit powered by the latest AI technology.
           </p>
         </motion.div>
@@ -79,21 +93,28 @@ const FeatureGrid: React.FC = () => {
 
         {/* Bottom CTA */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mt-16"
+          transition={{ duration: 0.8, delay: 0.4 }}
+          className="text-center mt-20"
         >
-          <p className="text-slate-400 mb-4">
-            And many more features being added every week.
-          </p>
-          <a
-            href="#pricing"
-            className="inline-flex items-center gap-2 text-indigo-400 font-semibold hover:text-indigo-300 transition-colors"
-          >
-            View all features
-            <i className="fas fa-arrow-right" />
-          </a>
+          <div className="glass-card rounded-2xl p-8 max-w-2xl mx-auto">
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <div className="w-3 h-3 rounded-full bg-emerald-400 animate-pulse" />
+              <span className="text-slate-400 text-sm font-medium">New features added weekly</span>
+            </div>
+            <p className="text-slate-300 mb-6">
+              Join our community and help shape the future of creative tools.
+            </p>
+            <a
+              href="#pricing"
+              className="inline-flex items-center gap-3 px-8 py-4 rounded-xl bg-gradient-to-r from-indigo-500 to-violet-600 font-semibold hover:from-indigo-600 hover:to-violet-700 transition-all hover:scale-105 shadow-lg shadow-indigo-500/25"
+            >
+              <span>View All Features</span>
+              <i className="fas fa-arrow-right text-sm" />
+            </a>
+          </div>
         </motion.div>
       </div>
     </section>

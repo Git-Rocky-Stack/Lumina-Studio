@@ -20,7 +20,7 @@ import Footer from '../components/landing/Footer';
 
 const LandingPage: React.FC = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-900 to-slate-950 text-white overflow-x-hidden">
+    <div className="min-h-screen bg-slate-950 text-white overflow-x-hidden noise-overlay">
       {/* Fixed Navigation */}
       <Navigation />
 
