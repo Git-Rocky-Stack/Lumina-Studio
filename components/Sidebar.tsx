@@ -51,7 +51,10 @@ const Sidebar: React.FC<SidebarProps> = ({
       <div className="p-6 mb-8">
         <h1 className="text-xl md:text-2xl font-bold tracking-tighter flex items-center gap-2">
           <div className="w-8 h-8 bg-accent rounded-lg flex items-center justify-center text-sm shadow-lg shadow-accent transition-all duration-500 hover:rotate-12">L</div>
-          <span className="hidden md:block bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">Lumina Studio</span>
+          <span className="hidden md:flex items-center gap-2">
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">Lumina Studio</span>
+            <span className="px-1.5 py-0.5 text-[9px] font-bold tracking-wider bg-gradient-to-r from-indigo-500 to-violet-600 rounded text-white">OS</span>
+          </span>
         </h1>
       </div>
 

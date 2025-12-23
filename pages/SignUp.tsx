@@ -25,9 +25,12 @@ const SignUpPage: React.FC = () => {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
           </svg>
         </div>
-        <span className="text-2xl font-bold text-white tracking-tight">
-          Lumina<span className="text-indigo-400">Studio</span>
-        </span>
+        <div className="flex items-center gap-2">
+          <span className="text-2xl font-bold text-white tracking-tight">
+            Lumina<span className="text-indigo-400">Studio</span>
+          </span>
+          <span className="px-1.5 py-0.5 text-[10px] font-bold tracking-wider bg-gradient-to-r from-indigo-500 to-violet-600 rounded text-white">OS</span>
+        </div>
       </Link>
 
       {/* Sign Up Component */}
