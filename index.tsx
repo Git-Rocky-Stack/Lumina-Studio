@@ -16,6 +16,7 @@ import LandingPage from './pages/Landing';
 import SignInPage from './pages/SignIn';
 import SignUpPage from './pages/SignUp';
 import UserGuide from './pages/UserGuide';
+import PrivacyPolicy from './pages/PrivacyPolicy';
 
 // Get Clerk publishable key from environment
 const CLERK_PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
@@ -43,6 +44,7 @@ root.render(
             {/* Public routes */}
             <Route path="/" element={<LandingPage />} />
             <Route path="/guide" element={<UserGuide />} />
+            <Route path="/privacy" element={<PrivacyPolicy />} />
             <Route path="/sign-in/*" element={<SignInPage />} />
             <Route path="/sign-up/*" element={<SignUpPage />} />
 
