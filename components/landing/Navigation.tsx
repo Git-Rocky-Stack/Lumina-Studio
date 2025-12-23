@@ -65,11 +65,11 @@ const Navigation: React.FC = () => {
                   </svg>
                 </div>
               </motion.div>
-              <div className="flex flex-col">
-                <span className="text-xl font-bold tracking-tight leading-none">
+              <div className="flex items-center gap-2">
+                <span className="text-xl font-bold tracking-tight">
                   Lumina<span className="text-indigo-400">Studio</span>
                 </span>
-                <span className="text-[10px] text-slate-500 font-medium tracking-widest uppercase">Creative Suite</span>
+                <span className="px-1.5 py-0.5 text-[10px] font-bold tracking-wider bg-gradient-to-r from-indigo-500 to-violet-600 rounded text-white">OS</span>
               </div>
             </Link>
 
