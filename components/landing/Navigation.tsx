@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
+import ThemeToggle from '../ThemeToggle';
 
 const navLinks = [
   { label: 'Features', href: '#features' },
@@ -118,6 +119,7 @@ const Navigation: React.FC = () => {
 
             {/* Auth buttons */}
             <div className="hidden md:flex items-center gap-3">
+              <ThemeToggle variant="icon" />
               <Link
                 to="/sign-in"
                 className="px-5 py-2.5 text-sm font-medium text-slate-300 hover:text-white transition-colors rounded-xl hover:bg-white/5"

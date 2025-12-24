@@ -20,6 +20,9 @@ import CTASection from '../components/landing/CTASection';
 import Footer from '../components/landing/Footer';
 import ExitIntentModal from '../components/landing/ExitIntentModal';
 import StickyCTA from '../components/landing/StickyCTA';
+import CookieConsent from '../components/CookieConsent';
+import KeyboardShortcutsModal from '../components/KeyboardShortcutsModal';
+import WhatsNewModal from '../components/WhatsNewModal';
 
 const LandingPage: React.FC = () => {
   return (
@@ -66,6 +69,9 @@ const LandingPage: React.FC = () => {
       {/* UX Enhancements */}
       <ExitIntentModal enabled={true} />
       <StickyCTA threshold={800} />
+      <CookieConsent />
+      <KeyboardShortcutsModal />
+      <WhatsNewModal />
     </div>
   );
 };

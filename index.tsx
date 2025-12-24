@@ -11,12 +11,34 @@ import { ClerkProvider } from '@clerk/clerk-react';
 
 import App from './App';
 import { AuthProvider } from './contexts/AuthContext';
+import { ThemeProvider } from './contexts/ThemeContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import LandingPage from './pages/Landing';
 import SignInPage from './pages/SignIn';
 import SignUpPage from './pages/SignUp';
 import UserGuide from './pages/UserGuide';
 import PrivacyPolicy from './pages/PrivacyPolicy';
+
+// Initialize services
+import { analytics } from './services/analytics';
+import { errorTracker } from './services/errorTracking';
+
+// Initialize analytics and error tracking
+analytics.init();
+errorTracker.init();
+
+// Register Service Worker
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js')
+      .then((registration) => {
+        console.log('[SW] Registered:', registration.scope);
+      })
+      .catch((error) => {
+        console.log('[SW] Registration failed:', error);
+      });
+  });
+}
 
 // Get Clerk publishable key from environment
 const CLERK_PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
@@ -37,10 +59,11 @@ const root = ReactDOM.createRoot(rootElement);
 
 root.render(
   <React.StrictMode>
-    <ClerkProvider publishableKey={CLERK_PUBLISHABLE_KEY || 'pk_test_placeholder'}>
-      <BrowserRouter>
-        <AuthProvider>
-          <Routes>
+    <ThemeProvider>
+      <ClerkProvider publishableKey={CLERK_PUBLISHABLE_KEY || 'pk_test_placeholder'}>
+        <BrowserRouter>
+          <AuthProvider>
+            <Routes>
             {/* Public routes */}
             <Route path="/" element={<LandingPage />} />
             <Route path="/guide" element={<UserGuide />} />
@@ -71,8 +94,9 @@ root.render(
             {/* Fallback - show landing */}
             <Route path="*" element={<LandingPage />} />
           </Routes>
-        </AuthProvider>
-      </BrowserRouter>
-    </ClerkProvider>
+          </AuthProvider>
+        </BrowserRouter>
+      </ClerkProvider>
+    </ThemeProvider>
   </React.StrictMode>
 );

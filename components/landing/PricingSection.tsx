@@ -1,6 +1,8 @@
 import React, { useState, useRef } from 'react';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import PricingCalculator from './PricingCalculator';
+import TrustBadges from './TrustBadges';
 
 const plans = [
   {
@@ -163,6 +165,28 @@ const PricingSection: React.FC = () => {
               </button>
             </div>
           </div>
+        </motion.div>
+
+        {/* Pricing Calculator */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, delay: 0.5 }}
+          className="mt-20"
+        >
+          <PricingCalculator />
+        </motion.div>
+
+        {/* Trust Badges */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, delay: 0.6 }}
+          className="mt-16"
+        >
+          <TrustBadges variant="full" />
         </motion.div>
       </div>
     </section>
