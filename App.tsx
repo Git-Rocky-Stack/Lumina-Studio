@@ -1,22 +1,37 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 import Sidebar from './components/Sidebar';
-import Canvas from './components/Canvas';
-import VideoStudio from './components/VideoStudio';
-import AIStockGen from './components/AIStockGen';
-import PDFSuite from './components/PDFSuite';
-import ProPhoto from './components/ProPhoto';
-import Assistant from './components/Assistant';
-import BrandHub from './components/BrandHub';
-import MarketingHub from './components/MarketingHub';
 import FileManager from './components/FileManager';
-import AssetHub from './components/AssetHub';
 import TutorialOverlay from './components/TutorialOverlay';
-import Personalization from './components/Personalization';
 import ShortcutGuide from './components/ShortcutGuide';
 import { StudioMode, ThemeColor } from './types';
 import { syncToGoogleDrive } from './services/exportService';
 import { OnboardingProvider, useOnboarding } from './design-system';
+
+// Lazy load heavy components for code splitting
+const Canvas = lazy(() => import('./components/Canvas'));
+const VideoStudio = lazy(() => import('./components/VideoStudio'));
+const AIStockGen = lazy(() => import('./components/AIStockGen'));
+const PDFSuite = lazy(() => import('./components/PDFSuite'));
+const ProPhoto = lazy(() => import('./components/ProPhoto'));
+const Assistant = lazy(() => import('./components/Assistant'));
+const BrandHub = lazy(() => import('./components/BrandHub'));
+const MarketingHub = lazy(() => import('./components/MarketingHub'));
+const AssetHub = lazy(() => import('./components/AssetHub'));
+const Personalization = lazy(() => import('./components/Personalization'));
+
+// Loading fallback component
+const ModuleLoader: React.FC = () => (
+  <div className="flex-1 h-full flex items-center justify-center bg-slate-50">
+    <div className="text-center space-y-4">
+      <div className="relative w-16 h-16 mx-auto">
+        <div className="absolute inset-0 rounded-full border-4 border-slate-200"></div>
+        <div className="absolute inset-0 rounded-full border-4 border-t-accent animate-spin"></div>
+      </div>
+      <p className="text-sm font-medium text-slate-500 uppercase tracking-widest">Loading Module</p>
+    </div>
+  </div>
+);
 
 const App: React.FC = () => {
   const [currentMode, setCurrentMode] = useState<StudioMode>(StudioMode.WORKSPACE);
@@ -120,20 +135,28 @@ const App: React.FC = () => {
   };
 
   const renderContent = () => {
-    switch (currentMode) {
-      case StudioMode.WORKSPACE: return <FileManager />;
-      case StudioMode.ASSETS: return <AssetHub />;
-      case StudioMode.CANVAS: return <Canvas />;
-      case StudioMode.VIDEO: return <VideoStudio />;
-      case StudioMode.STOCK: return <AIStockGen />;
-      case StudioMode.PDF: return <PDFSuite />;
-      case StudioMode.PRO_PHOTO: return <ProPhoto />;
-      case StudioMode.BRANDING: return <BrandHub />;
-      case StudioMode.MARKETING: return <MarketingHub />;
-      case StudioMode.ASSISTANT: return <Assistant />;
-      case StudioMode.PERSONALIZATION: return <Personalization currentTheme={theme} setTheme={setTheme} />;
-      default: return <FileManager />;
+    const content = (() => {
+      switch (currentMode) {
+        case StudioMode.WORKSPACE: return <FileManager />;
+        case StudioMode.ASSETS: return <AssetHub />;
+        case StudioMode.CANVAS: return <Canvas />;
+        case StudioMode.VIDEO: return <VideoStudio />;
+        case StudioMode.STOCK: return <AIStockGen />;
+        case StudioMode.PDF: return <PDFSuite />;
+        case StudioMode.PRO_PHOTO: return <ProPhoto />;
+        case StudioMode.BRANDING: return <BrandHub />;
+        case StudioMode.MARKETING: return <MarketingHub />;
+        case StudioMode.ASSISTANT: return <Assistant />;
+        case StudioMode.PERSONALIZATION: return <Personalization currentTheme={theme} setTheme={setTheme} />;
+        default: return <FileManager />;
+      }
+    })();
+
+    // Wrap lazy-loaded components with Suspense
+    if (currentMode !== StudioMode.WORKSPACE) {
+      return <Suspense fallback={<ModuleLoader />}>{content}</Suspense>;
     }
+    return content;
   };
 
   return (
