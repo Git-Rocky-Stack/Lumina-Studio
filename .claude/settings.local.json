@@ -20,7 +20,15 @@
       "WebFetch(domain:docs.puter.com)",
       "WebFetch(domain:developer.puter.com)",
       "WebFetch(domain:itsfoss.com)",
-      "Bash(cat:*)"
+      "Bash(cat:*)",
+      "Bash(git push:*)",
+      "Bash(git stash:*)",
+      "WebFetch(domain:e0c53fd9.lumina-studio-7w9.pages.dev)",
+      "Bash(start https://e0c53fd9.lumina-studio-7w9.pages.dev)",
+      "Bash(move:*)",
+      "Bash(npm uninstall:*)",
+      "Bash(grep:*)",
+      "Bash(xargs -I {} sh -c 'echo \"\"=== {} ===\"\" && head -15 {}')"
     ]
   }
 }

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback, useEffect } from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Upload, File, Image, Video, Music, FileText, X, Check, AlertCircle } from 'lucide-react';
 import { springPresets } from '../animations';
