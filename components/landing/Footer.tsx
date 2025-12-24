@@ -26,7 +26,7 @@ const footerLinks = {
   ],
   legal: [
     { label: 'Privacy', href: '/privacy', isRoute: true },
-    { label: 'Terms', href: '#' },
+    { label: 'Terms', href: '/terms', isRoute: true },
     { label: 'Security', href: '#' },
     { label: 'Cookies', href: '#' },
   ],

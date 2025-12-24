@@ -18,6 +18,7 @@ import SignInPage from './pages/SignIn';
 import SignUpPage from './pages/SignUp';
 import UserGuide from './pages/UserGuide';
 import PrivacyPolicy from './pages/PrivacyPolicy';
+import Terms from './pages/Terms';
 
 // Design System
 import { ToastProvider } from './design-system';
@@ -72,6 +73,7 @@ root.render(
             <Route path="/" element={<LandingPage />} />
             <Route path="/guide" element={<UserGuide />} />
             <Route path="/privacy" element={<PrivacyPolicy />} />
+            <Route path="/terms" element={<Terms />} />
             <Route path="/sign-in/*" element={<SignInPage />} />
             <Route path="/sign-up/*" element={<SignUpPage />} />
 
