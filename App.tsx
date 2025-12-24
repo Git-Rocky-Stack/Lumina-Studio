@@ -16,6 +16,7 @@ import Personalization from './components/Personalization';
 import ShortcutGuide from './components/ShortcutGuide';
 import { StudioMode, ThemeColor } from './types';
 import { syncToGoogleDrive } from './services/exportService';
+import { OnboardingProvider, useOnboarding } from './design-system';
 
 const App: React.FC = () => {
   const [currentMode, setCurrentMode] = useState<StudioMode>(StudioMode.WORKSPACE);
@@ -136,8 +137,9 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="flex h-screen w-full bg-slate-50 overflow-hidden text-slate-900 antialiased font-sans">
-      <style>{`
+    <OnboardingProvider>
+      <div className="flex h-screen w-full bg-slate-50 overflow-hidden text-slate-900 antialiased font-sans">
+        <style>{`
         .bg-accent { background-color: var(--accent); }
         .text-accent { color: var(--accent); }
         .border-accent { border-color: var(--accent); }
@@ -205,23 +207,24 @@ const App: React.FC = () => {
         @keyframes lumina-dash-march {
           to { stroke-dashoffset: -10; }
         }
-      `}</style>
-      
-      <Sidebar 
-        currentMode={currentMode} 
-        setMode={setCurrentMode} 
-        onOpenShortcuts={() => setShowShortcuts(true)} 
-        onDriveSync={handleGlobalDriveSync}
-        isSyncing={isGlobalSyncing}
-      />
-      
-      <main className="flex-1 h-full overflow-hidden relative">
-        {renderContent()}
-      </main>
-      
-      {showTutorial && <TutorialOverlay onClose={() => setShowTutorial(false)} />}
-      <ShortcutGuide isOpen={showShortcuts} onClose={() => setShowShortcuts(false)} />
-    </div>
+        `}</style>
+
+        <Sidebar
+          currentMode={currentMode}
+          setMode={setCurrentMode}
+          onOpenShortcuts={() => setShowShortcuts(true)}
+          onDriveSync={handleGlobalDriveSync}
+          isSyncing={isGlobalSyncing}
+        />
+
+        <main className="flex-1 h-full overflow-hidden relative" data-tour="main-content">
+          {renderContent()}
+        </main>
+
+        {showTutorial && <TutorialOverlay onClose={() => setShowTutorial(false)} />}
+        <ShortcutGuide isOpen={showShortcuts} onClose={() => setShowShortcuts(false)} />
+      </div>
+    </OnboardingProvider>
   );
 };
 

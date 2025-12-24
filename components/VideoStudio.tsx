@@ -1,9 +1,9 @@
 
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
-import { 
-  startVideoGeneration, 
-  pollVideoOperation, 
-  fetchVideoData, 
+import {
+  startVideoGeneration,
+  pollVideoOperation,
+  fetchVideoData,
   generateStoryboardFromScript,
   extendVideo,
   analyzeMedia,
@@ -12,6 +12,7 @@ import {
   analyzeVideoContent
 } from '../services/geminiService';
 import { Shot, Storyboard, TransitionType, VideoAspectRatio } from '../types';
+import { useToast } from '../design-system';
 
 const AUDIO_LIBRARY = [
   { id: '1', name: 'Cinematic Rise', genre: 'Epic', color: 'bg-rose-500', bpm: 120, tags: ['dramatic', 'orchestral', 'high energy'], url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3' },
@@ -78,6 +79,7 @@ const ANALYTICAL_PROMPTS = [
 type SynthesisMode = 'smooth' | 'kinetic' | 'resolve' | 'shift';
 
 const VideoStudio: React.FC = () => {
+  const toast = useToast();
   const [concept, setConcept] = useState('');
   const [storyboard, setStoryboard] = useState<Storyboard | null>(null);
   const [history, setHistory] = useState<Storyboard[]>([]);
@@ -319,7 +321,7 @@ const VideoStudio: React.FC = () => {
         setHasKey(false);
         handleKeySelect();
       } else {
-        alert("Failed to build cinematic storyboard.");
+        toast.error('Storyboard Failed', { description: 'Failed to build cinematic storyboard. Please try again.' });
       }
     } finally {
       setIsBuildingStoryboard(false);

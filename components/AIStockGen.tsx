@@ -13,6 +13,7 @@ import {
 } from '../services/geminiService';
 import { simulateProfessionalExport, downloadFile, syncToGoogleDrive } from '../services/exportService';
 import { canUse, recordUsage, getRemaining } from '../services/usageService';
+import { useToast } from '../design-system';
 
 const REASSURING_MESSAGES = [
   "Initializing neural motion paths...",
@@ -49,6 +50,7 @@ interface SynthesizedAsset {
 
 export default function AIStockGen() {
   const { user } = useUser();
+  const toast = useToast();
   const userId = user?.id || 'anonymous';
 
   const [prompt, setPrompt] = useState('');
@@ -112,7 +114,10 @@ export default function AIStockGen() {
     // Check quota before generating
     if (!canUse(userId, 'image', batchCount)) {
       const remaining = getRemaining(userId);
-      alert(`You've reached your image limit. ${remaining.images} images remaining this month. Upgrade to Pro for more.`);
+      toast.warning('Image Limit Reached', {
+        description: `${remaining.images} images remaining this month. Upgrade to Pro for more.`,
+        action: { label: 'Upgrade', onClick: () => window.location.href = '/#pricing' }
+      });
       return;
     }
 
@@ -149,7 +154,7 @@ export default function AIStockGen() {
       setQuotaKey(prev => prev + 1);
     } catch (error: any) {
       console.error(error);
-      alert(error?.message || "Still synthesis failed. Please try again.");
+      toast.error('Synthesis Failed', { description: error?.message || 'Please try again with a different prompt.' });
     } finally {
       setGenerating(false);
     }
@@ -161,7 +166,10 @@ export default function AIStockGen() {
     // Check quota before generating videos
     if (!canUse(userId, 'video', batchCount)) {
       const remaining = getRemaining(userId);
-      alert(`You've reached your video limit. ${remaining.videos} videos remaining this month. Upgrade to Pro for more.`);
+      toast.warning('Video Limit Reached', {
+        description: `${remaining.videos} videos remaining this month. Upgrade to Pro for more.`,
+        action: { label: 'Upgrade', onClick: () => window.location.href = '/#pricing' }
+      });
       return;
     }
 

@@ -23,56 +23,59 @@ import StickyCTA from '../components/landing/StickyCTA';
 import CookieConsent from '../components/CookieConsent';
 import KeyboardShortcutsModal from '../components/KeyboardShortcutsModal';
 import WhatsNewModal from '../components/WhatsNewModal';
+import { CursorProvider, CursorTrigger } from '../design-system';
 
 const LandingPage: React.FC = () => {
   return (
-    <div className="min-h-screen bg-slate-950 text-white overflow-x-hidden noise-overlay">
-      {/* Fixed Navigation */}
-      <Navigation />
+    <CursorProvider>
+      <div className="min-h-screen bg-slate-950 text-white overflow-x-hidden noise-overlay cursor-none">
+        {/* Fixed Navigation */}
+        <Navigation />
 
-      {/* Main content with landmark for accessibility */}
-      <main id="main-content">
-        {/* Hero - The "wow" moment */}
-        <HeroSection />
+        {/* Main content with landmark for accessibility */}
+        <main id="main-content">
+          {/* Hero - The "wow" moment */}
+          <HeroSection />
 
-        {/* Social Proof - Build trust */}
-        <SocialProofBar />
+          {/* Social Proof - Build trust */}
+          <SocialProofBar />
 
-        {/* Product Showcase - Show the product */}
-        <ProductShowcase />
+          {/* Product Showcase - Show the product */}
+          <ProductShowcase />
 
-        {/* Features Grid - What it does */}
-        <FeatureGrid />
+          {/* Features Grid - What it does */}
+          <FeatureGrid />
 
-        {/* Workflow Steps - How it works */}
-        <WorkflowSteps />
+          {/* Workflow Steps - How it works */}
+          <WorkflowSteps />
 
-        {/* Testimonials - Social proof */}
-        <Testimonials />
+          {/* Testimonials - Social proof */}
+          <Testimonials />
 
-        {/* Comparison - Why choose us */}
-        <ComparisonSection />
+          {/* Comparison - Why choose us */}
+          <ComparisonSection />
 
-        {/* Pricing - Convert visitors */}
-        <PricingSection />
+          {/* Pricing - Convert visitors */}
+          <PricingSection />
 
-        {/* FAQ - Remove objections */}
-        <FAQSection />
+          {/* FAQ - Remove objections */}
+          <FAQSection />
 
-        {/* Final CTA - Last chance to convert */}
-        <CTASection />
-      </main>
+          {/* Final CTA - Last chance to convert */}
+          <CTASection />
+        </main>
 
-      {/* Footer */}
-      <Footer />
+        {/* Footer */}
+        <Footer />
 
-      {/* UX Enhancements */}
-      <ExitIntentModal enabled={true} />
-      <StickyCTA threshold={800} />
-      <CookieConsent />
-      <KeyboardShortcutsModal />
-      <WhatsNewModal />
-    </div>
+        {/* UX Enhancements */}
+        <ExitIntentModal enabled={true} />
+        <StickyCTA threshold={800} />
+        <CookieConsent />
+        <KeyboardShortcutsModal />
+        <WhatsNewModal />
+      </div>
+    </CursorProvider>
   );
 };
 

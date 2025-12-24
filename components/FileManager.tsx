@@ -1,5 +1,15 @@
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
+import {
+  Button,
+  SearchInput,
+  StatCard,
+  GlassCard,
+  SkeletonFileCard,
+  SkeletonStatsCard,
+  StaggeredSkeleton,
+  useToast
+} from '../design-system';
 
 type AssetType = 'Design' | 'Document' | 'Video' | 'Image';
 type FileStatus = 'Synced' | 'In Review' | 'Draft' | 'Locked';
@@ -19,10 +29,30 @@ interface FileItem {
 }
 
 const FileManager: React.FC = () => {
+  const toast = useToast();
   const [view, setView] = useState<'grid' | 'list'>('grid');
   const [searchQuery, setSearchQuery] = useState('');
   const [filterType, setFilterType] = useState<AssetType | 'All'>('All');
   const [sortBy, setSortBy] = useState<'newest' | 'name' | 'size'>('newest');
+  const [isLoading, setIsLoading] = useState(true);
+  const [isSyncing, setIsSyncing] = useState(false);
+
+  // Simulate loading state
+  useEffect(() => {
+    const timer = setTimeout(() => setIsLoading(false), 1200);
+    return () => clearTimeout(timer);
+  }, []);
+
+  const handleSync = async () => {
+    setIsSyncing(true);
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    setIsSyncing(false);
+    toast.success('Workspace Synced', { description: 'All assets have been synchronized with Google Drive.' });
+  };
+
+  const handleCreateNew = () => {
+    toast.info('New Asset', { description: 'Select a template or start from scratch in the Canvas.' });
+  };
 
   const files: FileItem[] = useMemo(() => [
     { id: '1', name: 'Brand_Identity_v1.lum', type: 'Design', date: '2h ago', timestamp: Date.now() - 7200000, size: '1.2MB', sizeBytes: 1200000, icon: 'fa-file-signature', color: 'text-accent', status: 'In Review', thumbnail: 'https://images.unsplash.com/photo-1557683316-973673baf926?w=400&q=80' },
@@ -68,31 +98,50 @@ const FileManager: React.FC = () => {
             <p className="text-slate-500 text-lg font-medium">Real-time oversight of your creative production pipeline.</p>
           </div>
           <div className="flex gap-4">
-             <button className="px-8 py-4 bg-white border border-slate-200 rounded-3xl text-[10px] font-black uppercase tracking-widest shadow-sm hover:bg-slate-50 transition-all flex items-center gap-3">
-                <i className="fas fa-plus text-accent"></i> Create New
-             </button>
-             <button className="px-8 py-4 bg-slate-900 text-white rounded-3xl text-[10px] font-black uppercase tracking-widest shadow-2xl hover:bg-black transition-all flex items-center gap-3">
-                <i className="fab fa-google-drive"></i> Workspace Sync
-             </button>
+             <Button
+               variant="secondary"
+               size="lg"
+               onClick={handleCreateNew}
+               className="!rounded-3xl !px-8 !text-[10px] !font-black !uppercase !tracking-widest"
+               data-tour="create-asset"
+             >
+                <i className="fas fa-plus text-accent mr-3"></i> Create New
+             </Button>
+             <Button
+               variant="primary"
+               size="lg"
+               onClick={handleSync}
+               loading={isSyncing}
+               className="!rounded-3xl !px-8 !text-[10px] !font-black !uppercase !tracking-widest !shadow-2xl"
+               data-tour="workspace-sync"
+             >
+                <i className="fab fa-google-drive mr-3"></i> Workspace Sync
+             </Button>
           </div>
         </header>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-           {stats.map((stat, i) => (
-             <div key={stat.label} className="bg-white p-8 rounded-[3rem] border border-slate-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all group overflow-hidden relative scroll-reveal" style={{ animationDelay: `${i * 0.1}s` }}>
-                <div className="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity">
-                  <i className={`fas ${stat.icon} text-9xl`}></i>
-                </div>
-                <div className="flex justify-between items-start mb-6">
-                  <div className={`w-14 h-14 rounded-2xl ${stat.bg} flex items-center justify-center ${stat.color} text-xl shadow-inner group-hover:scale-110 transition-transform`}>
-                    <i className={`fas ${stat.icon}`}></i>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" data-tour="stats-dashboard">
+           {isLoading ? (
+             <StaggeredSkeleton count={4} delay={80}>
+               {(index) => <SkeletonStatsCard key={index} />}
+             </StaggeredSkeleton>
+           ) : (
+             stats.map((stat, i) => (
+               <div key={stat.label} className="bg-white p-8 rounded-[3rem] border border-slate-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all group overflow-hidden relative scroll-reveal" style={{ animationDelay: `${i * 0.1}s` }}>
+                  <div className="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity">
+                    <i className={`fas ${stat.icon} text-9xl`}></i>
                   </div>
-                  <span className={`text-[10px] font-black ${stat.color} ${stat.bg} px-2 py-1 rounded-lg`}>{stat.trend}</span>
-                </div>
-                <p className="text-4xl font-black text-slate-900 mb-1 tracking-tighter">{stat.value}</p>
-                <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">{stat.label}</p>
-             </div>
-           ))}
+                  <div className="flex justify-between items-start mb-6">
+                    <div className={`w-14 h-14 rounded-2xl ${stat.bg} flex items-center justify-center ${stat.color} text-xl shadow-inner group-hover:scale-110 transition-transform`}>
+                      <i className={`fas ${stat.icon}`}></i>
+                    </div>
+                    <span className={`text-[10px] font-black ${stat.color} ${stat.bg} px-2 py-1 rounded-lg`}>{stat.trend}</span>
+                  </div>
+                  <p className="text-4xl font-black text-slate-900 mb-1 tracking-tighter">{stat.value}</p>
+                  <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">{stat.label}</p>
+               </div>
+             ))
+           )}
         </div>
 
         <div className="space-y-8">
@@ -140,8 +189,12 @@ const FileManager: React.FC = () => {
             </div>
             
             {view === 'grid' ? (
-              <div className="flex-1 p-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 overflow-y-auto scrollbar-hide">
-                {filteredAndSortedFiles.map((file, i) => (
+              <div className="flex-1 p-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 overflow-y-auto scrollbar-hide" data-tour="file-grid">
+                {isLoading ? (
+                  <StaggeredSkeleton count={8} delay={60}>
+                    {(index) => <SkeletonFileCard key={index} />}
+                  </StaggeredSkeleton>
+                ) : filteredAndSortedFiles.map((file, i) => (
                   <div key={file.id} className="group bg-white rounded-[2.5rem] border border-slate-100 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all flex flex-col overflow-hidden relative scroll-reveal" style={{ animationDelay: `${(i % 8) * 0.05}s` }}>
                     <div className="absolute top-4 right-4 z-10">
                        <div className={`px-3 py-1 rounded-full text-[8px] font-black uppercase tracking-widest backdrop-blur-md shadow-lg border border-white/20 ${file.status === 'Synced' ? 'bg-emerald-500/90 text-white' : 'bg-slate-900/90 text-white'}`}>

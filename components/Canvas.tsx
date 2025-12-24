@@ -5,6 +5,7 @@ import LEDProgressBar from './LEDProgressBar';
 import { DesignElement, MaskType, AnimationType, AnimationDirection, AnimationEasing } from '../types';
 import { generateBackground, generateText } from '../services/geminiService';
 import { simulateProfessionalExport, syncToGoogleDrive, downloadFile } from '../services/exportService';
+import { useToast } from '../design-system';
 
 const CANVAS_WIDTH = 500;
 const CANVAS_HEIGHT = 700;
@@ -62,6 +63,7 @@ interface AnimationClipboard {
 }
 
 const Canvas: React.FC = () => {
+  const toast = useToast();
   const [elements, setElements] = useState<DesignElement[]>([
     { id: '1', type: 'text', content: 'Lumina Studio', x: 100, y: 100, width: 300, height: 60, fontSize: 40, zIndex: 1, isVisible: true, rotation: 0, skewX: 0, skewY: 0, animation: 'fade', animationDuration: 1, animationDelay: 0, animationEasing: 'ease-out' },
     { id: '2', type: 'text', content: 'AI Powered Creative Suite', x: 100, y: 165, width: 300, height: 30, fontSize: 16, zIndex: 2, isVisible: true, rotation: 0, skewX: 0, skewY: 0, animation: 'slide', animationDirection: 'right', animationDuration: 1.2, animationDelay: 0.2, animationEasing: 'ease-out' },
@@ -370,7 +372,7 @@ const Canvas: React.FC = () => {
     setIsCloudSyncing(true);
     await syncToGoogleDrive(elements, "Lumina_Cloud_Project");
     setIsCloudSyncing(false);
-    alert("Project securely synced to Google Drive.");
+    toast.success('Synced to Google Drive', { description: 'Your project is securely saved to the cloud.' });
   };
 
   const generateSVGContent = () => {
@@ -417,7 +419,7 @@ const Canvas: React.FC = () => {
       
       setExporting(false);
       setShowExportModal(false);
-      alert(`${format.toUpperCase()} Export Complete.`);
+      toast.success(`${format.toUpperCase()} Export Complete`, { description: 'Your design has been exported successfully.' });
     }
   };
 
@@ -448,7 +450,7 @@ const Canvas: React.FC = () => {
       setBgPrompt('');
     } catch (e) {
       console.error(e);
-      alert("AI Synthesis failed. Please try a different prompt.");
+      toast.error('AI Synthesis Failed', { description: 'Please try a different prompt or try again later.' });
     } finally {
       setGeneratingBg(false);
     }

@@ -2,6 +2,7 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import LEDProgressBar from './LEDProgressBar';
 import { editImage, analyzeMedia } from '../services/geminiService';
+import { useToast } from '../design-system';
 import { PhotoLayer, PhotoFilter } from '../types';
 
 const TOOLS = [
@@ -27,6 +28,7 @@ interface TransformState {
 }
 
 export default function ProPhoto() {
+  const toast = useToast();
   const [activeTool, setActiveTool] = useState('select');
   const [layers, setLayers] = useState<PhotoLayer[]>([
     { 
@@ -175,7 +177,7 @@ export default function ProPhoto() {
       setGenPrompt('');
     } catch (error) {
       console.error(error);
-      alert("AI Engine encountered an error during synthesis.");
+      toast.error('AI Synthesis Failed', { description: 'The AI engine encountered an error. Please try a different edit or try again later.' });
     } finally {
       clearInterval(phaseInterval);
       setIsProcessing(false);
