@@ -43,3 +43,8 @@ coverage
 
 # Secrets folder
 clerk/
+
+# Nested project folders (should not be included in build)
+Lumina-Studio/
+App-concept-analytics-1/
+src/
