@@ -65,7 +65,12 @@ root.render(
   <React.StrictMode>
     <ThemeProvider>
       <ToastProvider position="top-right">
-        <ClerkProvider publishableKey={CLERK_PUBLISHABLE_KEY || 'pk_test_placeholder'}>
+        <ClerkProvider
+          publishableKey={CLERK_PUBLISHABLE_KEY || 'pk_test_placeholder'}
+          signInFallbackRedirectUrl="/studio"
+          signUpFallbackRedirectUrl="/studio"
+          afterSignOutUrl="/"
+        >
           <BrowserRouter>
             <AuthProvider>
               <Routes>

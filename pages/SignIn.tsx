@@ -63,7 +63,6 @@ const SignInPage: React.FC = () => {
           routing="path"
           path="/sign-in"
           signUpUrl="/sign-up"
-          fallbackRedirectUrl="/studio"
         />
       </div>
 
