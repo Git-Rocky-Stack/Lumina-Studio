@@ -356,3 +356,81 @@ export {
   MiniStats,
   Sparkline,
 } from './components/AnalyticsDashboard';
+
+// ============================================================================
+// ENHANCED COMPONENTS (v4.0) - Premium Features
+// ============================================================================
+
+// Empty States
+export {
+  EmptyState,
+  EmptyStateCompact,
+} from './components/EmptyStates';
+
+// Enhanced AI Tools
+export {
+  AIPromptSuggestions,
+  VoiceToPrompt,
+  AIHistory,
+  StyleTransferPanel,
+  BackgroundRemoval,
+  SmartCrop,
+  MagicEraser,
+} from './components/EnhancedAITools';
+
+// Canvas Enhancements
+export {
+  SmartGuides,
+  ArtboardPresets,
+  BlendModeSelector,
+  Eyedropper,
+  Rulers,
+  ZoomControls,
+} from './components/CanvasEnhancements';
+
+// Video Enhancements
+export {
+  WaveformVisualizer,
+  SubtitleGenerator,
+  TextOverlayEditor,
+  BRollSuggestions,
+  ExportPresets as VideoExportPresets,
+} from './components/VideoEnhancements';
+
+// Productivity Features
+export {
+  BatchOperationsBar,
+  SmartFolders,
+  SessionRecoveryModal,
+  ProjectActionsMenu,
+  GlobalSearch,
+  ThemeToggle,
+} from './components/ProductivityFeatures';
+
+// Enhanced Collaboration
+export {
+  ApprovalWorkflow,
+  CanvasCommentsLayer,
+  ShareLinkModal,
+} from './components/CollaborationEnhanced';
+
+// Enhanced Analytics
+export {
+  ProjectInsights,
+  ExportHistory,
+  PopularAssets,
+  UsageStatsWidget,
+  Sparkline as EnhancedSparkline,
+} from './components/AnalyticsEnhanced';
+
+// Visual Flourishes
+export {
+  GradientBorder,
+  AnimatedBorder,
+  EnhancedGlassPanel,
+  AuroraBackgroundEnhanced,
+  SuccessAnimation,
+  ModeTransition,
+  FloatingParticlesBackground,
+  ShimmerText,
+} from './components/VisualFlourishes';
