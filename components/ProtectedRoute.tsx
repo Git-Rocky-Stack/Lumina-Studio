@@ -6,17 +6,19 @@
  */
 
 import React from 'react';
-import { useAuth, RedirectToSignIn } from '@clerk/clerk-react';
+import { Navigate, useLocation } from 'react-router-dom';
+import { useAuthContext } from '../contexts/AuthContext';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
 }
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
-  const { isLoaded, isSignedIn } = useAuth();
+  const { isAuthenticated, isLoading } = useAuthContext();
+  const location = useLocation();
 
-  // Show loading spinner while Clerk loads
-  if (!isLoaded) {
+  // Show loading spinner while auth state is being determined
+  if (isLoading) {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center">
         <div className="flex flex-col items-center gap-4">
@@ -32,8 +34,8 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   }
 
   // Redirect to sign-in if not authenticated
-  if (!isSignedIn) {
-    return <RedirectToSignIn />;
+  if (!isAuthenticated) {
+    return <Navigate to="/sign-in" state={{ from: location }} replace />;
   }
 
   return <>{children}</>;

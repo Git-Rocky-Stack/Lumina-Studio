@@ -2,11 +2,12 @@
  * Auth Context for Lumina Studio
  *
  * Provides authentication state and API client configuration
- * throughout the application using Clerk.
+ * throughout the application using Supabase.
  */
 
-import React, { createContext, useContext, useMemo, useEffect } from 'react';
-import { useAuth, useUser } from '@clerk/clerk-react';
+import React, { createContext, useContext, useMemo, useEffect, useState } from 'react';
+import { User, Session } from '@supabase/supabase-js';
+import { supabase } from '../lib/supabase';
 import { loadUsageFromBackend } from '../services/usageService';
 
 interface AuthContextType {
@@ -16,6 +17,9 @@ interface AuthContextType {
   userEmail: string | null;
   userName: string | null;
   userAvatar: string | null;
+  user: User | null;
+  session: Session | null;
+  signOut: () => Promise<void>;
   getToken: () => Promise<string | null>;
   apiClient: <T>(endpoint: string, options?: RequestInit) => Promise<T>;
 }
@@ -25,31 +29,58 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://api.lumina-os.com';
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { isLoaded, isSignedIn, getToken } = useAuth();
-  const { user } = useUser();
+  const [user, setUser] = useState<User | null>(null);
+  const [session, setSession] = useState<Session | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Sync usage from backend when user logs in
   useEffect(() => {
-    if (isSignedIn && user?.id) {
-      loadUsageFromBackend(user.id).catch(console.debug);
-    }
-  }, [isSignedIn, user?.id]);
+    // Get initial session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+      setUser(session?.user ?? null);
+      setIsLoading(false);
+    });
+
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      async (event, session) => {
+        setSession(session);
+        setUser(session?.user ?? null);
+        setIsLoading(false);
+
+        // Handle specific auth events
+        if (event === 'SIGNED_IN' && session?.user) {
+          // Sync usage from backend when user logs in
+          loadUsageFromBackend(session.user.id).catch(console.debug);
+        }
+      }
+    );
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
+
+  const signOut = async () => {
+    await supabase.auth.signOut();
+  };
+
+  const getToken = async (): Promise<string | null> => {
+    const { data: { session } } = await supabase.auth.getSession();
+    return session?.access_token ?? null;
+  };
 
   const value = useMemo<AuthContextType>(() => ({
-    isAuthenticated: isSignedIn ?? false,
-    isLoading: !isLoaded,
+    isAuthenticated: !!session,
+    isLoading,
     userId: user?.id ?? null,
-    userEmail: user?.primaryEmailAddress?.emailAddress ?? null,
-    userName: user?.fullName ?? user?.firstName ?? null,
-    userAvatar: user?.imageUrl ?? null,
-
-    getToken: async () => {
-      try {
-        return await getToken();
-      } catch {
-        return null;
-      }
-    },
+    userEmail: user?.email ?? null,
+    userName: user?.user_metadata?.full_name ?? user?.user_metadata?.name ?? null,
+    userAvatar: user?.user_metadata?.avatar_url ?? user?.user_metadata?.picture ?? null,
+    user,
+    session,
+    signOut,
+    getToken,
 
     apiClient: async <T,>(endpoint: string, options: RequestInit = {}): Promise<T> => {
       const token = await getToken();
@@ -70,7 +101,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       return response.json();
     },
-  }), [isLoaded, isSignedIn, user, getToken]);
+  }), [isLoading, session, user]);
 
   return (
     <AuthContext.Provider value={value}>

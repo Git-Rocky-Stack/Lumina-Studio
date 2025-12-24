@@ -1,13 +1,12 @@
 /**
  * Lumina Studio Entry Point
  *
- * Configures Clerk authentication, routing, and the main app.
+ * Configures Supabase authentication, routing, and the main app.
  */
 
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { ClerkProvider } from '@clerk/clerk-react';
 
 import App from './App';
 import { AuthProvider } from './contexts/AuthContext';
@@ -16,6 +15,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import LandingPage from './pages/Landing';
 import SignInPage from './pages/SignIn';
 import SignUpPage from './pages/SignUp';
+import AuthCallback from './pages/AuthCallback';
 import UserGuide from './pages/UserGuide';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import Terms from './pages/Terms';
@@ -44,16 +44,6 @@ if ('serviceWorker' in navigator) {
   });
 }
 
-// Get Clerk publishable key from environment
-const CLERK_PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
-
-if (!CLERK_PUBLISHABLE_KEY) {
-  console.warn(
-    'Missing VITE_CLERK_PUBLISHABLE_KEY. Authentication will not work.\n' +
-    'Add it to your .env.local file: VITE_CLERK_PUBLISHABLE_KEY=pk_...'
-  );
-}
-
 const rootElement = document.getElementById('root');
 if (!rootElement) {
   throw new Error("Could not find root element to mount to");
@@ -65,49 +55,43 @@ root.render(
   <React.StrictMode>
     <ThemeProvider>
       <ToastProvider position="top-right">
-        <ClerkProvider
-          publishableKey={CLERK_PUBLISHABLE_KEY || 'pk_test_placeholder'}
-          signInFallbackRedirectUrl="/studio"
-          signUpFallbackRedirectUrl="/studio"
-          afterSignOutUrl="/"
-        >
-          <BrowserRouter>
-            <AuthProvider>
-              <Routes>
-            {/* Public routes */}
-            <Route path="/" element={<LandingPage />} />
-            <Route path="/guide" element={<UserGuide />} />
-            <Route path="/privacy" element={<PrivacyPolicy />} />
-            <Route path="/terms" element={<Terms />} />
-            <Route path="/sign-in/*" element={<SignInPage />} />
-            <Route path="/sign-up/*" element={<SignUpPage />} />
+        <BrowserRouter>
+          <AuthProvider>
+            <Routes>
+              {/* Public routes */}
+              <Route path="/" element={<LandingPage />} />
+              <Route path="/guide" element={<UserGuide />} />
+              <Route path="/privacy" element={<PrivacyPolicy />} />
+              <Route path="/terms" element={<Terms />} />
+              <Route path="/sign-in" element={<SignInPage />} />
+              <Route path="/sign-up" element={<SignUpPage />} />
+              <Route path="/auth/callback" element={<AuthCallback />} />
 
-            {/* Protected studio route */}
-            <Route
-              path="/studio/*"
-              element={
-                <ProtectedRoute>
-                  <App />
-                </ProtectedRoute>
-              }
-            />
+              {/* Protected studio route */}
+              <Route
+                path="/studio/*"
+                element={
+                  <ProtectedRoute>
+                    <App />
+                  </ProtectedRoute>
+                }
+              />
 
-            {/* Legacy route - redirect to studio */}
-            <Route
-              path="/app/*"
-              element={
-                <ProtectedRoute>
-                  <App />
-                </ProtectedRoute>
-              }
-            />
+              {/* Legacy route - redirect to studio */}
+              <Route
+                path="/app/*"
+                element={
+                  <ProtectedRoute>
+                    <App />
+                  </ProtectedRoute>
+                }
+              />
 
-            {/* Fallback - show landing */}
-            <Route path="*" element={<LandingPage />} />
-          </Routes>
-            </AuthProvider>
-          </BrowserRouter>
-        </ClerkProvider>
+              {/* Fallback - show landing */}
+              <Route path="*" element={<LandingPage />} />
+            </Routes>
+          </AuthProvider>
+        </BrowserRouter>
       </ToastProvider>
     </ThemeProvider>
   </React.StrictMode>

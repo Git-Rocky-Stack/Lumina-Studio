@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { useUser } from '@clerk/clerk-react';
+import { useAuthContext } from '../contexts/AuthContext';
 import LEDProgressBar from './LEDProgressBar';
 import QuotaBadge from './QuotaBadge';
 import {
@@ -49,9 +49,9 @@ interface SynthesizedAsset {
 }
 
 export default function AIStockGen() {
-  const { user } = useUser();
+  const { userId: authUserId } = useAuthContext();
   const toast = useToast();
-  const userId = user?.id || 'anonymous';
+  const userId = authUserId || 'anonymous';
 
   const [prompt, setPrompt] = useState('');
   const [prodMode, setProdMode] = useState<'still' | 'loop'>('still');

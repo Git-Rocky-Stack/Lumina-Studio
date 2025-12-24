@@ -5,7 +5,7 @@
  */
 
 import React from 'react';
-import { useUser } from '@clerk/clerk-react';
+import { useAuthContext } from '../contexts/AuthContext';
 import { getUsageStats, TIER_LIMITS } from '../services/usageService';
 
 interface QuotaBadgeProps {
@@ -14,9 +14,9 @@ interface QuotaBadgeProps {
 }
 
 const QuotaBadge: React.FC<QuotaBadgeProps> = ({ type, className = '' }) => {
-  const { user } = useUser();
-  const userId = user?.id || 'anonymous';
-  const stats = getUsageStats(userId);
+  const { userId } = useAuthContext();
+  const userIdStr = userId || 'anonymous';
+  const stats = getUsageStats(userIdStr);
 
   const used = type === 'image' ? stats.used.images :
                type === 'video' ? stats.used.videos : stats.used.text;
