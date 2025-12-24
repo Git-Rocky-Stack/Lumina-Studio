@@ -19,6 +19,9 @@ import SignUpPage from './pages/SignUp';
 import UserGuide from './pages/UserGuide';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 
+// Design System
+import { ToastProvider } from './design-system';
+
 // Initialize services
 import { analytics } from './services/analytics';
 import { errorTracker } from './services/errorTracking';
@@ -60,10 +63,11 @@ const root = ReactDOM.createRoot(rootElement);
 root.render(
   <React.StrictMode>
     <ThemeProvider>
-      <ClerkProvider publishableKey={CLERK_PUBLISHABLE_KEY || 'pk_test_placeholder'}>
-        <BrowserRouter>
-          <AuthProvider>
-            <Routes>
+      <ToastProvider position="top-right">
+        <ClerkProvider publishableKey={CLERK_PUBLISHABLE_KEY || 'pk_test_placeholder'}>
+          <BrowserRouter>
+            <AuthProvider>
+              <Routes>
             {/* Public routes */}
             <Route path="/" element={<LandingPage />} />
             <Route path="/guide" element={<UserGuide />} />
@@ -94,9 +98,10 @@ root.render(
             {/* Fallback - show landing */}
             <Route path="*" element={<LandingPage />} />
           </Routes>
-          </AuthProvider>
-        </BrowserRouter>
-      </ClerkProvider>
+            </AuthProvider>
+          </BrowserRouter>
+        </ClerkProvider>
+      </ToastProvider>
     </ThemeProvider>
   </React.StrictMode>
 );
