@@ -256,3 +256,103 @@ export {
   ConnectionIndicator,
   InstallPrompt,
 } from './components/ServiceWorkerProvider';
+
+// ============================================================================
+// PREMIUM COMPONENTS (v3.0)
+// ============================================================================
+
+// Magnetic & Morphing Effects
+export {
+  MagneticButton,
+  MagneticLink,
+  MorphingIcon,
+  AnimatedIcon,
+  PulsingIcon,
+} from './components/MagneticButton';
+
+// Liquid Glass & Cursor Effects
+export {
+  LiquidGlass,
+  CursorTrail,
+  SpotlightCursor,
+  useRipple,
+  GlowHover,
+} from './components/LiquidGlass';
+
+// Page Transitions
+export {
+  PageTransition,
+  StaggeredPage,
+  StaggeredItem,
+  AutoSaveIndicator,
+  EnhancedSkeleton,
+  SkeletonCard as EnhancedSkeletonCard,
+  SkeletonList,
+  SkeletonGrid,
+  AnimatedProgress,
+  pageVariants,
+} from './components/PageTransitions';
+
+// Quick Actions & Search
+export {
+  QuickActionsBar,
+  SmartSearch,
+  FavoritesBar,
+  RecentFiles,
+} from './components/QuickActions';
+
+// AI Tools
+export {
+  AIColorPalette,
+  AITextGenerator,
+  AILayoutSuggestions,
+  ImageUpscaler,
+} from './components/AITools';
+
+// Comments & Annotations
+export {
+  CommentsPanel,
+  AnnotationPin,
+} from './components/Comments';
+
+// Notification Center
+export {
+  NotificationCenter,
+  NotificationBell,
+  ToastNotification,
+} from './components/NotificationCenter';
+
+// Share & Export
+export {
+  ShareLink,
+  ExportPresets,
+} from './components/ShareExport';
+
+// Accessibility
+export {
+  AccessibilityProvider,
+  useAccessibility,
+  AccessibilityPanel,
+  SkipToContent,
+  LiveRegion,
+  FocusTrap,
+  AccessibleIconButton,
+  accessibilityStyles,
+} from './components/Accessibility';
+
+// Virtual Scroll & Performance
+export {
+  VirtualScroll,
+  VirtualGrid,
+  useInfiniteScroll,
+  LazyImage,
+  usePerformanceMonitor,
+  PerformanceStats,
+} from './components/VirtualScroll';
+
+// Analytics Dashboard
+export {
+  AnalyticsDashboard,
+  MiniStats,
+  Sparkline,
+} from './components/AnalyticsDashboard';
