@@ -10,7 +10,8 @@ export enum StudioMode {
   ASSISTANT = 'assistant',
   BRANDING = 'branding',
   MARKETING = 'marketing',
-  PERSONALIZATION = 'personalization'
+  PERSONALIZATION = 'personalization',
+  FEATURES = 'features'
 }
 
 export type ThemeColor = 'indigo' | 'emerald' | 'rose' | 'amber' | 'violet' | 'slate';

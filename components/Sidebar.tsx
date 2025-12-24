@@ -87,6 +87,17 @@ const Sidebar: React.FC<SidebarProps> = ({
 
         <div className="space-y-1">
           <button
+            onClick={() => setMode(StudioMode.FEATURES)}
+            aria-label="View all features"
+            aria-current={currentMode === StudioMode.FEATURES ? 'page' : undefined}
+            className={`w-full flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-300 group hover:bg-white/5 ${
+              currentMode === StudioMode.FEATURES ? 'bg-white/10 text-white border border-white/10' : 'text-slate-400 border border-transparent'
+            }`}
+          >
+            <i className="fas fa-sparkles text-lg w-6 transition-transform group-hover:scale-110" aria-hidden="true"></i>
+            <span className="hidden md:block text-sm">Features</span>
+          </button>
+          <button
             onClick={() => setMode(StudioMode.PERSONALIZATION)}
             aria-label="Open personalization settings"
             aria-current={currentMode === StudioMode.PERSONALIZATION ? 'page' : undefined}

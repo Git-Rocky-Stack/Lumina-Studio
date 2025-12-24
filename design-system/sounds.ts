@@ -390,4 +390,7 @@ export const playError = () => sounds.play('error');
 export const playNotification = () => sounds.play('notification');
 export const playPop = () => sounds.play('pop');
 
+// Alias for useSoundEffect (compatibility)
+export const useSoundEffect = useSound;
+
 export default sounds;

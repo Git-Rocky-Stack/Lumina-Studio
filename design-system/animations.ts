@@ -73,6 +73,9 @@ export const springs = {
   },
 } as const;
 
+// Alias for springs (used by new components)
+export const springPresets = springs;
+
 // ============================================================================
 // EASING CURVES (For non-spring animations)
 // ============================================================================
@@ -290,6 +293,12 @@ export const modalContent: Variants = {
     y: 10,
     transition: { duration: 0.15 },
   },
+};
+
+// Combined modal variants for convenience
+export const modalVariants = {
+  backdrop: modalBackdrop,
+  content: modalContent,
 };
 
 export const sheetFromBottom: Variants = {

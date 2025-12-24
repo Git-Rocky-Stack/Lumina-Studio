@@ -425,7 +425,8 @@ export function generateCSSVariables(isDark = false): string {
   `;
 }
 
-export default {
+// Unified tokens export for convenience
+export const tokens = {
   typography,
   spacing,
   colors,
@@ -436,3 +437,5 @@ export default {
   zIndex,
   generateCSSVariables,
 };
+
+export default tokens;

@@ -6,7 +6,15 @@ import TutorialOverlay from './components/TutorialOverlay';
 import ShortcutGuide from './components/ShortcutGuide';
 import { StudioMode, ThemeColor } from './types';
 import { syncToGoogleDrive } from './services/exportService';
-import { OnboardingProvider, useOnboarding } from './design-system';
+import {
+  OnboardingProvider,
+  CommandPaletteProvider,
+  ServiceWorkerProvider,
+  GlobalDropZone,
+  Confetti,
+  ScrollProgress,
+  InstallPrompt,
+} from './design-system';
 
 // Lazy load heavy components for code splitting
 const Canvas = lazy(() => import('./components/Canvas'));
@@ -19,6 +27,7 @@ const BrandHub = lazy(() => import('./components/BrandHub'));
 const MarketingHub = lazy(() => import('./components/MarketingHub'));
 const AssetHub = lazy(() => import('./components/AssetHub'));
 const Personalization = lazy(() => import('./components/Personalization'));
+const FeaturesGuide = lazy(() => import('./components/FeaturesGuide'));
 
 // Loading fallback component
 const ModuleLoader: React.FC = () => (
@@ -39,6 +48,16 @@ const App: React.FC = () => {
   const [showShortcuts, setShowShortcuts] = useState(false);
   const [theme, setTheme] = useState<ThemeColor>('indigo');
   const [isGlobalSyncing, setIsGlobalSyncing] = useState(false);
+  const [showConfetti, setShowConfetti] = useState(false);
+
+  // Handle file drops from global drop zone
+  const handleFileDrop = (files: File[]) => {
+    console.log('Dropped files:', files);
+    // Handle uploaded files - could import to workspace
+    if (files.length > 0) {
+      setShowConfetti(true);
+    }
+  };
 
   const THEME_MAP: Record<ThemeColor, string> = {
     indigo: '#6366f1',
@@ -148,6 +167,7 @@ const App: React.FC = () => {
         case StudioMode.MARKETING: return <MarketingHub />;
         case StudioMode.ASSISTANT: return <Assistant />;
         case StudioMode.PERSONALIZATION: return <Personalization currentTheme={theme} setTheme={setTheme} />;
+        case StudioMode.FEATURES: return <FeaturesGuide />;
         default: return <FileManager />;
       }
     })();
@@ -160,15 +180,32 @@ const App: React.FC = () => {
   };
 
   return (
-    <OnboardingProvider>
-      <div className="flex h-screen w-full bg-slate-50 overflow-hidden text-slate-900 antialiased font-sans">
-        <style>{`
-        .bg-accent { background-color: var(--accent); }
-        .text-accent { color: var(--accent); }
-        .border-accent { border-color: var(--accent); }
-        .ring-accent { --tw-ring-color: var(--accent); }
-        .bg-accent-soft { background-color: var(--accent-soft); }
-        .shadow-accent { --tw-shadow: 0 10px 15px -3px var(--accent-soft), 0 4px 6px -4px var(--accent-soft); shadow: var(--tw-shadow); }
+    <ServiceWorkerProvider>
+      <CommandPaletteProvider>
+        <OnboardingProvider>
+          <div className="flex h-screen w-full bg-slate-50 overflow-hidden text-slate-900 antialiased font-sans">
+            {/* Scroll Progress Indicator */}
+            <ScrollProgress color="var(--accent)" height={3} />
+
+            {/* Global Drop Zone for file uploads */}
+            <GlobalDropZone onDrop={handleFileDrop} />
+
+            {/* Celebration Confetti */}
+            <Confetti
+              active={showConfetti}
+              onComplete={() => setShowConfetti(false)}
+            />
+
+            {/* PWA Install Prompt */}
+            <InstallPrompt />
+
+            <style>{`
+            .bg-accent { background-color: var(--accent); }
+            .text-accent { color: var(--accent); }
+            .border-accent { border-color: var(--accent); }
+            .ring-accent { --tw-ring-color: var(--accent); }
+            .bg-accent-soft { background-color: var(--accent-soft); }
+            .shadow-accent { --tw-shadow: 0 10px 15px -3px var(--accent-soft), 0 4px 6px -4px var(--accent-soft); shadow: var(--tw-shadow); }
         
         @keyframes led-glow {
           0%, 100% { opacity: 1; filter: drop-shadow(0 0 2px var(--accent)); }
@@ -232,22 +269,24 @@ const App: React.FC = () => {
         }
         `}</style>
 
-        <Sidebar
-          currentMode={currentMode}
-          setMode={setCurrentMode}
-          onOpenShortcuts={() => setShowShortcuts(true)}
-          onDriveSync={handleGlobalDriveSync}
-          isSyncing={isGlobalSyncing}
-        />
+            <Sidebar
+              currentMode={currentMode}
+              setMode={setCurrentMode}
+              onOpenShortcuts={() => setShowShortcuts(true)}
+              onDriveSync={handleGlobalDriveSync}
+              isSyncing={isGlobalSyncing}
+            />
 
-        <main className="flex-1 h-full overflow-hidden relative" data-tour="main-content">
-          {renderContent()}
-        </main>
+            <main className="flex-1 h-full overflow-hidden relative" data-tour="main-content">
+              {renderContent()}
+            </main>
 
-        {showTutorial && <TutorialOverlay onClose={() => setShowTutorial(false)} />}
-        <ShortcutGuide isOpen={showShortcuts} onClose={() => setShowShortcuts(false)} />
-      </div>
-    </OnboardingProvider>
+            {showTutorial && <TutorialOverlay onClose={() => setShowTutorial(false)} />}
+            <ShortcutGuide isOpen={showShortcuts} onClose={() => setShowShortcuts(false)} />
+          </div>
+        </OnboardingProvider>
+      </CommandPaletteProvider>
+    </ServiceWorkerProvider>
   );
 };
 
