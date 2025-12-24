@@ -155,43 +155,70 @@ const HeroSection: React.FC = () => {
           </motion.h1>
         </div>
 
-        {/* Subheadline */}
+        {/* Subheadline - Improved contrast */}
         <motion.p
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          className="text-lg sm:text-xl md:text-2xl text-slate-400 max-w-3xl mx-auto mb-14 leading-relaxed font-light"
+          className="text-lg sm:text-xl md:text-2xl text-slate-300 max-w-3xl mx-auto mb-14 leading-relaxed font-light"
         >
           The all-in-one AI creative suite for designers, marketers, and content creators.
           <br className="hidden sm:block" />
-          <span className="text-slate-300">Generate stunning visuals in seconds.</span>
+          <span className="text-white font-normal">Generate stunning visuals in seconds.</span>
         </motion.p>
 
-        {/* CTA Buttons */}
+        {/* CTA Buttons - Improved copy and ARIA */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.65, ease: [0.16, 1, 0.3, 1] }}
-          className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 mb-20"
+          className="flex flex-col items-center gap-6 mb-20"
         >
-          <Link
-            to="/sign-up"
-            className="group relative px-10 py-5 rounded-2xl bg-gradient-to-r from-indigo-500 via-violet-500 to-purple-500 font-bold text-lg shadow-2xl shadow-indigo-500/25 btn-premium flex items-center gap-3 animate-gradient bg-[length:200%_auto]"
-          >
-            <span className="relative z-10 flex items-center gap-3">
-              Start Creating Free
-              <span className="w-8 h-8 rounded-lg bg-white/20 flex items-center justify-center group-hover:bg-white/30 transition-colors">
-                <i className="fas fa-arrow-right text-sm group-hover:translate-x-0.5 transition-transform" />
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
+            <Link
+              to="/sign-up"
+              aria-label="Create your first AI design for free"
+              className="group relative px-10 py-5 rounded-2xl bg-gradient-to-r from-indigo-500 via-violet-500 to-purple-500 font-bold text-lg shadow-2xl shadow-indigo-500/25 btn-premium flex items-center gap-3 animate-gradient bg-[length:200%_auto]"
+            >
+              <span className="relative z-10 flex items-center gap-3">
+                Create Your First AI Design
+                <span className="w-8 h-8 rounded-lg bg-white/20 flex items-center justify-center group-hover:bg-white/30 transition-colors" aria-hidden="true">
+                  <i className="fas fa-arrow-right text-sm group-hover:translate-x-0.5 transition-transform" />
+                </span>
               </span>
-            </span>
-          </Link>
+            </Link>
 
-          <button className="group px-8 py-5 rounded-2xl glass-card glass-card-hover font-semibold text-lg transition-all duration-500 flex items-center gap-4">
-            <span className="w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-500/20 to-violet-500/20 border border-indigo-500/30 flex items-center justify-center group-hover:border-indigo-400/50 group-hover:scale-110 transition-all duration-300">
-              <i className="fas fa-play text-indigo-400 ml-0.5" />
+            <button
+              aria-label="Watch product demo video"
+              className="group px-8 py-5 rounded-2xl glass-card glass-card-hover font-semibold text-lg transition-all duration-500 flex items-center gap-4"
+            >
+              <span className="w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-500/20 to-violet-500/20 border border-indigo-500/30 flex items-center justify-center group-hover:border-indigo-400/50 group-hover:scale-110 transition-all duration-300" aria-hidden="true">
+                <i className="fas fa-play text-indigo-400 ml-0.5" />
+              </span>
+              <span className="text-slate-200 group-hover:text-white transition-colors">See It In Action</span>
+            </button>
+          </div>
+
+          {/* Trust indicators / Micro-copy */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.9 }}
+            className="flex items-center gap-6 text-slate-400 text-sm"
+          >
+            <span className="flex items-center gap-2">
+              <i className="fas fa-check-circle text-emerald-400" aria-hidden="true" />
+              No credit card required
             </span>
-            <span className="text-slate-200 group-hover:text-white transition-colors">Watch Demo</span>
-          </button>
+            <span className="hidden sm:flex items-center gap-2">
+              <i className="fas fa-bolt text-amber-400" aria-hidden="true" />
+              20 free AI generations
+            </span>
+            <span className="hidden md:flex items-center gap-2">
+              <i className="fas fa-clock text-indigo-400" aria-hidden="true" />
+              Setup in 30 seconds
+            </span>
+          </motion.div>
         </motion.div>
 
         {/* Floating Tool Cards */}

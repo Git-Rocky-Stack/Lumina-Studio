@@ -58,18 +58,20 @@ const Sidebar: React.FC<SidebarProps> = ({
         </h1>
       </div>
 
-      <nav className="flex-1 px-4 space-y-2 overflow-y-auto scrollbar-hide">
+      <nav className="flex-1 px-4 space-y-2 overflow-y-auto scrollbar-hide" role="navigation" aria-label="Main navigation">
         {menuItems.map((item) => (
           <button
             key={item.id}
             onClick={() => setMode(item.id)}
+            aria-label={`Navigate to ${item.label}`}
+            aria-current={currentMode === item.id ? 'page' : undefined}
             className={`w-full flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-300 group hover:scale-[1.02] active:scale-[0.98] ${
               currentMode === item.id
                 ? 'bg-white/10 text-white border border-white/20 shadow-[0_0_15px_rgba(255,255,255,0.05)]'
                 : 'text-slate-400 hover:bg-white/5 hover:text-white border border-transparent hover:border-white/10'
             }`}
           >
-            <i className={`fas ${item.icon} text-lg w-6 transition-transform duration-300 group-hover:rotate-6 ${currentMode === item.id ? 'text-accent' : 'group-hover:text-accent'}`}></i>
+            <i className={`fas ${item.icon} text-lg w-6 transition-transform duration-300 group-hover:rotate-6 ${currentMode === item.id ? 'text-accent' : 'group-hover:text-accent'}`} aria-hidden="true"></i>
             <span className="hidden md:block font-medium tracking-tight">{item.label}</span>
           </button>
         ))}
@@ -86,21 +88,25 @@ const Sidebar: React.FC<SidebarProps> = ({
         <div className="space-y-1">
           <button
             onClick={() => setMode(StudioMode.PERSONALIZATION)}
+            aria-label="Open personalization settings"
+            aria-current={currentMode === StudioMode.PERSONALIZATION ? 'page' : undefined}
             className={`w-full flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-300 group hover:bg-white/5 ${
               currentMode === StudioMode.PERSONALIZATION ? 'bg-white/10 text-white border border-white/10' : 'text-slate-400 border border-transparent'
             }`}
           >
-            <i className="fas fa-sliders text-lg w-6 transition-transform group-hover:rotate-12"></i>
+            <i className="fas fa-sliders text-lg w-6 transition-transform group-hover:rotate-12" aria-hidden="true"></i>
             <span className="hidden md:block text-sm">Personalize</span>
           </button>
           <button
             onClick={onDriveSync}
             disabled={isSyncing}
+            aria-label={isSyncing ? 'Syncing with Google Drive' : 'Sync with Google Drive'}
+            aria-busy={isSyncing}
             className={`w-full flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-300 text-sm group ${
               isSyncing ? 'text-accent bg-white/5' : 'text-slate-400 hover:bg-white/5 hover:text-white'
             }`}
           >
-            <i className={`fab fa-google text-lg w-6 transition-all duration-500 ${isSyncing ? 'fa-spin text-accent' : 'group-hover:scale-110 group-hover:text-accent'}`}></i>
+            <i className={`fab fa-google text-lg w-6 transition-all duration-500 ${isSyncing ? 'fa-spin text-accent' : 'group-hover:scale-110 group-hover:text-accent'}`} aria-hidden="true"></i>
             <span className="hidden md:block">{isSyncing ? 'Syncing...' : 'Drive Sync'}</span>
           </button>
         </div>

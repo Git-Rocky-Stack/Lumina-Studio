@@ -48,24 +48,35 @@ const CTASection: React.FC = () => {
             Join <span className="text-white font-semibold">50,000+</span> creators already using Lumina Studio to create stunning content <span className="text-white font-semibold">10x faster</span>.
           </p>
 
-          {/* CTAs */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 mb-16">
-            <Link
-              to="/sign-up"
-              className="group relative px-12 py-6 rounded-2xl bg-gradient-to-r from-indigo-500 via-violet-500 to-purple-500 font-bold text-lg shadow-2xl shadow-indigo-500/30 btn-premium flex items-center gap-4 animate-gradient bg-[length:200%_auto]"
-            >
-              <span className="relative z-10">Get Started for Free</span>
-              <span className="relative z-10 w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center group-hover:bg-white/30 transition-colors">
-                <i className="fas fa-arrow-right group-hover:translate-x-0.5 transition-transform" />
-              </span>
-            </Link>
+          {/* CTAs - Improved copy and accessibility */}
+          <div className="flex flex-col items-center gap-6 mb-16">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
+              <Link
+                to="/sign-up"
+                aria-label="Start creating with Lumina Studio for free"
+                className="group relative px-12 py-6 rounded-2xl bg-gradient-to-r from-indigo-500 via-violet-500 to-purple-500 font-bold text-lg shadow-2xl shadow-indigo-500/30 btn-premium flex items-center gap-4 animate-gradient bg-[length:200%_auto]"
+              >
+                <span className="relative z-10">Start Creating Now</span>
+                <span className="relative z-10 w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center group-hover:bg-white/30 transition-colors" aria-hidden="true">
+                  <i className="fas fa-arrow-right group-hover:translate-x-0.5 transition-transform" />
+                </span>
+              </Link>
 
-            <button className="group px-10 py-6 rounded-2xl glass-card glass-card-hover font-semibold text-lg transition-all flex items-center gap-4">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500/20 to-violet-500/20 border border-indigo-500/30 flex items-center justify-center group-hover:border-indigo-400/50 transition-colors">
-                <i className="fas fa-calendar text-indigo-400" />
-              </div>
-              <span className="text-slate-200 group-hover:text-white transition-colors">Schedule Demo</span>
-            </button>
+              <button
+                aria-label="Schedule a personalized demo with our team"
+                className="group px-10 py-6 rounded-2xl glass-card glass-card-hover font-semibold text-lg transition-all flex items-center gap-4"
+              >
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500/20 to-violet-500/20 border border-indigo-500/30 flex items-center justify-center group-hover:border-indigo-400/50 transition-colors" aria-hidden="true">
+                  <i className="fas fa-calendar text-indigo-400" />
+                </div>
+                <span className="text-slate-200 group-hover:text-white transition-colors">Book a Demo</span>
+              </button>
+            </div>
+
+            {/* Additional trust indicator */}
+            <p className="text-slate-400 text-sm">
+              Join <span className="text-white font-semibold">50,000+</span> creators already saving hours every week
+            </p>
           </div>
 
           {/* Trust badges */}

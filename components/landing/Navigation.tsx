@@ -144,9 +144,12 @@ const Navigation: React.FC = () => {
             <motion.button
               whileTap={{ scale: 0.9 }}
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              aria-label={mobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+              aria-expanded={mobileMenuOpen}
+              aria-controls="mobile-menu"
               className="md:hidden w-11 h-11 rounded-xl glass-card flex items-center justify-center"
             >
-              <div className="relative w-5 h-4 flex flex-col justify-between">
+              <div className="relative w-5 h-4 flex flex-col justify-between" aria-hidden="true">
                 <motion.span
                   animate={{
                     rotate: mobileMenuOpen ? 45 : 0,
@@ -201,6 +204,9 @@ const Navigation: React.FC = () => {
 
             {/* Menu panel */}
             <motion.div
+              id="mobile-menu"
+              role="navigation"
+              aria-label="Mobile navigation"
               initial={{ opacity: 0, y: -20, scale: 0.95 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -20, scale: 0.95 }}

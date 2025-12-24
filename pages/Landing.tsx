@@ -2,6 +2,7 @@
  * Landing Page for Lumina Studio
  *
  * A world-class marketing landing page with animations and premium design.
+ * Enhanced with UX improvements including exit-intent capture and sticky CTA.
  */
 
 import React from 'react';
@@ -17,6 +18,8 @@ import PricingSection from '../components/landing/PricingSection';
 import FAQSection from '../components/landing/FAQSection';
 import CTASection from '../components/landing/CTASection';
 import Footer from '../components/landing/Footer';
+import ExitIntentModal from '../components/landing/ExitIntentModal';
+import StickyCTA from '../components/landing/StickyCTA';
 
 const LandingPage: React.FC = () => {
   return (
@@ -24,38 +27,45 @@ const LandingPage: React.FC = () => {
       {/* Fixed Navigation */}
       <Navigation />
 
-      {/* Hero - The "wow" moment */}
-      <HeroSection />
+      {/* Main content with landmark for accessibility */}
+      <main id="main-content">
+        {/* Hero - The "wow" moment */}
+        <HeroSection />
 
-      {/* Social Proof - Build trust */}
-      <SocialProofBar />
+        {/* Social Proof - Build trust */}
+        <SocialProofBar />
 
-      {/* Product Showcase - Show the product */}
-      <ProductShowcase />
+        {/* Product Showcase - Show the product */}
+        <ProductShowcase />
 
-      {/* Features Grid - What it does */}
-      <FeatureGrid />
+        {/* Features Grid - What it does */}
+        <FeatureGrid />
 
-      {/* Workflow Steps - How it works */}
-      <WorkflowSteps />
+        {/* Workflow Steps - How it works */}
+        <WorkflowSteps />
 
-      {/* Testimonials - Social proof */}
-      <Testimonials />
+        {/* Testimonials - Social proof */}
+        <Testimonials />
 
-      {/* Comparison - Why choose us */}
-      <ComparisonSection />
+        {/* Comparison - Why choose us */}
+        <ComparisonSection />
 
-      {/* Pricing - Convert visitors */}
-      <PricingSection />
+        {/* Pricing - Convert visitors */}
+        <PricingSection />
 
-      {/* FAQ - Remove objections */}
-      <FAQSection />
+        {/* FAQ - Remove objections */}
+        <FAQSection />
 
-      {/* Final CTA - Last chance to convert */}
-      <CTASection />
+        {/* Final CTA - Last chance to convert */}
+        <CTASection />
+      </main>
 
       {/* Footer */}
       <Footer />
+
+      {/* UX Enhancements */}
+      <ExitIntentModal enabled={true} />
+      <StickyCTA threshold={800} />
     </div>
   );
 };

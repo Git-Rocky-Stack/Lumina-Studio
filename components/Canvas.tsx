@@ -306,6 +306,59 @@ const Canvas: React.FC = () => {
     };
   }, [undo, redo]);
 
+  // Keyboard navigation for canvas elements
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (selectedIds.length === 0) return;
+
+      const step = e.shiftKey ? 10 : 1; // Hold shift for larger movements
+      let updates: Partial<DesignElement> | null = null;
+
+      switch (e.key) {
+        case 'ArrowUp':
+          e.preventDefault();
+          updates = { y: (selectedEl?.y || 0) - step };
+          break;
+        case 'ArrowDown':
+          e.preventDefault();
+          updates = { y: (selectedEl?.y || 0) + step };
+          break;
+        case 'ArrowLeft':
+          e.preventDefault();
+          updates = { x: (selectedEl?.x || 0) - step };
+          break;
+        case 'ArrowRight':
+          e.preventDefault();
+          updates = { x: (selectedEl?.x || 0) + step };
+          break;
+        case 'Delete':
+        case 'Backspace':
+          e.preventDefault();
+          selectedIds.forEach(id => deleteElement(id));
+          return;
+        case 'Escape':
+          e.preventDefault();
+          setSelectedIds([]);
+          return;
+        case '[':
+          e.preventDefault();
+          if (e.ctrlKey || e.metaKey) sendToBack();
+          return;
+        case ']':
+          e.preventDefault();
+          if (e.ctrlKey || e.metaKey) bringToFront();
+          return;
+      }
+
+      if (updates) {
+        updateSelectedElements(updates);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [selectedIds, selectedEl, updateSelectedElements, deleteElement, sendToBack, bringToFront]);
+
   useEffect(() => {
     const saved = localStorage.getItem('lumina_canvas_state');
     if (saved) {
@@ -553,13 +606,13 @@ const Canvas: React.FC = () => {
     <div className="h-full flex flex-col bg-slate-50 overflow-hidden relative font-sans">
       <CollaborationHeader title="Professional Design Studio" onPublish={() => setShowExportModal(true)} />
 
-      <div className="h-14 bg-white border-b border-slate-100 px-8 flex items-center justify-between text-slate-500 shadow-sm z-30">
+      <div className="h-14 bg-white border-b border-slate-100 px-8 flex items-center justify-between text-slate-500 shadow-sm z-30" role="toolbar" aria-label="Canvas toolbar">
         <div className="flex items-center gap-6 border-r border-slate-100 pr-6 mr-6">
-          <button onClick={undo} disabled={history.length === 0} className="w-10 h-10 flex items-center justify-center hover:bg-slate-50 rounded-xl disabled:opacity-20 transition-all active:scale-90"><i className="fas fa-undo"></i></button>
-          <button onClick={redo} disabled={future.length === 0} className="w-10 h-10 flex items-center justify-center hover:bg-slate-50 rounded-xl disabled:opacity-20 transition-all active:scale-90"><i className="fas fa-redo"></i></button>
-          <div className="w-px h-6 bg-slate-100"></div>
-          <button onClick={handleCloudSave} disabled={isCloudSyncing} className={`w-10 h-10 flex items-center justify-center rounded-xl transition-all hover:scale-110 ${isCloudSyncing ? 'text-accent' : 'hover:bg-slate-50'}`}>
-            <i className={`fas ${isCloudSyncing ? 'fa-spinner fa-spin' : 'fa-cloud-arrow-up'}`}></i>
+          <button onClick={undo} disabled={history.length === 0} aria-label="Undo last action" className="w-10 h-10 flex items-center justify-center hover:bg-slate-50 rounded-xl disabled:opacity-20 transition-all active:scale-90"><i className="fas fa-undo" aria-hidden="true"></i></button>
+          <button onClick={redo} disabled={future.length === 0} aria-label="Redo last action" className="w-10 h-10 flex items-center justify-center hover:bg-slate-50 rounded-xl disabled:opacity-20 transition-all active:scale-90"><i className="fas fa-redo" aria-hidden="true"></i></button>
+          <div className="w-px h-6 bg-slate-100" aria-hidden="true"></div>
+          <button onClick={handleCloudSave} disabled={isCloudSyncing} aria-label={isCloudSyncing ? 'Saving to cloud' : 'Save to cloud'} aria-busy={isCloudSyncing} className={`w-10 h-10 flex items-center justify-center rounded-xl transition-all hover:scale-110 ${isCloudSyncing ? 'text-accent' : 'hover:bg-slate-50'}`}>
+            <i className={`fas ${isCloudSyncing ? 'fa-spinner fa-spin' : 'fa-cloud-arrow-up'}`} aria-hidden="true"></i>
           </button>
         </div>
 
@@ -602,11 +655,11 @@ const Canvas: React.FC = () => {
       </div>
 
       <div className="flex-1 flex overflow-hidden relative">
-        <div className="w-20 bg-white border-r border-slate-100 flex flex-col items-center py-8 gap-8 text-slate-300 h-full shadow-sm z-20">
-          <button onClick={() => setActiveTab('tools')} className={`p-4 rounded-2xl transition-all duration-300 hover:scale-110 active:scale-90 ${activeTab === 'tools' ? 'bg-accent-soft text-accent shadow-lg' : 'hover:bg-slate-50'}`} title="Tools & Geometry"><i className="fas fa-vector-square"></i></button>
-          <button onClick={() => setActiveTab('layers')} className={`p-4 rounded-2xl transition-all duration-300 hover:scale-110 active:scale-90 ${activeTab === 'layers' ? 'bg-amber-50 text-amber-600 shadow-lg' : 'hover:bg-slate-50'}`} title="Layers"><i className="fas fa-layer-group"></i></button>
-          <button onClick={() => setActiveTab('animation')} className={`p-4 rounded-2xl transition-all duration-300 hover:scale-110 active:scale-90 ${activeTab === 'animation' ? 'bg-slate-900 text-white shadow-lg' : 'hover:bg-slate-50'}`} title="Animation"><i className="fas fa-clapperboard"></i></button>
-          <button onClick={() => setActiveTab('ai')} className={`p-4 rounded-2xl transition-all duration-300 hover:scale-110 active:scale-90 ${activeTab === 'ai' ? 'bg-purple-50 text-purple-600 shadow-lg' : 'hover:bg-slate-50'}`} title="Lumina AI"><i className="fas fa-sparkles"></i></button>
+        <div className="w-20 bg-white border-r border-slate-100 flex flex-col items-center py-8 gap-8 text-slate-300 h-full shadow-sm z-20" role="tablist" aria-label="Canvas panels">
+          <button onClick={() => setActiveTab('tools')} role="tab" aria-selected={activeTab === 'tools'} aria-controls="tools-panel" aria-label="Tools and Geometry panel" className={`p-4 rounded-2xl transition-all duration-300 hover:scale-110 active:scale-90 ${activeTab === 'tools' ? 'bg-accent-soft text-accent shadow-lg' : 'hover:bg-slate-50'}`}><i className="fas fa-vector-square" aria-hidden="true"></i></button>
+          <button onClick={() => setActiveTab('layers')} role="tab" aria-selected={activeTab === 'layers'} aria-controls="layers-panel" aria-label="Layers panel" className={`p-4 rounded-2xl transition-all duration-300 hover:scale-110 active:scale-90 ${activeTab === 'layers' ? 'bg-amber-50 text-amber-600 shadow-lg' : 'hover:bg-slate-50'}`}><i className="fas fa-layer-group" aria-hidden="true"></i></button>
+          <button onClick={() => setActiveTab('animation')} role="tab" aria-selected={activeTab === 'animation'} aria-controls="animation-panel" aria-label="Animation panel" className={`p-4 rounded-2xl transition-all duration-300 hover:scale-110 active:scale-90 ${activeTab === 'animation' ? 'bg-slate-900 text-white shadow-lg' : 'hover:bg-slate-50'}`}><i className="fas fa-clapperboard" aria-hidden="true"></i></button>
+          <button onClick={() => setActiveTab('ai')} role="tab" aria-selected={activeTab === 'ai'} aria-controls="ai-panel" aria-label="Lumina AI panel" className={`p-4 rounded-2xl transition-all duration-300 hover:scale-110 active:scale-90 ${activeTab === 'ai' ? 'bg-purple-50 text-purple-600 shadow-lg' : 'hover:bg-slate-50'}`}><i className="fas fa-sparkles" aria-hidden="true"></i></button>
         </div>
 
         <div className="flex-1 flex justify-center items-center overflow-auto bg-[#F1F5F9] relative" onClick={() => setSelectedIds([])}>

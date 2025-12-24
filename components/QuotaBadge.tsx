@@ -137,26 +137,34 @@ const UsageBar: React.FC<{
 }> = ({ label, icon, used, limit }) => {
   const isUnlimited = limit === -1;
   const percentUsed = isUnlimited ? 0 : Math.min(100, (used / limit) * 100);
+  const remaining = limit - used;
   const isLow = !isUnlimited && percentUsed >= 80;
+  const isCritical = !isUnlimited && percentUsed >= 95;
 
   return (
-    <div className="flex items-center gap-3">
-      <i className={`fas ${icon} w-4 text-center text-slate-400 text-xs`}></i>
+    <div className="flex items-center gap-3" role="meter" aria-label={`${label} usage`} aria-valuenow={used} aria-valuemin={0} aria-valuemax={limit}>
+      <i className={`fas ${icon} w-4 text-center text-slate-400 text-xs`} aria-hidden="true"></i>
       <div className="flex-1">
         <div className="flex justify-between items-center mb-1">
           <span className="text-xs font-medium text-slate-600">{label}</span>
-          <span className={`text-[10px] font-bold ${isLow ? 'text-amber-600' : 'text-slate-400'}`}>
-            {isUnlimited ? '∞' : `${used}/${limit}`}
+          <span className={`text-[10px] font-bold ${isCritical ? 'text-red-600' : isLow ? 'text-amber-600' : 'text-slate-400'}`}>
+            {isUnlimited ? '∞ Unlimited' : `${used}/${limit}`}
           </span>
         </div>
         <div className="h-1.5 bg-slate-100 rounded-full overflow-hidden">
           <div
-            className={`h-full rounded-full transition-all ${
-              isLow ? 'bg-amber-500' : 'bg-indigo-500'
+            className={`h-full rounded-full transition-all duration-500 ${
+              isCritical ? 'bg-red-500' : isLow ? 'bg-amber-500' : 'bg-indigo-500'
             }`}
             style={{ width: isUnlimited ? '0%' : `${percentUsed}%` }}
           />
         </div>
+        {/* Remaining count indicator */}
+        {!isUnlimited && remaining <= 5 && remaining > 0 && (
+          <p className="text-[9px] text-amber-600 mt-1 font-medium">
+            Only {remaining} {label.toLowerCase()} remaining this month
+          </p>
+        )}
       </div>
     </div>
   );
