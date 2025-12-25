@@ -22,7 +22,16 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
+  // Only handle GET requests
   if (event.request.method !== 'GET') return;
+
+  // Skip cross-origin requests - let them go through normally
+  const url = new URL(event.request.url);
+  if (url.origin !== self.location.origin) return;
+
+  // Skip API requests
+  if (url.pathname.startsWith('/api')) return;
+
   event.respondWith(
     caches.match(event.request).then((cached) => {
       if (cached) return cached;
