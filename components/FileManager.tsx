@@ -10,6 +10,7 @@ import {
   StaggeredSkeleton,
   useToast
 } from '../design-system';
+import { StatsCardWidget, MetricConfig } from './StatsCardWidget';
 
 type AssetType = 'Design' | 'Document' | 'Video' | 'Image';
 type FileStatus = 'Synced' | 'In Review' | 'Draft' | 'Locked';
@@ -70,6 +71,57 @@ const FileManager: React.FC = () => {
     { label: 'Asset Velocity', value: '1.2k', trend: 'Files/mo', icon: 'fa-gauge-high', color: 'text-emerald-500', bg: 'bg-emerald-50' },
     { label: 'Cloud Integrity', value: '100%', trend: 'Verified', icon: 'fa-shield-check', color: 'text-rose-500', bg: 'bg-rose-50' },
   ];
+
+  // Real-time metrics for StatsCardWidget
+  const realTimeMetrics: MetricConfig[] = useMemo(() => [
+    {
+      id: 'active-users',
+      label: 'Active Users',
+      icon: 'fa-users',
+      fetchData: async (period: string) => {
+        await new Promise(resolve => setTimeout(resolve, 300));
+        const baseValue = period === '1h' ? 24 : period === '24h' ? 156 : period === '7d' ? 892 : 3420;
+        const variance = Math.floor(Math.random() * 20) - 10;
+        return { value: baseValue + variance, change: 12.5, trend: 'up' as const };
+      },
+      formatter: (value: number) => value.toLocaleString(),
+    },
+    {
+      id: 'assets-created',
+      label: 'Assets Created',
+      icon: 'fa-file-plus',
+      fetchData: async (period: string) => {
+        await new Promise(resolve => setTimeout(resolve, 250));
+        const baseValue = period === '1h' ? 8 : period === '24h' ? 47 : period === '7d' ? 312 : 1245;
+        const variance = Math.floor(Math.random() * 10) - 5;
+        return { value: baseValue + variance, change: 8.3, trend: 'up' as const };
+      },
+      formatter: (value: number) => value.toLocaleString(),
+    },
+    {
+      id: 'storage-used',
+      label: 'Storage Used',
+      icon: 'fa-database',
+      fetchData: async (period: string) => {
+        await new Promise(resolve => setTimeout(resolve, 200));
+        const baseValue = period === '1h' ? 2.1 : period === '24h' ? 4.8 : period === '7d' ? 12.4 : 45.2;
+        return { value: baseValue, change: 3.2, trend: 'up' as const };
+      },
+      formatter: (value: number) => `${value.toFixed(1)} GB`,
+    },
+    {
+      id: 'ai-generations',
+      label: 'AI Generations',
+      icon: 'fa-wand-magic-sparkles',
+      fetchData: async (period: string) => {
+        await new Promise(resolve => setTimeout(resolve, 280));
+        const baseValue = period === '1h' ? 15 : period === '24h' ? 89 : period === '7d' ? 523 : 2156;
+        const variance = Math.floor(Math.random() * 15) - 7;
+        return { value: baseValue + variance, change: 24.7, trend: 'up' as const };
+      },
+      formatter: (value: number) => value.toLocaleString(),
+    },
+  ], []);
 
   const filteredAndSortedFiles = useMemo(() => {
     let result = files.filter(f => {
@@ -142,6 +194,17 @@ const FileManager: React.FC = () => {
                </div>
              ))
            )}
+        </div>
+
+        {/* Real-time Stats Widget */}
+        <div className="scroll-reveal" style={{ animationDelay: '0.4s' }}>
+          <StatsCardWidget
+            title="Real-time Analytics"
+            metrics={realTimeMetrics}
+            refreshInterval={30000}
+            initialPeriod="24h"
+            onError={(error) => toast.error('Analytics Error', { description: error.message })}
+          />
         </div>
 
         <div className="space-y-8">
