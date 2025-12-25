@@ -45,6 +45,9 @@ const UserMenu: React.FC<UserMenuProps> = ({ collapsed = false }) => {
     <div className="relative" ref={menuRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
+        aria-label="User menu"
+        aria-expanded={isOpen}
+        aria-haspopup="true"
         className={`
           flex items-center gap-3 w-full p-2 rounded-xl
           hover:bg-white/10 transition-all
@@ -116,6 +119,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ collapsed = false }) => {
                 navigate('/studio');
                 setIsOpen(false);
               }}
+              aria-label="Go to dashboard"
               className="flex items-center gap-3 w-full px-4 py-2.5 text-left hover:bg-slate-50 transition-colors"
             >
               <svg className="w-5 h-5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -129,6 +133,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ collapsed = false }) => {
                 navigate('/guide');
                 setIsOpen(false);
               }}
+              aria-label="Open user guide"
               className="flex items-center gap-3 w-full px-4 py-2.5 text-left hover:bg-slate-50 transition-colors"
             >
               <svg className="w-5 h-5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -141,6 +146,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ collapsed = false }) => {
 
             <button
               onClick={handleSignOut}
+              aria-label="Sign out of account"
               className="flex items-center gap-3 w-full px-4 py-2.5 text-left hover:bg-red-50 transition-colors group"
             >
               <svg className="w-5 h-5 text-slate-400 group-hover:text-red-500 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">

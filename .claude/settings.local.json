@@ -34,7 +34,8 @@
       "Bash(then echo \"MISSING: $f\")",
       "Bash(fi)",
       "Bash(done)",
-      "Bash(git rm:*)"
+      "Bash(git rm:*)",
+      "Bash(wc:*)"
     ]
   }
 }

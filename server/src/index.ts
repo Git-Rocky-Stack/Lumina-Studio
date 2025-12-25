@@ -10,7 +10,8 @@ import { cors } from 'hono/cors';
 import { logger } from 'hono/logger';
 import { prettyJSON } from 'hono/pretty-json';
 import { secureHeaders } from 'hono/secure-headers';
-import { Env } from './types/env';
+import { Webhook } from 'svix';
+import { Env, AIGenerationResponse } from './types/env';
 
 // Create the main Hono app
 const app = new Hono<{ Bindings: Env }>();
@@ -102,9 +103,6 @@ const v1 = new Hono<{ Bindings: Env }>();
 
 // Clerk Webhook Handler (public endpoint)
 v1.post('/auth/webhook', async (c) => {
-  // TODO: Implement Clerk webhook verification and handling
-  // See BACKEND_ARCHITECTURE.md for implementation details
-
   const svixId = c.req.header('svix-id');
   const svixTimestamp = c.req.header('svix-timestamp');
   const svixSignature = c.req.header('svix-signature');
@@ -113,35 +111,206 @@ v1.post('/auth/webhook', async (c) => {
     return c.json({ error: 'Missing webhook headers' }, 400);
   }
 
-  // Webhook signature verification would go here
-  // Using svix library: npm install svix
+  // Verify webhook signature using svix
+  const webhookSecret = c.env.CLERK_WEBHOOK_SECRET;
+  if (!webhookSecret) {
+    console.error('CLERK_WEBHOOK_SECRET not configured');
+    return c.json({ error: 'Webhook configuration error' }, 500);
+  }
+
+  const wh = new Webhook(webhookSecret);
+  let payload: any;
 
   try {
-    const payload = await c.req.json();
-    const { type, data } = payload;
+    const body = await c.req.text();
+    payload = wh.verify(body, {
+      'svix-id': svixId,
+      'svix-timestamp': svixTimestamp,
+      'svix-signature': svixSignature,
+    });
+  } catch (err) {
+    console.error('Webhook signature verification failed:', err);
+    return c.json({ error: 'Invalid webhook signature' }, 401);
+  }
 
-    console.log(`Received Clerk webhook: ${type}`, data?.id);
+  const { type, data } = payload;
+  console.log(`Received Clerk webhook: ${type}`, data?.id);
+
+  try {
+    const now = Math.floor(Date.now() / 1000);
 
     switch (type) {
-      case 'user.created':
-        // TODO: Create user and default workspace
-        console.log('User created:', data?.email_addresses?.[0]?.email_address);
+      case 'user.created': {
+        // Extract user data from Clerk payload
+        const userId = data.id;
+        const email = data.email_addresses?.[0]?.email_address || '';
+        const displayName = `${data.first_name || ''} ${data.last_name || ''}`.trim() || null;
+        const avatarUrl = data.image_url || null;
+
+        // Create user record
+        await c.env.DB.prepare(`
+          INSERT INTO users (
+            id, email, display_name, avatar_url, tier, subscription_status,
+            theme_color, created_at, updated_at, last_login_at
+          ) VALUES (?, ?, ?, ?, 'free', 'active', '#6366f1', ?, ?, ?)
+        `).bind(userId, email, displayName, avatarUrl, now, now, now).run();
+
+        // Create default workspace for the user
+        const workspaceId = `ws_${crypto.randomUUID().replace(/-/g, '').substring(0, 16)}`;
+        const workspaceSlug = `personal-${userId.substring(5, 13)}`;
+
+        await c.env.DB.prepare(`
+          INSERT INTO workspaces (id, name, slug, owner_id, description, created_at, updated_at)
+          VALUES (?, 'Personal Workspace', ?, ?, 'Your personal workspace for creative projects', ?, ?)
+        `).bind(workspaceId, workspaceSlug, userId, now, now).run();
+
+        // Add user as workspace owner
+        const memberId = `wm_${crypto.randomUUID().replace(/-/g, '').substring(0, 16)}`;
+        await c.env.DB.prepare(`
+          INSERT INTO workspace_members (id, workspace_id, user_id, role, created_at)
+          VALUES (?, ?, ?, 'owner', ?)
+        `).bind(memberId, workspaceId, userId, now).run();
+
+        // Update user's default workspace
+        await c.env.DB.prepare(`
+          UPDATE users SET default_workspace_id = ? WHERE id = ?
+        `).bind(workspaceId, userId).run();
+
+        console.log(`User created: ${email}, workspace: ${workspaceId}`);
         break;
-      case 'user.updated':
-        // TODO: Update user record
-        console.log('User updated:', data?.id);
+      }
+
+      case 'user.updated': {
+        const userId = data.id;
+        const email = data.email_addresses?.[0]?.email_address || '';
+        const displayName = `${data.first_name || ''} ${data.last_name || ''}`.trim() || null;
+        const avatarUrl = data.image_url || null;
+
+        // Update user record
+        await c.env.DB.prepare(`
+          UPDATE users
+          SET email = ?, display_name = ?, avatar_url = ?, updated_at = ?
+          WHERE id = ?
+        `).bind(email, displayName, avatarUrl, now, userId).run();
+
+        console.log(`User updated: ${userId}`);
         break;
-      case 'user.deleted':
-        // TODO: Delete user and cascade
-        console.log('User deleted:', data?.id);
+      }
+
+      case 'user.deleted': {
+        const userId = data.id;
+
+        // Delete in order respecting foreign key relationships
+        // 1. Delete chat messages (via sessions)
+        await c.env.DB.prepare(`
+          DELETE FROM chat_messages WHERE session_id IN (
+            SELECT id FROM chat_sessions WHERE user_id = ?
+          )
+        `).bind(userId).run();
+
+        // 2. Delete chat sessions
+        await c.env.DB.prepare(`
+          DELETE FROM chat_sessions WHERE user_id = ?
+        `).bind(userId).run();
+
+        // 3. Delete usage records
+        await c.env.DB.prepare(`
+          DELETE FROM usage_records WHERE user_id = ?
+        `).bind(userId).run();
+
+        // 4. Delete activity logs
+        await c.env.DB.prepare(`
+          DELETE FROM activity_log WHERE user_id = ?
+        `).bind(userId).run();
+
+        // 5. Delete workspace memberships
+        await c.env.DB.prepare(`
+          DELETE FROM workspace_members WHERE user_id = ?
+        `).bind(userId).run();
+
+        // 6. Get workspaces owned by user (to cascade delete related data)
+        const ownedWorkspaces = await c.env.DB.prepare(`
+          SELECT id FROM workspaces WHERE owner_id = ?
+        `).bind(userId).all();
+
+        for (const ws of ownedWorkspaces.results || []) {
+          const wsId = ws.id as string;
+
+          // Delete projects in workspace
+          const projects = await c.env.DB.prepare(`
+            SELECT id FROM projects WHERE workspace_id = ?
+          `).bind(wsId).all();
+
+          for (const proj of projects.results || []) {
+            const projId = proj.id as string;
+            // Delete storyboard shots
+            await c.env.DB.prepare(`
+              DELETE FROM storyboard_shots WHERE storyboard_id IN (
+                SELECT id FROM storyboards WHERE project_id = ?
+              )
+            `).bind(projId).run();
+            // Delete storyboards
+            await c.env.DB.prepare(`
+              DELETE FROM storyboards WHERE project_id = ?
+            `).bind(projId).run();
+            // Delete canvas projects
+            await c.env.DB.prepare(`
+              DELETE FROM canvas_projects WHERE project_id = ?
+            `).bind(projId).run();
+          }
+
+          // Delete projects
+          await c.env.DB.prepare(`
+            DELETE FROM projects WHERE workspace_id = ?
+          `).bind(wsId).run();
+
+          // Delete campaign posts and campaigns
+          await c.env.DB.prepare(`
+            DELETE FROM campaign_posts WHERE campaign_id IN (
+              SELECT id FROM campaigns WHERE workspace_id = ?
+            )
+          `).bind(wsId).run();
+          await c.env.DB.prepare(`
+            DELETE FROM campaigns WHERE workspace_id = ?
+          `).bind(wsId).run();
+
+          // Delete brand kits
+          await c.env.DB.prepare(`
+            DELETE FROM brand_kits WHERE workspace_id = ?
+          `).bind(wsId).run();
+
+          // Delete assets
+          await c.env.DB.prepare(`
+            DELETE FROM assets WHERE workspace_id = ?
+          `).bind(wsId).run();
+
+          // Delete workspace members
+          await c.env.DB.prepare(`
+            DELETE FROM workspace_members WHERE workspace_id = ?
+          `).bind(wsId).run();
+        }
+
+        // 7. Delete owned workspaces
+        await c.env.DB.prepare(`
+          DELETE FROM workspaces WHERE owner_id = ?
+        `).bind(userId).run();
+
+        // 8. Finally delete the user
+        await c.env.DB.prepare(`
+          DELETE FROM users WHERE id = ?
+        `).bind(userId).run();
+
+        console.log(`User deleted with cascade: ${userId}`);
         break;
+      }
+
       default:
         console.log(`Unhandled webhook type: ${type}`);
     }
 
     return c.json({ received: true });
   } catch (error) {
-    console.error('Webhook error:', error);
+    console.error('Webhook processing error:', error);
     return c.json({ error: 'Webhook processing failed' }, 500);
   }
 });
@@ -198,6 +367,106 @@ v1.use('/brand-kits/*', authMiddleware);
 v1.use('/campaigns/*', authMiddleware);
 v1.use('/chat/*', authMiddleware);
 v1.use('/exports/*', authMiddleware);
+
+// ===========================================
+// Quota Helper Functions
+// ===========================================
+
+interface QuotaCheckResult {
+  allowed: boolean;
+  tier: string;
+  used: number;
+  limit: number;
+  remaining: number;
+  overageAllowed: boolean;
+}
+
+async function checkQuota(
+  db: D1Database,
+  userId: string,
+  usageType: string
+): Promise<QuotaCheckResult> {
+  const billingPeriod = new Date().toISOString().substring(0, 7); // YYYY-MM
+
+  // Get user tier
+  const user = await db.prepare(
+    'SELECT tier FROM users WHERE id = ?'
+  ).bind(userId).first();
+
+  const tier = (user?.tier as string) || 'free';
+
+  // Get quota limits for this tier and usage type
+  const quota = await db.prepare(
+    'SELECT monthly_limit, overage_allowed FROM tier_quotas WHERE tier = ? AND usage_type = ?'
+  ).bind(tier, usageType).first();
+
+  // Default limits if no quota record exists
+  const monthlyLimit = (quota?.monthly_limit as number) ?? 10;
+  const overageAllowed = (quota?.overage_allowed as number) === 1;
+
+  // Get current usage for this billing period
+  const usage = await db.prepare(`
+    SELECT COALESCE(SUM(quantity), 0) as total
+    FROM usage_records
+    WHERE user_id = ? AND usage_type = ? AND billing_period = ?
+  `).bind(userId, usageType, billingPeriod).first();
+
+  const used = (usage?.total as number) || 0;
+
+  // Check if unlimited (-1 means unlimited)
+  if (monthlyLimit === -1) {
+    return {
+      allowed: true,
+      tier,
+      used,
+      limit: -1,
+      remaining: -1,
+      overageAllowed: true,
+    };
+  }
+
+  const remaining = Math.max(0, monthlyLimit - used);
+  const allowed = remaining > 0 || overageAllowed;
+
+  return {
+    allowed,
+    tier,
+    used,
+    limit: monthlyLimit,
+    remaining,
+    overageAllowed,
+  };
+}
+
+async function recordUsage(
+  db: D1Database,
+  userId: string,
+  usageType: string,
+  quantity: number = 1,
+  metadata: { workspaceId?: string; projectId?: string; assetId?: string; modelUsed?: string } = {}
+): Promise<void> {
+  const billingPeriod = new Date().toISOString().substring(0, 7);
+  const now = Math.floor(Date.now() / 1000);
+  const usageId = `usage_${crypto.randomUUID().replace(/-/g, '').substring(0, 16)}`;
+
+  await db.prepare(`
+    INSERT INTO usage_records (
+      id, user_id, workspace_id, usage_type, quantity,
+      model_used, project_id, asset_id, billing_period, created_at
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+  `).bind(
+    usageId,
+    userId,
+    metadata.workspaceId || null,
+    usageType,
+    quantity,
+    metadata.modelUsed || null,
+    metadata.projectId || null,
+    metadata.assetId || null,
+    billingPeriod,
+    now
+  ).run();
+}
 
 // Current user endpoint
 v1.get('/auth/me', authMiddleware, async (c) => {
@@ -343,55 +612,364 @@ v1.post('/workspaces/:wsId/projects', async (c) => {
   return c.json(project, 201);
 });
 
-// AI Generation placeholder
+// ===========================================
+// AI Generation Endpoints
+// ===========================================
+
+// AI Image Generation
 v1.post('/ai/generate/image', async (c) => {
   const userId = c.get('userId');
   const body = await c.req.json();
+  const startTime = Date.now();
 
-  // TODO: Implement actual AI image generation
-  // Check quota, call AI service, store in R2, create asset record
-  console.log(`Image generation requested by ${userId}:`, body.prompt?.substring(0, 50));
+  // Validate request
+  if (!body.prompt || typeof body.prompt !== 'string' || body.prompt.trim().length === 0) {
+    return c.json({ error: 'Prompt is required' }, 400);
+  }
 
-  return c.json({
-    id: `gen_${crypto.randomUUID().substring(0, 16)}`,
-    status: 'processing',
-    message: 'Image generation queued. This endpoint needs full implementation.',
-    prompt: body.prompt,
-    requested_by: userId,
-  }, 202);
+  // Check quota before processing
+  const quotaCheck = await checkQuota(c.env.DB, userId, 'ai_image_generation');
+
+  if (!quotaCheck.allowed) {
+    return c.json({
+      error: 'Quota exceeded',
+      message: `You have used ${quotaCheck.used} of ${quotaCheck.limit} image generations this month.`,
+      usage: {
+        type: 'ai_image_generation',
+        used: quotaCheck.used,
+        limit: quotaCheck.limit,
+        remaining: 0,
+      },
+    }, 429);
+  }
+
+  const generationId = `gen_${crypto.randomUUID().replace(/-/g, '').substring(0, 16)}`;
+
+  try {
+    // Call Cloudflare Workers AI for image generation
+    // Using stable-diffusion-xl-base-1.0 model
+    const aiResponse = await c.env.AI.run('@cf/stabilityai/stable-diffusion-xl-base-1.0', {
+      prompt: body.prompt,
+      num_steps: body.quality === 'hd' ? 30 : body.quality === 'ultra' ? 50 : 20,
+    });
+
+    // Store generated image in R2 if bucket is available
+    let assetId: string | null = null;
+    let cdnUrl: string | null = null;
+
+    if (c.env.ASSETS_BUCKET && aiResponse) {
+      assetId = `asset_${crypto.randomUUID().replace(/-/g, '').substring(0, 16)}`;
+      const storageKey = `generated/${userId}/${assetId}.png`;
+
+      // Store image in R2
+      await c.env.ASSETS_BUCKET.put(storageKey, aiResponse, {
+        httpMetadata: {
+          contentType: 'image/png',
+        },
+        customMetadata: {
+          userId,
+          prompt: body.prompt.substring(0, 500),
+          generationId,
+        },
+      });
+
+      // Create asset record in database
+      const now = Math.floor(Date.now() / 1000);
+      await c.env.DB.prepare(`
+        INSERT INTO assets (
+          id, workspace_id, uploaded_by, filename, original_filename,
+          mime_type, file_size, asset_type, storage_key, processing_status,
+          is_ai_generated, generation_prompt, generation_model,
+          created_at, updated_at
+        ) VALUES (?, ?, ?, ?, ?, 'image/png', 0, 'image', ?, 'completed', 1, ?, 'stable-diffusion-xl-base-1.0', ?, ?)
+      `).bind(
+        assetId,
+        body.workspace_id || null,
+        userId,
+        `generated-${assetId}.png`,
+        `generated-image.png`,
+        storageKey,
+        body.prompt.substring(0, 1000),
+        now,
+        now
+      ).run();
+
+      cdnUrl = `/assets/${assetId}`;
+    }
+
+    // Record usage after successful generation
+    await recordUsage(c.env.DB, userId, 'ai_image_generation', 1, {
+      workspaceId: body.workspace_id,
+      projectId: body.project_id,
+      assetId: assetId || undefined,
+      modelUsed: 'stable-diffusion-xl-base-1.0',
+    });
+
+    const generationTime = Date.now() - startTime;
+    const newRemaining = quotaCheck.limit === -1 ? -1 : Math.max(0, quotaCheck.remaining - 1);
+
+    const response: AIGenerationResponse = {
+      id: generationId,
+      status: 'completed',
+      asset: assetId ? {
+        id: assetId,
+        workspace_id: body.workspace_id || '',
+        uploaded_by: userId,
+        filename: `generated-${assetId}.png`,
+        original_filename: 'generated-image.png',
+        mime_type: 'image/png',
+        file_size: 0,
+        asset_type: 'image',
+        storage_key: `generated/${userId}/${assetId}.png`,
+        cdn_url: cdnUrl,
+        processing_status: 'completed',
+        is_ai_generated: 1,
+        generation_prompt: body.prompt,
+        generation_model: 'stable-diffusion-xl-base-1.0',
+        width: 1024,
+        height: 1024,
+        duration_seconds: null,
+        tags_json: null,
+        description: null,
+        alt_text: body.prompt.substring(0, 255),
+        dominant_colors_json: null,
+        created_at: Math.floor(Date.now() / 1000),
+        updated_at: Math.floor(Date.now() / 1000),
+      } : undefined,
+      usage: {
+        type: 'ai_image_generation',
+        remaining: newRemaining,
+        limit: quotaCheck.limit,
+      },
+      generation_time_ms: generationTime,
+    };
+
+    return c.json(response, 201);
+  } catch (error) {
+    console.error('Image generation error:', error);
+    return c.json({
+      id: generationId,
+      status: 'failed',
+      error: error instanceof Error ? error.message : 'Image generation failed',
+      usage: {
+        type: 'ai_image_generation',
+        remaining: quotaCheck.remaining,
+        limit: quotaCheck.limit,
+      },
+    }, 500);
+  }
 });
 
+// AI Video Generation
 v1.post('/ai/generate/video', async (c) => {
   const userId = c.get('userId');
   const body = await c.req.json();
 
-  // TODO: Implement actual AI video generation
-  console.log(`Video generation requested by ${userId}:`, body.prompt?.substring(0, 50));
+  // Validate request
+  if (!body.prompt || typeof body.prompt !== 'string' || body.prompt.trim().length === 0) {
+    return c.json({ error: 'Prompt is required' }, 400);
+  }
 
-  return c.json({
-    id: `gen_${crypto.randomUUID().substring(0, 16)}`,
-    status: 'processing',
-    message: 'Video generation queued. This endpoint needs full implementation.',
-    prompt: body.prompt,
-    requested_by: userId,
-  }, 202);
+  // Check quota before processing
+  const quotaCheck = await checkQuota(c.env.DB, userId, 'ai_video_generation');
+
+  if (!quotaCheck.allowed) {
+    return c.json({
+      error: 'Quota exceeded',
+      message: `You have used ${quotaCheck.used} of ${quotaCheck.limit} video generations this month.`,
+      usage: {
+        type: 'ai_video_generation',
+        used: quotaCheck.used,
+        limit: quotaCheck.limit,
+        remaining: 0,
+      },
+    }, 429);
+  }
+
+  const generationId = `gen_${crypto.randomUUID().replace(/-/g, '').substring(0, 16)}`;
+
+  try {
+    // Video generation is async - we queue the job and return immediately
+    // In production, this would trigger a Cloudflare Queue or Durable Object for processing
+
+    // For now, record the pending generation
+    const now = Math.floor(Date.now() / 1000);
+    const assetId = `asset_${crypto.randomUUID().replace(/-/g, '').substring(0, 16)}`;
+
+    // Create a pending asset record
+    await c.env.DB.prepare(`
+      INSERT INTO assets (
+        id, workspace_id, uploaded_by, filename, original_filename,
+        mime_type, file_size, asset_type, storage_key, processing_status,
+        is_ai_generated, generation_prompt, generation_model,
+        created_at, updated_at
+      ) VALUES (?, ?, ?, ?, ?, 'video/mp4', 0, 'video', ?, 'processing', 1, ?, 'video-generation-model', ?, ?)
+    `).bind(
+      assetId,
+      body.workspace_id || null,
+      userId,
+      `generated-${assetId}.mp4`,
+      'generated-video.mp4',
+      `generated/${userId}/${assetId}.mp4`,
+      body.prompt.substring(0, 1000),
+      now,
+      now
+    ).run();
+
+    // Record usage (counting it when queued)
+    await recordUsage(c.env.DB, userId, 'ai_video_generation', 1, {
+      workspaceId: body.workspace_id,
+      projectId: body.project_id,
+      assetId,
+      modelUsed: 'video-generation-model',
+    });
+
+    const newRemaining = quotaCheck.limit === -1 ? -1 : Math.max(0, quotaCheck.remaining - 1);
+
+    const response: AIGenerationResponse = {
+      id: generationId,
+      status: 'processing',
+      asset: {
+        id: assetId,
+        workspace_id: body.workspace_id || '',
+        uploaded_by: userId,
+        filename: `generated-${assetId}.mp4`,
+        original_filename: 'generated-video.mp4',
+        mime_type: 'video/mp4',
+        file_size: 0,
+        asset_type: 'video',
+        storage_key: `generated/${userId}/${assetId}.mp4`,
+        cdn_url: null,
+        processing_status: 'processing',
+        is_ai_generated: 1,
+        generation_prompt: body.prompt,
+        generation_model: 'video-generation-model',
+        width: 1920,
+        height: 1080,
+        duration_seconds: body.duration || 5,
+        tags_json: null,
+        description: null,
+        alt_text: body.prompt.substring(0, 255),
+        dominant_colors_json: null,
+        created_at: now,
+        updated_at: now,
+      },
+      usage: {
+        type: 'ai_video_generation',
+        remaining: newRemaining,
+        limit: quotaCheck.limit,
+      },
+    };
+
+    return c.json(response, 202);
+  } catch (error) {
+    console.error('Video generation error:', error);
+    return c.json({
+      id: generationId,
+      status: 'failed',
+      error: error instanceof Error ? error.message : 'Video generation failed',
+      usage: {
+        type: 'ai_video_generation',
+        remaining: quotaCheck.remaining,
+        limit: quotaCheck.limit,
+      },
+    }, 500);
+  }
 });
 
+// AI Text Generation
 v1.post('/ai/generate/text', async (c) => {
   const userId = c.get('userId');
   const body = await c.req.json();
+  const startTime = Date.now();
 
-  // TODO: Implement actual AI text generation
-  console.log(`Text generation requested by ${userId}:`, body.prompt?.substring(0, 50));
+  // Validate request
+  if (!body.prompt || typeof body.prompt !== 'string' || body.prompt.trim().length === 0) {
+    return c.json({ error: 'Prompt is required' }, 400);
+  }
 
-  return c.json({
-    id: `gen_${crypto.randomUUID().substring(0, 16)}`,
-    status: 'completed',
-    message: 'Text generation placeholder.',
-    prompt: body.prompt,
-    requested_by: userId,
-    result: 'This is a placeholder response. Implement actual AI text generation.',
-  });
+  // Check quota before processing
+  const quotaCheck = await checkQuota(c.env.DB, userId, 'ai_text_generation');
+
+  if (!quotaCheck.allowed) {
+    return c.json({
+      error: 'Quota exceeded',
+      message: `You have used ${quotaCheck.used} of ${quotaCheck.limit} text generations this month.`,
+      usage: {
+        type: 'ai_text_generation',
+        used: quotaCheck.used,
+        limit: quotaCheck.limit,
+        remaining: 0,
+      },
+    }, 429);
+  }
+
+  const generationId = `gen_${crypto.randomUUID().replace(/-/g, '').substring(0, 16)}`;
+
+  try {
+    // Build system prompt based on context
+    let systemPrompt = 'You are a helpful creative assistant for Lumina Studio, a creative design and content platform.';
+
+    if (body.context === 'brand') {
+      systemPrompt = 'You are a brand strategist helping create compelling brand messaging, taglines, and content that aligns with brand guidelines.';
+    } else if (body.context === 'campaign') {
+      systemPrompt = 'You are a marketing expert helping create engaging social media posts, ad copy, and campaign content.';
+    } else if (body.context === 'design') {
+      systemPrompt = 'You are a creative director helping brainstorm design concepts, image descriptions, and visual ideas.';
+    }
+
+    // Call Cloudflare Workers AI for text generation
+    // Using Meta Llama 3.1 8B Instruct model
+    const aiResponse = await c.env.AI.run('@cf/meta/llama-3.1-8b-instruct', {
+      messages: [
+        { role: 'system', content: systemPrompt },
+        { role: 'user', content: body.prompt },
+      ],
+      max_tokens: body.max_tokens || 1024,
+      temperature: body.temperature || 0.7,
+    });
+
+    const generatedText = typeof aiResponse === 'object' && 'response' in aiResponse
+      ? (aiResponse as { response: string }).response
+      : String(aiResponse);
+
+    // Record usage after successful generation
+    await recordUsage(c.env.DB, userId, 'ai_text_generation', 1, {
+      workspaceId: body.workspace_id,
+      projectId: body.project_id,
+      modelUsed: 'llama-3.1-8b-instruct',
+    });
+
+    const generationTime = Date.now() - startTime;
+    const newRemaining = quotaCheck.limit === -1 ? -1 : Math.max(0, quotaCheck.remaining - 1);
+
+    return c.json({
+      id: generationId,
+      status: 'completed',
+      result: generatedText,
+      prompt: body.prompt,
+      context: body.context || 'general',
+      model: 'llama-3.1-8b-instruct',
+      usage: {
+        type: 'ai_text_generation',
+        remaining: newRemaining,
+        limit: quotaCheck.limit,
+      },
+      generation_time_ms: generationTime,
+    });
+  } catch (error) {
+    console.error('Text generation error:', error);
+    return c.json({
+      id: generationId,
+      status: 'failed',
+      error: error instanceof Error ? error.message : 'Text generation failed',
+      usage: {
+        type: 'ai_text_generation',
+        remaining: quotaCheck.remaining,
+        limit: quotaCheck.limit,
+      },
+    }, 500);
+  }
 });
 
 // ===========================================

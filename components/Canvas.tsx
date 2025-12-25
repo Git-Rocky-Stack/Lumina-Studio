@@ -2,6 +2,9 @@
 import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import CollaborationHeader from './CollaborationHeader';
 import LEDProgressBar from './LEDProgressBar';
+import CanvasToolbar from './canvas/CanvasToolbar';
+import LayerPanel from './canvas/LayerPanel';
+import AnimationPanel from './canvas/AnimationPanel';
 import { DesignElement, MaskType, AnimationType, AnimationDirection, AnimationEasing } from '../types';
 import { generateBackground, generateText } from '../services/geminiService';
 import { simulateProfessionalExport, syncToGoogleDrive, downloadFile } from '../services/exportService';
@@ -18,29 +21,6 @@ const BG_STYLES = [
   { id: 'papercut', label: 'Paper', icon: 'fa-scissors', prompt: '3d layered paper art, vibrant colors, depth of field' },
   { id: 'isometric', label: 'Isometric', icon: 'fa-cube', prompt: 'isometric view, cute 3d render, clay style, soft' },
   { id: 'watercolor', label: 'Artistic', icon: 'fa-palette', prompt: 'soft watercolor painting, ethereal, textured paper, hand-drawn' }
-];
-
-interface AnimationPreset {
-  id: string;
-  label: string;
-  icon: string;
-  config: {
-    animation: AnimationType;
-    animationDirection?: AnimationDirection;
-    easing?: AnimationEasing;
-  };
-}
-
-const ANIMATION_PRESETS: AnimationPreset[] = [
-  { id: 'fade-in', label: 'Fade In', icon: 'fa-cloud', config: { animation: 'fade', easing: 'ease-out' } },
-  { id: 'fade-out', label: 'Fade Out', icon: 'fa-cloud-meatball', config: { animation: 'fade-out', easing: 'ease-out' } },
-  { id: 'bounce-in', label: 'Bounce In', icon: 'fa-basketball', config: { animation: 'bounce', easing: 'bounce-phys' } },
-  { id: 'slide-left', label: 'Slide L', icon: 'fa-arrow-left', config: { animation: 'slide', animationDirection: 'left', easing: 'ease-out' } },
-  { id: 'slide-right', label: 'Slide R', icon: 'fa-arrow-right', config: { animation: 'slide', animationDirection: 'right', easing: 'ease-out' } },
-  { id: 'slide-up', label: 'Slide U', icon: 'fa-arrow-up', config: { animation: 'slide', animationDirection: 'up', easing: 'ease-out' } },
-  { id: 'slide-down', label: 'Slide D', icon: 'fa-arrow-down', config: { animation: 'slide', animationDirection: 'down', easing: 'ease-out' } },
-  { id: 'zoom-in', label: 'Zoom In', icon: 'fa-magnifying-glass-plus', config: { animation: 'zoom', animationDirection: 'in', easing: 'elastic' } },
-  { id: 'zoom-out', label: 'Zoom Out', icon: 'fa-magnifying-glass-minus', config: { animation: 'zoom', animationDirection: 'out', easing: 'ease-out' } },
 ];
 
 type TransformType = 'move' | 'scale-tl' | 'scale-tr' | 'scale-bl' | 'scale-br' | 'rotate' | 'skew-x' | 'skew-y';
@@ -503,16 +483,6 @@ const Canvas: React.FC = () => {
     setTimeout(() => setIsPreviewMode(true), 50);
   };
 
-  const applyPreset = (preset: AnimationPreset) => {
-    updateSelectedElements({
-      animation: preset.config.animation,
-      animationDirection: preset.config.animationDirection,
-      animationEasing: preset.config.easing || 'ease-out',
-      animationDuration: selectedEl?.animationDuration || 1,
-      animationDelay: selectedEl?.animationDelay || 0,
-    });
-  };
-
   const handleMagicStagger = () => {
     if (selectedIds.length < 2) return;
     const sorted = elements
@@ -555,13 +525,6 @@ const Canvas: React.FC = () => {
 
   const selectedEl = elements.find(e => e.id === selectedIds[0]);
 
-  const isPresetActive = (preset: AnimationPreset) => {
-    if (!selectedEl) return false;
-    const sameAnim = selectedEl.animation === preset.config.animation;
-    const sameDir = selectedEl.animationDirection === preset.config.animationDirection;
-    return sameAnim && (preset.config.animationDirection === undefined || sameDir);
-  };
-
   const handleTimelineInteraction = (e: React.MouseEvent, elId: string, type: 'move' | 'stretch') => {
     e.stopPropagation();
     const rect = timelineRef.current?.getBoundingClientRect();
@@ -591,70 +554,26 @@ const Canvas: React.FC = () => {
     window.addEventListener('mouseup', onMouseUp);
   };
 
-  const layerTree = useMemo(() => {
-    const tree: Record<string, DesignElement[]> = { ungrouped: [] };
-    elements.forEach(el => {
-      if (el.groupId) {
-        if (!tree[el.groupId]) tree[el.groupId] = [];
-        tree[el.groupId].push(el);
-      } else {
-        tree['ungrouped'].push(el);
-      }
-    });
-    return tree;
-  }, [elements]);
-
   return (
     <div className="h-full flex flex-col bg-slate-50 overflow-hidden relative font-sans">
       <CollaborationHeader title="Professional Design Studio" onPublish={() => setShowExportModal(true)} />
 
-      <div className="h-14 bg-white border-b border-slate-100 px-8 flex items-center justify-between text-slate-500 shadow-sm z-30" role="toolbar" aria-label="Canvas toolbar">
-        <div className="flex items-center gap-6 border-r border-slate-100 pr-6 mr-6">
-          <button onClick={undo} disabled={history.length === 0} aria-label="Undo last action" className="w-10 h-10 flex items-center justify-center hover:bg-slate-50 rounded-xl disabled:opacity-20 transition-all active:scale-90"><i className="fas fa-undo" aria-hidden="true"></i></button>
-          <button onClick={redo} disabled={future.length === 0} aria-label="Redo last action" className="w-10 h-10 flex items-center justify-center hover:bg-slate-50 rounded-xl disabled:opacity-20 transition-all active:scale-90"><i className="fas fa-redo" aria-hidden="true"></i></button>
-          <div className="w-px h-6 bg-slate-100" aria-hidden="true"></div>
-          <button onClick={handleCloudSave} disabled={isCloudSyncing} aria-label={isCloudSyncing ? 'Saving to cloud' : 'Save to cloud'} aria-busy={isCloudSyncing} className={`w-10 h-10 flex items-center justify-center rounded-xl transition-all hover:scale-110 ${isCloudSyncing ? 'text-accent' : 'hover:bg-slate-50'}`}>
-            <i className={`fas ${isCloudSyncing ? 'fa-spinner fa-spin' : 'fa-cloud-arrow-up'}`} aria-hidden="true"></i>
-          </button>
-        </div>
-
-        <div className="flex-1 flex items-center gap-4">
-           {selectedIds.length > 0 && (
-             <div className="flex items-center gap-4 bg-slate-50 px-6 py-2 rounded-2xl border border-slate-100 animate-in fade-in slide-in-from-top-2">
-                <span className="text-[10px] font-black uppercase text-slate-400 mr-2 tracking-widest">Quick Properties</span>
-                <select 
-                  className="bg-transparent text-[10px] font-bold outline-none uppercase cursor-pointer hover:text-slate-900 transition-colors"
-                  onChange={(e) => updateSelectedElements({ mask: e.target.value as MaskType })}
-                  value={selectedEl?.mask || 'none'}
-                >
-                  <option value="none">No Mask</option>
-                  <option value="circle">Circle</option>
-                  <option value="rounded">Rounded</option>
-                  <option value="star">Star</option>
-                  <option value="diamond">Diamond</option>
-                </select>
-                <div className="w-px h-4 bg-slate-200"></div>
-                <button onClick={() => selectedIds.forEach(id => deleteElement(id))} className="text-rose-500 hover:text-rose-600 transition-colors hover:scale-110 active:scale-90"><i className="fas fa-trash-alt text-xs"></i></button>
-             </div>
-           )}
-        </div>
-
-        <div className="flex items-center gap-4">
-           <button 
-             onClick={triggerPreview}
-             className="px-6 py-2.5 bg-rose-50 text-rose-500 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-rose-500 hover:text-white transition-all shadow-sm flex items-center gap-2 hover:scale-105 active:scale-95"
-           >
-             <i className="fas fa-play"></i> {isPreviewMode ? 'Restart Test' : 'Run Motion Test'}
-           </button>
-           <button 
-             onClick={() => handleExport('svg')}
-             className="px-6 py-2.5 bg-indigo-50 text-indigo-600 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-indigo-600 hover:text-white transition-all shadow-sm flex items-center gap-2 hover:scale-105 active:scale-95"
-           >
-             <i className="fas fa-code"></i> Quick SVG
-           </button>
-           <button className="px-6 py-2.5 bg-slate-900 text-white rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-black transition-all shadow-lg hover:scale-105 active:scale-95">New Element</button>
-        </div>
-      </div>
+      <CanvasToolbar
+        onUndo={undo}
+        onRedo={redo}
+        canUndo={history.length > 0}
+        canRedo={future.length > 0}
+        onCloudSave={handleCloudSave}
+        isCloudSyncing={isCloudSyncing}
+        onExportSVG={() => handleExport('svg')}
+        onPreview={triggerPreview}
+        isPreviewMode={isPreviewMode}
+        onShowExportModal={() => setShowExportModal(true)}
+        selectedCount={selectedIds.length}
+        selectedMask={selectedEl?.mask}
+        onMaskChange={(mask) => updateSelectedElements({ mask: mask as MaskType })}
+        onDeleteSelected={() => selectedIds.forEach(id => deleteElement(id))}
+      />
 
       <div className="flex-1 flex overflow-hidden relative">
         <div className="w-20 bg-white border-r border-slate-100 flex flex-col items-center py-8 gap-8 text-slate-300 h-full shadow-sm z-20" role="tablist" aria-label="Canvas panels">
@@ -732,7 +651,7 @@ const Canvas: React.FC = () => {
                         {el.content}
                       </div>
                     ) : (
-                      <img src={el.content} style={{ ...maskStyle(el.mask) }} className="w-full h-full object-cover pointer-events-none select-none" />
+                      <img src={el.content} style={{ ...maskStyle(el.mask) }} className="w-full h-full object-cover pointer-events-none select-none" alt={el.altText || 'Design element'} />
                     )}
 
                     {isSelected && !el.isLocked && !isPreviewMode && (
@@ -781,282 +700,40 @@ const Canvas: React.FC = () => {
         <div className="w-80 bg-white border-l border-slate-100 flex flex-col shadow-2xl z-20 overflow-hidden">
           <div className="p-8 flex-1 flex flex-col overflow-hidden">
             {activeTab === 'layers' ? (
-              <div className="flex flex-col h-full overflow-hidden">
-                <div className="flex items-center justify-between border-b border-slate-100 pb-4 mb-6">
-                  <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Composition Layers</h4>
-                  <div className="flex gap-2">
-                    <button onClick={groupSelected} title="Group Selection" className="p-2 bg-slate-50 rounded-lg text-slate-400 hover:text-accent hover:scale-110 active:scale-90 transition-all"><i className="fas fa-object-group text-xs"></i></button>
-                    <button onClick={bringToFront} title="Bring to Front" className="p-2 bg-slate-50 rounded-lg text-slate-400 hover:text-accent hover:scale-110 active:scale-90 transition-all"><i className="fas fa-layer-group rotate-180 text-xs"></i></button>
-                  </div>
-                </div>
-
-                <div className="flex-1 overflow-y-auto pr-2 scrollbar-hide space-y-6">
-                  {(Object.entries(layerTree) as [string, DesignElement[]][]).map(([groupId, els]) => {
-                    if (els.length === 0) return null;
-                    const isGroup = groupId !== 'ungrouped';
-                    const isCollapsed = collapsedGroups.has(groupId);
-                    
-                    return (
-                      <div key={groupId} className={`space-y-2 ${isGroup ? 'bg-slate-50/50 rounded-2xl p-2 border border-slate-100' : ''}`}>
-                        {isGroup && (
-                          <div className="flex items-center justify-between px-2 mb-2">
-                            <button 
-                              onClick={() => toggleGroupCollapse(groupId)}
-                              className="flex items-center gap-2 text-[9px] font-black text-slate-400 uppercase tracking-widest hover:text-slate-600 transition-all hover:translate-x-1"
-                            >
-                              <i className={`fas fa-chevron-right transition-transform ${!isCollapsed ? 'rotate-90' : ''}`}></i>
-                              Group Context
-                            </button>
-                            <button onClick={() => ungroup(groupId)} className="text-[8px] font-black text-rose-400 uppercase hover:underline active:scale-90 transition-transform">Ungroup</button>
-                          </div>
-                        )}
-
-                        {!isCollapsed && els.sort((a, b) => b.zIndex - a.zIndex).map((el) => {
-                          const isSelected = selectedIds.includes(el.id);
-                          return (
-                            <div 
-                              key={el.id} 
-                              draggable
-                              onDragStart={() => setDraggedLayerId(el.id)}
-                              onDragOver={(e) => { e.preventDefault(); e.dataTransfer.dropEffect = "move"; }}
-                              onDrop={() => { if(draggedLayerId) moveLayerToIndex(draggedLayerId, el.id); setDraggedLayerId(null); }}
-                              onClick={() => setSelectedIds([el.id])} 
-                              className={`p-3 rounded-xl border flex items-center gap-3 transition-all cursor-pointer group/row relative hover:translate-x-1 ${isSelected ? 'bg-white border-accent shadow-lg shadow-accent/5' : 'bg-white border-slate-50 hover:border-slate-200'}`}
-                            >
-                              <div className="flex items-center justify-center text-slate-200 cursor-grab active:cursor-grabbing px-1">
-                                <i className="fas fa-grip-vertical text-[10px]"></i>
-                              </div>
-                              
-                              <div className="w-10 h-10 rounded-lg bg-slate-100 flex items-center justify-center overflow-hidden border border-slate-200 shadow-inner">
-                                {el.type === 'image' ? (
-                                  <img src={el.content} className="w-full h-full object-cover" />
-                                ) : (
-                                  <i className="fas fa-font text-slate-400 text-xs"></i>
-                                )}
-                              </div>
-
-                              <div className="flex-1 min-w-0">
-                                 <p className={`text-[10px] font-black truncate uppercase tracking-tight ${isSelected ? 'text-accent' : 'text-slate-700'}`}>
-                                   {el.type === 'text' ? el.content : 'Image Asset'}
-                                 </p>
-                                 <p className="text-[8px] font-bold text-slate-400 uppercase">Z{el.zIndex} • {el.type}</p>
-                              </div>
-
-                              <div className="flex gap-1 opacity-0 group-hover/row:opacity-100 transition-opacity">
-                                <button onClick={(e) => { e.stopPropagation(); toggleVisibility(el.id); }} className={`p-1.5 rounded-lg hover:bg-slate-50 transition-all hover:scale-110 active:scale-90 ${el.isVisible ? 'text-slate-300' : 'text-rose-500'}`}><i className="fas fa-eye text-[10px]"></i></button>
-                                <button onClick={(e) => { e.stopPropagation(); toggleLock(el.id); }} className={`p-1.5 rounded-lg hover:bg-slate-50 transition-all hover:scale-110 active:scale-90 ${el.isLocked ? 'text-amber-500' : 'text-slate-300'}`}><i className="fas fa-lock text-[10px]"></i></button>
-                              </div>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    );
-                  })}
-                </div>
-                
-                <div className="mt-auto pt-6 border-t border-slate-100 flex gap-2">
-                   <button onClick={bringToFront} className="flex-1 py-3 bg-slate-900 text-white rounded-xl text-[9px] font-black uppercase tracking-widest hover:bg-black transition-all hover:scale-[1.02] active:scale-[0.98]">To Front</button>
-                   <button onClick={sendToBack} className="flex-1 py-3 bg-slate-100 text-slate-600 rounded-xl text-[9px] font-black uppercase tracking-widest hover:bg-slate-200 transition-all hover:scale-[1.02] active:scale-[0.98]">To Back</button>
-                </div>
-              </div>
+              <LayerPanel
+                elements={elements}
+                selectedIds={selectedIds}
+                collapsedGroups={collapsedGroups}
+                draggedLayerId={draggedLayerId}
+                onSelectElement={(id) => setSelectedIds([id])}
+                onToggleVisibility={toggleVisibility}
+                onToggleLock={toggleLock}
+                onDragStart={setDraggedLayerId}
+                onDrop={(targetId) => draggedLayerId && moveLayerToIndex(draggedLayerId, targetId)}
+                onDragEnd={() => setDraggedLayerId(null)}
+                onBringToFront={bringToFront}
+                onSendToBack={sendToBack}
+                onGroupSelected={groupSelected}
+                onUngroup={ungroup}
+                onToggleGroupCollapse={toggleGroupCollapse}
+              />
             ) : activeTab === 'animation' ? (
-              <div className="flex flex-col h-full overflow-y-auto scrollbar-hide space-y-8">
-                <div className="flex items-center justify-between border-b border-slate-100 pb-4">
-                  <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Motion Lab</h4>
-                  <div className="flex gap-2">
-                    <button onClick={handleMagicStagger} title="Magic Stagger Selection" className="p-2 bg-purple-50 text-purple-600 rounded-lg hover:bg-purple-100 transition-all hover:scale-110 active:scale-90"><i className="fas fa-wand-magic-sparkles text-xs"></i></button>
-                    <button onClick={triggerPreview} className="text-[9px] text-rose-500 font-black uppercase tracking-widest hover:underline hover:scale-105 transition-transform active:scale-95">Test Sequence</button>
-                  </div>
-                </div>
-
-                {/* TRACK-BASED VISUAL SEQUENCER */}
-                <div className="space-y-6">
-                   <div className="flex items-center justify-between ml-1">
-                      <p className="text-[9px] font-black text-slate-400 uppercase tracking-[0.3em]">Master Sequence</p>
-                      <button 
-                        onClick={() => updateSelectedElements({ animationIterationCount: selectedEl?.animationIterationCount === 'infinite' ? '1' : 'infinite' })}
-                        className={`px-3 py-1 rounded-full text-[8px] font-black uppercase tracking-widest border transition-all hover:scale-105 active:scale-95 ${selectedEl?.animationIterationCount === 'infinite' ? 'bg-indigo-600 text-white border-indigo-600 shadow-md' : 'bg-white text-slate-400 border-slate-200'}`}
-                      >
-                        <i className="fas fa-repeat mr-1"></i> Loop Composition
-                      </button>
-                   </div>
-                   <div ref={timelineRef} className="bg-slate-950 rounded-[2rem] p-6 pt-10 space-y-4 relative overflow-hidden shadow-2xl group/timeline">
-                      {/* Timeline Markers */}
-                      <div className="absolute top-0 left-0 right-0 h-8 flex justify-between items-center px-6 border-b border-white/5 bg-slate-900/50 backdrop-blur-md z-20">
-                         {[0, 1, 2, 3, 4, 5].map(s => (
-                           <span key={s} className="text-[8px] font-mono text-slate-500">{s}s</span>
-                         ))}
-                      </div>
-
-                      {/* Timeline Tracks */}
-                      <div className="space-y-4 relative z-10 max-h-[300px] overflow-y-auto scrollbar-hide pr-1 mt-4">
-                         {elements.map(el => {
-                           const isSelected = selectedIds.includes(el.id);
-                           return (
-                             <div key={el.id} className="relative h-10 group/track flex items-center border-b border-white/5 last:border-0 pb-2">
-                                {/* Track Header (Thumbnail/Icon) */}
-                                <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center overflow-hidden border border-white/10 mr-4 flex-shrink-0">
-                                   {el.type === 'image' ? (
-                                     <img src={el.content} className="w-full h-full object-cover opacity-60" />
-                                   ) : (
-                                     <i className="fas fa-font text-slate-600 text-[10px]"></i>
-                                   )}
-                                </div>
-
-                                {/* Track Content */}
-                                <div className="flex-1 relative h-full">
-                                   <div 
-                                     className={`absolute h-8 top-0 rounded-xl transition-all flex items-center justify-center px-4 border ${isSelected ? 'bg-accent/20 border-accent shadow-[0_0_20px_rgba(var(--accent-rgb),0.2)] z-20' : 'bg-white/5 border-white/5 opacity-30 hover:opacity-100 cursor-pointer hover:bg-white/10'}`}
-                                     style={{ 
-                                       left: `${((el.animationDelay || 0) / MAX_TIMELINE_SEC) * 100}%`,
-                                       width: `${((el.animationDuration || 1) / MAX_TIMELINE_SEC) * 100}%`
-                                     }}
-                                     onClick={(e) => { e.stopPropagation(); setSelectedIds([el.id]); }}
-                                     onMouseDown={(e) => isSelected && handleTimelineInteraction(e, el.id, 'move')}
-                                   >
-                                      <span className={`text-[8px] font-black uppercase truncate pointer-events-none select-none ${isSelected ? 'text-accent' : 'text-slate-500'}`}>
-                                         {el.type === 'text' ? el.content.substring(0, 12) : 'Asset Layer'}
-                                      </span>
-                                      
-                                      {/* Duration Handle */}
-                                      {isSelected && (
-                                        <div onMouseDown={(e) => handleTimelineInteraction(e, el.id, 'stretch')} className="absolute top-0 right-0 w-4 h-full cursor-ew-resize opacity-0 group-hover/track:opacity-100 flex items-center justify-center">
-                                           <div className="w-1.5 h-4 bg-accent rounded-full border border-slate-950"></div>
-                                        </div>
-                                      )}
-
-                                      {/* Timing Tooltip */}
-                                      {isSelected && (
-                                        <div className="absolute -top-6 left-1/2 -translate-x-1/2 px-2 py-1 bg-accent text-white text-[7px] font-black rounded opacity-0 group-hover/track:opacity-100 transition-opacity whitespace-nowrap pointer-events-none shadow-lg">
-                                           {el.animationDelay}s - {((el.animationDelay || 0) + (el.animationDuration || 1)).toFixed(1)}s
-                                        </div>
-                                      )}
-                                   </div>
-                                </div>
-                             </div>
-                           );
-                         })}
-                      </div>
-
-                      {/* Playhead Scrubber */}
-                      {isPreviewMode && (
-                        <div className="absolute top-0 bottom-0 w-px bg-rose-500 z-30 shadow-[0_0_15px_rgba(244,63,94,0.6)] animate-lumina-playhead">
-                           <div className="w-3 h-3 bg-rose-500 rounded-full absolute -top-1.5 -left-[5px] border-2 border-slate-950"></div>
-                        </div>
-                      )}
-                   </div>
-                </div>
-
-                {selectedIds.length > 0 ? (
-                  <div className="space-y-8 animate-in slide-in-from-right-4 pb-12">
-                    <div className="p-6 bg-slate-50 border border-slate-100 rounded-[2.5rem] space-y-6 shadow-inner relative overflow-hidden">
-                       <div className="flex justify-between items-center mb-2">
-                          <h4 className="text-[9px] font-black text-slate-400 uppercase tracking-[0.3em]">Motion Synthesis</h4>
-                          <div className="flex gap-2">
-                            <button onClick={copyAnimation} title="Copy Animation Style" className="w-8 h-8 rounded-lg bg-white border border-slate-200 flex items-center justify-center text-slate-400 hover:text-indigo-600 transition-all shadow-sm hover:scale-110 active:scale-90"><i className="fas fa-copy text-[10px]"></i></button>
-                            <button onClick={pasteAnimation} disabled={!animationClipboard} title="Paste Animation Style" className="w-8 h-8 rounded-lg bg-white border border-slate-200 flex items-center justify-center text-slate-400 hover:text-indigo-600 transition-all shadow-sm disabled:opacity-20 hover:scale-110 active:scale-90"><i className="fas fa-paste text-[10px]"></i></button>
-                          </div>
-                       </div>
-                       
-                       <div className="space-y-2">
-                          <label className="text-[8px] font-black text-slate-400 uppercase tracking-widest ml-1">Behavior Primitive</label>
-                          <select 
-                            value={selectedEl?.animation || 'none'}
-                            onChange={(e) => updateSelectedElements({ animation: e.target.value as AnimationType })}
-                            className="w-full bg-white border border-slate-100 rounded-xl px-4 py-2.5 text-[10px] font-bold outline-none focus:ring-1 focus:ring-accent shadow-sm cursor-pointer hover:border-slate-300 transition-colors"
-                          >
-                             <option value="none">Static Composition</option>
-                             <option value="fade">Opacity Fade</option>
-                             <option value="fade-out">Opacity Out</option>
-                             <option value="slide">Vector Shift</option>
-                             <option value="bounce">Kinetic Bounce</option>
-                             <option value="zoom">Temporal Scale</option>
-                          </select>
-                       </div>
-
-                       <div className="grid grid-cols-2 gap-4">
-                          <div className="space-y-2">
-                             <label className="text-[8px] font-black text-slate-400 uppercase tracking-widest ml-1">Direction</label>
-                             <select 
-                               value={selectedEl?.animationDirection || 'up'}
-                               disabled={selectedEl?.animation === 'fade' || selectedEl?.animation === 'fade-out'}
-                               onChange={(e) => updateSelectedElements({ animationDirection: e.target.value as AnimationDirection })}
-                               className="w-full bg-white border border-slate-100 rounded-xl px-4 py-2.5 text-[10px] font-bold outline-none focus:ring-1 focus:ring-accent disabled:opacity-30 shadow-sm cursor-pointer hover:border-slate-300 transition-colors"
-                             >
-                                <option value="up">Top (North)</option>
-                                <option value="down">Bottom (South)</option>
-                                <option value="left">Left (West)</option>
-                                <option value="right">Right (East)</option>
-                                <option value="in">Inward</option>
-                                <option value="out">Outward</option>
-                             </select>
-                          </div>
-                          <div className="space-y-2">
-                             <label className="text-[8px] font-black text-slate-400 uppercase tracking-widest ml-1">Interpolation</label>
-                             <select 
-                               value={selectedEl?.animationEasing || 'ease-out'}
-                               onChange={(e) => updateSelectedElements({ animationEasing: e.target.value as AnimationEasing })}
-                               className="w-full bg-white border border-slate-100 rounded-xl px-4 py-2.5 text-[10px] font-bold outline-none focus:ring-1 focus:ring-accent shadow-sm cursor-pointer hover:border-slate-300 transition-colors"
-                             >
-                                <option value="linear">Linear (Constant)</option>
-                                <option value="ease-out">Cinema Ease (Smooth)</option>
-                                <option value="elastic">Physics Elastic (Organic)</option>
-                                <option value="bounce-phys">Gravity Bounce (Physical)</option>
-                             </select>
-                          </div>
-                       </div>
-
-                       <div className="grid grid-cols-2 gap-4 pt-2 border-t border-slate-200 mt-2 pt-6">
-                          <div className="space-y-3">
-                             <div className="flex justify-between items-center px-1">
-                                <label className="text-[8px] font-black text-slate-400 uppercase tracking-widest">Duration</label>
-                                <span className="text-[9px] font-bold text-accent">{selectedEl?.animationDuration || 1}s</span>
-                             </div>
-                             <input 
-                              type="range" step="0.1" min="0.1" max="5"
-                              value={selectedEl?.animationDuration || 1}
-                              onChange={(e) => updateSelectedElements({ animationDuration: parseFloat(e.target.value) })}
-                              className="w-full accent-accent h-1 bg-slate-200 rounded-full appearance-none cursor-pointer"
-                             />
-                          </div>
-                          <div className="space-y-3">
-                             <div className="flex justify-between items-center px-1">
-                                <label className="text-[8px] font-black text-slate-400 uppercase tracking-widest">Delay</label>
-                                <span className="text-[9px] font-bold text-accent">{selectedEl?.animationDelay || 0}s</span>
-                             </div>
-                             <input 
-                              type="range" step="0.1" min="0" max="5"
-                              value={selectedEl?.animationDelay || 0}
-                              onChange={(e) => updateSelectedElements({ animationDelay: parseFloat(e.target.value) })}
-                              className="w-full accent-accent h-1 bg-slate-200 rounded-full appearance-none cursor-pointer"
-                             />
-                          </div>
-                       </div>
-                    </div>
-
-                    <div className="space-y-4">
-                      <p className="text-[9px] font-black text-slate-400 uppercase tracking-[0.3em] ml-1">High-Fidelity Presets</p>
-                      <div className="grid grid-cols-3 gap-2">
-                        {ANIMATION_PRESETS.map(preset => (
-                          <button 
-                            key={preset.id} 
-                            onClick={() => applyPreset(preset)} 
-                            className={`p-4 rounded-2xl border text-[8px] font-black uppercase transition-all flex flex-col items-center gap-2 hover:translate-y-[-2px] hover:shadow-md ${isPresetActive(preset) ? 'bg-slate-900 border-slate-900 text-white shadow-xl scale-[1.05]' : 'bg-white border-slate-100 text-slate-400 hover:border-slate-300'}`}
-                          >
-                            <i className={`fas ${preset.icon} text-lg mb-1`}></i>
-                            <span className="text-center leading-tight">{preset.label}</span>
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="text-center py-24 px-8 bg-slate-50 rounded-[3rem] border border-dashed border-slate-200 opacity-60 flex flex-col items-center justify-center gap-6">
-                    <div className="w-20 h-20 bg-white rounded-3xl flex items-center justify-center text-slate-200 shadow-inner"><i className="fas fa-wand-magic-sparkles text-2xl"></i></div>
-                    <p className="text-[11px] text-slate-500 font-black leading-relaxed px-4 uppercase tracking-widest">Select composition layers to activate motion synthesis controls.</p>
-                  </div>
-                )}
-              </div>
+              <AnimationPanel
+                elements={elements}
+                selectedIds={selectedIds}
+                selectedElement={selectedEl}
+                isPreviewMode={isPreviewMode}
+                animationClipboard={animationClipboard}
+                maxTimelineSec={MAX_TIMELINE_SEC}
+                timelineRef={timelineRef}
+                onTriggerPreview={triggerPreview}
+                onMagicStagger={handleMagicStagger}
+                onCopyAnimation={copyAnimation}
+                onPasteAnimation={pasteAnimation}
+                onUpdateSelectedElements={updateSelectedElements}
+                onSelectElement={(id) => setSelectedIds([id])}
+                onTimelineInteraction={handleTimelineInteraction}
+              />
             ) : activeTab === 'ai' ? (
               <div className="flex flex-col h-full overflow-y-auto scrollbar-hide space-y-10">
                 <div className="flex items-center justify-between border-b border-slate-100 pb-4">
@@ -1067,11 +744,12 @@ const Canvas: React.FC = () => {
                    <i className="fas fa-sparkles absolute -top-4 -right-4 text-7xl opacity-10 rotate-12"></i>
                    <p className="text-[10px] text-purple-400 font-black uppercase tracking-widest mb-1">Atmosphere Synthesis</p>
                    <p className="text-xs font-bold mb-6 italic opacity-80">Design from abstract prompt</p>
-                   <textarea 
-                    value={bgPrompt} 
-                    onChange={(e) => setBgPrompt(e.target.value)} 
-                    placeholder="Describe the perfect backdrop..." 
-                    className="w-full h-28 bg-white/5 border border-white/10 rounded-2xl p-4 text-xs text-white mb-6 outline-none focus:ring-1 focus:ring-purple-400 resize-none transition-all placeholder:text-white/20" 
+                   <textarea
+                    value={bgPrompt}
+                    onChange={(e) => setBgPrompt(e.target.value)}
+                    placeholder="Describe the perfect backdrop..."
+                    aria-label="Background generation prompt"
+                    className="w-full h-28 bg-white/5 border border-white/10 rounded-2xl p-4 text-xs text-white mb-6 outline-none focus:ring-1 focus:ring-purple-400 resize-none transition-all placeholder:text-white/20"
                    />
                    
                    <div className="space-y-4 mb-8">
@@ -1143,28 +821,28 @@ const Canvas: React.FC = () => {
                     <div className="space-y-8">
                        <div className="grid grid-cols-2 gap-4">
                           <div className="space-y-2">
-                             <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-1">X Position</label>
-                             <input type="number" value={Math.round(selectedEl.x)} onChange={(e) => updateElement(selectedEl.id, { x: parseInt(e.target.value) })} className="w-full bg-slate-50 border border-slate-100 rounded-xl px-4 py-3 text-xs font-bold focus:ring-1 focus:ring-accent outline-none hover:border-slate-300 transition-colors" />
+                             <label htmlFor="element-x-position" className="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-1">X Position</label>
+                             <input id="element-x-position" type="number" value={Math.round(selectedEl.x)} onChange={(e) => updateElement(selectedEl.id, { x: parseInt(e.target.value) })} aria-label="X Position" className="w-full bg-slate-50 border border-slate-100 rounded-xl px-4 py-3 text-xs font-bold focus:ring-1 focus:ring-accent outline-none hover:border-slate-300 transition-colors" />
                           </div>
                           <div className="space-y-2">
-                             <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-1">Y Position</label>
-                             <input type="number" value={Math.round(selectedEl.y)} onChange={(e) => updateElement(selectedEl.id, { y: parseInt(e.target.value) })} className="w-full bg-slate-50 border border-slate-100 rounded-xl px-4 py-3 text-xs font-bold focus:ring-1 focus:ring-accent outline-none hover:border-slate-300 transition-colors" />
+                             <label htmlFor="element-y-position" className="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-1">Y Position</label>
+                             <input id="element-y-position" type="number" value={Math.round(selectedEl.y)} onChange={(e) => updateElement(selectedEl.id, { y: parseInt(e.target.value) })} aria-label="Y Position" className="w-full bg-slate-50 border border-slate-100 rounded-xl px-4 py-3 text-xs font-bold focus:ring-1 focus:ring-accent outline-none hover:border-slate-300 transition-colors" />
                           </div>
                        </div>
                        <div className="p-8 bg-slate-50 border border-slate-100 rounded-[2.5rem] space-y-8 shadow-inner">
                           <div className="space-y-4">
                              <div className="flex justify-between items-center px-1">
-                                <label className="text-[9px] font-black text-emerald-600 uppercase tracking-widest flex items-center gap-2"><i className="fas fa-arrows-left-right"></i> Horizontal Skew</label>
+                                <label htmlFor="skew-x-slider" className="text-[9px] font-black text-emerald-600 uppercase tracking-widest flex items-center gap-2"><i className="fas fa-arrows-left-right" aria-hidden="true"></i> Horizontal Skew</label>
                                 <span className="text-[10px] font-mono text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-lg border border-emerald-100">{selectedEl.skewX || 0}°</span>
                              </div>
-                             <input type="range" min="-45" max="45" step="1" value={selectedEl.skewX || 0} onChange={(e) => updateElement(selectedEl.id, { skewX: parseInt(e.target.value) })} className="w-full accent-emerald-500 h-1 bg-slate-200 rounded-full appearance-none cursor-pointer" />
+                             <input id="skew-x-slider" type="range" min="-45" max="45" step="1" value={selectedEl.skewX || 0} onChange={(e) => updateElement(selectedEl.id, { skewX: parseInt(e.target.value) })} aria-label={`Horizontal Skew: ${selectedEl.skewX || 0} degrees`} className="w-full accent-emerald-500 h-1 bg-slate-200 rounded-full appearance-none cursor-pointer" />
                           </div>
                           <div className="space-y-4">
                              <div className="flex justify-between items-center px-1">
-                                <label className="text-[9px] font-black text-amber-600 uppercase tracking-widest flex items-center gap-2"><i className="fas fa-arrows-up-down"></i> Vertical Skew</label>
+                                <label htmlFor="skew-y-slider" className="text-[9px] font-black text-amber-600 uppercase tracking-widest flex items-center gap-2"><i className="fas fa-arrows-up-down" aria-hidden="true"></i> Vertical Skew</label>
                                 <span className="text-[10px] font-mono text-amber-600 bg-amber-50 px-2 py-0.5 rounded-lg border border-amber-100">{selectedEl.skewY || 0}°</span>
                              </div>
-                             <input type="range" min="-45" max="45" step="1" value={selectedEl.skewY || 0} onChange={(e) => updateElement(selectedEl.id, { skewY: parseInt(e.target.value) })} className="w-full accent-amber-500 h-1 bg-slate-200 rounded-full appearance-none cursor-pointer" />
+                             <input id="skew-y-slider" type="range" min="-45" max="45" step="1" value={selectedEl.skewY || 0} onChange={(e) => updateElement(selectedEl.id, { skewY: parseInt(e.target.value) })} aria-label={`Vertical Skew: ${selectedEl.skewY || 0} degrees`} className="w-full accent-amber-500 h-1 bg-slate-200 rounded-full appearance-none cursor-pointer" />
                           </div>
                        </div>
                        <div className="p-8 bg-slate-900 rounded-[2.5rem] text-white relative overflow-hidden shadow-2xl">

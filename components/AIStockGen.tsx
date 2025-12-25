@@ -310,6 +310,7 @@ export default function AIStockGen() {
                   value={prompt}
                   onChange={(e) => setPrompt(e.target.value)}
                   placeholder={prodMode === 'loop' ? "Describe a cinematic camera movement or physical action..." : "Describe a professional composition, lighting setup, or subject..."}
+                  aria-label="AI generation creative command input"
                   className="flex-1 bg-white border border-slate-100 shadow-inner focus:ring-4 focus:ring-accent/10 rounded-[2.5rem] px-10 py-8 text-2xl outline-none transition-all placeholder:text-slate-300 font-medium hover:bg-white focus:bg-white"
                 />
               </div>
@@ -429,9 +430,11 @@ export default function AIStockGen() {
                       <p className="text-[9px] font-black text-slate-500 uppercase tracking-widest ml-1">Aspect Ratio</p>
                       <div className="flex gap-2">
                         {(prodMode === 'still' ? ['1:1', '4:3', '16:9', '9:16'] : ['16:9', '9:16']).map(val => (
-                          <button 
+                          <button
                             key={val}
                             onClick={() => setAspectRatio(val as any)}
+                            aria-label={`Set aspect ratio to ${val}`}
+                            aria-pressed={aspectRatio === val}
                             className={`px-5 py-2.5 rounded-xl text-[10px] font-black border transition-all duration-300 hover:scale-110 active:scale-90 ${aspectRatio === val ? 'bg-slate-900 text-white border-slate-900 shadow-lg' : 'bg-white text-slate-400 border-slate-100 hover:border-slate-300'}`}
                           >
                             {val}
@@ -444,9 +447,11 @@ export default function AIStockGen() {
                       <p className="text-[9px] font-black text-slate-500 uppercase tracking-widest ml-1">Batch Array</p>
                       <div className="flex gap-2">
                         {[1, 2, 4].map(n => (
-                          <button 
+                          <button
                             key={n}
                             onClick={() => setBatchCount(n)}
+                            aria-label={`Generate ${n} ${n === 1 ? 'asset' : 'assets'} at once`}
+                            aria-pressed={batchCount === n}
                             className={`w-12 h-10 rounded-xl text-[10px] font-black border transition-all duration-300 hover:scale-110 active:scale-90 ${batchCount === n ? 'bg-indigo-600 text-white border-indigo-600 shadow-lg' : 'bg-white text-slate-400 border-slate-100 hover:border-slate-300'}`}
                           >
                             {n}x
@@ -464,10 +469,11 @@ export default function AIStockGen() {
                       <span className="text-[10px] font-black text-accent bg-accent/10 px-3 py-1 rounded-lg border border-accent/20 transition-all hover:scale-110">{motionEnergy}/10</span>
                     </div>
                     <div className="relative group px-1">
-                      <input 
-                        type="range" min="1" max="10" step="1" 
+                      <input
+                        type="range" min="1" max="10" step="1"
                         value={motionEnergy}
                         onChange={(e) => setMotionEnergy(parseInt(e.target.value))}
+                        aria-label={`Motion profile intensity: ${motionEnergy} out of 10`}
                         className="w-full h-2 bg-slate-200 rounded-full appearance-none cursor-pointer accent-accent transition-all hover:h-3"
                       />
                     </div>
@@ -535,20 +541,22 @@ export default function AIStockGen() {
                 <div className="p-10">
                   <p className="text-sm font-medium text-slate-800 line-clamp-2 leading-relaxed mb-8 italic opacity-70">"{item.prompt}"</p>
                   <div className="flex gap-4">
-                    <button 
+                    <button
                       onClick={() => handleDownload(item)}
                       disabled={exportingId === item.id || item.status !== 'ready'}
+                      aria-label={`Export ${item.isVideo ? 'video' : 'image'} as ${item.isVideo ? 'MP4' : 'PNG'}`}
                       className="flex-1 h-20 rounded-[2rem] bg-slate-900 text-white text-[10px] font-black uppercase tracking-widest hover:bg-black transition-all duration-300 hover:scale-105 active:scale-95 flex items-center justify-center gap-3 shadow-xl disabled:opacity-30"
                     >
-                      {exportingId === item.id ? <i className="fas fa-spinner fa-spin"></i> : <i className="fas fa-file-export transition-transform group-hover:translate-y-[-2px]"></i>}
+                      {exportingId === item.id ? <i className="fas fa-spinner fa-spin" aria-hidden="true"></i> : <i className="fas fa-file-export transition-transform group-hover:translate-y-[-2px]" aria-hidden="true"></i>}
                       {exportingId === item.id ? 'Processing...' : `Export ${item.isVideo ? 'MP4' : 'PNG'}`}
                     </button>
-                    <button 
+                    <button
                       onClick={() => { if(item.url) syncToGoogleDrive(item, `Lumina_${item.id}`); }}
                       disabled={exportingId === item.id || item.status !== 'ready'}
+                      aria-label="Sync to Google Drive"
                       className="w-20 h-20 bg-slate-50 border border-slate-100 rounded-[2rem] flex items-center justify-center text-slate-400 hover:text-indigo-600 transition-all duration-300 hover:scale-110 active:scale-90 disabled:opacity-30 shadow-sm"
                     >
-                      <i className="fab fa-google-drive transition-transform group-hover:rotate-12"></i>
+                      <i className="fab fa-google-drive transition-transform group-hover:rotate-12" aria-hidden="true"></i>
                     </button>
                   </div>
                 </div>

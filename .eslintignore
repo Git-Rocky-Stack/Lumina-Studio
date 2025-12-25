@@ -1,0 +1,29 @@
+# Dependencies
+node_modules
+package-lock.json
+
+# Build outputs
+dist
+build
+.vite
+.next
+out
+
+# Cache
+.cache
+.parcel-cache
+.eslintcache
+
+# Coverage
+coverage
+.nyc_output
+
+# Other
+public/sw.js
+public/workbox-*.js
+*.min.js
+
+# Config files
+vite.config.ts
+*.config.js
+*.config.ts

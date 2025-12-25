@@ -18,6 +18,43 @@ export default defineConfig(({ mode }) => {
         alias: {
           '@': path.resolve(__dirname, '.'),
         }
-      }
+      },
+      build: {
+        // Increase chunk size warning limit
+        chunkSizeWarningLimit: 500,
+        rollupOptions: {
+          output: {
+            // Manual chunks for better code splitting
+            manualChunks: {
+              // React core
+              'vendor-react': ['react', 'react-dom'],
+              // Supabase auth
+              'vendor-supabase': ['@supabase/supabase-js'],
+              // Animation library
+              'vendor-motion': ['framer-motion'],
+              // Router
+              'vendor-router': ['react-router-dom'],
+              // Google AI services
+              'vendor-google-ai': ['@google/genai'],
+              // Icons
+              'vendor-icons': ['lucide-react'],
+            },
+          },
+        },
+        // Minification options - use esbuild for faster builds
+        minify: 'esbuild',
+        // Generate source maps for debugging
+        sourcemap: mode !== 'production',
+        // Target modern browsers for smaller bundle
+        target: 'es2020',
+      },
+      // Optimize deps
+      optimizeDeps: {
+        include: [
+          'react',
+          'react-dom',
+          '@supabase/supabase-js',
+        ],
+      },
     };
 });
