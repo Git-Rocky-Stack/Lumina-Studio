@@ -72,7 +72,7 @@ const HeroSection: React.FC = () => {
             loop
             playsInline
             preload="metadata"
-            className="absolute w-full h-full object-cover opacity-50"
+            className="absolute w-full h-full object-cover opacity-40"
             style={{ filter: 'saturate(1.2)' }}
           >
             <source src="/h1_video.mp4" type="video/mp4" />
