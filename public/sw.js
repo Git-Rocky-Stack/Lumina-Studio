@@ -1,6 +1,6 @@
 // Lumina Studio Service Worker
-const CACHE_NAME = 'lumina-studio-v4';
-const RUNTIME_CACHE = 'lumina-runtime-v4';
+const CACHE_NAME = 'lumina-studio-v5';
+const RUNTIME_CACHE = 'lumina-runtime-v5';
 
 const PRECACHE_ASSETS = ['/', '/index.html'];
 
@@ -31,6 +31,13 @@ self.addEventListener('fetch', (event) => {
 
   // Skip API requests
   if (url.pathname.startsWith('/api')) return;
+
+  // Skip large media files (videos) - let browser handle directly
+  const mediaExtensions = ['.mp4', '.webm', '.mov', '.avi', '.mkv', '.ogg', '.ogv'];
+  if (mediaExtensions.some(ext => url.pathname.toLowerCase().endsWith(ext))) return;
+
+  // Skip range requests (used for video seeking)
+  if (event.request.headers.get('range')) return;
 
   event.respondWith(
     caches.match(event.request).then((cached) => {
