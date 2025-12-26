@@ -4,6 +4,7 @@
  * Configures Supabase authentication, routing, and the main app.
  */
 
+import './styles/main.css';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
