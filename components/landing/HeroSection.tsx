@@ -77,8 +77,6 @@ const HeroSection: React.FC = () => {
           >
             <source src="/h1_video.mp4" type="video/mp4" />
           </video>
-          {/* Gradient overlay to blend video edges */}
-          <div className="absolute inset-0 bg-gradient-to-b from-slate-950/60 via-transparent to-slate-950/80" />
         </div>
       )}
 
