@@ -229,7 +229,7 @@ const Footer: React.FC = () => {
               <img
                 src="/footer_logo.png"
                 alt="Strategia-X"
-                className="h-8 w-auto"
+                className="h-16 w-auto mix-blend-lighten"
               />
             </motion.a>
           </div>

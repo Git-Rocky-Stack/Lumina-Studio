@@ -21,18 +21,8 @@ const floatingElements = [
 const HeroSection: React.FC = () => {
   const [statsRef, statsVisible] = useScrollAnimation(0.3);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [videoLoaded, setVideoLoaded] = useState(false);
   const heroRef = useRef<HTMLElement>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
   const { scrollYProgress } = useScroll();
-
-  // Lazy load video after component mounts
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setVideoLoaded(true);
-    }, 500);
-    return () => clearTimeout(timer);
-  }, []);
 
   const y = useTransform(scrollYProgress, [0, 0.5], [0, 150]);
   const opacity = useTransform(scrollYProgress, [0, 0.3], [1, 0]);
@@ -62,26 +52,6 @@ const HeroSection: React.FC = () => {
       ref={heroRef}
       className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20"
     >
-      {/* Cinematic Video Background */}
-      {videoLoaded && (
-        <div className="absolute inset-0 overflow-hidden">
-          <video
-            ref={videoRef}
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="metadata"
-            className="absolute w-full h-full object-cover opacity-50"
-            style={{ filter: 'saturate(1.2)' }}
-          >
-            <source src="/h1_video.mp4" type="video/mp4" />
-          </video>
-          {/* Gradient overlay to blend video edges */}
-          <div className="absolute inset-0 bg-gradient-to-b from-slate-950/60 via-transparent to-slate-950/80" />
-        </div>
-      )}
-
       {/* Animated Background Layer */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         {/* Primary gradient orbs */}

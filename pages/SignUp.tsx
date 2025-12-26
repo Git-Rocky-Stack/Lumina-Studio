@@ -226,7 +226,7 @@ const SignUpPage: React.FC = () => {
         <img
           src="/footer_logo.png"
           alt="Strategia-X"
-          className="h-6 w-auto"
+          className="h-12 w-auto mix-blend-lighten"
         />
       </a>
     </div>

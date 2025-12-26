@@ -73,6 +73,7 @@ const changelog: ChangelogEntry[] = [
 ];
 
 const STORAGE_KEY = 'lumina_last_seen_version';
+const NEVER_SHOW_KEY = 'lumina_never_show_whats_new';
 const CURRENT_VERSION = changelog[0].version;
 
 interface WhatsNewModalProps {
@@ -82,10 +83,17 @@ interface WhatsNewModalProps {
 const WhatsNewModal: React.FC<WhatsNewModalProps> = ({ forceOpen = false }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedVersion, setSelectedVersion] = useState(0);
+  const [neverShowAgain, setNeverShowAgain] = useState(false);
 
   useEffect(() => {
     if (forceOpen) {
       setIsOpen(true);
+      return;
+    }
+
+    // Check if user opted to never show again
+    const neverShow = localStorage.getItem(NEVER_SHOW_KEY);
+    if (neverShow === 'true') {
       return;
     }
 
@@ -101,6 +109,9 @@ const WhatsNewModal: React.FC<WhatsNewModalProps> = ({ forceOpen = false }) => {
   const handleClose = () => {
     setIsOpen(false);
     localStorage.setItem(STORAGE_KEY, CURRENT_VERSION);
+    if (neverShowAgain) {
+      localStorage.setItem(NEVER_SHOW_KEY, 'true');
+    }
   };
 
   const categoryStyles = {
@@ -228,13 +239,26 @@ const WhatsNewModal: React.FC<WhatsNewModalProps> = ({ forceOpen = false }) => {
             </div>
 
             {/* Footer */}
-            <div className="px-8 py-4 border-t border-white/10 flex items-center justify-between">
-              <a
-                href="/changelog"
-                className="text-indigo-400 hover:text-indigo-300 text-sm font-medium transition-colors"
-              >
-                View full changelog →
-              </a>
+            <div className="px-8 py-4 border-t border-white/10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div className="flex flex-col gap-3">
+                <a
+                  href="/changelog"
+                  className="text-indigo-400 hover:text-indigo-300 text-sm font-medium transition-colors"
+                >
+                  View full changelog →
+                </a>
+                <label className="flex items-center gap-2 cursor-pointer group">
+                  <input
+                    type="checkbox"
+                    checked={neverShowAgain}
+                    onChange={(e) => setNeverShowAgain(e.target.checked)}
+                    className="w-4 h-4 rounded border-slate-600 bg-slate-800 text-indigo-500 focus:ring-indigo-500 focus:ring-offset-0 cursor-pointer"
+                  />
+                  <span className="text-slate-400 text-sm group-hover:text-slate-300 transition-colors">
+                    Don't show this message again
+                  </span>
+                </label>
+              </div>
               <button
                 onClick={handleClose}
                 className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-indigo-500 to-violet-600 font-semibold text-white shadow-lg shadow-indigo-500/25 hover:shadow-xl hover:scale-[1.02] transition-all"
