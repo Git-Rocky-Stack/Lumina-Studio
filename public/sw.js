@@ -1,6 +1,6 @@
 // Lumina Studio Service Worker
-const CACHE_NAME = 'lumina-studio-v5';
-const RUNTIME_CACHE = 'lumina-runtime-v5';
+const CACHE_NAME = 'lumina-studio-v6';
+const RUNTIME_CACHE = 'lumina-runtime-v6';
 
 const PRECACHE_ASSETS = ['/', '/index.html'];
 
