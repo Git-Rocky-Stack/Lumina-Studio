@@ -214,6 +214,25 @@ const Footer: React.FC = () => {
               ))}
             </div>
           </div>
+
+          {/* Strategia-X Logo */}
+          <div className="flex justify-center mt-8">
+            <motion.a
+              href="https://www.strategia-x.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              whileHover={{ scale: 1.05, opacity: 1 }}
+              whileTap={{ scale: 0.98 }}
+              className="opacity-80 transition-opacity hover:opacity-100"
+              aria-label="Strategia-X"
+            >
+              <img
+                src="/footer_logo.png"
+                alt="Strategia-X"
+                className="h-8 w-auto"
+              />
+            </motion.a>
+          </div>
         </div>
       </div>
     </footer>

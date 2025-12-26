@@ -214,6 +214,21 @@ const SignUpPage: React.FC = () => {
           Sign in
         </Link>
       </p>
+
+      {/* Strategia-X Logo */}
+      <a
+        href="https://www.strategia-x.com"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="relative z-10 mt-12 opacity-60 hover:opacity-100 transition-opacity"
+        aria-label="Strategia-X"
+      >
+        <img
+          src="/footer_logo.png"
+          alt="Strategia-X"
+          className="h-6 w-auto"
+        />
+      </a>
     </div>
   );
 };
