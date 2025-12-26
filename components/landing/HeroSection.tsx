@@ -82,60 +82,6 @@ const HeroSection: React.FC = () => {
         </div>
       )}
 
-      {/* Animated Background Layer */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        {/* Primary gradient orbs */}
-        <motion.div
-          style={{ x: mouseX, y: mouseY }}
-          className="absolute top-1/4 left-1/4 w-[900px] h-[900px] rounded-full animate-morph"
-        >
-          <div className="absolute inset-0 bg-indigo-500/20 rounded-full blur-[180px] animate-pulse-glow" />
-        </motion.div>
-
-        <motion.div
-          style={{ x: useTransform(mouseX, v => -v * 0.5), y: useTransform(mouseY, v => -v * 0.5) }}
-          className="absolute bottom-1/4 right-1/4 w-[700px] h-[700px] rounded-full"
-        >
-          <div className="absolute inset-0 bg-violet-500/15 rounded-full blur-[150px] animate-float-delayed" />
-        </motion.div>
-
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1200px] h-[1200px]">
-          <div className="absolute inset-0 bg-purple-500/10 rounded-full blur-[200px] animate-morph" />
-        </div>
-
-        {/* Accent orbs */}
-        <div className="absolute top-20 right-1/4 w-[300px] h-[300px] bg-cyan-500/10 rounded-full blur-[100px] animate-float" />
-        <div className="absolute bottom-40 left-1/3 w-[250px] h-[250px] bg-pink-500/10 rounded-full blur-[80px] animate-float-reverse" />
-
-        {/* Premium grid overlay */}
-        <div className="absolute inset-0 bg-grid opacity-50" />
-
-        {/* Radial gradient fade */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.15),transparent)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,rgba(2,6,23,0.8)_70%)]" />
-
-        {/* Floating particles */}
-        <div className="absolute inset-0">
-          {[...Array(20)].map((_, i) => (
-            <div
-              key={i}
-              className="absolute w-1 h-1 bg-indigo-400/40 rounded-full animate-particle"
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-                animationDelay: `${Math.random() * 8}s`,
-                animationDuration: `${8 + Math.random() * 4}s`,
-              }}
-            />
-          ))}
-        </div>
-
-        {/* Orbiting elements */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px]">
-          <div className="absolute w-3 h-3 bg-indigo-400/60 rounded-full animate-orbit shadow-lg shadow-indigo-500/50" />
-          <div className="absolute w-2 h-2 bg-violet-400/60 rounded-full animate-orbit-reverse shadow-lg shadow-violet-500/50" />
-        </div>
-      </div>
 
       {/* Content */}
       <motion.div
