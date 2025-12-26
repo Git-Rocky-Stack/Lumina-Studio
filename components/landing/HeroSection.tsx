@@ -91,9 +91,8 @@ const HeroSection: React.FC = () => {
           initial={{ opacity: 0, y: 30, scale: 0.9 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="inline-flex items-center gap-3 px-6 py-3 rounded-full glass-card mb-12 group cursor-pointer hover:border-indigo-500/40 transition-all duration-500"
+          className="relative inline-flex items-center gap-3 px-6 py-3 rounded-full glass-card mb-12 group cursor-pointer hover:border-indigo-500/40 transition-all duration-500"
         >
-          <span className="absolute inset-0 rounded-full animate-shimmer" />
           <span className="relative flex h-2.5 w-2.5">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
             <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-400" />
