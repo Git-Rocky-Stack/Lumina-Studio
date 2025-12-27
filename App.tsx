@@ -21,7 +21,7 @@ const Canvas = lazy(() => import('./components/Canvas'));
 const VideoStudio = lazy(() => import('./components/VideoStudio'));
 const AIStockGen = lazy(() => import('./components/AIStockGen'));
 const PDFSuite = lazy(() => import('./components/PDFSuite'));
-const ProPhoto = lazy(() => import('./components/ProPhoto'));
+const ProPhoto = lazy(() => import('./components/ProPhoto/index'));
 const Assistant = lazy(() => import('./components/Assistant'));
 const BrandHub = lazy(() => import('./components/BrandHub'));
 const MarketingHub = lazy(() => import('./components/MarketingHub'));
