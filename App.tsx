@@ -10,6 +10,7 @@ import {
   OnboardingProvider,
   CommandPaletteProvider,
   ServiceWorkerProvider,
+  ToastProvider,
   GlobalDropZone,
   Confetti,
   ScrollProgress,
@@ -181,9 +182,10 @@ const App: React.FC = () => {
 
   return (
     <ServiceWorkerProvider>
-      <CommandPaletteProvider>
-        <OnboardingProvider>
-          <div className="flex h-screen w-full bg-slate-50 overflow-hidden text-slate-900 antialiased font-sans">
+      <ToastProvider position="top-right">
+        <CommandPaletteProvider>
+          <OnboardingProvider>
+            <div className="flex h-screen w-full bg-slate-50 overflow-hidden text-slate-900 antialiased font-sans">
             {/* Scroll Progress Indicator */}
             <ScrollProgress color="var(--accent)" height={3} />
 
@@ -283,9 +285,10 @@ const App: React.FC = () => {
 
             {showTutorial && <TutorialOverlay onClose={() => setShowTutorial(false)} />}
             <ShortcutGuide isOpen={showShortcuts} onClose={() => setShowShortcuts(false)} />
-          </div>
-        </OnboardingProvider>
-      </CommandPaletteProvider>
+            </div>
+          </OnboardingProvider>
+        </CommandPaletteProvider>
+      </ToastProvider>
     </ServiceWorkerProvider>
   );
 };

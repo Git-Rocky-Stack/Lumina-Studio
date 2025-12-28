@@ -73,12 +73,26 @@ const Canvas: React.FC = () => {
   const canvasRef = useRef<HTMLDivElement>(null);
   const timelineRef = useRef<HTMLDivElement>(null);
 
+  // Derived state - must be before any useEffect that references it
+  const selectedEl = elements.find(e => e.id === selectedIds[0]);
+
   const saveToHistory = useCallback((newState: DesignElement[]) => {
     setHistory(prev => [...prev, elements]);
     setFuture([]);
     setElements(newState);
     localStorage.setItem('lumina_canvas_state', JSON.stringify(newState));
   }, [elements]);
+
+  // Helper functions needed by keyboard navigation - must be defined before the useEffect
+  const updateSelectedElements = useCallback((updates: Partial<DesignElement>) => {
+    const newState = elements.map(el => selectedIds.includes(el.id) ? { ...el, ...updates } : el);
+    saveToHistory(newState);
+  }, [elements, selectedIds, saveToHistory]);
+
+  const deleteElement = useCallback((id: string) => {
+    saveToHistory(elements.filter(el => el.id !== id));
+    setSelectedIds([]);
+  }, [elements, saveToHistory]);
 
   const undo = useCallback(() => {
     setHistory(prev => {
@@ -441,22 +455,12 @@ const Canvas: React.FC = () => {
     saveToHistory(newState);
   };
 
-  const updateSelectedElements = (updates: Partial<DesignElement>) => {
-    const newState = elements.map(el => selectedIds.includes(el.id) ? { ...el, ...updates } : el);
-    saveToHistory(newState);
-  };
-
   const toggleVisibility = (id: string) => {
     updateElement(id, { isVisible: !elements.find(e => e.id === id)?.isVisible });
   };
 
   const toggleLock = (id: string) => {
     updateElement(id, { isLocked: !elements.find(e => e.id === id)?.isLocked });
-  };
-
-  const deleteElement = (id: string) => {
-    saveToHistory(elements.filter(el => el.id !== id));
-    setSelectedIds([]);
   };
 
   const maskStyle = (type?: MaskType) => {
@@ -522,8 +526,6 @@ const Canvas: React.FC = () => {
       animationIterationCount: animationClipboard.loop
     });
   };
-
-  const selectedEl = elements.find(e => e.id === selectedIds[0]);
 
   const handleTimelineInteraction = (e: React.MouseEvent, elId: string, type: 'move' | 'stretch') => {
     e.stopPropagation();
