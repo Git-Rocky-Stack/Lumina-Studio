@@ -31,6 +31,314 @@
 
     <!-- Theme Color -->
     <meta name="theme-color" content="#6366f1">
+
+    <!-- JSON-LD Structured Data for SEO -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "@id": "https://lumina-studio.app/#website",
+          "url": "https://lumina-studio.app/",
+          "name": "Lumina Studio OS",
+          "description": "The all-in-one AI creative suite for designers, marketers, and content creators.",
+          "publisher": {
+            "@id": "https://lumina-studio.app/#organization"
+          }
+        },
+        {
+          "@type": "Organization",
+          "@id": "https://lumina-studio.app/#organization",
+          "name": "Lumina Studio",
+          "url": "https://lumina-studio.app/",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://lumina-studio.app/og-image.png",
+            "width": 1200,
+            "height": 630
+          },
+          "email": "support@lumina.ai",
+          "sameAs": [
+            "https://twitter.com/luminastudio",
+            "https://www.strategia-x.com"
+          ],
+          "parentOrganization": {
+            "@type": "Organization",
+            "name": "Strategia-X",
+            "url": "https://www.strategia-x.com"
+          }
+        },
+        {
+          "@type": "MerchantReturnPolicy",
+          "@id": "https://lumina-studio.app/#return-policy",
+          "applicableCountry": "US",
+          "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+          "merchantReturnDays": 30,
+          "returnMethod": "https://schema.org/ReturnByMail",
+          "returnFees": "https://schema.org/FreeReturn"
+        },
+        {
+          "@type": "OfferShippingDetails",
+          "@id": "https://lumina-studio.app/#shipping",
+          "shippingRate": {
+            "@type": "MonetaryAmount",
+            "value": "0",
+            "currency": "USD"
+          },
+          "shippingDestination": {
+            "@type": "DefinedRegion",
+            "addressCountry": "US"
+          },
+          "deliveryTime": {
+            "@type": "ShippingDeliveryTime",
+            "handlingTime": {
+              "@type": "QuantitativeValue",
+              "minValue": 0,
+              "maxValue": 0,
+              "unitCode": "DAY"
+            },
+            "transitTime": {
+              "@type": "QuantitativeValue",
+              "minValue": 0,
+              "maxValue": 0,
+              "unitCode": "DAY"
+            }
+          }
+        },
+        {
+          "@type": "SoftwareApplication",
+          "@id": "https://lumina-studio.app/#software",
+          "name": "Lumina Studio OS",
+          "applicationCategory": "MultimediaApplication",
+          "applicationSubCategory": "AI Creative Suite",
+          "operatingSystem": "Web Browser",
+          "browserRequirements": "Requires JavaScript. Requires HTML5.",
+          "description": "The all-in-one AI creative suite for designers, marketers, and content creators. Generate stunning visuals, videos, and marketing content 10x faster.",
+          "url": "https://lumina-studio.app/",
+          "image": "https://lumina-studio.app/og-image.png",
+          "screenshot": "https://lumina-studio.app/og-image.png",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD",
+            "availability": "https://schema.org/InStock"
+          },
+          "featureList": [
+            "AI image generation powered by Google Gemini 2.0",
+            "AI video creation and editing",
+            "Professional photo editing suite",
+            "PDF editing and document management",
+            "Brand kit and asset management",
+            "Real-time team collaboration",
+            "Export to PNG, JPG, WebP, SVG, MP4, WebM, GIF, PDF",
+            "API access for Pro and Team plans"
+          ],
+          "author": {
+            "@id": "https://lumina-studio.app/#organization"
+          }
+        },
+        {
+          "@type": "Product",
+          "@id": "https://lumina-studio.app/#free-plan",
+          "name": "Lumina Studio Free",
+          "description": "Try Lumina with included credits. 20 AI images/month, 3 AI videos/month, 1GB storage, basic export formats.",
+          "brand": {
+            "@type": "Brand",
+            "name": "Lumina Studio",
+            "url": "https://lumina-studio.app"
+          },
+          "category": "Software > Multimedia Software > AI Creative Tools",
+          "image": "https://lumina-studio.app/og-image.png",
+          "offers": {
+            "@type": "Offer",
+            "name": "Free Plan",
+            "price": "0",
+            "priceCurrency": "USD",
+            "availability": "https://schema.org/InStock",
+            "url": "https://lumina-studio.app/#pricing",
+            "seller": {"@id": "https://lumina-studio.app/#organization"},
+            "hasMerchantReturnPolicy": {"@id": "https://lumina-studio.app/#return-policy"},
+            "shippingDetails": {"@id": "https://lumina-studio.app/#shipping"}
+          }
+        },
+        {
+          "@type": "Product",
+          "@id": "https://lumina-studio.app/#starter-plan",
+          "name": "Lumina Studio Starter",
+          "description": "BYOK-only plan with unlimited AI images and videos using your own Gemini API key. 10GB storage, all export formats, email support.",
+          "brand": {
+            "@type": "Brand",
+            "name": "Lumina Studio",
+            "url": "https://lumina-studio.app"
+          },
+          "category": "Software > Multimedia Software > AI Creative Tools",
+          "image": "https://lumina-studio.app/og-image.png",
+          "offers": [
+            {
+              "@type": "Offer",
+              "name": "Starter Monthly",
+              "price": "9.00",
+              "priceCurrency": "USD",
+              "priceValidUntil": "2026-12-31",
+              "availability": "https://schema.org/InStock",
+              "url": "https://lumina-studio.app/#pricing",
+              "seller": {"@id": "https://lumina-studio.app/#organization"},
+              "hasMerchantReturnPolicy": {"@id": "https://lumina-studio.app/#return-policy"},
+              "shippingDetails": {"@id": "https://lumina-studio.app/#shipping"}
+            },
+            {
+              "@type": "Offer",
+              "name": "Starter Annual",
+              "price": "84.00",
+              "priceCurrency": "USD",
+              "priceValidUntil": "2026-12-31",
+              "availability": "https://schema.org/InStock",
+              "description": "Save 20% with annual billing ($7/month)",
+              "url": "https://lumina-studio.app/#pricing",
+              "seller": {"@id": "https://lumina-studio.app/#organization"},
+              "hasMerchantReturnPolicy": {"@id": "https://lumina-studio.app/#return-policy"},
+              "shippingDetails": {"@id": "https://lumina-studio.app/#shipping"}
+            }
+          ]
+        },
+        {
+          "@type": "Product",
+          "@id": "https://lumina-studio.app/#pro-plan",
+          "name": "Lumina Studio Pro",
+          "description": "500 AI images/month, 50 AI videos/month included, plus unlimited with BYOK. 50GB storage, priority support, brand kit, API access.",
+          "brand": {
+            "@type": "Brand",
+            "name": "Lumina Studio",
+            "url": "https://lumina-studio.app"
+          },
+          "category": "Software > Multimedia Software > AI Creative Tools",
+          "image": "https://lumina-studio.app/og-image.png",
+          "offers": [
+            {
+              "@type": "Offer",
+              "name": "Pro Monthly",
+              "price": "19.00",
+              "priceCurrency": "USD",
+              "priceValidUntil": "2026-12-31",
+              "availability": "https://schema.org/InStock",
+              "url": "https://lumina-studio.app/#pricing",
+              "seller": {"@id": "https://lumina-studio.app/#organization"},
+              "hasMerchantReturnPolicy": {"@id": "https://lumina-studio.app/#return-policy"},
+              "shippingDetails": {"@id": "https://lumina-studio.app/#shipping"}
+            },
+            {
+              "@type": "Offer",
+              "name": "Pro Annual",
+              "price": "180.00",
+              "priceCurrency": "USD",
+              "priceValidUntil": "2026-12-31",
+              "availability": "https://schema.org/InStock",
+              "description": "Save 20% with annual billing ($15/month)",
+              "url": "https://lumina-studio.app/#pricing",
+              "seller": {"@id": "https://lumina-studio.app/#organization"},
+              "hasMerchantReturnPolicy": {"@id": "https://lumina-studio.app/#return-policy"},
+              "shippingDetails": {"@id": "https://lumina-studio.app/#shipping"}
+            }
+          ]
+        },
+        {
+          "@type": "Product",
+          "@id": "https://lumina-studio.app/#team-plan",
+          "name": "Lumina Studio Team",
+          "description": "2000 AI images/month, 200 AI videos/month included, 200GB storage, up to 10 team members, advanced analytics, SSO & admin controls.",
+          "brand": {
+            "@type": "Brand",
+            "name": "Lumina Studio",
+            "url": "https://lumina-studio.app"
+          },
+          "category": "Software > Multimedia Software > AI Creative Tools",
+          "image": "https://lumina-studio.app/og-image.png",
+          "offers": [
+            {
+              "@type": "Offer",
+              "name": "Team Monthly",
+              "price": "49.00",
+              "priceCurrency": "USD",
+              "priceValidUntil": "2026-12-31",
+              "availability": "https://schema.org/InStock",
+              "url": "https://lumina-studio.app/#pricing",
+              "seller": {"@id": "https://lumina-studio.app/#organization"},
+              "hasMerchantReturnPolicy": {"@id": "https://lumina-studio.app/#return-policy"},
+              "shippingDetails": {"@id": "https://lumina-studio.app/#shipping"}
+            },
+            {
+              "@type": "Offer",
+              "name": "Team Annual",
+              "price": "468.00",
+              "priceCurrency": "USD",
+              "priceValidUntil": "2026-12-31",
+              "availability": "https://schema.org/InStock",
+              "description": "Save 20% with annual billing ($39/month)",
+              "url": "https://lumina-studio.app/#pricing",
+              "seller": {"@id": "https://lumina-studio.app/#organization"},
+              "hasMerchantReturnPolicy": {"@id": "https://lumina-studio.app/#return-policy"},
+              "shippingDetails": {"@id": "https://lumina-studio.app/#shipping"}
+            }
+          ]
+        },
+        {
+          "@type": "FAQPage",
+          "@id": "https://lumina-studio.app/#faq",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "What AI models power Lumina Studio?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Lumina Studio is powered by Google Gemini 2.0 for image generation and advanced video creation. These are the latest and most advanced AI models available, ensuring the highest quality outputs for all your creative needs."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Can I use generated content commercially?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes! All content generated in Lumina Studio comes with a full commercial license. You own the rights to everything you create and can use it for any purpose, including client work and products for sale."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "How does team collaboration work?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Team plans include shared workspaces where members can collaborate in real-time. You can share brand kits, templates, and assets across your team, with role-based permissions to control access."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "What export formats are supported?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "We support all major formats including PNG, JPG, WebP, SVG for images; MP4, WebM, GIF for videos; and PDF for documents. Pro and Team plans include additional formats like PSD and AI."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Is there an API available?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes, Pro and Team plans include API access. You can integrate Lumina Studio's AI capabilities directly into your own applications and workflows with our comprehensive REST API."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "How do credits work?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Each plan includes monthly credits for AI generations. Unused credits don't roll over, but they reset at the start of each billing cycle. You can always upgrade mid-cycle if you need more."
+              }
+            }
+          ]
+        }
+      ]
+    }
+    </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script type="importmap">
