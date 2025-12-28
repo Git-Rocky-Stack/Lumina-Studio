@@ -1,0 +1,867 @@
+
+> lumina-studio@0.1.0 test
+> vitest StatsCardWidget.test.tsx --run --reporter=verbose
+
+
+[1m[46m RUN [49m[22m [36mv4.0.16 [39m[90mC:/Users/User/Desktop/Development Projects/Strategia-Enhanced-App/Lumina-Studio[39m
+
+ [32m✓[39m src/components/StatsCardWidget.test.tsx[2m > [22mStatsCardWidget - TDD RED Tests[2m > [22mComponent Rendering[2m > [22mshould render the component with title[32m 33[2mms[22m[39m
+ [32m✓[39m src/components/StatsCardWidget.test.tsx[2m > [22mStatsCardWidget - TDD RED Tests[2m > [22mComponent Rendering[2m > [22mshould render with custom title text[32m 6[2mms[22m[39m
+ [31m×[39m src/components/StatsCardWidget.test.tsx[2m > [22mStatsCardWidget - TDD RED Tests[2m > [22mComponent Rendering[2m > [22mshould render all metric cards in a grid[33m 5020[2mms[22m[39m
+[31m   → Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".[39m
+ [31m×[39m src/components/StatsCardWidget.test.tsx[2m > [22mStatsCardWidget - TDD RED Tests[2m > [22mComponent Rendering[2m > [22mshould render metric values after data loads[33m 5023[2mms[22m[39m
+[31m   → Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".[39m
+ [32m✓[39m src/components/StatsCardWidget.test.tsx[2m > [22mStatsCardWidget - TDD RED Tests[2m > [22mComponent Rendering[2m > [22mshould apply responsive grid classes[32m 9[2mms[22m[39m
+ [32m✓[39m src/components/StatsCardWidget.test.tsx[2m > [22mStatsCardWidget - TDD RED Tests[2m > [22mComponent Rendering[2m > [22mshould render empty state when no metrics provided[32m 3[2mms[22m[39m
+ [32m✓[39m src/components/StatsCardWidget.test.tsx[2m > [22mStatsCardWidget - TDD RED Tests[2m > [22mLoading States[2m > [22mshould show skeleton cards while loading[32m 6[2mms[22m[39m
+ [31m×[39m src/components/StatsCardWidget.test.tsx[2m > [22mStatsCardWidget - TDD RED Tests[2m > [22mLoading States[2m > [22mshould hide skeleton cards after data loads[33m 5013[2mms[22m[39m
+[31m   → Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".[39m
+ [31m×[39m src/components/StatsCardWidget.test.tsx[2m > [22mStatsCardWidget - TDD RED Tests[2m > [22mLoading States[2m > [22mshould show loading indicator on refresh button during load[33m 5029[2mms[22m[39m
+[31m   → Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".[39m
+ [31m×[39m src/components/StatsCardWidget.test.tsx[2m > [22mStatsCardWidget - TDD RED Tests[2m > [22mReal-time Updates[2m > [22mshould auto-refresh data at default interval (5 seconds)[33m 5010[2mms[22m[39m
+[31m   → Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".[39m
+ [31m×[39m src/components/StatsCardWidget.test.tsx[2m > [22mStatsCardWidget - TDD RED Tests[2m > [22mReal-time Updates[2m > [22mshould use custom refresh interval when provided[33m 5007[2mms[22m[39m
+[31m   → Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".[39m
+ [31m×[39m src/components/StatsCardWidget.test.tsx[2m > [22mStatsCardWidget - TDD RED Tests[2m > [22mReal-time Updates[2m > [22mshould stop auto-refresh when component unmounts[33m 5012[2mms[22m[39m
+[31m   → Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".[39m
+ [31m×[39m src/components/StatsCardWidget.test.tsx[2m > [22mStatsCardWidget - TDD RED Tests[2m > [22mInteractive Controls - Refresh Button[2m > [22mshould render refresh button[32m 16[2mms[22m[39m
+[31m   → Found multiple elements with the role "button" and name `/refresh/i`
+
+Here are the matching elements:
+
+Ignored nodes: comments, script, style
+[36m<button[31m
+  [33maria-label[31m=[32m"Pause auto-refresh"[31m
+  [33mclass[31m=[32m"px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"[31m
+[36m>[31m
+  [0mPause[0m
+[36m</button>[31m
+
+Ignored nodes: comments, script, style
+[36m<button[31m
+  [33maria-busy[31m=[32m"true"[31m
+  [33maria-label[31m=[32m"Refresh metrics"[31m
+  [33mclass[31m=[32m"px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:bg-blue-400 disabled:cursor-not-allowed transition-colors"[31m
+  [33mdisabled[31m=[32m""[31m
+[36m>[31m
+  [0mRefreshing...[0m
+[36m</button>[31m
+
+(If this is intentional, then use the `*AllBy*` variant of the query (like `queryAllByText`, `getAllByText`, or `findAllByText`)).
+
+Ignored nodes: comments, script, style
+[36m<body>[31m
+  [36m<div>[31m
+    [36m<div[31m
+      [33mclass[31m=[32m"p-6 dark:bg-gray-900"[31m
+      [33mdata-testid[31m=[32m"stats-widget"[31m
+    [36m>[31m
+      [36m<div[31m
+        [33mclass[31m=[32m"flex items-center justify-between mb-6"[31m
+      [36m>[31m
+        [36m<h2[31m
+          [33mclass[31m=[32m"text-2xl font-bold text-gray-900 dark:text-white"[31m
+        [36m>[31m
+          [0mDashboard Metrics[0m
+        [36m</h2>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"flex items-center gap-4"[31m
+        [36m>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"flex gap-2"[31m
+          [36m>[31m
+            [36m<button[31m
+              [33maria-label[31m=[32m"Select 1h time period"[31m
+              [33maria-pressed[31m=[32m"true"[31m
+              [33mclass[31m=[32m"px-3 py-1 rounded-md text-sm font-medium transition-colors bg-blue-600 text-white"[31m
+            [36m>[31m
+              [0m1h[0m
+            [36m</button>[31m
+            [36m<button[31m
+              [33maria-label[31m=[32m"Select 24h time period"[31m
+              [33maria-pressed[31m=[32m"false"[31m
+              [33mclass[31m=[32m"px-3 py-1 rounded-md text-sm font-medium transition-colors bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600"[31m
+            [36m>[31m
+              [0m24h[0m
+            [36m</button>[31m
+            [36m<button[31m
+              [33maria-label[31m=[32m"Select 7d time period"[31m
+              [33maria-pressed[31m=[32m"false"[31m
+              [33mclass[31m=[32m"px-3 py-1 rounded-md text-sm font-medium transition-colors bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600"[31m
+            [36m>[31m
+              [0m7d[0m
+            [36m</button>[31m
+            [36m<button[31m
+              [33maria-label[31m=[32m"Select 30d time period"[31m
+              [33maria-pressed[31m=[32m"false"[31m
+              [33mclass[31m=[32m"px-3 py-1 rounded-md text-sm font-medium transition-colors bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600"[31m
+            [36m>[31m
+              [0m30d[0m
+            [36m</button>[31m
+          [36m</div>[31m
+          [36m<button[31m
+            [33maria-label[31m=[32m"Pause auto-refresh"[31m
+            [33mclass[31m=[32m"px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"[31m
+          [36m>[31m
+            [0mPause[0m
+          [36m</button>[31m
+          [36m<button[31m
+            [33maria-busy[31m=[32m"true"[31m
+            [33maria-label[31m=[32m"Refresh metrics"[31m
+            [33mclass[31m=[32m"px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:bg-blue-400 disabled:cursor-not-allowed transition-colors"[31m
+            [33mdisabled[31m=[32m""[31m
+          [36m>[31m
+            [0mRefreshing...[0m
+          [36m</button>[31m
+        [36m</div>[31m
+      [36m</div>[31m
+      [36m<div[31m
+        [33maria-busy[31m=[32m"true"[31m
+        [33maria-label[31m=[32m"Dashboard Metrics"[31m
+        [33mclass[31m=[32m"grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"[31m
+        [33mdata-testid[31m=[32m"stats-grid"[31m
+        [33mrole[31m=[32m"region"[31m
+      [36m>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 animate-pulse"[31m
+          [33mdata-testid[31m=[32m"skeleton-card"[31m
+        [36m>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/2 mb-4"[31m
+          [36m/>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"h-8 bg-gray-200 dark:bg-gray-700 rounded w-3/4 mb-2"[31m
+          [36m/>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/3"[31m
+          [36m/>[31m
+        [36m</div>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 animate-pulse"[31m
+          [33mdata-testid[31m=[32m"skeleton-card"[31m
+        [36m>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/2 mb-4"[31m
+          [36m/>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"h-8 bg-gray-200 dark:bg-gray-700 rounded w-3/4 mb-2"[31m
+          [36m/>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/3"[31m
+          [36m/>[31m
+        [36m</div>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 animate-pulse"[31m
+          [33mdata-testid[31m=[32m"skeleton-card"[31m
+        [36m>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/2 mb-4"[31m
+          [36m/>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"h-8 bg-gray-200 dark:bg-gray-700 rounded w-3/4 mb-2"[31m
+          [36m/>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/3"[31m
+          [36m/>[31m
+        [36m</div>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 animate-pulse"[31m
+          [33mdata-testid[31m=[32m"skeleton-card"[31m
+        [36m>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/2 mb-4"[31m
+          [36m/>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"h-8 bg-gray-200 dark:bg-gray-700 rounded w-3/4 mb-2"[31m
+          [36m/>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/3"[31m
+          [36m/>[31m
+        [36m</div>[31m
+      [36m</div>[31m
+    [36m</div>[31m
+  [36m</div>[31m
+[36m</body>[31m[39m
+ [31m×[39m src/components/StatsCardWidget.test.tsx[2m > [22mStatsCardWidget - TDD RED Tests[2m > [22mInteractive Controls - Refresh Button[2m > [22mshould refresh all metrics when refresh button clicked[33m 5018[2mms[22m[39m
+[31m   → Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".[39m
+ [31m×[39m src/components/StatsCardWidget.test.tsx[2m > [22mStatsCardWidget - TDD RED Tests[2m > [22mInteractive Controls - Refresh Button[2m > [22mshould have accessible label on refresh button[32m 9[2mms[22m[39m
+[31m   → Found multiple elements with the role "button" and name `/refresh/i`
+
+Here are the matching elements:
+
+Ignored nodes: comments, script, style
+[36m<button[31m
+  [33maria-label[31m=[32m"Pause auto-refresh"[31m
+  [33mclass[31m=[32m"px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"[31m
+[36m>[31m
+  [0mPause[0m
+[36m</button>[31m
+
+Ignored nodes: comments, script, style
+[36m<button[31m
+  [33maria-busy[31m=[32m"true"[31m
+  [33maria-label[31m=[32m"Refresh metrics"[31m
+  [33mclass[31m=[32m"px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:bg-blue-400 disabled:cursor-not-allowed transition-colors"[31m
+  [33mdisabled[31m=[32m""[31m
+[36m>[31m
+  [0mRefreshing...[0m
+[36m</button>[31m
+
+(If this is intentional, then use the `*AllBy*` variant of the query (like `queryAllByText`, `getAllByText`, or `findAllByText`)).
+
+Ignored nodes: comments, script, style
+[36m<body>[31m
+  [36m<div>[31m
+    [36m<div[31m
+      [33mclass[31m=[32m"p-6 dark:bg-gray-900"[31m
+      [33mdata-testid[31m=[32m"stats-widget"[31m
+    [36m>[31m
+      [36m<div[31m
+        [33mclass[31m=[32m"flex items-center justify-between mb-6"[31m
+      [36m>[31m
+        [36m<h2[31m
+          [33mclass[31m=[32m"text-2xl font-bold text-gray-900 dark:text-white"[31m
+        [36m>[31m
+          [0mDashboard Metrics[0m
+        [36m</h2>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"flex items-center gap-4"[31m
+        [36m>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"flex gap-2"[31m
+          [36m>[31m
+            [36m<button[31m
+              [33maria-label[31m=[32m"Select 1h time period"[31m
+              [33maria-pressed[31m=[32m"true"[31m
+              [33mclass[31m=[32m"px-3 py-1 rounded-md text-sm font-medium transition-colors bg-blue-600 text-white"[31m
+            [36m>[31m
+              [0m1h[0m
+            [36m</button>[31m
+            [36m<button[31m
+              [33maria-label[31m=[32m"Select 24h time period"[31m
+              [33maria-pressed[31m=[32m"false"[31m
+              [33mclass[31m=[32m"px-3 py-1 rounded-md text-sm font-medium transition-colors bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600"[31m
+            [36m>[31m
+              [0m24h[0m
+            [36m</button>[31m
+            [36m<button[31m
+              [33maria-label[31m=[32m"Select 7d time period"[31m
+              [33maria-pressed[31m=[32m"false"[31m
+              [33mclass[31m=[32m"px-3 py-1 rounded-md text-sm font-medium transition-colors bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600"[31m
+            [36m>[31m
+              [0m7d[0m
+            [36m</button>[31m
+            [36m<button[31m
+              [33maria-label[31m=[32m"Select 30d time period"[31m
+              [33maria-pressed[31m=[32m"false"[31m
+              [33mclass[31m=[32m"px-3 py-1 rounded-md text-sm font-medium transition-colors bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600"[31m
+            [36m>[31m
+              [0m30d[0m
+            [36m</button>[31m
+          [36m</div>[31m
+          [36m<button[31m
+            [33maria-label[31m=[32m"Pause auto-refresh"[31m
+            [33mclass[31m=[32m"px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"[31m
+          [36m>[31m
+            [0mPause[0m
+          [36m</button>[31m
+          [36m<button[31m
+            [33maria-busy[31m=[32m"true"[31m
+            [33maria-label[31m=[32m"Refresh metrics"[31m
+            [33mclass[31m=[32m"px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:bg-blue-400 disabled:cursor-not-allowed transition-colors"[31m
+            [33mdisabled[31m=[32m""[31m
+          [36m>[31m
+            [0mRefreshing...[0m
+          [36m</button>[31m
+        [36m</div>[31m
+      [36m</div>[31m
+      [36m<div[31m
+        [33maria-busy[31m=[32m"true"[31m
+        [33maria-label[31m=[32m"Dashboard Metrics"[31m
+        [33mclass[31m=[32m"grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"[31m
+        [33mdata-testid[31m=[32m"stats-grid"[31m
+        [33mrole[31m=[32m"region"[31m
+      [36m>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 animate-pulse"[31m
+          [33mdata-testid[31m=[32m"skeleton-card"[31m
+        [36m>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/2 mb-4"[31m
+          [36m/>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"h-8 bg-gray-200 dark:bg-gray-700 rounded w-3/4 mb-2"[31m
+          [36m/>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/3"[31m
+          [36m/>[31m
+        [36m</div>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 animate-pulse"[31m
+          [33mdata-testid[31m=[32m"skeleton-card"[31m
+        [36m>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/2 mb-4"[31m
+          [36m/>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"h-8 bg-gray-200 dark:bg-gray-700 rounded w-3/4 mb-2"[31m
+          [36m/>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/3"[31m
+          [36m/>[31m
+        [36m</div>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 animate-pulse"[31m
+          [33mdata-testid[31m=[32m"skeleton-card"[31m
+        [36m>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/2 mb-4"[31m
+          [36m/>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"h-8 bg-gray-200 dark:bg-gray-700 rounded w-3/4 mb-2"[31m
+          [36m/>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/3"[31m
+          [36m/>[31m
+        [36m</div>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 animate-pulse"[31m
+          [33mdata-testid[31m=[32m"skeleton-card"[31m
+        [36m>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/2 mb-4"[31m
+          [36m/>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"h-8 bg-gray-200 dark:bg-gray-700 rounded w-3/4 mb-2"[31m
+          [36m/>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/3"[31m
+          [36m/>[31m
+        [36m</div>[31m
+      [36m</div>[31m
+    [36m</div>[31m
+  [36m</div>[31m
+[36m</body>[31m[39m
+ [32m✓[39m src/components/StatsCardWidget.test.tsx[2m > [22mStatsCardWidget - TDD RED Tests[2m > [22mInteractive Controls - Pause/Resume[2m > [22mshould render pause button[32m 8[2mms[22m[39m
+ [31m×[39m src/components/StatsCardWidget.test.tsx[2m > [22mStatsCardWidget - TDD RED Tests[2m > [22mInteractive Controls - Pause/Resume[2m > [22mshould pause auto-refresh when pause button clicked[33m 5023[2mms[22m[39m
+[31m   → Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".[39m
+ [32m✓[39m src/components/StatsCardWidget.test.tsx[2m > [22mStatsCardWidget - TDD RED Tests[2m > [22mInteractive Controls - Pause/Resume[2m > [22mshould show resume button after pause is clicked[32m 25[2mms[22m[39m
+ [31m×[39m src/components/StatsCardWidget.test.tsx[2m > [22mStatsCardWidget - TDD RED Tests[2m > [22mInteractive Controls - Pause/Resume[2m > [22mshould resume auto-refresh when resume button clicked[33m 5018[2mms[22m[39m
+[31m   → Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".[39m
+ [31m×[39m src/components/StatsCardWidget.test.tsx[2m > [22mStatsCardWidget - TDD RED Tests[2m > [22mInteractive Controls - Pause/Resume[2m > [22mshould have accessible labels on pause/resume buttons[33m 5031[2mms[22m[39m
+[31m   → Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".[39m
+ [32m✓[39m src/components/StatsCardWidget.test.tsx[2m > [22mStatsCardWidget - TDD RED Tests[2m > [22mInteractive Controls - Time Period Selector[2m > [22mshould render time period selector with default period[32m 8[2mms[22m[39m
+ [32m✓[39m src/components/StatsCardWidget.test.tsx[2m > [22mStatsCardWidget - TDD RED Tests[2m > [22mInteractive Controls - Time Period Selector[2m > [22mshould highlight initial period when provided[32m 8[2mms[22m[39m
+ [31m×[39m src/components/StatsCardWidget.test.tsx[2m > [22mStatsCardWidget - TDD RED Tests[2m > [22mInteractive Controls - Time Period Selector[2m > [22mshould change active period when period button clicked[33m 5015[2mms[22m[39m
+[31m   → Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".[39m
+ [31m×[39m src/components/StatsCardWidget.test.tsx[2m > [22mStatsCardWidget - TDD RED Tests[2m > [22mInteractive Controls - Time Period Selector[2m > [22mshould refresh data when period changes[33m 5009[2mms[22m[39m
+[31m   → Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".[39m
+ [31m×[39m src/components/StatsCardWidget.test.tsx[2m > [22mStatsCardWidget - TDD RED Tests[2m > [22mInteractive Controls - Time Period Selector[2m > [22mshould pass selected period to fetchData function[33m 5015[2mms[22m[39m
+[31m   → Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".[39m
+ [31m×[39m src/components/StatsCardWidget.test.tsx[2m > [22mStatsCardWidget - TDD RED Tests[2m > [22mError Handling[2m > [22mshould display error message when data fetch fails[33m 5019[2mms[22m[39m
+[31m   → Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".[39m
+ [31m×[39m src/components/StatsCardWidget.test.tsx[2m > [22mStatsCardWidget - TDD RED Tests[2m > [22mError Handling[2m > [22mshould call onError callback when error occurs[33m 5015[2mms[22m[39m
+[31m   → Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".[39m
+ [31m×[39m src/components/StatsCardWidget.test.tsx[2m > [22mStatsCardWidget - TDD RED Tests[2m > [22mError Handling[2m > [22mshould show error toast notification when error occurs[33m 5028[2mms[22m[39m
+[31m   → Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".[39m
+ [31m×[39m src/components/StatsCardWidget.test.tsx[2m > [22mStatsCardWidget - TDD RED Tests[2m > [22mError Handling[2m > [22mshould allow retry after error[33m 5024[2mms[22m[39m
+[31m   → Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".[39m
+ [31m×[39m src/components/StatsCardWidget.test.tsx[2m > [22mStatsCardWidget - TDD RED Tests[2m > [22mError Handling[2m > [22mshould continue auto-refresh after error is resolved[33m 5016[2mms[22m[39m
+[31m   → Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".[39m
+ [31m×[39m src/components/StatsCardWidget.test.tsx[2m > [22mStatsCardWidget - TDD RED Tests[2m > [22mAccessibility[2m > [22mshould have proper ARIA labels on all interactive elements[32m 7[2mms[22m[39m
+[31m   → Found multiple elements with the role "button" and name `/refresh/i`
+
+Here are the matching elements:
+
+Ignored nodes: comments, script, style
+[36m<button[31m
+  [33maria-label[31m=[32m"Pause auto-refresh"[31m
+  [33mclass[31m=[32m"px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"[31m
+[36m>[31m
+  [0mPause[0m
+[36m</button>[31m
+
+Ignored nodes: comments, script, style
+[36m<button[31m
+  [33maria-busy[31m=[32m"true"[31m
+  [33maria-label[31m=[32m"Refresh metrics"[31m
+  [33mclass[31m=[32m"px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:bg-blue-400 disabled:cursor-not-allowed transition-colors"[31m
+  [33mdisabled[31m=[32m""[31m
+[36m>[31m
+  [0mRefreshing...[0m
+[36m</button>[31m
+
+(If this is intentional, then use the `*AllBy*` variant of the query (like `queryAllByText`, `getAllByText`, or `findAllByText`)).
+
+Ignored nodes: comments, script, style
+[36m<body>[31m
+  [36m<div>[31m
+    [36m<div[31m
+      [33mclass[31m=[32m"p-6 dark:bg-gray-900"[31m
+      [33mdata-testid[31m=[32m"stats-widget"[31m
+    [36m>[31m
+      [36m<div[31m
+        [33mclass[31m=[32m"flex items-center justify-between mb-6"[31m
+      [36m>[31m
+        [36m<h2[31m
+          [33mclass[31m=[32m"text-2xl font-bold text-gray-900 dark:text-white"[31m
+        [36m>[31m
+          [0mDashboard Metrics[0m
+        [36m</h2>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"flex items-center gap-4"[31m
+        [36m>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"flex gap-2"[31m
+          [36m>[31m
+            [36m<button[31m
+              [33maria-label[31m=[32m"Select 1h time period"[31m
+              [33maria-pressed[31m=[32m"true"[31m
+              [33mclass[31m=[32m"px-3 py-1 rounded-md text-sm font-medium transition-colors bg-blue-600 text-white"[31m
+            [36m>[31m
+              [0m1h[0m
+            [36m</button>[31m
+            [36m<button[31m
+              [33maria-label[31m=[32m"Select 24h time period"[31m
+              [33maria-pressed[31m=[32m"false"[31m
+              [33mclass[31m=[32m"px-3 py-1 rounded-md text-sm font-medium transition-colors bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600"[31m
+            [36m>[31m
+              [0m24h[0m
+            [36m</button>[31m
+            [36m<button[31m
+              [33maria-label[31m=[32m"Select 7d time period"[31m
+              [33maria-pressed[31m=[32m"false"[31m
+              [33mclass[31m=[32m"px-3 py-1 rounded-md text-sm font-medium transition-colors bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600"[31m
+            [36m>[31m
+              [0m7d[0m
+            [36m</button>[31m
+            [36m<button[31m
+              [33maria-label[31m=[32m"Select 30d time period"[31m
+              [33maria-pressed[31m=[32m"false"[31m
+              [33mclass[31m=[32m"px-3 py-1 rounded-md text-sm font-medium transition-colors bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600"[31m
+            [36m>[31m
+              [0m30d[0m
+            [36m</button>[31m
+          [36m</div>[31m
+          [36m<button[31m
+            [33maria-label[31m=[32m"Pause auto-refresh"[31m
+            [33mclass[31m=[32m"px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"[31m
+          [36m>[31m
+            [0mPause[0m
+          [36m</button>[31m
+          [36m<button[31m
+            [33maria-busy[31m=[32m"true"[31m
+            [33maria-label[31m=[32m"Refresh metrics"[31m
+            [33mclass[31m=[32m"px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:bg-blue-400 disabled:cursor-not-allowed transition-colors"[31m
+            [33mdisabled[31m=[32m""[31m
+          [36m>[31m
+            [0mRefreshing...[0m
+          [36m</button>[31m
+        [36m</div>[31m
+      [36m</div>[31m
+      [36m<div[31m
+        [33maria-busy[31m=[32m"true"[31m
+        [33maria-label[31m=[32m"Dashboard Metrics"[31m
+        [33mclass[31m=[32m"grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"[31m
+        [33mdata-testid[31m=[32m"stats-grid"[31m
+        [33mrole[31m=[32m"region"[31m
+      [36m>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 animate-pulse"[31m
+          [33mdata-testid[31m=[32m"skeleton-card"[31m
+        [36m>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/2 mb-4"[31m
+          [36m/>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"h-8 bg-gray-200 dark:bg-gray-700 rounded w-3/4 mb-2"[31m
+          [36m/>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/3"[31m
+          [36m/>[31m
+        [36m</div>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 animate-pulse"[31m
+          [33mdata-testid[31m=[32m"skeleton-card"[31m
+        [36m>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/2 mb-4"[31m
+          [36m/>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"h-8 bg-gray-200 dark:bg-gray-700 rounded w-3/4 mb-2"[31m
+          [36m/>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/3"[31m
+          [36m/>[31m
+        [36m</div>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 animate-pulse"[31m
+          [33mdata-testid[31m=[32m"skeleton-card"[31m
+        [36m>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/2 mb-4"[31m
+          [36m/>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"h-8 bg-gray-200 dark:bg-gray-700 rounded w-3/4 mb-2"[31m
+          [36m/>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/3"[31m
+          [36m/>[31m
+        [36m</div>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 animate-pulse"[31m
+          [33mdata-testid[31m=[32m"skeleton-card"[31m
+        [36m>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/2 mb-4"[31m
+          [36m/>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"h-8 bg-gray-200 dark:bg-gray-700 rounded w-3/4 mb-2"[31m
+          [36m/>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/3"[31m
+          [36m/>[31m
+        [36m</div>[31m
+      [36m</div>[31m
+    [36m</div>[31m
+  [36m</div>[31m
+[36m</body>[31m[39m
+ [32m✓[39m src/components/StatsCardWidget.test.tsx[2m > [22mStatsCardWidget - TDD RED Tests[2m > [22mAccessibility[2m > [22mshould have proper region landmark for stats grid[32m 8[2mms[22m[39m
+ [31m×[39m src/components/StatsCardWidget.test.tsx[2m > [22mStatsCardWidget - TDD RED Tests[2m > [22mAccessibility[2m > [22mshould support keyboard navigation for all controls[32m 8[2mms[22m[39m
+[31m   → Found multiple elements with the role "button" and name `/refresh/i`
+
+Here are the matching elements:
+
+Ignored nodes: comments, script, style
+[36m<button[31m
+  [33maria-label[31m=[32m"Pause auto-refresh"[31m
+  [33mclass[31m=[32m"px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"[31m
+[36m>[31m
+  [0mPause[0m
+[36m</button>[31m
+
+Ignored nodes: comments, script, style
+[36m<button[31m
+  [33maria-busy[31m=[32m"true"[31m
+  [33maria-label[31m=[32m"Refresh metrics"[31m
+  [33mclass[31m=[32m"px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:bg-blue-400 disabled:cursor-not-allowed transition-colors"[31m
+  [33mdisabled[31m=[32m""[31m
+[36m>[31m
+  [0mRefreshing...[0m
+[36m</button>[31m
+
+(If this is intentional, then use the `*AllBy*` variant of the query (like `queryAllByText`, `getAllByText`, or `findAllByText`)).
+
+Ignored nodes: comments, script, style
+[36m<body>[31m
+  [36m<div>[31m
+    [36m<div[31m
+      [33mclass[31m=[32m"p-6 dark:bg-gray-900"[31m
+      [33mdata-testid[31m=[32m"stats-widget"[31m
+    [36m>[31m
+      [36m<div[31m
+        [33mclass[31m=[32m"flex items-center justify-between mb-6"[31m
+      [36m>[31m
+        [36m<h2[31m
+          [33mclass[31m=[32m"text-2xl font-bold text-gray-900 dark:text-white"[31m
+        [36m>[31m
+          [0mDashboard Metrics[0m
+        [36m</h2>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"flex items-center gap-4"[31m
+        [36m>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"flex gap-2"[31m
+          [36m>[31m
+            [36m<button[31m
+              [33maria-label[31m=[32m"Select 1h time period"[31m
+              [33maria-pressed[31m=[32m"true"[31m
+              [33mclass[31m=[32m"px-3 py-1 rounded-md text-sm font-medium transition-colors bg-blue-600 text-white"[31m
+            [36m>[31m
+              [0m1h[0m
+            [36m</button>[31m
+            [36m<button[31m
+              [33maria-label[31m=[32m"Select 24h time period"[31m
+              [33maria-pressed[31m=[32m"false"[31m
+              [33mclass[31m=[32m"px-3 py-1 rounded-md text-sm font-medium transition-colors bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600"[31m
+            [36m>[31m
+              [0m24h[0m
+            [36m</button>[31m
+            [36m<button[31m
+              [33maria-label[31m=[32m"Select 7d time period"[31m
+              [33maria-pressed[31m=[32m"false"[31m
+              [33mclass[31m=[32m"px-3 py-1 rounded-md text-sm font-medium transition-colors bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600"[31m
+            [36m>[31m
+              [0m7d[0m
+            [36m</button>[31m
+            [36m<button[31m
+              [33maria-label[31m=[32m"Select 30d time period"[31m
+              [33maria-pressed[31m=[32m"false"[31m
+              [33mclass[31m=[32m"px-3 py-1 rounded-md text-sm font-medium transition-colors bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600"[31m
+            [36m>[31m
+              [0m30d[0m
+            [36m</button>[31m
+          [36m</div>[31m
+          [36m<button[31m
+            [33maria-label[31m=[32m"Pause auto-refresh"[31m
+            [33mclass[31m=[32m"px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"[31m
+          [36m>[31m
+            [0mPause[0m
+          [36m</button>[31m
+          [36m<button[31m
+            [33maria-busy[31m=[32m"true"[31m
+            [33maria-label[31m=[32m"Refresh metrics"[31m
+            [33mclass[31m=[32m"px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:bg-blue-400 disabled:cursor-not-allowed transition-colors"[31m
+            [33mdisabled[31m=[32m""[31m
+          [36m>[31m
+            [0mRefreshing...[0m
+          [36m</button>[31m
+        [36m</div>[31m
+      [36m</div>[31m
+      [36m<div[31m
+        [33maria-busy[31m=[32m"true"[31m
+        [33maria-label[31m=[32m"Dashboard Metrics"[31m
+        [33mclass[31m=[32m"grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"[31m
+        [33mdata-testid[31m=[32m"stats-grid"[31m
+        [33mrole[31m=[32m"region"[31m
+      [36m>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 animate-pulse"[31m
+          [33mdata-testid[31m=[32m"skeleton-card"[31m
+        [36m>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/2 mb-4"[31m
+          [36m/>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"h-8 bg-gray-200 dark:bg-gray-700 rounded w-3/4 mb-2"[31m
+          [36m/>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/3"[31m
+          [36m/>[31m
+        [36m</div>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 animate-pulse"[31m
+          [33mdata-testid[31m=[32m"skeleton-card"[31m
+        [36m>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/2 mb-4"[31m
+          [36m/>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"h-8 bg-gray-200 dark:bg-gray-700 rounded w-3/4 mb-2"[31m
+          [36m/>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/3"[31m
+          [36m/>[31m
+        [36m</div>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 animate-pulse"[31m
+          [33mdata-testid[31m=[32m"skeleton-card"[31m
+        [36m>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/2 mb-4"[31m
+          [36m/>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"h-8 bg-gray-200 dark:bg-gray-700 rounded w-3/4 mb-2"[31m
+          [36m/>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/3"[31m
+          [36m/>[31m
+        [36m</div>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 animate-pulse"[31m
+          [33mdata-testid[31m=[32m"skeleton-card"[31m
+        [36m>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/2 mb-4"[31m
+          [36m/>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"h-8 bg-gray-200 dark:bg-gray-700 rounded w-3/4 mb-2"[31m
+          [36m/>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/3"[31m
+          [36m/>[31m
+        [36m</div>[31m
+      [36m</div>[31m
+    [36m</div>[31m
+  [36m</div>[31m
+[36m</body>[31m[39m
+ [32m✓[39m src/components/StatsCardWidget.test.tsx[2m > [22mStatsCardWidget - TDD RED Tests[2m > [22mAccessibility[2m > [22mshould announce loading state to screen readers[32m 7[2mms[22m[39m
+ [31m×[39m src/components/StatsCardWidget.test.tsx[2m > [22mStatsCardWidget - TDD RED Tests[2m > [22mAccessibility[2m > [22mshould announce errors to screen readers[33m 5017[2mms[22m[39m
+[31m   → Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".[39m
+ [31m×[39m src/components/StatsCardWidget.test.tsx[2m > [22mStatsCardWidget - TDD RED Tests[2m > [22mAccessibility[2m > [22mshould have proper button states for disabled controls[33m 5021[2mms[22m[39m
+[31m   → Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".[39m
+ [32m✓[39m src/components/StatsCardWidget.test.tsx[2m > [22mStatsCardWidget - TDD RED Tests[2m > [22mDark Mode Support[2m > [22mshould apply dark mode classes when dark mode is active[32m 9[2mms[22m[39m
+ [32m✓[39m src/components/StatsCardWidget.test.tsx[2m > [22mStatsCardWidget - TDD RED Tests[2m > [22mDark Mode Support[2m > [22mshould have proper contrast in dark mode[32m 5[2mms[22m[39m
+ [32m✓[39m src/components/StatsCardWidget.test.tsx[2m > [22mStatsCardWidget - TDD RED Tests[2m > [22mResponsive Layout[2m > [22mshould use single column on mobile[32m 5[2mms[22m[39m
+ [32m✓[39m src/components/StatsCardWidget.test.tsx[2m > [22mStatsCardWidget - TDD RED Tests[2m > [22mResponsive Layout[2m > [22mshould use 2 columns on tablet[32m 6[2mms[22m[39m
+ [32m✓[39m src/components/StatsCardWidget.test.tsx[2m > [22mStatsCardWidget - TDD RED Tests[2m > [22mResponsive Layout[2m > [22mshould use 4 columns on desktop[32m 7[2mms[22m[39m
+ [32m✓[39m src/components/StatsCardWidget.test.tsx[2m > [22mStatsCardWidget - TDD RED Tests[2m > [22mAnimation Behavior[2m > [22mshould animate card entrance on mount[32m 4[2mms[22m[39m
+ [31m×[39m src/components/StatsCardWidget.test.tsx[2m > [22mStatsCardWidget - TDD RED Tests[2m > [22mAnimation Behavior[2m > [22mshould animate value changes[33m 5014[2mms[22m[39m
+[31m   → Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".[39m
+ [31m×[39m src/components/StatsCardWidget.test.tsx[2m > [22mStatsCardWidget - TDD RED Tests[2m > [22mAnimation Behavior[2m > [22mshould have staggered animation for multiple cards[33m 5016[2mms[22m[39m
+[31m   → Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".[39m
+ [31m×[39m src/components/StatsCardWidget.test.tsx[2m > [22mStatsCardWidget - TDD RED Tests[2m > [22mData Formatting[2m > [22mshould format values using custom formatter[33m 5011[2mms[22m[39m
+[31m   → Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".[39m
+ [31m×[39m src/components/StatsCardWidget.test.tsx[2m > [22mStatsCardWidget - TDD RED Tests[2m > [22mData Formatting[2m > [22mshould display percentage change[33m 5005[2mms[22m[39m
+[31m   → Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".[39m
+ [31m×[39m src/components/StatsCardWidget.test.tsx[2m > [22mStatsCardWidget - TDD RED Tests[2m > [22mData Formatting[2m > [22mshould show trend indicator (up/down)[33m 5009[2mms[22m[39m
+[31m   → Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".[39m
+ [31m×[39m src/components/StatsCardWidget.test.tsx[2m > [22mStatsCardWidget - TDD RED Tests[2m > [22mData Formatting[2m > [22mshould handle negative trend[33m 5011[2mms[22m[39m
+[31m   → Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".[39m
+ [32m✓[39m src/components/StatsCardWidget.test.tsx[2m > [22mStatsCardWidget - TDD RED Tests[2m > [22mComponent Props Validation[2m > [22mshould accept all required props[32m 5[2mms[22m[39m
+ [32m✓[39m src/components/StatsCardWidget.test.tsx[2m > [22mStatsCardWidget - TDD RED Tests[2m > [22mComponent Props Validation[2m > [22mshould accept optional refreshInterval prop[32m 5[2mms[22m[39m
+ [32m✓[39m src/components/StatsCardWidget.test.tsx[2m > [22mStatsCardWidget - TDD RED Tests[2m > [22mComponent Props Validation[2m > [22mshould accept optional onError prop[32m 6[2mms[22m[39m
+ [32m✓[39m src/components/StatsCardWidget.test.tsx[2m > [22mStatsCardWidget - TDD RED Tests[2m > [22mComponent Props Validation[2m > [22mshould accept optional initialPeriod prop[32m 5[2mms[22m[39m
+ [31m×[39m src/components/StatsCardWidget.test.tsx[2m > [22mStatsCardWidget - TDD RED Tests[2m > [22mPerformance Optimizations[2m > [22mshould not re-fetch data if already loading[32m 6[2mms[22m[39m
+[31m   → Found multiple elements with the role "button" and name `/refresh/i`
+
+Here are the matching elements:
+
+Ignored nodes: comments, script, style
+[36m<button[31m
+  [33maria-label[31m=[32m"Pause auto-refresh"[31m
+  [33mclass[31m=[32m"px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"[31m
+[36m>[31m
+  [0mPause[0m
+[36m</button>[31m
+
+Ignored nodes: comments, script, style
+[36m<button[31m
+  [33maria-busy[31m=[32m"true"[31m
+  [33maria-label[31m=[32m"Refresh metrics"[31m
+  [33mclass[31m=[32m"px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:bg-blue-400 disabled:cursor-not-allowed transition-colors"[31m
+  [33mdisabled[31m=[32m""[31m
+[36m>[31m
+  [0mRefreshing...[0m
+[36m</button>[31m
+
+(If this is intentional, then use the `*AllBy*` variant of the query (like `queryAllByText`, `getAllByText`, or `findAllByText`)).
+
+Ignored nodes: comments, script, style
+[36m<body>[31m
+  [36m<div>[31m
+    [36m<div[31m
+      [33mclass[31m=[32m"p-6 dark:bg-gray-900"[31m
+      [33mdata-testid[31m=[32m"stats-widget"[31m
+    [36m>[31m
+      [36m<div[31m
+        [33mclass[31m=[32m"flex items-center justify-between mb-6"[31m
+      [36m>[31m
+        [36m<h2[31m
+          [33mclass[31m=[32m"text-2xl font-bold text-gray-900 dark:text-white"[31m
+        [36m>[31m
+          [0mDashboard Metrics[0m
+        [36m</h2>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"flex items-center gap-4"[31m
+        [36m>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"flex gap-2"[31m
+          [36m>[31m
+            [36m<button[31m
+              [33maria-label[31m=[32m"Select 1h time period"[31m
+              [33maria-pressed[31m=[32m"true"[31m
+              [33mclass[31m=[32m"px-3 py-1 rounded-md text-sm font-medium transition-colors bg-blue-600 text-white"[31m
+            [36m>[31m
+              [0m1h[0m
+            [36m</button>[31m
+            [36m<button[31m
+              [33maria-label[31m=[32m"Select 24h time period"[31m
+              [33maria-pressed[31m=[32m"false"[31m
+              [33mclass[31m=[32m"px-3 py-1 rounded-md text-sm font-medium transition-colors bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600"[31m
+            [36m>[31m
+              [0m24h[0m
+            [36m</button>[31m
+            [36m<button[31m
+              [33maria-label[31m=[32m"Select 7d time period"[31m
+              [33maria-pressed[31m=[32m"false"[31m
+              [33mclass[31m=[32m"px-3 py-1 rounded-md text-sm font-medium transition-colors bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600"[31m
+            [36m>[31m
+              [0m7d[0m
+            [36m</button>[31m
+            [36m<button[31m
+              [33maria-label[31m=[32m"Select 30d time period"[31m
+              [33maria-pressed[31m=[32m"false"[31m
+              [33mclass[31m=[32m"px-3 py-1 rounded-md text-sm font-medium transition-colors bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600"[31m
+            [36m>[31m
+              [0m30d[0m
+            [36m</button>[31m
+          [36m</div>[31m
+          [36m<button[31m
+            [33maria-label[31m=[32m"Pause auto-refresh"[31m
+            [33mclass[31m=[32m"px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"[31m
+          [36m>[31m
+            [0mPause[0m
+          [36m</button>[31m
+          [36m<button[31m
+            [33maria-busy[31m=[32m"true"[31m
+            [33maria-label[31m=[32m"Refresh metrics"[31m
+            [33mclass[31m=[32m"px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:bg-blue-400 disabled:cursor-not-allowed transition-colors"[31m
+            [33mdisabled[31m=[32m""[31m
+          [36m>[31m
+            [0mRefreshing...[0m
+          [36m</button>[31m
+        [36m</div>[31m
+      [36m</div>[31m
+      [36m<div[31m
+        [33maria-busy[31m=[32m"true"[31m
+        [33maria-label[31m=[32m"Dashboard Metrics"[31m
+        [33mclass[31m=[32m"grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"[31m
+        [33mdata-testid[31m=[32m"stats-grid"[31m
+        [33mrole[31m=[32m"region"[31m
+      [36m>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 animate-pulse"[31m
+          [33mdata-testid[31m=[32m"skeleton-card"[31m
+        [36m>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/2 mb-4"[31m
+          [36m/>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"h-8 bg-gray-200 dark:bg-gray-700 rounded w-3/4 mb-2"[31m
+          [36m/>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/3"[31m
+          [36m/>[31m
+        [36m</div>[31m
+      [36m</div>[31m
+    [36m</div>[31m
+  [36m</div>[31m
+[36m</body>[31m[39m
+ [31m×[39m src/components/StatsCardWidget.test.tsx[2m > [22mStatsCardWidget - TDD RED Tests[2m > [22mPerformance Optimizations[2m > [22mshould debounce period changes[33m 5008[2mms[22m[39m
+[31m   → Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".[39m
+ [32m✓[39m src/components/StatsCardWidget.test.tsx[2m > [22mStatsCardWidget - TDD RED Tests[2m > [22mPerformance Optimizations[2m > [22mshould cleanup timers and subscriptions on unmount[32m 6[2mms[22m[39m
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m33 failed[39m[22m[2m | [22m[1m[32m22 passed[39m[22m[90m (55)[39m
+[2m   Start at [22m 00:25:20
+[2m   Duration [22m 141.89s[2m (transform 147ms, setup 348ms, import 202ms, tests 140.69s, environment 435ms)[22m
+

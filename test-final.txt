@@ -1,0 +1,1400 @@
+
+> lumina-studio@0.1.0 test
+> vitest StatsCardWidget.test.tsx --run
+
+
+[1m[46m RUN [49m[22m [36mv4.0.16 [39m[90mC:/Users/User/Desktop/Development Projects/Strategia-Enhanced-App/Lumina-Studio[39m
+
+[90mstderr[2m | src/components/StatsCardWidget.test.tsx[2m > [22m[2mStatsCardWidget - TDD RED Tests[2m > [22m[2mComponent Rendering[2m > [22m[2mshould render the component with title
+[22m[39mAn update to StatsCardWidget inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to StatsCardWidget inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to StatsCardWidget inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to StatsCardWidget inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+[90mstderr[2m | src/components/StatsCardWidget.test.tsx[2m > [22m[2mStatsCardWidget - TDD RED Tests[2m > [22m[2mComponent Rendering[2m > [22m[2mshould render the component with title
+[22m[39mAn update to StatsCardWidget inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to StatsCardWidget inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+[90mstderr[2m | src/components/StatsCardWidget.test.tsx[2m > [22m[2mStatsCardWidget - TDD RED Tests[2m > [22m[2mComponent Rendering[2m > [22m[2mshould render the component with title
+[22m[39mAn update to StatsCardWidget inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to StatsCardWidget inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to StatsCardWidget inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to StatsCardWidget inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+[90mstderr[2m | src/components/StatsCardWidget.test.tsx[2m > [22m[2mStatsCardWidget - TDD RED Tests[2m > [22m[2mComponent Rendering[2m > [22m[2mshould render with custom title text
+[22m[39mAn update to StatsCardWidget inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to StatsCardWidget inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to StatsCardWidget inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to StatsCardWidget inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+[90mstderr[2m | src/components/StatsCardWidget.test.tsx[2m > [22m[2mStatsCardWidget - TDD RED Tests[2m > [22m[2mComponent Rendering[2m > [22m[2mshould render with custom title text
+[22m[39mAn update to StatsCardWidget inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to StatsCardWidget inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+[90mstderr[2m | src/components/StatsCardWidget.test.tsx[2m > [22m[2mStatsCardWidget - TDD RED Tests[2m > [22m[2mComponent Rendering[2m > [22m[2mshould render with custom title text
+[22m[39mAn update to StatsCardWidget inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to StatsCardWidget inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to StatsCardWidget inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to StatsCardWidget inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+[90mstderr[2m | src/components/StatsCardWidget.test.tsx[2m > [22m[2mStatsCardWidget - TDD RED Tests[2m > [22m[2mComponent Rendering[2m > [22m[2mshould render all metric cards in a grid
+[22m[39mAn update to StatsCardWidget inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to StatsCardWidget inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to StatsCardWidget inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to StatsCardWidget inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+[90mstderr[2m | src/components/StatsCardWidget.test.tsx[2m > [22m[2mStatsCardWidget - TDD RED Tests[2m > [22m[2mComponent Rendering[2m > [22m[2mshould render metric values after data loads
+[22m[39mAn update to StatsCardWidget inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to StatsCardWidget inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to StatsCardWidget inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to StatsCardWidget inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+[90mstderr[2m | src/components/StatsCardWidget.test.tsx[2m > [22m[2mStatsCardWidget - TDD RED Tests[2m > [22m[2mComponent Rendering[2m > [22m[2mshould apply responsive grid classes
+[22m[39mAn update to StatsCardWidget inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to StatsCardWidget inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to StatsCardWidget inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to StatsCardWidget inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+[90mstderr[2m | src/components/StatsCardWidget.test.tsx[2m > [22m[2mStatsCardWidget - TDD RED Tests[2m > [22m[2mComponent Rendering[2m > [22m[2mshould apply responsive grid classes
+[22m[39mAn update to StatsCardWidget inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to StatsCardWidget inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+[90mstderr[2m | src/components/StatsCardWidget.test.tsx[2m > [22m[2mStatsCardWidget - TDD RED Tests[2m > [22m[2mComponent Rendering[2m > [22m[2mshould apply responsive grid classes
+[22m[39mAn update to StatsCardWidget inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to StatsCardWidget inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to StatsCardWidget inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to StatsCardWidget inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+[90mstderr[2m | src/components/StatsCardWidget.test.tsx[2m > [22m[2mStatsCardWidget - TDD RED Tests[2m > [22m[2mComponent Rendering[2m > [22m[2mshould render empty state when no metrics provided
+[22m[39mAn update to StatsCardWidget inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to StatsCardWidget inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to StatsCardWidget inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to StatsCardWidget inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+[90mstderr[2m | src/components/StatsCardWidget.test.tsx[2m > [22m[2mStatsCardWidget - TDD RED Tests[2m > [22m[2mLoading States[2m > [22m[2mshould show skeleton cards while loading
+[22m[39mAn update to StatsCardWidget inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to StatsCardWidget inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to StatsCardWidget inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to StatsCardWidget inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+[90mstderr[2m | src/components/StatsCardWidget.test.tsx[2m > [22m[2mStatsCardWidget - TDD RED Tests[2m > [22m[2mLoading States[2m > [22m[2mshould hide skeleton cards after data loads
+[22m[39mAn update to StatsCardWidget inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to StatsCardWidget inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to StatsCardWidget inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to StatsCardWidget inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+[90mstderr[2m | src/components/StatsCardWidget.test.tsx[2m > [22m[2mStatsCardWidget - TDD RED Tests[2m > [22m[2mLoading States[2m > [22m[2mshould show loading indicator on refresh button during load
+[22m[39mAn update to StatsCardWidget inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to StatsCardWidget inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to StatsCardWidget inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to StatsCardWidget inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+[90mstderr[2m | src/components/StatsCardWidget.test.tsx[2m > [22m[2mStatsCardWidget - TDD RED Tests[2m > [22m[2mReal-time Updates[2m > [22m[2mshould auto-refresh data at default interval (5 seconds)
+[22m[39mAn update to StatsCardWidget inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to StatsCardWidget inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to StatsCardWidget inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to StatsCardWidget inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+[90mstderr[2m | src/components/StatsCardWidget.test.tsx[2m > [22m[2mStatsCardWidget - TDD RED Tests[2m > [22m[2mReal-time Updates[2m > [22m[2mshould use custom refresh interval when provided
+[22m[39mAn update to StatsCardWidget inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to StatsCardWidget inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to StatsCardWidget inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to StatsCardWidget inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+[90mstderr[2m | src/components/StatsCardWidget.test.tsx[2m > [22m[2mStatsCardWidget - TDD RED Tests[2m > [22m[2mInteractive Controls - Refresh Button[2m > [22m[2mshould render refresh button
+[22m[39mAn update to StatsCardWidget inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to StatsCardWidget inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to StatsCardWidget inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to StatsCardWidget inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+[90mstderr[2m | src/components/StatsCardWidget.test.tsx[2m > [22m[2mStatsCardWidget - TDD RED Tests[2m > [22m[2mInteractive Controls - Refresh Button[2m > [22m[2mshould render refresh button
+[22m[39mAn update to StatsCardWidget inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to StatsCardWidget inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+[90mstderr[2m | src/components/StatsCardWidget.test.tsx[2m > [22m[2mStatsCardWidget - TDD RED Tests[2m > [22m[2mInteractive Controls - Refresh Button[2m > [22m[2mshould render refresh button
+[22m[39mAn update to StatsCardWidget inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to StatsCardWidget inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to StatsCardWidget inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to StatsCardWidget inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+[90mstderr[2m | src/components/StatsCardWidget.test.tsx[2m > [22m[2mStatsCardWidget - TDD RED Tests[2m > [22m[2mInteractive Controls - Pause/Resume[2m > [22m[2mshould show resume button after pause is clicked
+[22m[39mAn update to StatCard inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to StatCard inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to StatCard inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to StatCard inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ [31m❯[39m src/components/StatsCardWidget.test.tsx [2m([22m[2m55 tests[22m[2m | [22m[31m30 failed[39m[2m)[22m[33m 145639[2mms[22m[39m
+       [32m✓[39m should render the component with title[32m 36[2mms[22m[39m
+       [32m✓[39m should render with custom title text[32m 7[2mms[22m[39m
+[31m       [31m×[31m should render all metric cards in a grid[39m[33m 5022[2mms[22m[39m
+[31m       [31m×[31m should render metric values after data loads[39m[33m 5016[2mms[22m[39m
+       [32m✓[39m should apply responsive grid classes[32m 8[2mms[22m[39m
+       [32m✓[39m should render empty state when no metrics provided[32m 2[2mms[22m[39m
+       [32m✓[39m should show skeleton cards while loading[32m 5[2mms[22m[39m
+[31m       [31m×[31m should hide skeleton cards after data loads[39m[33m 5019[2mms[22m[39m
+[31m       [31m×[31m should show loading indicator on refresh button during load[39m[33m 5025[2mms[22m[39m
+[31m       [31m×[31m should auto-refresh data at default interval (5 seconds)[39m[33m 5005[2mms[22m[39m
+[31m       [31m×[31m should use custom refresh interval when provided[39m[33m 5008[2mms[22m[39m
+[31m       [31m×[31m should stop auto-refresh when component unmounts[39m[33m 5002[2mms[22m[39m
+       [32m✓[39m should render refresh button[32m 12[2mms[22m[39m
+[31m       [31m×[31m should refresh all metrics when refresh button clicked[39m[33m 5022[2mms[22m[39m
+       [32m✓[39m should have accessible label on refresh button[32m 7[2mms[22m[39m
+       [32m✓[39m should render pause button[32m 7[2mms[22m[39m
+[31m       [31m×[31m should pause auto-refresh when pause button clicked[39m[33m 5021[2mms[22m[39m
+       [32m✓[39m should show resume button after pause is clicked[32m 19[2mms[22m[39m
+[31m       [31m×[31m should resume auto-refresh when resume button clicked[39m[33m 5019[2mms[22m[39m
+[31m       [31m×[31m should have accessible labels on pause/resume buttons[39m[33m 5024[2mms[22m[39m
+       [32m✓[39m should render time period selector with default period[32m 7[2mms[22m[39m
+       [32m✓[39m should highlight initial period when provided[32m 6[2mms[22m[39m
+[31m       [31m×[31m should change active period when period button clicked[39m[33m 5013[2mms[22m[39m
+[31m       [31m×[31m should refresh data when period changes[39m[33m 5021[2mms[22m[39m
+[31m       [31m×[31m should pass selected period to fetchData function[39m[33m 5008[2mms[22m[39m
+[31m       [31m×[31m should display error message when data fetch fails[39m[33m 5010[2mms[22m[39m
+[31m       [31m×[31m should call onError callback when error occurs[39m[33m 5012[2mms[22m[39m
+[31m       [31m×[31m should show error toast notification when error occurs[39m[33m 5017[2mms[22m[39m
+[31m       [31m×[31m should allow retry after error[39m[33m 5018[2mms[22m[39m
+[31m       [31m×[31m should continue auto-refresh after error is resolved[39m[33m 5020[2mms[22m[39m
+       [32m✓[39m should have proper ARIA labels on all interactive elements[32m 9[2mms[22m[39m
+       [32m✓[39m should have proper region landmark for stats grid[32m 7[2mms[22m[39m
+[31m       [31m×[31m should support keyboard navigation for all controls[39m[32m 14[2mms[22m[39m
+       [32m✓[39m should announce loading state to screen readers[32m 6[2mms[22m[39m
+[31m       [31m×[31m should announce errors to screen readers[39m[33m 5011[2mms[22m[39m
+[31m       [31m×[31m should have proper button states for disabled controls[39m[33m 5028[2mms[22m[39m
+       [32m✓[39m should apply dark mode classes when dark mode is active[32m 6[2mms[22m[39m
+       [32m✓[39m should have proper contrast in dark mode[32m 6[2mms[22m[39m
+       [32m✓[39m should use single column on mobile[32m 8[2mms[22m[39m
+       [32m✓[39m should use 2 columns on tablet[32m 4[2mms[22m[39m
+       [32m✓[39m should use 4 columns on desktop[32m 4[2mms[22m[39m
+       [32m✓[39m should animate card entrance on mount[32m 5[2mms[22m[39m
+[31m       [31m×[31m should animate value changes[39m[33m 5014[2mms[22m[39m
+[31m       [31m×[31m should have staggered animation for multiple cards[39m[33m 5006[2mms[22m[39m
+[31m       [31m×[31m should format values using custom formatter[39m[33m 5006[2mms[22m[39m
+[31m       [31m×[31m should display percentage change[39m[33m 5012[2mms[22m[39m
+[31m       [31m×[31m should show trend indicator (up/down)[39m[33m 5002[2mms[22m[39m
+[31m       [31m×[31m should handle negative trend[39m[33m 5018[2mms[22m[39m
+       [32m✓[39m should accept all required props[32m 5[2mms[22m[39m
+       [32m✓[39m should accept optional refreshInterval prop[32m 5[2mms[22m[39m
+       [32m✓[39m should accept optional onError prop[32m 4[2mms[22m[39m
+       [32m✓[39m should accept optional initialPeriod prop[32m 4[2mms[22m[39m
+[31m       [31m×[31m should not re-fetch data if already loading[39m[33m 5016[2mms[22m[39m
+[31m       [31m×[31m should debounce period changes[39m[33m 5012[2mms[22m[39m
+       [32m✓[39m should cleanup timers and subscriptions on unmount[32m 5[2mms[22m[39m
+
+[31m⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 30 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m src/components/StatsCardWidget.test.tsx[2m > [22mStatsCardWidget - TDD RED Tests[2m > [22mComponent Rendering[2m > [22mshould render all metric cards in a grid
+[31m[1mError[22m: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".[39m
+[36m [2m❯[22m src/components/StatsCardWidget.test.tsx:[2m89:5[22m[39m
+    [90m 87| [39m    })[33m;[39m
+    [90m 88| [39m
+    [90m 89| [39m    [34mit[39m([32m'should render all metric cards in a grid'[39m[33m,[39m [35masync[39m () [33m=>[39m {
+    [90m   | [39m    [31m^[39m
+    [90m 90| [39m      [34mrender[39m(
+    [90m 91| [39m        [33m<[39m[33mStatsCardWidget[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/30]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/components/StatsCardWidget.test.tsx[2m > [22mStatsCardWidget - TDD RED Tests[2m > [22mComponent Rendering[2m > [22mshould render metric values after data loads
+[31m[1mError[22m: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".[39m
+[36m [2m❯[22m src/components/StatsCardWidget.test.tsx:[2m105:5[22m[39m
+    [90m103| [39m    })[33m;[39m
+    [90m104| [39m
+    [90m105| [39m    [34mit[39m([32m'should render metric values after data loads'[39m[33m,[39m [35masync[39m () [33m=>[39m {
+    [90m   | [39m    [31m^[39m
+    [90m106| [39m      [34mrender[39m(
+    [90m107| [39m        [33m<[39m[33mStatsCardWidget[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/30]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/components/StatsCardWidget.test.tsx[2m > [22mStatsCardWidget - TDD RED Tests[2m > [22mLoading States[2m > [22mshould hide skeleton cards after data loads
+[31m[1mError[22m: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".[39m
+[36m [2m❯[22m src/components/StatsCardWidget.test.tsx:[2m162:5[22m[39m
+    [90m160| [39m    })[33m;[39m
+    [90m161| [39m
+    [90m162| [39m    [34mit[39m([32m'should hide skeleton cards after data loads'[39m[33m,[39m [35masync[39m () [33m=>[39m {
+    [90m   | [39m    [31m^[39m
+    [90m163| [39m      [34mrender[39m(
+    [90m164| [39m        [33m<[39m[33mStatsCardWidget[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/30]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/components/StatsCardWidget.test.tsx[2m > [22mStatsCardWidget - TDD RED Tests[2m > [22mLoading States[2m > [22mshould show loading indicator on refresh button during load
+[31m[1mError[22m: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".[39m
+[36m [2m❯[22m src/components/StatsCardWidget.test.tsx:[2m175:5[22m[39m
+    [90m173| [39m    })[33m;[39m
+    [90m174| [39m
+    [90m175| [39m    it('should show loading indicator on refresh button during load', …
+    [90m   | [39m    [31m^[39m
+    [90m176| [39m      [35mconst[39m user [33m=[39m userEvent[33m.[39m[34msetup[39m({ delay[33m:[39m [35mnull[39m })[33m;[39m
+    [90m177| [39m      mockFetchMetrics[33m.[39m[34mmockImplementation[39m(
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/30]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/components/StatsCardWidget.test.tsx[2m > [22mStatsCardWidget - TDD RED Tests[2m > [22mReal-time Updates[2m > [22mshould auto-refresh data at default interval (5 seconds)
+[31m[1mError[22m: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".[39m
+[36m [2m❯[22m src/components/StatsCardWidget.test.tsx:[2m200:5[22m[39m
+    [90m198| [39m
+    [90m199| [39m  [34mdescribe[39m([32m'Real-time Updates'[39m[33m,[39m () [33m=>[39m {
+    [90m200| [39m    it('should auto-refresh data at default interval (5 seconds)', asy…
+    [90m   | [39m    [31m^[39m
+    [90m201| [39m      [34mrender[39m(
+    [90m202| [39m        [33m<[39m[33mStatsCardWidget[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/30]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/components/StatsCardWidget.test.tsx[2m > [22mStatsCardWidget - TDD RED Tests[2m > [22mReal-time Updates[2m > [22mshould use custom refresh interval when provided
+[31m[1mError[22m: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".[39m
+[36m [2m❯[22m src/components/StatsCardWidget.test.tsx:[2m222:5[22m[39m
+    [90m220| [39m    })[33m;[39m
+    [90m221| [39m
+    [90m222| [39m    it('should use custom refresh interval when provided', async () =>…
+    [90m   | [39m    [31m^[39m
+    [90m223| [39m      [34mrender[39m(
+    [90m224| [39m        [33m<[39m[33mStatsCardWidget[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/30]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/components/StatsCardWidget.test.tsx[2m > [22mStatsCardWidget - TDD RED Tests[2m > [22mReal-time Updates[2m > [22mshould stop auto-refresh when component unmounts
+[31m[1mError[22m: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".[39m
+[36m [2m❯[22m src/components/StatsCardWidget.test.tsx:[2m248:5[22m[39m
+    [90m246| [39m    })[33m;[39m
+    [90m247| [39m
+    [90m248| [39m    it('should stop auto-refresh when component unmounts', async () =>…
+    [90m   | [39m    [31m^[39m
+    [90m249| [39m      [35mconst[39m { unmount } [33m=[39m [34mrender[39m(
+    [90m250| [39m        [33m<[39m[33mStatsCardWidget[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/30]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/components/StatsCardWidget.test.tsx[2m > [22mStatsCardWidget - TDD RED Tests[2m > [22mInteractive Controls - Refresh Button[2m > [22mshould refresh all metrics when refresh button clicked
+[31m[1mError[22m: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".[39m
+[36m [2m❯[22m src/components/StatsCardWidget.test.tsx:[2m280:5[22m[39m
+    [90m278| [39m    })[33m;[39m
+    [90m279| [39m
+    [90m280| [39m    it('should refresh all metrics when refresh button clicked', async…
+    [90m   | [39m    [31m^[39m
+    [90m281| [39m      [35mconst[39m user [33m=[39m userEvent[33m.[39m[34msetup[39m({ delay[33m:[39m [35mnull[39m })[33m;[39m
+    [90m282| [39m      [34mrender[39m(
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/30]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/components/StatsCardWidget.test.tsx[2m > [22mStatsCardWidget - TDD RED Tests[2m > [22mInteractive Controls - Pause/Resume[2m > [22mshould pause auto-refresh when pause button clicked
+[31m[1mError[22m: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".[39m
+[36m [2m❯[22m src/components/StatsCardWidget.test.tsx:[2m328:5[22m[39m
+    [90m326| [39m    })[33m;[39m
+    [90m327| [39m
+    [90m328| [39m    it('should pause auto-refresh when pause button clicked', async ()…
+    [90m   | [39m    [31m^[39m
+    [90m329| [39m      [35mconst[39m user [33m=[39m userEvent[33m.[39m[34msetup[39m({ delay[33m:[39m [35mnull[39m })[33m;[39m
+    [90m330| [39m      [34mrender[39m(
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/30]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/components/StatsCardWidget.test.tsx[2m > [22mStatsCardWidget - TDD RED Tests[2m > [22mInteractive Controls - Pause/Resume[2m > [22mshould resume auto-refresh when resume button clicked
+[31m[1mError[22m: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".[39m
+[36m [2m❯[22m src/components/StatsCardWidget.test.tsx:[2m367:5[22m[39m
+    [90m365| [39m    })[33m;[39m
+    [90m366| [39m
+    [90m367| [39m    it('should resume auto-refresh when resume button clicked', async …
+    [90m   | [39m    [31m^[39m
+    [90m368| [39m      [35mconst[39m user [33m=[39m userEvent[33m.[39m[34msetup[39m({ delay[33m:[39m [35mnull[39m })[33m;[39m
+    [90m369| [39m      [34mrender[39m(
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/30]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/components/StatsCardWidget.test.tsx[2m > [22mStatsCardWidget - TDD RED Tests[2m > [22mInteractive Controls - Pause/Resume[2m > [22mshould have accessible labels on pause/resume buttons
+[31m[1mError[22m: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".[39m
+[36m [2m❯[22m src/components/StatsCardWidget.test.tsx:[2m397:5[22m[39m
+    [90m395| [39m    })[33m;[39m
+    [90m396| [39m
+    [90m397| [39m    it('should have accessible labels on pause/resume buttons', async …
+    [90m   | [39m    [31m^[39m
+    [90m398| [39m      [35mconst[39m user [33m=[39m userEvent[33m.[39m[34msetup[39m({ delay[33m:[39m [35mnull[39m })[33m;[39m
+    [90m399| [39m      [34mrender[39m(
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/30]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/components/StatsCardWidget.test.tsx[2m > [22mStatsCardWidget - TDD RED Tests[2m > [22mInteractive Controls - Time Period Selector[2m > [22mshould change active period when period button clicked
+[31m[1mError[22m: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".[39m
+[36m [2m❯[22m src/components/StatsCardWidget.test.tsx:[2m444:5[22m[39m
+    [90m442| [39m    })[33m;[39m
+    [90m443| [39m
+    [90m444| [39m    it('should change active period when period button clicked', async…
+    [90m   | [39m    [31m^[39m
+    [90m445| [39m      [35mconst[39m user [33m=[39m userEvent[33m.[39m[34msetup[39m({ delay[33m:[39m [35mnull[39m })[33m;[39m
+    [90m446| [39m      [34mrender[39m(
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/30]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/components/StatsCardWidget.test.tsx[2m > [22mStatsCardWidget - TDD RED Tests[2m > [22mInteractive Controls - Time Period Selector[2m > [22mshould refresh data when period changes
+[31m[1mError[22m: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".[39m
+[36m [2m❯[22m src/components/StatsCardWidget.test.tsx:[2m461:5[22m[39m
+    [90m459| [39m    })[33m;[39m
+    [90m460| [39m
+    [90m461| [39m    [34mit[39m([32m'should refresh data when period changes'[39m[33m,[39m [35masync[39m () [33m=>[39m {
+    [90m   | [39m    [31m^[39m
+    [90m462| [39m      [35mconst[39m user [33m=[39m userEvent[33m.[39m[34msetup[39m({ delay[33m:[39m [35mnull[39m })[33m;[39m
+    [90m463| [39m      [34mrender[39m(
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/30]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/components/StatsCardWidget.test.tsx[2m > [22mStatsCardWidget - TDD RED Tests[2m > [22mInteractive Controls - Time Period Selector[2m > [22mshould pass selected period to fetchData function
+[31m[1mError[22m: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".[39m
+[36m [2m❯[22m src/components/StatsCardWidget.test.tsx:[2m485:5[22m[39m
+    [90m483| [39m    })[33m;[39m
+    [90m484| [39m
+    [90m485| [39m    it('should pass selected period to fetchData function', async () =…
+    [90m   | [39m    [31m^[39m
+    [90m486| [39m      [35mconst[39m user [33m=[39m userEvent[33m.[39m[34msetup[39m({ delay[33m:[39m [35mnull[39m })[33m;[39m
+    [90m487| [39m      [34mrender[39m(
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/30]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/components/StatsCardWidget.test.tsx[2m > [22mStatsCardWidget - TDD RED Tests[2m > [22mError Handling[2m > [22mshould display error message when data fetch fails
+[31m[1mError[22m: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".[39m
+[36m [2m❯[22m src/components/StatsCardWidget.test.tsx:[2m510:5[22m[39m
+    [90m508| [39m
+    [90m509| [39m  [34mdescribe[39m([32m'Error Handling'[39m[33m,[39m () [33m=>[39m {
+    [90m510| [39m    it('should display error message when data fetch fails', async () …
+    [90m   | [39m    [31m^[39m
+    [90m511| [39m      mockFetchMetrics.mockRejectedValueOnce(new Error('Network error'…
+    [90m512| [39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[15/30]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/components/StatsCardWidget.test.tsx[2m > [22mStatsCardWidget - TDD RED Tests[2m > [22mError Handling[2m > [22mshould call onError callback when error occurs
+[31m[1mError[22m: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".[39m
+[36m [2m❯[22m src/components/StatsCardWidget.test.tsx:[2m525:5[22m[39m
+    [90m523| [39m    })[33m;[39m
+    [90m524| [39m
+    [90m525| [39m    [34mit[39m([32m'should call onError callback when error occurs'[39m[33m,[39m [35masync[39m () [33m=>[39m {
+    [90m   | [39m    [31m^[39m
+    [90m526| [39m      [35mconst[39m onError [33m=[39m vi[33m.[39m[34mfn[39m()[33m;[39m
+    [90m527| [39m      mockFetchMetrics.mockRejectedValueOnce(new Error('Network error'…
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[16/30]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/components/StatsCardWidget.test.tsx[2m > [22mStatsCardWidget - TDD RED Tests[2m > [22mError Handling[2m > [22mshould show error toast notification when error occurs
+[31m[1mError[22m: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".[39m
+[36m [2m❯[22m src/components/StatsCardWidget.test.tsx:[2m542:5[22m[39m
+    [90m540| [39m    })[33m;[39m
+    [90m541| [39m
+    [90m542| [39m    it('should show error toast notification when error occurs', async…
+    [90m   | [39m    [31m^[39m
+    [90m543| [39m      mockFetchMetrics[33m.[39m[34mmockRejectedValueOnce[39m([35mnew[39m [33mError[39m([32m'API timeout'[39m))[33m;[39m
+    [90m544| [39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[17/30]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/components/StatsCardWidget.test.tsx[2m > [22mStatsCardWidget - TDD RED Tests[2m > [22mError Handling[2m > [22mshould allow retry after error
+[31m[1mError[22m: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".[39m
+[36m [2m❯[22m src/components/StatsCardWidget.test.tsx:[2m558:5[22m[39m
+    [90m556| [39m    })[33m;[39m
+    [90m557| [39m
+    [90m558| [39m    [34mit[39m([32m'should allow retry after error'[39m[33m,[39m [35masync[39m () [33m=>[39m {
+    [90m   | [39m    [31m^[39m
+    [90m559| [39m      [35mconst[39m user [33m=[39m userEvent[33m.[39m[34msetup[39m({ delay[33m:[39m [35mnull[39m })[33m;[39m
+    [90m560| [39m      mockFetchMetrics
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[18/30]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/components/StatsCardWidget.test.tsx[2m > [22mStatsCardWidget - TDD RED Tests[2m > [22mError Handling[2m > [22mshould continue auto-refresh after error is resolved
+[31m[1mError[22m: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".[39m
+[36m [2m❯[22m src/components/StatsCardWidget.test.tsx:[2m583:5[22m[39m
+    [90m581| [39m    })[33m;[39m
+    [90m582| [39m
+    [90m583| [39m    it('should continue auto-refresh after error is resolved', async (…
+    [90m   | [39m    [31m^[39m
+    [90m584| [39m      mockFetchMetrics
+    [90m585| [39m        [33m.[39m[34mmockRejectedValueOnce[39m([35mnew[39m [33mError[39m([32m'Network error'[39m))
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[19/30]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/components/StatsCardWidget.test.tsx[2m > [22mStatsCardWidget - TDD RED Tests[2m > [22mAccessibility[2m > [22mshould support keyboard navigation for all controls
+[31m[1mAssertionError[22m: expected <body><div>…(1)</div></body> to be <button …(4)></button> // Object.is equality[39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[31m+ <body>[39m
+[31m+   <div>[39m
+[31m+     <div[39m
+[31m+       class="p-6 dark:bg-gray-900"[39m
+[31m+       data-testid="stats-widget"[39m
+[31m+     >[39m
+[31m+       <div[39m
+[31m+         class="flex items-center justify-between mb-6"[39m
+[31m+       >[39m
+[31m+         <h2[39m
+[31m+           class="text-2xl font-bold text-gray-900 dark:text-white"[39m
+[31m+         >[39m
+[31m+           Dashboard Metrics[39m
+[31m+         </h2>[39m
+[31m+         <div[39m
+[31m+           class="flex items-center gap-4"[39m
+[31m+         >[39m
+[31m+           <div[39m
+[31m+             class="flex gap-2"[39m
+[31m+           >[39m
+[31m+             <button[39m
+[31m+               aria-label="Select 1h time period"[39m
+[31m+               aria-pressed="true"[39m
+[31m+               class="px-3 py-1 rounded-md text-sm font-medium transition-colors bg-blue-600 text-white"[39m
+[31m+             >[39m
+[31m+               1h[39m
+[31m+             </button>[39m
+[31m+             <button[39m
+[31m+               aria-label="Select 24h time period"[39m
+[31m+               aria-pressed="false"[39m
+[31m+               class="px-3 py-1 rounded-md text-sm font-medium transition-colors bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600"[39m
+[31m+             >[39m
+[31m+               24h[39m
+[31m+             </button>[39m
+[31m+             <button[39m
+[31m+               aria-label="Select 7d time period"[39m
+[31m+               aria-pressed="false"[39m
+[31m+               class="px-3 py-1 rounded-md text-sm font-medium transition-colors bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600"[39m
+[31m+             >[39m
+[31m+               7d[39m
+[31m+             </button>[39m
+[31m+             <button[39m
+[31m+               aria-label="Select 30d time period"[39m
+[31m+               aria-pressed="false"[39m
+[31m+               class="px-3 py-1 rounded-md text-sm font-medium transition-colors bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600"[39m
+[31m+             >[39m
+[31m+               30d[39m
+[31m+             </button>[39m
+[31m+           </div>[39m
+[31m+           <button[39m
+[31m+             aria-label="Pause data updates"[39m
+[31m+             class="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"[39m
+[31m+           >[39m
+[31m+             Pause[39m
+[31m+           </button>[39m
+[2m            <button[22m
+[2m              aria-busy="true"[22m
+[2m              aria-label="Refresh metrics"[22m
+[2m              class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:bg-blue-400 disabled:cursor-not-allowed transition-colors"[22m
+[2m              disabled=""[22m
+[2m            >[22m
+[2m              Refreshing...[22m
+[2m            </button>[22m
+[31m+         </div>[39m
+[31m+       </div>[39m
+[31m+       <div[39m
+[31m+         aria-busy="true"[39m
+[31m+         aria-label="Dashboard Metrics"[39m
+[31m+         class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"[39m
+[31m+         data-testid="stats-grid"[39m
+[31m+         role="region"[39m
+[31m+       >[39m
+[31m+         <div[39m
+[31m+           class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 animate-pulse"[39m
+[31m+           data-testid="skeleton-card"[39m
+[31m+         >[39m
+[31m+           <div[39m
+[31m+             class="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/2 mb-4"[39m
+[31m+           />[39m
+[31m+           <div[39m
+[31m+             class="h-8 bg-gray-200 dark:bg-gray-700 rounded w-3/4 mb-2"[39m
+[31m+           />[39m
+[31m+           <div[39m
+[31m+             class="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/3"[39m
+[31m+           />[39m
+[31m+         </div>[39m
+[31m+         <div[39m
+[31m+           class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 animate-pulse"[39m
+[31m+           data-testid="skeleton-card"[39m
+[31m+         >[39m
+[31m+           <div[39m
+[31m+             class="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/2 mb-4"[39m
+[31m+           />[39m
+[31m+           <div[39m
+[31m+             class="h-8 bg-gray-200 dark:bg-gray-700 rounded w-3/4 mb-2"[39m
+[31m+           />[39m
+[31m+           <div[39m
+[31m+             class="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/3"[39m
+[31m+           />[39m
+[31m+         </div>[39m
+[31m+         <div[39m
+[31m+           class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 animate-pulse"[39m
+[31m+           data-testid="skeleton-card"[39m
+[31m+         >[39m
+[31m+           <div[39m
+[31m+             class="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/2 mb-4"[39m
+[31m+           />[39m
+[31m+           <div[39m
+[31m+             class="h-8 bg-gray-200 dark:bg-gray-700 rounded w-3/4 mb-2"[39m
+[31m+           />[39m
+[31m+           <div[39m
+[31m+             class="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/3"[39m
+[31m+           />[39m
+[31m+         </div>[39m
+[31m+         <div[39m
+[31m+           class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 animate-pulse"[39m
+[31m+           data-testid="skeleton-card"[39m
+[31m+         >[39m
+[31m+           <div[39m
+[31m+             class="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/2 mb-4"[39m
+[31m+           />[39m
+[31m+           <div[39m
+[31m+             class="h-8 bg-gray-200 dark:bg-gray-700 rounded w-3/4 mb-2"[39m
+[31m+           />[39m
+[31m+           <div[39m
+[31m+             class="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/3"[39m
+[31m+           />[39m
+[31m+         </div>[39m
+[31m+       </div>[39m
+[31m+     </div>[39m
+[31m+   </div>[39m
+[31m+ </body>[39m
+
+[36m [2m❯[22m src/components/StatsCardWidget.test.tsx:[2m645:38[22m[39m
+    [90m643| [39m      refreshButton[33m.[39m[34mfocus[39m()[33m;[39m
+    [90m644| [39m
+    [90m645| [39m      [34mexpect[39m(document[33m.[39mactiveElement)[33m.[39m[34mtoBe[39m(refreshButton)[33m;[39m
+    [90m   | [39m                                     [31m^[39m
+    [90m646| [39m
+    [90m647| [39m      [35mawait[39m user[33m.[39m[34mkeyboard[39m([32m'{Tab}'[39m)[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[20/30]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/components/StatsCardWidget.test.tsx[2m > [22mStatsCardWidget - TDD RED Tests[2m > [22mAccessibility[2m > [22mshould announce errors to screen readers
+[31m[1mError[22m: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".[39m
+[36m [2m❯[22m src/components/StatsCardWidget.test.tsx:[2m667:5[22m[39m
+    [90m665| [39m    })[33m;[39m
+    [90m666| [39m
+    [90m667| [39m    [34mit[39m([32m'should announce errors to screen readers'[39m[33m,[39m [35masync[39m () [33m=>[39m {
+    [90m   | [39m    [31m^[39m
+    [90m668| [39m      mockFetchMetrics.mockRejectedValueOnce(new Error('Network error'…
+    [90m669| [39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[21/30]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/components/StatsCardWidget.test.tsx[2m > [22mStatsCardWidget - TDD RED Tests[2m > [22mAccessibility[2m > [22mshould have proper button states for disabled controls
+[31m[1mError[22m: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".[39m
+[36m [2m❯[22m src/components/StatsCardWidget.test.tsx:[2m683:5[22m[39m
+    [90m681| [39m    })[33m;[39m
+    [90m682| [39m
+    [90m683| [39m    it('should have proper button states for disabled controls', async…
+    [90m   | [39m    [31m^[39m
+    [90m684| [39m      [35mconst[39m user [33m=[39m userEvent[33m.[39m[34msetup[39m({ delay[33m:[39m [35mnull[39m })[33m;[39m
+    [90m685| [39m      mockFetchMetrics[33m.[39m[34mmockImplementation[39m(
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[22/30]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/components/StatsCardWidget.test.tsx[2m > [22mStatsCardWidget - TDD RED Tests[2m > [22mAnimation Behavior[2m > [22mshould animate value changes
+[31m[1mError[22m: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".[39m
+[36m [2m❯[22m src/components/StatsCardWidget.test.tsx:[2m803:5[22m[39m
+    [90m801| [39m    })[33m;[39m
+    [90m802| [39m
+    [90m803| [39m    [34mit[39m([32m'should animate value changes'[39m[33m,[39m [35masync[39m () [33m=>[39m {
+    [90m   | [39m    [31m^[39m
+    [90m804| [39m      mockFetchMetrics
+    [90m805| [39m        .mockResolvedValueOnce({ value: 1000, change: 12.5, trend: 'up…
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[23/30]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/components/StatsCardWidget.test.tsx[2m > [22mStatsCardWidget - TDD RED Tests[2m > [22mAnimation Behavior[2m > [22mshould have staggered animation for multiple cards
+[31m[1mError[22m: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".[39m
+[36m [2m❯[22m src/components/StatsCardWidget.test.tsx:[2m828:5[22m[39m
+    [90m826| [39m    })[33m;[39m
+    [90m827| [39m
+    [90m828| [39m    it('should have staggered animation for multiple cards', async () …
+    [90m   | [39m    [31m^[39m
+    [90m829| [39m      [35mconst[39m { container } [33m=[39m [34mrender[39m(
+    [90m830| [39m        [33m<[39m[33mStatsCardWidget[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[24/30]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/components/StatsCardWidget.test.tsx[2m > [22mStatsCardWidget - TDD RED Tests[2m > [22mData Formatting[2m > [22mshould format values using custom formatter
+[31m[1mError[22m: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".[39m
+[36m [2m❯[22m src/components/StatsCardWidget.test.tsx:[2m846:5[22m[39m
+    [90m844| [39m
+    [90m845| [39m  [34mdescribe[39m([32m'Data Formatting'[39m[33m,[39m () [33m=>[39m {
+    [90m846| [39m    [34mit[39m([32m'should format values using custom formatter'[39m[33m,[39m [35masync[39m () [33m=>[39m {
+    [90m   | [39m    [31m^[39m
+    [90m847| [39m      [34mrender[39m(
+    [90m848| [39m        [33m<[39m[33mStatsCardWidget[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[25/30]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/components/StatsCardWidget.test.tsx[2m > [22mStatsCardWidget - TDD RED Tests[2m > [22mData Formatting[2m > [22mshould display percentage change
+[31m[1mError[22m: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".[39m
+[36m [2m❯[22m src/components/StatsCardWidget.test.tsx:[2m859:5[22m[39m
+    [90m857| [39m    })[33m;[39m
+    [90m858| [39m
+    [90m859| [39m    [34mit[39m([32m'should display percentage change'[39m[33m,[39m [35masync[39m () [33m=>[39m {
+    [90m   | [39m    [31m^[39m
+    [90m860| [39m      [34mrender[39m(
+    [90m861| [39m        [33m<[39m[33mStatsCardWidget[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[26/30]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/components/StatsCardWidget.test.tsx[2m > [22mStatsCardWidget - TDD RED Tests[2m > [22mData Formatting[2m > [22mshould show trend indicator (up/down)
+[31m[1mError[22m: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".[39m
+[36m [2m❯[22m src/components/StatsCardWidget.test.tsx:[2m872:5[22m[39m
+    [90m870| [39m    })[33m;[39m
+    [90m871| [39m
+    [90m872| [39m    [34mit[39m([32m'should show trend indicator (up/down)'[39m[33m,[39m [35masync[39m () [33m=>[39m {
+    [90m   | [39m    [31m^[39m
+    [90m873| [39m      [34mrender[39m(
+    [90m874| [39m        [33m<[39m[33mStatsCardWidget[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[27/30]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/components/StatsCardWidget.test.tsx[2m > [22mStatsCardWidget - TDD RED Tests[2m > [22mData Formatting[2m > [22mshould handle negative trend
+[31m[1mError[22m: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".[39m
+[36m [2m❯[22m src/components/StatsCardWidget.test.tsx:[2m885:5[22m[39m
+    [90m883| [39m    })[33m;[39m
+    [90m884| [39m
+    [90m885| [39m    [34mit[39m([32m'should handle negative trend'[39m[33m,[39m [35masync[39m () [33m=>[39m {
+    [90m   | [39m    [31m^[39m
+    [90m886| [39m      mockFetchMetrics.mockResolvedValueOnce({ value: 800, change: -20…
+    [90m887| [39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[28/30]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/components/StatsCardWidget.test.tsx[2m > [22mStatsCardWidget - TDD RED Tests[2m > [22mPerformance Optimizations[2m > [22mshould not re-fetch data if already loading
+[31m[1mError[22m: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".[39m
+[36m [2m❯[22m src/components/StatsCardWidget.test.tsx:[2m952:5[22m[39m
+    [90m950| [39m
+    [90m951| [39m  [34mdescribe[39m([32m'Performance Optimizations'[39m[33m,[39m () [33m=>[39m {
+    [90m952| [39m    [34mit[39m([32m'should not re-fetch data if already loading'[39m[33m,[39m [35masync[39m () [33m=>[39m {
+    [90m   | [39m    [31m^[39m
+    [90m953| [39m      [35mconst[39m user [33m=[39m userEvent[33m.[39m[34msetup[39m({ delay[33m:[39m [35mnull[39m })[33m;[39m
+    [90m954| [39m      mockFetchMetrics[33m.[39m[34mmockImplementation[39m(
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[29/30]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/components/StatsCardWidget.test.tsx[2m > [22mStatsCardWidget - TDD RED Tests[2m > [22mPerformance Optimizations[2m > [22mshould debounce period changes
+[31m[1mError[22m: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".[39m
+[36m [2m❯[22m src/components/StatsCardWidget.test.tsx:[2m976:5[22m[39m
+    [90m974| [39m    })[33m;[39m
+    [90m975| [39m
+    [90m976| [39m    [34mit[39m([32m'should debounce period changes'[39m[33m,[39m [35masync[39m () [33m=>[39m {
+    [90m   | [39m    [31m^[39m
+    [90m977| [39m      [35mconst[39m user [33m=[39m userEvent[33m.[39m[34msetup[39m({ delay[33m:[39m [35mnull[39m })[33m;[39m
+    [90m978| [39m      [34mrender[39m(
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[30/30]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m30 failed[39m[22m[2m | [22m[1m[32m25 passed[39m[22m[90m (55)[39m
+[2m   Start at [22m 00:30:26
+[2m   Duration [22m 146.82s[2m (transform 157ms, setup 334ms, import 213ms, tests 145.64s, environment 424ms)[22m
+

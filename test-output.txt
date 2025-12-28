@@ -1,0 +1,69 @@
+
+> lumina-studio@0.1.0 test
+> vitest StatsCardWidget.test.tsx --run
+
+
+[1m[46m RUN [49m[22m [36mv4.0.16 [39m[90mC:/Users/User/Desktop/Development Projects/Strategia-Enhanced-App/Lumina-Studio[39m
+
+ [31m❯[39m src/components/StatsCardWidget.test.tsx [2m([22m[2m55 tests[22m[2m | [22m[31m33 failed[39m[2m)[22m[33m 140766[2mms[22m[39m
+       [32m✓[39m should render the component with title[32m 46[2mms[22m[39m
+       [32m✓[39m should render with custom title text[32m 8[2mms[22m[39m
+[31m       [31m×[31m should render all metric cards in a grid[39m[33m 5010[2mms[22m[39m
+[31m       [31m×[31m should render metric values after data loads[39m[33m 5029[2mms[22m[39m
+       [32m✓[39m should apply responsive grid classes[32m 12[2mms[22m[39m
+       [32m✓[39m should render empty state when no metrics provided[32m 2[2mms[22m[39m
+       [32m✓[39m should show skeleton cards while loading[32m 6[2mms[22m[39m
+[31m       [31m×[31m should hide skeleton cards after data loads[39m[33m 5015[2mms[22m[39m
+[31m       [31m×[31m should show loading indicator on refresh button during load[39m[33m 5034[2mms[22m[39m
+[31m       [31m×[31m should auto-refresh data at default interval (5 seconds)[39m[33m 5013[2mms[22m[39m
+[31m       [31m×[31m should use custom refresh interval when provided[39m[33m 5006[2mms[22m[39m
+[31m       [31m×[31m should stop auto-refresh when component unmounts[39m[33m 5016[2mms[22m[39m
+[31m       [31m×[31m should render refresh button[39m[32m 23[2mms[22m[39m
+[31m       [31m×[31m should refresh all metrics when refresh button clicked[39m[33m 5019[2mms[22m[39m
+[31m       [31m×[31m should have accessible label on refresh button[39m[32m 12[2mms[22m[39m
+       [32m✓[39m should render pause button[32m 8[2mms[22m[39m
+[31m       [31m×[31m should pause auto-refresh when pause button clicked[39m[33m 5018[2mms[22m[39m
+       [32m✓[39m should show resume button after pause is clicked[32m 27[2mms[22m[39m
+[31m       [31m×[31m should resume auto-refresh when resume button clicked[39m[33m 5021[2mms[22m[39m
+[31m       [31m×[31m should have accessible labels on pause/resume buttons[39m[33m 5046[2mms[22m[39m
+       [32m✓[39m should render time period selector with default period[32m 17[2mms[22m[39m
+       [32m✓[39m should highlight initial period when provided[32m 15[2mms[22m[39m
+[31m       [31m×[31m should change active period when period button clicked[39m[33m 5008[2mms[22m[39m
+[31m       [31m×[31m should refresh data when period changes[39m[33m 5008[2mms[22m[39m
+[31m       [31m×[31m should pass selected period to fetchData function[39m[33m 5025[2mms[22m[39m
+[31m       [31m×[31m should display error message when data fetch fails[39m[33m 5007[2mms[22m[39m
+[31m       [31m×[31m should call onError callback when error occurs[39m[33m 5014[2mms[22m[39m
+[31m       [31m×[31m should show error toast notification when error occurs[39m[33m 5023[2mms[22m[39m
+[31m       [31m×[31m should allow retry after error[39m[33m 5025[2mms[22m[39m
+[31m       [31m×[31m should continue auto-refresh after error is resolved[39m[33m 5019[2mms[22m[39m
+[31m       [31m×[31m should have proper ARIA labels on all interactive elements[39m[32m 8[2mms[22m[39m
+       [32m✓[39m should have proper region landmark for stats grid[32m 6[2mms[22m[39m
+[31m       [31m×[31m should support keyboard navigation for all controls[39m[32m 8[2mms[22m[39m
+       [32m✓[39m should announce loading state to screen readers[32m 7[2mms[22m[39m
+[31m       [31m×[31m should announce errors to screen readers[39m[33m 5016[2mms[22m[39m
+[31m       [31m×[31m should have proper button states for disabled controls[39m[33m 5029[2mms[22m[39m
+       [32m✓[39m should apply dark mode classes when dark mode is active[32m 7[2mms[22m[39m
+       [32m✓[39m should have proper contrast in dark mode[32m 7[2mms[22m[39m
+       [32m✓[39m should use single column on mobile[32m 4[2mms[22m[39m
+       [32m✓[39m should use 2 columns on tablet[32m 4[2mms[22m[39m
+       [32m✓[39m should use 4 columns on desktop[32m 4[2mms[22m[39m
+       [32m✓[39m should animate card entrance on mount[32m 6[2mms[22m[39m
+[31m       [31m×[31m should animate value changes[39m[33m 5009[2mms[22m[39m
+[31m       [31m×[31m should have staggered animation for multiple cards[39m[33m 5016[2mms[22m[39m
+[31m       [31m×[31m should format values using custom formatter[39m[33m 5012[2mms[22m[39m
+[31m       [31m×[31m should display percentage change[39m[33m 5015[2mms[22m[39m
+[31m       [31m×[31m should show trend indicator (up/down)[39m[33m 5017[2mms[22m[39m
+[31m       [31m×[31m should handle negative trend[39m[33m 5021[2mms[22m[39m
+       [32m✓[39m should accept all required props[32m 5[2mms[22m[39m
+       [32m✓[39m should accept optional refreshInterval prop[32m 4[2mms[22m[39m
+       [32m✓[39m should accept optional onError prop[32m 4[2mms[22m[39m
+       [32m✓[39m should accept optional initialPeriod prop[32m 5[2mms[22m[39m
+[31m       [31m×[31m should not re-fetch data if already loading[39m[32m 6[2mms[22m[39m
+[31m       [31m×[31m should debounce period changes[39m[33m 5010[2mms[22m[39m
+       [32m✓[39m should cleanup timers and subscriptions on unmount[32m 4[2mms[22m[39m
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m33 failed[39m[22m[2m | [22m[1m[32m22 passed[39m[22m[90m (55)[39m
+[2m   Start at [22m 23:59:01
+[2m   Duration [22m 142.35s[2m (transform 207ms, setup 456ms, import 278ms, tests 140.77s, environment 573ms)[22m
+

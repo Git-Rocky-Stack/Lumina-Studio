@@ -1,9 +1,9 @@
 
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import LEDProgressBar from './LEDProgressBar';
 import { editImage, analyzeMedia } from '../services/geminiService';
 import { useToast } from '../design-system';
-import { PhotoLayer, PhotoFilter } from '../types';
+import type { PhotoLayer } from '../types';
 
 const TOOLS = [
   { id: 'select', icon: 'fa-mouse-pointer', label: 'Selection Tool' },
@@ -190,7 +190,7 @@ export default function ProPhoto() {
     try {
       const base64 = activeLayer.content.split(',')[1] || activeLayer.content;
       const result = await analyzeMedia("Provide a professional histogram and color balance audit of this image. Identify compositional strengths.", { data: base64, mimeType: 'image/png' });
-      setAnalysis(result);
+      setAnalysis(result ?? null);
     } catch (e) {
       console.error(e);
     } finally {

@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run build:*)",
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nAdd Strategia-X logo to website footers\n\n- Add footer_logo.png to public assets\n- Add logo with link to strategia-x.com in main Footer component\n- Add logo to SignIn and SignUp pages\n- Logo appears on all pages: Landing, User Guide, Terms, Privacy, SignIn, SignUp\n\n🤖 Generated with [Claude Code]\\(https://claude.com/claude-code\\)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(npx wrangler pages deploy:*)",
+      "Bash(git push)",
+      "Bash(git commit:*)",
+      "Bash(npx wrangler:*)",
+      "Bash(curl:*)",
+      "WebFetch(domain:lumina-studio-7w9.pages.dev)"
+    ]
+  }
+}

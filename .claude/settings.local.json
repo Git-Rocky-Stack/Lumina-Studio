@@ -35,7 +35,21 @@
       "Bash(fi)",
       "Bash(done)",
       "Bash(git rm:*)",
-      "Bash(wc:*)"
+      "Bash(wc:*)",
+      "Bash(npm test:*)",
+      "Bash(npx vitest:*)",
+      "Bash(npx tsc:*)",
+      "Bash(ls:*)",
+      "Bash(tee:*)",
+      "Bash(git check-ignore:*)",
+      "Bash(git ls-tree:*)",
+      "Bash(start https://ffc205f2.lumina-studio-7w9.pages.dev)",
+      "Bash(start https://2d946d7c.lumina-studio-7w9.pages.dev)",
+      "Bash(start https://c82eff14.lumina-studio-7w9.pages.dev)",
+      "Bash(start https://d9d156e1.lumina-studio-7w9.pages.dev)",
+      "Bash(start https://972438e0.lumina-studio-7w9.pages.dev)",
+      "Bash(start https://1c31000e.lumina-studio-7w9.pages.dev)",
+      "Bash(start https://add0f15a.lumina-studio-7w9.pages.dev)"
     ]
   }
 }
