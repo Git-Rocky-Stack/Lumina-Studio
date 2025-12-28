@@ -1,6 +1,7 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { ThemeColor } from '../types';
+import aistudio, { KeyStatus } from '../services/aistudio';
 
 interface PersonalizationProps {
   currentTheme: ThemeColor;
@@ -8,6 +9,44 @@ interface PersonalizationProps {
 }
 
 const Personalization: React.FC<PersonalizationProps> = ({ currentTheme, setTheme }) => {
+  const [keyStatus, setKeyStatus] = useState<KeyStatus>({ isValid: false, lastChecked: 0, source: 'none' });
+  const [isValidating, setIsValidating] = useState(false);
+  const [validationMessage, setValidationMessage] = useState<string | null>(null);
+
+  // Load key status on mount
+  useEffect(() => {
+    setKeyStatus(aistudio.getKeyStatus());
+  }, []);
+
+  const handleAddKey = async () => {
+    await aistudio.openSelectKey();
+    setKeyStatus(aistudio.getKeyStatus());
+  };
+
+  const handleRemoveKey = () => {
+    aistudio.clearApiKey();
+    setKeyStatus(aistudio.getKeyStatus());
+    setValidationMessage(null);
+  };
+
+  const handleTestKey = async () => {
+    const key = aistudio.getApiKey();
+    if (!key) return;
+
+    setIsValidating(true);
+    setValidationMessage(null);
+
+    const result = await aistudio.validateApiKey(key);
+    setIsValidating(false);
+
+    if (result.valid) {
+      setValidationMessage('API key is valid and working!');
+      setKeyStatus(prev => ({ ...prev, isValid: true, lastChecked: Date.now() }));
+    } else {
+      setValidationMessage(result.error || 'Validation failed');
+    }
+  };
+
   const themes: { id: ThemeColor, label: string, color: string }[] = [
     { id: 'indigo', label: 'Default Indigo', color: 'bg-indigo-600' },
     { id: 'emerald', label: 'Emerald Forest', color: 'bg-emerald-600' },
@@ -96,6 +135,158 @@ const Personalization: React.FC<PersonalizationProps> = ({ currentTheme, setThem
             </div>
           </section>
         </div>
+
+        {/* BYOK API Key Management Section */}
+        <section className="mt-16 space-y-10">
+          <div className="flex items-center gap-4 border-b border-slate-100 pb-6">
+            <div className="w-12 h-12 bg-gradient-to-br from-violet-600 to-indigo-600 rounded-2xl flex items-center justify-center text-white shadow-xl">
+              <i className="fas fa-key text-xl"></i>
+            </div>
+            <div>
+              <h3 className="text-2xl font-black text-slate-900 tracking-tight">Bring Your Own Key (BYOK)</h3>
+              <p className="text-slate-500 text-sm">Use your own Google AI API key for unlimited generation</p>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {/* Current Status Card */}
+            <div className={`p-8 rounded-[3rem] border-2 transition-all ${
+              keyStatus.source === 'byok'
+                ? 'bg-emerald-50 border-emerald-200'
+                : keyStatus.source === 'platform'
+                ? 'bg-indigo-50 border-indigo-200'
+                : 'bg-slate-50 border-slate-200'
+            }`}>
+              <div className="flex items-center gap-4 mb-6">
+                <div className={`w-4 h-4 rounded-full animate-pulse ${
+                  keyStatus.source === 'byok'
+                    ? 'bg-emerald-500'
+                    : keyStatus.source === 'platform'
+                    ? 'bg-indigo-500'
+                    : 'bg-slate-400'
+                }`}></div>
+                <span className="text-[10px] font-black uppercase tracking-widest text-slate-600">
+                  {keyStatus.source === 'byok' ? 'Your API Key Active' :
+                   keyStatus.source === 'platform' ? 'Using Platform Credits' :
+                   'No Key Configured'}
+                </span>
+              </div>
+
+              {keyStatus.source === 'byok' && (
+                <div className="space-y-4">
+                  <div className="flex items-center gap-3">
+                    <code className="flex-1 px-4 py-3 bg-white rounded-xl text-sm font-mono text-slate-600 border border-slate-200">
+                      {keyStatus.maskedKey || '••••••••'}
+                    </code>
+                    <button
+                      onClick={handleTestKey}
+                      disabled={isValidating}
+                      className="px-4 py-3 bg-white border border-slate-200 rounded-xl text-sm font-bold text-slate-600 hover:bg-slate-50 transition-all disabled:opacity-50"
+                    >
+                      {isValidating ? (
+                        <i className="fas fa-spinner fa-spin"></i>
+                      ) : (
+                        <i className="fas fa-check-circle"></i>
+                      )}
+                    </button>
+                  </div>
+
+                  {validationMessage && (
+                    <p className={`text-xs font-medium ${
+                      validationMessage.includes('valid') ? 'text-emerald-600' : 'text-amber-600'
+                    }`}>
+                      <i className={`fas ${validationMessage.includes('valid') ? 'fa-check-circle' : 'fa-exclamation-triangle'} mr-2`}></i>
+                      {validationMessage}
+                    </p>
+                  )}
+
+                  <div className="flex gap-3 pt-2">
+                    <button
+                      onClick={handleAddKey}
+                      className="flex-1 px-4 py-3 bg-white border border-slate-200 rounded-xl text-[10px] font-black uppercase tracking-widest text-slate-600 hover:bg-slate-50 transition-all"
+                    >
+                      Update Key
+                    </button>
+                    <button
+                      onClick={handleRemoveKey}
+                      className="px-4 py-3 bg-rose-50 border border-rose-200 rounded-xl text-[10px] font-black uppercase tracking-widest text-rose-600 hover:bg-rose-100 transition-all"
+                    >
+                      Remove
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {keyStatus.source === 'platform' && (
+                <div className="space-y-4">
+                  <p className="text-sm text-slate-600 leading-relaxed">
+                    You're using included platform credits. Add your own API key to unlock <strong>unlimited</strong> AI generation.
+                  </p>
+                  <button
+                    onClick={handleAddKey}
+                    className="w-full px-6 py-4 bg-gradient-to-r from-violet-600 to-indigo-600 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest hover:opacity-90 transition-all shadow-lg"
+                  >
+                    <i className="fas fa-plus mr-2"></i>
+                    Add Your API Key
+                  </button>
+                </div>
+              )}
+
+              {keyStatus.source === 'none' && (
+                <div className="space-y-4">
+                  <p className="text-sm text-slate-600 leading-relaxed">
+                    No API key configured. Add your Google AI API key to start generating.
+                  </p>
+                  <button
+                    onClick={handleAddKey}
+                    className="w-full px-6 py-4 bg-gradient-to-r from-violet-600 to-indigo-600 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest hover:opacity-90 transition-all shadow-lg"
+                  >
+                    <i className="fas fa-plus mr-2"></i>
+                    Add Your API Key
+                  </button>
+                </div>
+              )}
+            </div>
+
+            {/* Benefits Card */}
+            <div className="p-8 bg-gradient-to-br from-violet-950 to-indigo-950 rounded-[3rem] text-white relative overflow-hidden">
+              <div className="absolute top-0 right-0 p-6 opacity-10">
+                <i className="fas fa-infinity text-[100px]"></i>
+              </div>
+
+              <h4 className="text-xl font-bold mb-6 tracking-tight">BYOK Benefits</h4>
+
+              <ul className="space-y-4 relative z-10">
+                <li className="flex items-start gap-3">
+                  <i className="fas fa-check-circle text-emerald-400 mt-0.5"></i>
+                  <span className="text-sm text-white/90"><strong>Unlimited</strong> AI image & video generation</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <i className="fas fa-check-circle text-emerald-400 mt-0.5"></i>
+                  <span className="text-sm text-white/90">Pay only for what you use (Google pricing)</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <i className="fas fa-check-circle text-emerald-400 mt-0.5"></i>
+                  <span className="text-sm text-white/90">No monthly limits or rate throttling</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <i className="fas fa-check-circle text-emerald-400 mt-0.5"></i>
+                  <span className="text-sm text-white/90">Your key, your control, your data</span>
+                </li>
+              </ul>
+
+              <a
+                href="https://aistudio.google.com/apikey"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-6 flex items-center gap-2 text-sm text-violet-300 hover:text-white transition-colors"
+              >
+                Get a free API key from Google AI Studio
+                <i className="fas fa-external-link text-xs"></i>
+              </a>
+            </div>
+          </div>
+        </section>
 
         <div className="mt-24 p-12 bg-accent-soft rounded-[4rem] border border-accent/10 flex flex-col md:flex-row items-center justify-between gap-8">
            <div className="space-y-3">

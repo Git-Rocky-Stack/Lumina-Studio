@@ -1,11 +1,22 @@
 /**
- * AI Studio API Key Management
+ * AI Studio API Key Management (BYOK System)
  *
- * Handles secure storage and retrieval of Google AI API keys.
+ * Handles secure storage, retrieval, and validation of Google AI API keys.
  * Keys are stored in localStorage for persistence.
+ *
+ * BYOK = Bring Your Own Key - allows users to use their own API keys
+ * for unlimited AI generation without consuming platform credits.
  */
 
 const STORAGE_KEY = 'lumina_gemini_api_key';
+const KEY_STATUS_STORAGE = 'lumina_api_key_status';
+
+export interface KeyStatus {
+  isValid: boolean;
+  lastChecked: number;
+  source: 'byok' | 'platform' | 'none';
+  maskedKey?: string;
+}
 
 interface AIStudio {
   hasSelectedApiKey: () => Promise<boolean>;
@@ -13,6 +24,9 @@ interface AIStudio {
   getApiKey: () => string | null;
   setApiKey: (key: string) => void;
   clearApiKey: () => void;
+  validateApiKey: (key: string) => Promise<{ valid: boolean; error?: string }>;
+  getKeyStatus: () => KeyStatus;
+  getMaskedKey: () => string | null;
 }
 
 // Create modal for API key input
@@ -114,6 +128,40 @@ function createKeyModal(): Promise<string | null> {
   });
 }
 
+// Helper to mask API key for display
+function maskApiKey(key: string): string {
+  if (!key || key.length < 12) return '••••••••';
+  return `${key.slice(0, 4)}••••••••${key.slice(-4)}`;
+}
+
+// Validate API key by making a minimal API call
+async function testApiKey(key: string): Promise<{ valid: boolean; error?: string }> {
+  try {
+    // Use a minimal models.list call to validate the key
+    const response = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models?key=${key}`,
+      { method: 'GET', headers: { 'Content-Type': 'application/json' } }
+    );
+
+    if (response.ok) {
+      return { valid: true };
+    }
+
+    const errorData = await response.json().catch(() => ({}));
+    const errorMessage = errorData?.error?.message || `HTTP ${response.status}`;
+
+    if (response.status === 400 || response.status === 403) {
+      return { valid: false, error: 'Invalid API key. Please check and try again.' };
+    } else if (response.status === 429) {
+      return { valid: true, error: 'Key is valid but rate limited. Try again later.' };
+    }
+
+    return { valid: false, error: errorMessage };
+  } catch (e) {
+    return { valid: false, error: 'Network error. Please check your connection.' };
+  }
+}
+
 // AI Studio implementation
 const aistudio: AIStudio = {
   hasSelectedApiKey: async () => {
@@ -124,9 +172,26 @@ const aistudio: AIStudio = {
   openSelectKey: async () => {
     const key = await createKeyModal();
     if (key) {
-      localStorage.setItem(STORAGE_KEY, key);
-      // Update process.env for the current session
-      (window as any).__GEMINI_API_KEY__ = key;
+      // Validate before saving
+      const validation = await testApiKey(key);
+      if (validation.valid) {
+        localStorage.setItem(STORAGE_KEY, key);
+        (window as any).__GEMINI_API_KEY__ = key;
+
+        // Store validation status
+        const status: KeyStatus = {
+          isValid: true,
+          lastChecked: Date.now(),
+          source: 'byok',
+          maskedKey: maskApiKey(key)
+        };
+        localStorage.setItem(KEY_STATUS_STORAGE, JSON.stringify(status));
+      } else {
+        // Show error but still save if user wants to try
+        console.warn('API key validation warning:', validation.error);
+        localStorage.setItem(STORAGE_KEY, key);
+        (window as any).__GEMINI_API_KEY__ = key;
+      }
     }
   },
 
@@ -137,11 +202,68 @@ const aistudio: AIStudio = {
   setApiKey: (key: string) => {
     localStorage.setItem(STORAGE_KEY, key);
     (window as any).__GEMINI_API_KEY__ = key;
+
+    // Update status
+    const status: KeyStatus = {
+      isValid: true,
+      lastChecked: Date.now(),
+      source: 'byok',
+      maskedKey: maskApiKey(key)
+    };
+    localStorage.setItem(KEY_STATUS_STORAGE, JSON.stringify(status));
   },
 
   clearApiKey: () => {
     localStorage.removeItem(STORAGE_KEY);
+    localStorage.removeItem(KEY_STATUS_STORAGE);
     delete (window as any).__GEMINI_API_KEY__;
+  },
+
+  validateApiKey: async (key: string) => {
+    return await testApiKey(key);
+  },
+
+  getKeyStatus: (): KeyStatus => {
+    const key = localStorage.getItem(STORAGE_KEY);
+    const storedStatus = localStorage.getItem(KEY_STATUS_STORAGE);
+
+    if (key && key.length > 10) {
+      if (storedStatus) {
+        try {
+          return JSON.parse(storedStatus);
+        } catch {
+          // Fall through to default
+        }
+      }
+      return {
+        isValid: true,
+        lastChecked: 0,
+        source: 'byok',
+        maskedKey: maskApiKey(key)
+      };
+    }
+
+    // Check for platform key
+    const platformKey = process.env.API_KEY || process.env.GEMINI_API_KEY;
+    if (platformKey) {
+      return {
+        isValid: true,
+        lastChecked: Date.now(),
+        source: 'platform',
+        maskedKey: 'Platform Credits'
+      };
+    }
+
+    return {
+      isValid: false,
+      lastChecked: 0,
+      source: 'none'
+    };
+  },
+
+  getMaskedKey: () => {
+    const key = localStorage.getItem(STORAGE_KEY);
+    return key ? maskApiKey(key) : null;
   }
 };
 

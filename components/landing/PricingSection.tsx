@@ -9,7 +9,7 @@ const plans = [
     name: 'Free',
     monthlyPrice: 0,
     yearlyPrice: 0,
-    description: 'Perfect for trying out Lumina Studio',
+    description: 'Try Lumina with included credits',
     features: [
       '20 AI images/month',
       '3 AI videos/month',
@@ -17,24 +17,45 @@ const plans = [
       'Basic export formats',
       'Community support',
     ],
+    byokFeature: 'Or unlimited with your own API key',
     cta: 'Get Started',
     popular: false,
     gradient: 'from-slate-500 to-slate-600',
   },
   {
+    name: 'Starter',
+    monthlyPrice: 9,
+    yearlyPrice: 7,
+    description: 'BYOK-only — bring your own Gemini key',
+    features: [
+      'Unlimited AI images (BYOK)',
+      'Unlimited AI videos (BYOK)',
+      '10GB storage',
+      'All export formats',
+      'Email support',
+      'Full platform access',
+    ],
+    byokFeature: 'Your API key = unlimited generation',
+    cta: 'Start Creating',
+    popular: false,
+    gradient: 'from-emerald-500 to-teal-600',
+    byokOnly: true,
+  },
+  {
     name: 'Pro',
     monthlyPrice: 19,
     yearlyPrice: 15,
-    description: 'For professionals and growing teams',
+    description: 'Included credits + BYOK unlimited',
     features: [
-      '500 AI images/month',
-      '50 AI videos/month',
+      '500 AI images/month included',
+      '50 AI videos/month included',
       '50GB storage',
       'All export formats',
       'Priority support',
       'Brand kit',
       'API access',
     ],
+    byokFeature: '+ Unlimited with your own API key',
     cta: 'Start Pro Trial',
     popular: true,
     gradient: 'from-indigo-500 to-violet-600',
@@ -43,16 +64,17 @@ const plans = [
     name: 'Team',
     monthlyPrice: 49,
     yearlyPrice: 39,
-    description: 'For teams that need more power',
+    description: 'Maximum power for teams',
     features: [
-      '2000 AI images/month',
-      '200 AI videos/month',
+      '2000 AI images/month included',
+      '200 AI videos/month included',
       '200GB storage',
       'All Pro features',
       'Up to 10 team members',
       'Advanced analytics',
       'SSO & Admin controls',
     ],
+    byokFeature: '+ Unlimited with your own API key',
     cta: 'Contact Sales',
     popular: false,
     gradient: 'from-violet-500 to-purple-600',
@@ -125,8 +147,8 @@ const PricingSection: React.FC = () => {
           </div>
         </motion.div>
 
-        {/* Pricing cards - Improved responsive grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+        {/* Pricing cards - Improved responsive grid for 4 tiers */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-5">
           {plans.map((plan, i) => (
             <PricingCard
               key={plan.name}
@@ -136,6 +158,30 @@ const PricingSection: React.FC = () => {
             />
           ))}
         </div>
+
+        {/* BYOK Explainer */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          className="mt-12 text-center"
+        >
+          <div className="inline-flex items-center gap-3 px-6 py-3 rounded-2xl glass-card">
+            <i className="fas fa-key text-emerald-400" />
+            <span className="text-slate-300 text-sm">
+              <strong className="text-white">BYOK</strong> = Bring Your Own Key — use your Gemini API key for unlimited AI generation at Google's pay-as-you-go rates
+            </span>
+            <a
+              href="https://aistudio.google.com/apikey"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-indigo-400 hover:text-indigo-300 transition-colors"
+            >
+              <i className="fas fa-external-link text-xs" />
+            </a>
+          </div>
+        </motion.div>
 
         {/* Enterprise callout */}
         <motion.div
@@ -194,7 +240,7 @@ const PricingSection: React.FC = () => {
 };
 
 const PricingCard: React.FC<{
-  plan: typeof plans[0];
+  plan: typeof plans[0] & { byokFeature?: string; byokOnly?: boolean };
   isYearly: boolean;
   delay: number;
 }> = ({ plan, isYearly, delay }) => {
@@ -288,7 +334,7 @@ const PricingCard: React.FC<{
           <p className="text-slate-400 mb-8">{plan.description}</p>
 
           {/* Features */}
-          <ul className="space-y-4 mb-10">
+          <ul className="space-y-3 mb-6">
             {plan.features.map((feature, i) => (
               <motion.li
                 key={feature}
@@ -298,13 +344,35 @@ const PricingCard: React.FC<{
                 transition={{ delay: delay + i * 0.05 }}
                 className="flex items-center gap-3 text-sm"
               >
-                <span className={`w-6 h-6 rounded-lg bg-gradient-to-br ${plan.gradient} bg-opacity-20 flex items-center justify-center flex-shrink-0`}>
-                  <i className="fas fa-check text-emerald-400 text-xs" />
+                <span className={`w-5 h-5 rounded-md bg-gradient-to-br ${plan.gradient} bg-opacity-20 flex items-center justify-center flex-shrink-0`}>
+                  <i className="fas fa-check text-emerald-400 text-[10px]" />
                 </span>
-                <span className="text-slate-300">{feature}</span>
+                <span className="text-slate-300 text-xs">{feature}</span>
               </motion.li>
             ))}
           </ul>
+
+          {/* BYOK Feature Highlight */}
+          {plan.byokFeature && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: delay + 0.3 }}
+              className={`mb-6 p-3 rounded-xl ${
+                plan.byokOnly
+                  ? 'bg-emerald-500/10 border border-emerald-500/30'
+                  : 'bg-indigo-500/10 border border-indigo-500/20'
+              }`}
+            >
+              <div className="flex items-center gap-2">
+                <i className={`fas fa-key text-xs ${plan.byokOnly ? 'text-emerald-400' : 'text-indigo-400'}`} />
+                <span className={`text-xs font-semibold ${plan.byokOnly ? 'text-emerald-300' : 'text-indigo-300'}`}>
+                  {plan.byokFeature}
+                </span>
+              </div>
+            </motion.div>
+          )}
 
           {/* CTA */}
           <Link

@@ -12,14 +12,82 @@ const VIDEO_HIGH_MODEL = 'veo-3.1-generate-preview';
 const TTS_MODEL = 'gemini-2.5-flash-preview-tts';
 const LIVE_MODEL = 'gemini-2.5-flash-native-audio-preview-09-2025';
 
-// Get AI client - uses build-time injected API key
-export const getAIClient = () => {
-  // API key is injected at build time via vite.config.ts
-  const apiKey = process.env.API_KEY || process.env.GEMINI_API_KEY;
-  if (!apiKey) {
-    throw new Error('API key not configured. Set GEMINI_API_KEY in environment variables.');
+// Storage key for BYOK
+const BYOK_STORAGE_KEY = 'lumina_gemini_api_key';
+
+/**
+ * Get the active API key with BYOK priority:
+ * 1. User's BYOK key from localStorage (highest priority)
+ * 2. Session key from window.__GEMINI_API_KEY__
+ * 3. Build-time environment variable (fallback for included credits)
+ */
+export const getActiveApiKey = (): { key: string; source: 'byok' | 'platform' } | null => {
+  // Priority 1: User's own key (BYOK)
+  const byokKey = typeof window !== 'undefined'
+    ? localStorage.getItem(BYOK_STORAGE_KEY) || (window as any).__GEMINI_API_KEY__
+    : null;
+
+  if (byokKey && byokKey.length > 10) {
+    return { key: byokKey, source: 'byok' };
   }
-  return new GoogleGenAI({ apiKey });
+
+  // Priority 2: Platform's included credits (build-time key)
+  const platformKey = process.env.API_KEY || process.env.GEMINI_API_KEY;
+  if (platformKey) {
+    return { key: platformKey, source: 'platform' };
+  }
+
+  return null;
+};
+
+/**
+ * Check if user has BYOK configured
+ */
+export const hasBYOK = (): boolean => {
+  if (typeof window === 'undefined') return false;
+  const key = localStorage.getItem(BYOK_STORAGE_KEY) || (window as any).__GEMINI_API_KEY__;
+  return !!key && key.length > 10;
+};
+
+/**
+ * Check if platform credits are available
+ */
+export const hasPlatformCredits = (): boolean => {
+  const platformKey = process.env.API_KEY || process.env.GEMINI_API_KEY;
+  return !!platformKey;
+};
+
+// Get AI client - prioritizes BYOK, falls back to platform credits
+export const getAIClient = () => {
+  const keyInfo = getActiveApiKey();
+
+  if (!keyInfo) {
+    throw new Error(
+      'No API key available. Either add your own Gemini API key in Settings, ' +
+      'or upgrade to a plan with included AI credits.'
+    );
+  }
+
+  return new GoogleGenAI({ apiKey: keyInfo.key });
+};
+
+/**
+ * Get AI client with explicit source tracking (for usage analytics)
+ */
+export const getAIClientWithSource = (): { client: GoogleGenAI; source: 'byok' | 'platform' } => {
+  const keyInfo = getActiveApiKey();
+
+  if (!keyInfo) {
+    throw new Error(
+      'No API key available. Either add your own Gemini API key in Settings, ' +
+      'or upgrade to a plan with included AI credits.'
+    );
+  }
+
+  return {
+    client: new GoogleGenAI({ apiKey: keyInfo.key }),
+    source: keyInfo.source
+  };
 };
 
 /**
@@ -444,8 +512,9 @@ export async function pollVideoOperation(operationId: any) {
 }
 
 export async function fetchVideoData(uri: string) {
-  const apiKey = process.env.API_KEY || process.env.GEMINI_API_KEY;
-  const response = await fetch(`${uri}&key=${apiKey}`);
+  const keyInfo = getActiveApiKey();
+  if (!keyInfo) throw new Error('No API key available for video fetch');
+  const response = await fetch(`${uri}&key=${keyInfo.key}`);
   return await response.blob();
 }
 
