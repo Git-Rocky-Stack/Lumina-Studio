@@ -1,0 +1,549 @@
+// ============================================================================
+// INTELLIGENT ASSET RECOMMENDATION SYSTEM - TYPE DEFINITIONS
+// ============================================================================
+
+/**
+ * Asset categories for recommendation matching
+ */
+export type AssetCategory =
+  | 'image'
+  | 'video'
+  | 'audio'
+  | 'document'
+  | 'template'
+  | 'icon'
+  | 'illustration'
+  | 'photo'
+  | '3d_model'
+  | 'font'
+  | 'color_palette';
+
+/**
+ * Context types for recommendation engine
+ */
+export type DesignContext =
+  | 'social_media'
+  | 'presentation'
+  | 'marketing'
+  | 'branding'
+  | 'web_design'
+  | 'print'
+  | 'video_production'
+  | 'general';
+
+/**
+ * Recommendation source/reason
+ */
+export type RecommendationReason =
+  | 'style_match'
+  | 'color_harmony'
+  | 'project_context'
+  | 'user_preference'
+  | 'trending'
+  | 'complementary'
+  | 'similar_usage'
+  | 'ai_suggested'
+  | 'frequently_paired'
+  | 'same_collection';
+
+/**
+ * Confidence level for recommendations
+ */
+export type ConfidenceLevel = 'high' | 'medium' | 'low';
+
+/**
+ * User interaction types for learning
+ */
+export type InteractionType =
+  | 'view'
+  | 'download'
+  | 'use_in_design'
+  | 'favorite'
+  | 'dismiss'
+  | 'share'
+  | 'edit'
+  | 'purchase';
+
+// ============================================================================
+// CORE INTERFACES
+// ============================================================================
+
+/**
+ * Individual recommended asset
+ */
+export interface RecommendedAsset {
+  id: string;
+  name: string;
+  category: AssetCategory;
+  thumbnailUrl: string;
+  previewUrl?: string;
+
+  // Recommendation metadata
+  score: number; // 0-100 relevance score
+  confidence: ConfidenceLevel;
+  reasons: RecommendationReason[];
+  reasonText: string; // Human-readable explanation
+
+  // Asset properties
+  tags: string[];
+  colors?: string[];
+  style?: string;
+  dimensions?: { width: number; height: number };
+  fileSize?: string;
+  format?: string;
+
+  // Source info
+  source: 'library' | 'stock' | 'ai_generated' | 'template' | 'user_uploaded';
+  isPremium?: boolean;
+  author?: string;
+  license?: string;
+}
+
+/**
+ * Design context for generating recommendations
+ */
+export interface DesignAnalysis {
+  projectType: DesignContext;
+  dominantColors: string[];
+  style: string;
+  mood: string;
+  industry?: string;
+  targetAudience?: string;
+  keywords: string[];
+  existingAssets: string[]; // IDs of assets already in use
+}
+
+/**
+ * Recommendation request
+ */
+export interface RecommendationRequest {
+  context: DesignAnalysis;
+  categories?: AssetCategory[];
+  limit?: number;
+  excludeIds?: string[];
+  preferredSources?: ('library' | 'stock' | 'ai_generated' | 'template')[];
+  minConfidence?: ConfidenceLevel;
+}
+
+/**
+ * Recommendation response
+ */
+export interface RecommendationResponse {
+  recommendations: RecommendedAsset[];
+  generatedAt: string;
+  contextSummary: string;
+  totalMatches: number;
+  appliedFilters: string[];
+}
+
+// ============================================================================
+// USER PREFERENCE LEARNING
+// ============================================================================
+
+/**
+ * User interaction record for learning
+ */
+export interface UserInteraction {
+  id: string;
+  userId: string;
+  assetId: string;
+  interactionType: InteractionType;
+  timestamp: string;
+  context?: DesignContext;
+  sessionId?: string;
+  metadata?: Record<string, any>;
+}
+
+/**
+ * Learned user preferences
+ */
+export interface UserPreferences {
+  userId: string;
+
+  // Style preferences (weighted)
+  preferredStyles: { style: string; weight: number }[];
+  preferredColors: { color: string; weight: number }[];
+  preferredCategories: { category: AssetCategory; weight: number }[];
+
+  // Usage patterns
+  frequentContexts: DesignContext[];
+  averageSessionLength: number;
+  peakUsageHours: number[];
+
+  // Asset preferences
+  favoriteAssets: string[];
+  dismissedAssets: string[];
+  recentlyUsed: string[];
+
+  // Learning metadata
+  totalInteractions: number;
+  lastUpdated: string;
+  confidenceScore: number; // How well we understand this user
+}
+
+/**
+ * Preference update payload
+ */
+export interface PreferenceUpdate {
+  interaction: UserInteraction;
+  currentPreferences?: UserPreferences;
+}
+
+// ============================================================================
+// SMART COLLECTIONS
+// ============================================================================
+
+/**
+ * AI-curated collection
+ */
+export interface SmartCollection {
+  id: string;
+  name: string;
+  description: string;
+  coverImage: string;
+
+  // Collection criteria
+  criteria: {
+    styles?: string[];
+    colors?: string[];
+    categories?: AssetCategory[];
+    tags?: string[];
+    contexts?: DesignContext[];
+  };
+
+  // Generated content
+  assetIds: string[];
+  assetCount: number;
+
+  // Metadata
+  createdAt: string;
+  updatedAt: string;
+  isAutoGenerated: boolean;
+  curationType: 'trending' | 'seasonal' | 'style_based' | 'color_based' | 'user_specific';
+}
+
+// ============================================================================
+// TREND ANALYSIS
+// ============================================================================
+
+/**
+ * Trending asset/style information
+ */
+export interface TrendData {
+  id: string;
+  type: 'asset' | 'style' | 'color' | 'category';
+  value: string;
+
+  // Trend metrics
+  usageCount: number;
+  growthRate: number; // Percentage change
+  peakDate?: string;
+
+  // Context
+  industries: string[];
+  regions?: string[];
+
+  // Time range
+  period: 'day' | 'week' | 'month' | 'quarter';
+  startDate: string;
+  endDate: string;
+}
+
+// ============================================================================
+// COLOR INTELLIGENCE
+// ============================================================================
+
+/**
+ * Color harmony suggestion
+ */
+export interface ColorHarmony {
+  baseColor: string;
+  harmonyType: 'complementary' | 'analogous' | 'triadic' | 'split_complementary' | 'tetradic' | 'monochromatic';
+  colors: string[];
+  name: string;
+  mood: string;
+  useCases: string[];
+}
+
+/**
+ * Color palette recommendation
+ */
+export interface PaletteRecommendation {
+  id: string;
+  name: string;
+  colors: string[];
+  harmony: ColorHarmony;
+
+  // Metadata
+  industry?: string;
+  mood: string;
+  accessibility: {
+    contrastRatio: number;
+    wcagLevel: 'AA' | 'AAA' | 'fail';
+  };
+
+  score: number;
+  reasons: string[];
+}
+
+// ============================================================================
+// FONT RECOMMENDATIONS
+// ============================================================================
+
+/**
+ * Font pairing suggestion
+ */
+export interface FontPairing {
+  id: string;
+  primary: {
+    name: string;
+    category: 'serif' | 'sans-serif' | 'display' | 'script' | 'monospace';
+    weights: number[];
+    url?: string;
+  };
+  secondary: {
+    name: string;
+    category: 'serif' | 'sans-serif' | 'display' | 'script' | 'monospace';
+    weights: number[];
+    url?: string;
+  };
+
+  // Pairing metadata
+  harmonyScore: number;
+  useCases: string[];
+  mood: string;
+  readabilityScore: number;
+}
+
+// ============================================================================
+// LAYOUT SUGGESTIONS
+// ============================================================================
+
+/**
+ * Layout recommendation
+ */
+export interface LayoutSuggestion {
+  id: string;
+  name: string;
+  thumbnailUrl: string;
+
+  // Layout properties
+  gridColumns: number;
+  gridRows: number;
+  spacing: number;
+  alignment: 'left' | 'center' | 'right' | 'justify';
+
+  // Component slots
+  slots: {
+    id: string;
+    type: 'image' | 'text' | 'heading' | 'cta' | 'logo' | 'spacer';
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+    constraints?: any;
+  }[];
+
+  // Metadata
+  context: DesignContext;
+  aspectRatio: string;
+  score: number;
+  reasons: string[];
+}
+
+// ============================================================================
+// RECOMMENDATION ENGINE CONFIG
+// ============================================================================
+
+/**
+ * Recommendation engine configuration
+ */
+export interface RecommendationConfig {
+  // Weights for different recommendation sources
+  weights: {
+    styleMatch: number;
+    colorHarmony: number;
+    userPreference: number;
+    trending: number;
+    projectContext: number;
+    aiSuggestion: number;
+  };
+
+  // Filtering options
+  minScoreThreshold: number;
+  maxResults: number;
+  diversityFactor: number; // How much to vary recommendations
+
+  // Learning settings
+  learningRate: number;
+  interactionDecay: number; // How quickly old interactions lose weight
+
+  // Feature flags
+  enableTrending: boolean;
+  enableUserLearning: boolean;
+  enableColorAnalysis: boolean;
+  enableFontPairing: boolean;
+}
+
+/**
+ * Default recommendation config
+ */
+export const DEFAULT_RECOMMENDATION_CONFIG: RecommendationConfig = {
+  weights: {
+    styleMatch: 0.25,
+    colorHarmony: 0.20,
+    userPreference: 0.20,
+    trending: 0.10,
+    projectContext: 0.15,
+    aiSuggestion: 0.10
+  },
+  minScoreThreshold: 40,
+  maxResults: 20,
+  diversityFactor: 0.3,
+  learningRate: 0.1,
+  interactionDecay: 0.95,
+  enableTrending: true,
+  enableUserLearning: true,
+  enableColorAnalysis: true,
+  enableFontPairing: true
+};
+
+// ============================================================================
+// STOCK ASSET PROVIDERS
+// ============================================================================
+
+/**
+ * Stock asset provider configuration
+ */
+export interface StockProvider {
+  id: string;
+  name: string;
+  logo: string;
+  categories: AssetCategory[];
+
+  // API configuration
+  baseUrl: string;
+  apiKeyRequired: boolean;
+  rateLimitPerMinute: number;
+
+  // Pricing
+  hasFreeAssets: boolean;
+  pricingModel: 'subscription' | 'per_asset' | 'credits' | 'free';
+}
+
+/**
+ * Available stock providers
+ */
+export const STOCK_PROVIDERS: StockProvider[] = [
+  {
+    id: 'unsplash',
+    name: 'Unsplash',
+    logo: 'https://unsplash.com/favicon.ico',
+    categories: ['image', 'photo'],
+    baseUrl: 'https://api.unsplash.com',
+    apiKeyRequired: true,
+    rateLimitPerMinute: 50,
+    hasFreeAssets: true,
+    pricingModel: 'free'
+  },
+  {
+    id: 'pexels',
+    name: 'Pexels',
+    logo: 'https://www.pexels.com/favicon.ico',
+    categories: ['image', 'photo', 'video'],
+    baseUrl: 'https://api.pexels.com',
+    apiKeyRequired: true,
+    rateLimitPerMinute: 200,
+    hasFreeAssets: true,
+    pricingModel: 'free'
+  },
+  {
+    id: 'pixabay',
+    name: 'Pixabay',
+    logo: 'https://pixabay.com/favicon.ico',
+    categories: ['image', 'photo', 'video', 'illustration'],
+    baseUrl: 'https://pixabay.com/api',
+    apiKeyRequired: true,
+    rateLimitPerMinute: 100,
+    hasFreeAssets: true,
+    pricingModel: 'free'
+  },
+  {
+    id: 'iconify',
+    name: 'Iconify',
+    logo: 'https://iconify.design/favicon.ico',
+    categories: ['icon', 'illustration'],
+    baseUrl: 'https://api.iconify.design',
+    apiKeyRequired: false,
+    rateLimitPerMinute: 500,
+    hasFreeAssets: true,
+    pricingModel: 'free'
+  }
+];
+
+// ============================================================================
+// RECOMMENDATION CATEGORIES FOR UI
+// ============================================================================
+
+/**
+ * UI category configuration
+ */
+export interface RecommendationCategory {
+  id: string;
+  label: string;
+  icon: string;
+  description: string;
+  assetCategories: AssetCategory[];
+  color: string;
+}
+
+export const RECOMMENDATION_CATEGORIES: RecommendationCategory[] = [
+  {
+    id: 'images',
+    label: 'Images & Photos',
+    icon: 'fa-image',
+    description: 'High-quality photos and illustrations',
+    assetCategories: ['image', 'photo', 'illustration'],
+    color: 'emerald'
+  },
+  {
+    id: 'icons',
+    label: 'Icons & Graphics',
+    icon: 'fa-icons',
+    description: 'Vector icons and graphic elements',
+    assetCategories: ['icon', 'illustration'],
+    color: 'violet'
+  },
+  {
+    id: 'templates',
+    label: 'Templates',
+    icon: 'fa-layer-group',
+    description: 'Ready-to-use design templates',
+    assetCategories: ['template'],
+    color: 'amber'
+  },
+  {
+    id: 'colors',
+    label: 'Color Palettes',
+    icon: 'fa-palette',
+    description: 'Harmonious color combinations',
+    assetCategories: ['color_palette'],
+    color: 'rose'
+  },
+  {
+    id: 'fonts',
+    label: 'Typography',
+    icon: 'fa-font',
+    description: 'Font pairings and type suggestions',
+    assetCategories: ['font'],
+    color: 'slate'
+  },
+  {
+    id: 'videos',
+    label: 'Videos & Motion',
+    icon: 'fa-film',
+    description: 'Stock videos and motion graphics',
+    assetCategories: ['video'],
+    color: 'indigo'
+  }
+];

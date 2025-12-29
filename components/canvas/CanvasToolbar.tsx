@@ -11,6 +11,7 @@ interface CanvasToolbarProps {
   onPreview: () => void;
   isPreviewMode: boolean;
   onShowExportModal: () => void;
+  onShowRecommendations?: () => void;
   selectedCount: number;
   selectedMask?: string;
   onMaskChange: (mask: string) => void;
@@ -31,6 +32,7 @@ const CanvasToolbar: React.FC<CanvasToolbarProps> = ({
   onPreview,
   isPreviewMode,
   onShowExportModal,
+  onShowRecommendations,
   selectedCount,
   selectedMask,
   onMaskChange,
@@ -110,6 +112,15 @@ const CanvasToolbar: React.FC<CanvasToolbarProps> = ({
 
       {/* Right Section: Actions */}
       <div className="flex items-center gap-4">
+        {onShowRecommendations && (
+          <button
+            onClick={onShowRecommendations}
+            className="px-6 py-2.5 bg-violet-50 text-violet-600 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-violet-600 hover:text-white transition-all shadow-sm flex items-center gap-2 hover:scale-105 active:scale-95"
+            aria-label="Open smart asset recommendations"
+          >
+            <i className="fas fa-wand-magic-sparkles"></i> AI Suggest
+          </button>
+        )}
         <button
           onClick={onPreview}
           className="px-6 py-2.5 bg-rose-50 text-rose-500 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-rose-500 hover:text-white transition-all shadow-sm flex items-center gap-2 hover:scale-105 active:scale-95"

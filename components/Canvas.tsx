@@ -10,8 +10,9 @@ import { generateBackground, generateText } from '../services/geminiService';
 import { simulateProfessionalExport, syncToGoogleDrive, downloadFile } from '../services/exportService';
 import { useToast } from '../design-system';
 
-// Lazy load the unified export modal for better performance
+// Lazy load modals for better performance
 const UnifiedExport = lazy(() => import('./UnifiedExport'));
+const SmartRecommendations = lazy(() => import('./SmartRecommendations'));
 
 const CANVAS_WIDTH = 500;
 const CANVAS_HEIGHT = 700;
@@ -59,6 +60,7 @@ const Canvas: React.FC = () => {
   const [hoveringId, setHoveringId] = useState<string | null>(null);
   const [showExportModal, setShowExportModal] = useState(false);
   const [showAdvancedExport, setShowAdvancedExport] = useState(false);
+  const [showRecommendations, setShowRecommendations] = useState(false);
   const [exporting, setExporting] = useState(false);
   const [exportProgress, setExportProgress] = useState(0);
   const [activeTab, setActiveTab] = useState<'tools' | 'ai' | 'layers' | 'animation'>('tools');
@@ -575,6 +577,7 @@ const Canvas: React.FC = () => {
         onPreview={triggerPreview}
         isPreviewMode={isPreviewMode}
         onShowExportModal={() => setShowExportModal(true)}
+        onShowRecommendations={() => setShowRecommendations(true)}
         selectedCount={selectedIds.length}
         selectedMask={selectedEl?.mask}
         onMaskChange={(mask) => updateSelectedElements({ mask: mask as MaskType })}
@@ -928,6 +931,37 @@ const Canvas: React.FC = () => {
           sourceName="Lumina Design"
           sourceWidth={CANVAS_WIDTH}
           sourceHeight={CANVAS_HEIGHT}
+        />
+      </Suspense>
+
+      {/* Smart Recommendations Panel */}
+      <Suspense fallback={null}>
+        <SmartRecommendations
+          isOpen={showRecommendations}
+          onClose={() => setShowRecommendations(false)}
+          onSelectAsset={(asset) => {
+            // Add image to canvas
+            if (asset.category === 'image' || asset.category === 'photo' || asset.category === 'illustration') {
+              const newElement: DesignElement = {
+                id: `el_${Date.now()}`,
+                type: 'image',
+                content: asset.thumbnailUrl,
+                x: 100,
+                y: 100,
+                width: 200,
+                height: 150,
+                zIndex: elements.length + 1
+              };
+              setElements(prev => [...prev, newElement]);
+              setShowRecommendations(false);
+            }
+          }}
+          currentContext={{
+            projectType: 'general',
+            colors: elements.filter(e => e.color).map(e => e.color!),
+            keywords: bgPrompt ? bgPrompt.split(' ') : []
+          }}
+          mode="panel"
         />
       </Suspense>
     </div>
