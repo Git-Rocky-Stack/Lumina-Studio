@@ -76,7 +76,9 @@ const StatCard: React.FC<StatCardProps> = ({ label, value, change, trend, icon, 
     >
       <div className="flex items-center justify-between mb-2">
         <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400">{label}</h3>
-        <div className="text-gray-400">{icon}</div>
+        <div className="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center text-slate-500">
+          <i className={`fas ${icon}`} aria-hidden="true"></i>
+        </div>
       </div>
       <div
         className="text-2xl font-bold text-gray-900 dark:text-white mb-2"

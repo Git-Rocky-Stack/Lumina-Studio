@@ -5,7 +5,8 @@
  * Enhanced with UX improvements including exit-intent capture and sticky CTA.
  */
 
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Navigation from '../components/landing/Navigation';
 import HeroSection from '../components/landing/HeroSection';
 import SocialProofBar from '../components/landing/SocialProofBar';
@@ -24,8 +25,37 @@ import CookieConsent from '../components/CookieConsent';
 import KeyboardShortcutsModal from '../components/KeyboardShortcutsModal';
 import WhatsNewModal from '../components/WhatsNewModal';
 import { CursorProvider, CursorTrigger } from '../design-system';
+import { useAuthContext } from '../contexts/AuthContext';
 
 const LandingPage: React.FC = () => {
+  const navigate = useNavigate();
+  const { isAuthenticated, isLoading } = useAuthContext();
+
+  // Redirect authenticated users to studio
+  useEffect(() => {
+    if (!isLoading && isAuthenticated) {
+      navigate('/studio', { replace: true });
+    }
+  }, [isAuthenticated, isLoading, navigate]);
+
+  // Show loading state briefly while checking auth
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-slate-950 flex items-center justify-center">
+        <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center animate-pulse">
+          <svg className="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+          </svg>
+        </div>
+      </div>
+    );
+  }
+
+  // Don't render landing page if authenticated (will redirect)
+  if (isAuthenticated) {
+    return null;
+  }
+
   return (
     <CursorProvider>
       <div className="min-h-screen bg-slate-950 text-white overflow-x-hidden noise-overlay cursor-none">
