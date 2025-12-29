@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
+import React, { useState, useEffect, useCallback, useRef, useMemo, lazy, Suspense } from 'react';
 import CollaborationHeader from './CollaborationHeader';
 import LEDProgressBar from './LEDProgressBar';
 import CanvasToolbar from './canvas/CanvasToolbar';
@@ -9,6 +9,9 @@ import { DesignElement, MaskType, AnimationType, AnimationDirection, AnimationEa
 import { generateBackground, generateText } from '../services/geminiService';
 import { simulateProfessionalExport, syncToGoogleDrive, downloadFile } from '../services/exportService';
 import { useToast } from '../design-system';
+
+// Lazy load the unified export modal for better performance
+const UnifiedExport = lazy(() => import('./UnifiedExport'));
 
 const CANVAS_WIDTH = 500;
 const CANVAS_HEIGHT = 700;
@@ -55,6 +58,7 @@ const Canvas: React.FC = () => {
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [hoveringId, setHoveringId] = useState<string | null>(null);
   const [showExportModal, setShowExportModal] = useState(false);
+  const [showAdvancedExport, setShowAdvancedExport] = useState(false);
   const [exporting, setExporting] = useState(false);
   const [exportProgress, setExportProgress] = useState(0);
   const [activeTab, setActiveTab] = useState<'tools' | 'ai' | 'layers' | 'animation'>('tools');
@@ -882,26 +886,50 @@ const Canvas: React.FC = () => {
                   </div>
                 </div>
               ) : (
-                <div className="grid grid-cols-1 gap-4">
-                  {[
-                    { format: 'png', label: 'Lossless PNG', desc: 'Standard production raster', icon: 'fa-image' },
-                    { format: 'pdf', label: 'Vector PDF', desc: 'Commercial print vectors', icon: 'fa-file-pdf' },
-                    { format: 'webp', label: 'Hyper-WebP', desc: 'AI-optimized light format', icon: 'fa-bolt' },
-                    { format: 'svg', label: 'Source SVG', desc: 'Layered vector data', icon: 'fa-code' },
-                  ].map((opt) => (
-                    <button key={opt.format} onClick={() => handleExport(opt.format as any)} className="group p-8 bg-slate-50 border border-slate-100 rounded-3xl hover:border-accent hover:bg-accent-soft transition-all text-left flex items-center gap-8 hover:scale-[1.02] active:scale-[0.98]">
-                      <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center text-slate-300 group-hover:text-accent group-hover:shadow-elevated transition-all border border-slate-100"><i className={`fas ${opt.icon} text-lg`}></i></div>
-                      <div>
-                        <p className="type-card text-slate-900 mb-1">{opt.label}</p>
-                        <p className="type-label text-slate-400">{opt.desc}</p>
-                      </div>
+                <div className="space-y-6">
+                  <div className="grid grid-cols-1 gap-4">
+                    {[
+                      { format: 'png', label: 'Lossless PNG', desc: 'Standard production raster', icon: 'fa-image' },
+                      { format: 'pdf', label: 'Vector PDF', desc: 'Commercial print vectors', icon: 'fa-file-pdf' },
+                      { format: 'webp', label: 'Hyper-WebP', desc: 'AI-optimized light format', icon: 'fa-bolt' },
+                      { format: 'svg', label: 'Source SVG', desc: 'Layered vector data', icon: 'fa-code' },
+                    ].map((opt) => (
+                      <button key={opt.format} onClick={() => handleExport(opt.format as any)} className="group p-8 bg-slate-50 border border-slate-100 rounded-3xl hover:border-accent hover:bg-accent-soft transition-all text-left flex items-center gap-8 hover:scale-[1.02] active:scale-[0.98]">
+                        <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center text-slate-300 group-hover:text-accent group-hover:shadow-elevated transition-all border border-slate-100"><i className={`fas ${opt.icon} text-lg`}></i></div>
+                        <div>
+                          <p className="type-card text-slate-900 mb-1">{opt.label}</p>
+                          <p className="type-label text-slate-400">{opt.desc}</p>
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                  <div className="pt-4 border-t border-slate-100">
+                    <button
+                      onClick={() => { setShowExportModal(false); setShowAdvancedExport(true); }}
+                      className="w-full py-4 text-accent hover:bg-accent-soft rounded-2xl transition-all type-label flex items-center justify-center gap-3"
+                    >
+                      <i className="fas fa-sliders"></i>
+                      Advanced Export Options
                     </button>
-                  ))}
+                  </div>
                 </div>
               )}
            </div>
         </div>
       )}
+
+      {/* Advanced Export Modal with Platform Intelligence */}
+      <Suspense fallback={null}>
+        <UnifiedExport
+          isOpen={showAdvancedExport}
+          onClose={() => setShowAdvancedExport(false)}
+          sourceType="canvas"
+          sourceData={canvasRef.current}
+          sourceName="Lumina Design"
+          sourceWidth={CANVAS_WIDTH}
+          sourceHeight={CANVAS_HEIGHT}
+        />
+      </Suspense>
     </div>
   );
 };
