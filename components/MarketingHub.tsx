@@ -131,48 +131,48 @@ const MarketingHub: React.FC = () => {
       <div className="max-w-6xl mx-auto space-y-12">
         <header className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 animate-in fade-in duration-700">
           <div className="space-y-2">
-            <h2 className="text-5xl font-black text-slate-900 tracking-tighter">Growth Hub</h2>
-            <p className="text-slate-500 text-lg font-medium">Orchestrate viral campaigns across your social ecosystem.</p>
+            <h2 className="type-page text-slate-900">Growth Hub</h2>
+            <p className="type-body text-slate-500 text-lg">Orchestrate viral campaigns across your social ecosystem.</p>
           </div>
         </header>
 
         {activeTab === 'strategy' && (
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
             <div className="lg:col-span-4 space-y-8 scroll-reveal">
-               <div className="bg-white p-10 rounded-[3rem] border border-slate-100 shadow-xl space-y-8">
+               <div className="lumina-card card-spacious rounded-4xl shadow-elevated space-y-8">
                   <div className="space-y-4">
-                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-2">Select Channel</label>
+                    <label className="type-label text-slate-400 ml-2">Select Channel</label>
                     <div className="grid grid-cols-2 gap-4">
                        {platforms.map((p, i) => (
-                         <button 
+                         <button
                           key={p.id}
                           onClick={() => setPlatform(p.id)}
                           className={`flex flex-col items-center gap-3 p-6 rounded-3xl border-2 transition-all duration-300 hover:scale-[1.03] scroll-reveal ${platform === p.id ? 'border-indigo-600 bg-indigo-50/30' : 'border-slate-50 bg-slate-50 hover:border-slate-200'}`}
                           style={{ animationDelay: `${i * 0.05}s` }}
                          >
-                            <div className={`w-12 h-12 rounded-2xl flex items-center justify-center text-white text-xl ${p.color} shadow-lg transition-transform duration-300 group-hover:scale-110`}>
+                            <div className={`w-12 h-12 rounded-2xl flex items-center justify-center text-white text-xl ${p.color} shadow-elevated transition-transform duration-300 group-hover:scale-110`}>
                                <i className={`fab ${p.icon}`}></i>
                             </div>
-                            <span className="text-[9px] font-black uppercase tracking-widest text-slate-600">{p.id}</span>
+                            <span className="type-micro text-slate-600">{p.id}</span>
                          </button>
                        ))}
                     </div>
                   </div>
 
                   <div className="space-y-4">
-                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-2">Campaign Core Topic</label>
-                    <textarea 
+                    <label className="type-label text-slate-400 ml-2">Campaign Core Topic</label>
+                    <textarea
                       value={topic}
                       onChange={(e) => setTopic(e.target.value)}
                       placeholder="e.g. New minimalist furniture line..."
-                      className="w-full h-32 bg-slate-50 border border-slate-100 rounded-[2rem] p-6 text-sm focus:ring-2 focus:ring-indigo-600 transition-all resize-none"
+                      className="lumina-input w-full h-32 rounded-3xl p-6 resize-none"
                     />
                   </div>
 
-                  <button 
+                  <button
                     onClick={generateCampaign}
                     disabled={loading || !topic}
-                    className="w-full py-5 bg-slate-900 text-white rounded-3xl text-[10px] font-black uppercase tracking-widest shadow-2xl hover:bg-black hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-3 disabled:opacity-30"
+                    className="lumina-btn-primary w-full py-5 bg-slate-900 text-white rounded-3xl type-label shadow-prominent hover:bg-black hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-3 disabled:opacity-30"
                   >
                     Synthesize Strategy
                   </button>
@@ -181,12 +181,12 @@ const MarketingHub: React.FC = () => {
 
             <div className="lg:col-span-8 scroll-reveal" style={{ animationDelay: '0.2s' }}>
                {result && (
-                 <div className="bg-white rounded-[3rem] border border-slate-100 shadow-2xl overflow-hidden animate-in slide-in-from-right-10 duration-500">
+                 <div className="lumina-card rounded-4xl shadow-prominent overflow-hidden animate-in slide-in-from-right-10 duration-500">
                     <div className="p-10 border-b border-slate-50 flex items-center justify-between bg-slate-50/30">
-                       <h3 className="font-black text-slate-900 uppercase tracking-tight text-lg">{result.headline}</h3>
+                       <h3 className="type-card text-slate-900 text-lg">{result.headline}</h3>
                     </div>
                     <div className="p-10">
-                       <div className="p-8 bg-slate-50 rounded-[2rem] border border-slate-100 text-sm leading-relaxed text-slate-700 font-medium">
+                       <div className="p-8 bg-slate-50 rounded-3xl border border-slate-100 type-body-sm leading-relaxed text-slate-700">
                          {result.body}
                        </div>
                     </div>
@@ -197,29 +197,29 @@ const MarketingHub: React.FC = () => {
         )}
 
         {activeTab === 'calendar' && (
-          <div className="bg-white rounded-[4rem] p-12 border border-slate-100 shadow-2xl animate-in fade-in duration-500 scroll-reveal">
+          <div className="lumina-card card-hero rounded-5xl shadow-prominent animate-in fade-in duration-500 scroll-reveal">
              <div className="grid grid-cols-5 gap-6">
                 {calendarDays.map((day, i) => {
                   const statusCfg = getStatusConfig(day.status);
                   return (
-                    <div 
-                      key={day.id} 
-                      className={`p-8 rounded-[2.5rem] border transition-all duration-300 h-80 flex flex-col relative group overflow-hidden scroll-reveal ${
-                        day.status === 'empty' 
-                        ? 'bg-slate-50/50 border-dashed border-slate-200' 
-                        : 'bg-white border-slate-100 shadow-sm hover:shadow-xl hover:translate-y-[-4px]'
+                    <div
+                      key={day.id}
+                      className={`p-8 rounded-4xl border transition-all duration-300 h-80 flex flex-col relative group overflow-hidden scroll-reveal ${
+                        day.status === 'empty'
+                        ? 'bg-slate-50/50 border-dashed border-slate-200'
+                        : 'bg-white border-slate-100 shadow-subtle hover:shadow-elevated hover:translate-y-[-4px]'
                       }`}
                       style={{ animationDelay: `${i * 0.05}s` }}
                     >
                        <div className="flex justify-between items-start mb-6">
                           <div className="flex flex-col">
-                            <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{day.day}</span>
-                            <span className="text-lg font-black text-slate-900">{day.date}</span>
+                            <span className="type-label text-slate-400">{day.day}</span>
+                            <span className="type-subsection text-slate-900">{day.date}</span>
                           </div>
                        </div>
                        {day.event && (
                          <div className="flex-1 flex flex-col justify-between">
-                            <p className="text-sm font-black text-slate-800 leading-tight line-clamp-2 uppercase tracking-tight">{day.event}</p>
+                            <p className="type-card text-slate-800 leading-tight line-clamp-2">{day.event}</p>
                          </div>
                        )}
                     </div>

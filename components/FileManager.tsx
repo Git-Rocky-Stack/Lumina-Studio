@@ -144,17 +144,17 @@ const FileManager: React.FC = () => {
           <div className="space-y-2">
             <div className="flex items-center gap-3">
               <span className="w-2 h-2 rounded-full bg-accent animate-pulse"></span>
-              <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em]">Workspace instrumentation active</p>
+              <p className="type-label text-slate-400">Workspace instrumentation active</p>
             </div>
-            <h2 className="text-5xl font-black text-slate-900 tracking-tighter uppercase">Command Bay</h2>
-            <p className="text-slate-500 text-lg font-medium">Real-time oversight of your creative production pipeline.</p>
+            <h2 className="type-page">Command Bay</h2>
+            <p className="type-body">Real-time oversight of your creative production pipeline.</p>
           </div>
           <div className="flex gap-4">
              <Button
                variant="secondary"
                size="lg"
                onClick={handleCreateNew}
-               className="!rounded-3xl !px-8 !text-[10px] !font-black !uppercase !tracking-widest"
+               className="!rounded-2xl !px-8 type-micro"
                data-tour="create-asset"
              >
                 <i className="fas fa-plus text-accent mr-3"></i> Create New
@@ -164,7 +164,7 @@ const FileManager: React.FC = () => {
                size="lg"
                onClick={handleSync}
                loading={isSyncing}
-               className="!rounded-3xl !px-8 !text-[10px] !font-black !uppercase !tracking-widest !shadow-2xl"
+               className="!rounded-2xl !px-8 type-micro shadow-accent-elevated"
                data-tour="workspace-sync"
              >
                 <i className="fab fa-google-drive mr-3"></i> Workspace Sync
@@ -179,18 +179,18 @@ const FileManager: React.FC = () => {
              </StaggeredSkeleton>
            ) : (
              stats.map((stat, i) => (
-               <div key={stat.label} className="bg-white p-8 rounded-[3rem] border border-slate-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all group overflow-hidden relative scroll-reveal" style={{ animationDelay: `${i * 0.1}s` }}>
+               <div key={stat.label} className="lumina-stats-card group scroll-reveal" style={{ animationDelay: `${i * 0.1}s` }}>
                   <div className="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity">
                     <i className={`fas ${stat.icon} text-9xl`}></i>
                   </div>
                   <div className="flex justify-between items-start mb-6">
-                    <div className={`w-14 h-14 rounded-2xl ${stat.bg} flex items-center justify-center ${stat.color} text-xl shadow-inner group-hover:scale-110 transition-transform`}>
+                    <div className={`w-14 h-14 rounded-2xl ${stat.bg} flex items-center justify-center ${stat.color} text-xl shadow-inner-subtle group-hover:scale-110 transition-transform`}>
                       <i className={`fas ${stat.icon}`}></i>
                     </div>
-                    <span className={`text-[10px] font-black ${stat.color} ${stat.bg} px-2 py-1 rounded-lg`}>{stat.trend}</span>
+                    <span className={`type-micro ${stat.color} ${stat.bg} px-2 py-1 rounded-lg`}>{stat.trend}</span>
                   </div>
-                  <p className="text-4xl font-black text-slate-900 mb-1 tracking-tighter">{stat.value}</p>
-                  <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">{stat.label}</p>
+                  <p className="type-stat mb-1">{stat.value}</p>
+                  <p className="type-label text-slate-400">{stat.label}</p>
                </div>
              ))
            )}
@@ -208,7 +208,7 @@ const FileManager: React.FC = () => {
         </div>
 
         <div className="space-y-8">
-           <div className="flex flex-col lg:flex-row items-center justify-between gap-6 bg-white p-6 rounded-[2.5rem] border border-slate-100 shadow-sm scroll-reveal">
+           <div className="flex flex-col lg:flex-row items-center justify-between gap-6 lumina-card scroll-reveal">
               <div className="flex-1 w-full relative group">
                  <input
                    type="text"
@@ -216,20 +216,20 @@ const FileManager: React.FC = () => {
                    onChange={(e) => setSearchQuery(e.target.value)}
                    placeholder="Search project repository..."
                    aria-label="Search project repository"
-                   className="w-full pl-14 pr-6 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm focus:ring-2 focus:ring-accent outline-none transition-all"
+                   className="lumina-input pl-14"
                  />
                  <i className="fas fa-search absolute left-6 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-accent transition-colors" aria-hidden="true"></i>
               </div>
 
               <div className="flex items-center gap-6 w-full lg:w-auto">
-                 <div className="flex bg-slate-50 p-1 rounded-2xl border border-slate-100" role="group" aria-label="Filter assets by type">
+                 <div className="flex bg-slate-50 p-1 rounded-xl border border-slate-100" role="group" aria-label="Filter assets by type">
                     {(['All', 'Design', 'Document', 'Video', 'Image'] as const).map(type => (
                       <button
                         key={type}
                         onClick={() => setFilterType(type)}
                         aria-label={`Filter by ${type}`}
                         aria-pressed={filterType === type}
-                        className={`px-5 py-2.5 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all ${filterType === type ? 'bg-white text-accent shadow-md' : 'text-slate-400 hover:text-slate-600'}`}
+                        className={`px-5 py-2.5 rounded-lg type-micro transition-all ${filterType === type ? 'bg-white text-accent shadow-subtle' : 'text-slate-400 hover:text-slate-600'}`}
                       >
                         {type}
                       </button>
@@ -238,20 +238,20 @@ const FileManager: React.FC = () => {
 
                  <div className="h-8 w-px bg-slate-100 hidden lg:block"></div>
 
-                 <div className="flex bg-slate-100 p-1.5 rounded-2xl border border-slate-100 ml-auto lg:ml-0" role="group" aria-label="View mode">
-                    <button onClick={() => setView('grid')} aria-label="Grid view" aria-pressed={view === 'grid'} className={`w-10 h-10 rounded-xl transition-all flex items-center justify-center ${view === 'grid' ? 'bg-white shadow-md text-accent' : 'text-slate-400'}`}><i className="fas fa-grid-2 text-sm" aria-hidden="true"></i></button>
-                    <button onClick={() => setView('list')} aria-label="List view" aria-pressed={view === 'list'} className={`w-10 h-10 rounded-xl transition-all flex items-center justify-center ${view === 'list' ? 'bg-white shadow-md text-accent' : 'text-slate-400'}`}><i className="fas fa-list text-sm" aria-hidden="true"></i></button>
+                 <div className="flex bg-slate-100 p-1.5 rounded-xl border border-slate-100 ml-auto lg:ml-0" role="group" aria-label="View mode">
+                    <button onClick={() => setView('grid')} aria-label="Grid view" aria-pressed={view === 'grid'} className={`w-10 h-10 rounded-lg transition-all flex items-center justify-center ${view === 'grid' ? 'bg-white shadow-subtle text-accent' : 'text-slate-400'}`}><i className="fas fa-grid-2 text-sm" aria-hidden="true"></i></button>
+                    <button onClick={() => setView('list')} aria-label="List view" aria-pressed={view === 'list'} className={`w-10 h-10 rounded-lg transition-all flex items-center justify-center ${view === 'list' ? 'bg-white shadow-subtle text-accent' : 'text-slate-400'}`}><i className="fas fa-list text-sm" aria-hidden="true"></i></button>
                  </div>
               </div>
            </div>
 
-           <div className="bg-white rounded-[3rem] border border-slate-100 shadow-xl overflow-hidden min-h-[600px] flex flex-col scroll-reveal">
+           <div className="bg-white rounded-4xl border border-slate-100 shadow-elevated overflow-hidden min-h-[600px] flex flex-col scroll-reveal">
             <div className="px-10 py-8 border-b border-slate-50 flex items-center justify-between bg-slate-50/30">
                <div className="space-y-1">
-                 <h3 className="font-black text-slate-800 uppercase tracking-tight">Production Stream</h3>
-                 <p className="text-[10px] font-medium text-slate-400">Displaying {filteredAndSortedFiles.length} analyzed production assets</p>
+                 <h3 className="type-subsection text-slate-800">Production Stream</h3>
+                 <p className="type-caption">Displaying {filteredAndSortedFiles.length} analyzed production assets</p>
                </div>
-               <button className="text-[10px] font-black text-accent uppercase tracking-[0.2em] hover:underline" aria-label="Open batch operations menu">Batch Operations</button>
+               <button className="type-label text-accent hover:underline" aria-label="Open batch operations menu">Batch Operations</button>
             </div>
             
             {view === 'grid' ? (
@@ -261,13 +261,13 @@ const FileManager: React.FC = () => {
                     {(index) => <SkeletonFileCard key={index} />}
                   </StaggeredSkeleton>
                 ) : filteredAndSortedFiles.map((file, i) => (
-                  <div key={file.id} className="group bg-white rounded-[2.5rem] border border-slate-100 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all flex flex-col overflow-hidden relative scroll-reveal" style={{ animationDelay: `${(i % 8) * 0.05}s` }}>
+                  <div key={file.id} className="lumina-card-interactive group flex flex-col overflow-hidden scroll-reveal !p-0" style={{ animationDelay: `${(i % 8) * 0.05}s` }}>
                     <div className="absolute top-4 right-4 z-10">
-                       <div className={`px-3 py-1 rounded-full text-[8px] font-black uppercase tracking-widest backdrop-blur-md shadow-lg border border-white/20 ${file.status === 'Synced' ? 'bg-emerald-500/90 text-white' : 'bg-slate-900/90 text-white'}`}>
+                       <div className={`px-3 py-1 rounded-full type-micro backdrop-blur-md shadow-lg border border-white/20 ${file.status === 'Synced' ? 'bg-emerald-500/90 text-white' : 'bg-slate-900/90 text-white'}`}>
                          {file.status}
                        </div>
                     </div>
-                    
+
                     <div className="aspect-[4/3] w-full bg-slate-900 relative overflow-hidden flex items-center justify-center">
                        {file.thumbnail ? (
                          <img src={file.thumbnail} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt={file.name} />
@@ -275,18 +275,18 @@ const FileManager: React.FC = () => {
                          <i className={`fas ${file.icon} text-4xl text-white/10 group-hover:scale-125 transition-transform duration-500`}></i>
                        )}
                        <div className="absolute inset-0 bg-slate-950/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-4">
-                          <button className="w-12 h-12 bg-white rounded-full text-slate-900 flex items-center justify-center shadow-2xl hover:scale-110 transition-transform" aria-label={`Preview ${file.name}`}><i className="fas fa-expand-alt" aria-hidden="true"></i></button>
-                          <button className="w-12 h-12 bg-accent text-white rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-transform" aria-label={`Edit ${file.name}`}><i className="fas fa-pencil" aria-hidden="true"></i></button>
+                          <button className="w-12 h-12 bg-white rounded-full text-slate-900 flex items-center justify-center shadow-prominent hover:scale-110 transition-transform" aria-label={`Preview ${file.name}`}><i className="fas fa-expand-alt" aria-hidden="true"></i></button>
+                          <button className="w-12 h-12 bg-accent text-white rounded-full flex items-center justify-center shadow-prominent hover:scale-110 transition-transform" aria-label={`Edit ${file.name}`}><i className="fas fa-pencil" aria-hidden="true"></i></button>
                        </div>
                     </div>
-                    
-                    <div className="p-8 space-y-4">
+
+                    <div className="card-spacious space-y-4">
                        <div>
-                          <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">{file.type} • {file.size}</p>
-                          <h4 className="font-black text-slate-900 truncate uppercase tracking-tight text-sm pr-4">{file.name}</h4>
+                          <p className="type-label text-slate-400 mb-1">{file.type} • {file.size}</p>
+                          <h4 className="type-card text-slate-900 truncate pr-4">{file.name}</h4>
                        </div>
                        <div className="flex items-center justify-between pt-4 border-t border-slate-50">
-                          <span className="text-[10px] font-bold text-slate-400">{file.date}</span>
+                          <span className="type-caption">{file.date}</span>
                           <button className="text-slate-300 hover:text-accent transition-colors" aria-label={`More options for ${file.name}`}><i className="fas fa-ellipsis-h" aria-hidden="true"></i></button>
                        </div>
                     </div>
@@ -297,7 +297,7 @@ const FileManager: React.FC = () => {
               <div className="overflow-x-auto flex-1">
                 <table className="w-full text-left">
                   <thead className="bg-slate-50 border-b border-slate-100">
-                    <tr className="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em]">
+                    <tr className="type-label text-slate-400">
                       <th className="px-10 py-6">Asset Name</th>
                       <th className="px-10 py-6">Type Context</th>
                       <th className="px-10 py-6">Status</th>
@@ -310,31 +310,31 @@ const FileManager: React.FC = () => {
                       <tr key={file.id} className="hover:bg-accent-soft/10 transition-colors group cursor-pointer scroll-reveal" style={{ animationDelay: `${i * 0.05}s` }}>
                         <td className="px-10 py-7">
                           <div className="flex items-center gap-6">
-                            <div className={`w-14 h-14 rounded-2xl bg-slate-50 flex items-center justify-center text-2xl ${file.color} border border-slate-100 group-hover:bg-white transition-all shadow-inner`}>
+                            <div className={`w-14 h-14 rounded-2xl bg-slate-50 flex items-center justify-center text-2xl ${file.color} border border-slate-100 group-hover:bg-white transition-all shadow-inner-subtle`}>
                                {file.thumbnail ? <img src={file.thumbnail} className="w-10 h-10 rounded-lg object-cover" alt={file.name} /> : <i className={`fas ${file.icon}`} aria-hidden="true"></i>}
                             </div>
                             <div>
-                              <span className="font-black text-slate-800 block mb-1 text-sm uppercase tracking-tight">{file.name}</span>
-                              <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">{file.date}</span>
+                              <span className="type-card text-slate-800 block mb-1">{file.name}</span>
+                              <span className="type-label text-slate-400">{file.date}</span>
                             </div>
                           </div>
                         </td>
                         <td className="px-10 py-7">
-                           <span className="px-3 py-1 bg-slate-100 rounded-lg text-[9px] font-black text-slate-500 uppercase tracking-widest">{file.type}</span>
+                           <span className="px-3 py-1 bg-slate-100 rounded-lg type-micro text-slate-500">{file.type}</span>
                         </td>
                         <td className="px-10 py-7">
                           <div className="flex items-center gap-2">
                             <span className={`w-1.5 h-1.5 rounded-full ${file.status === 'Synced' ? 'bg-emerald-500' : file.status === 'Locked' ? 'bg-rose-500' : 'bg-amber-400'}`}></span>
-                            <span className="text-[10px] font-black uppercase text-slate-500">{file.status}</span>
+                            <span className="type-micro text-slate-500">{file.status}</span>
                           </div>
                         </td>
                         <td className="px-10 py-7">
-                           <span className="text-[10px] font-mono font-bold text-slate-400">{file.size}</span>
+                           <span className="type-mono text-slate-400">{file.size}</span>
                         </td>
                         <td className="px-10 py-7 text-right">
                            <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-all">
-                              <button className="p-3 bg-white text-slate-400 rounded-xl hover:text-accent shadow-sm border border-slate-100 transition-all" aria-label={`More options for ${file.name}`}><i className="fas fa-ellipsis-v" aria-hidden="true"></i></button>
-                              <button className="px-6 py-3 bg-slate-900 text-white rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-black transition-all" aria-label={`Load ${file.name}`}>Load</button>
+                              <button className="p-3 bg-white text-slate-400 rounded-xl hover:text-accent shadow-subtle border border-slate-100 transition-all" aria-label={`More options for ${file.name}`}><i className="fas fa-ellipsis-v" aria-hidden="true"></i></button>
+                              <button className="lumina-btn lumina-btn-primary lumina-btn-sm type-micro" aria-label={`Load ${file.name}`}>Load</button>
                            </div>
                         </td>
                       </tr>
@@ -346,21 +346,21 @@ const FileManager: React.FC = () => {
           </div>
 
           <div className="lg:col-span-4 space-y-10 scroll-reveal">
-             <div className="bg-slate-900 rounded-[3rem] p-10 text-white relative overflow-hidden group shadow-2xl">
+             <div className="lumina-card-dark card-spacious group shadow-dramatic">
                 <i className="fas fa-wand-sparkles absolute top-[-20px] right-[-20px] text-[120px] opacity-5 rotate-12 transition-transform duration-1000 group-hover:rotate-45"></i>
                 <div className="relative z-10">
                   <div className="flex items-center gap-3 mb-6">
                     <i className="fas fa-sparkles text-accent"></i>
-                    <h4 className="text-xl font-black tracking-tighter text-white uppercase">Lumina Insight</h4>
+                    <h4 className="type-subsection type-white">Lumina Insight</h4>
                   </div>
                   <div className="space-y-6">
                     <div className="p-6 bg-white/5 rounded-3xl border border-white/10 space-y-4">
-                       <p className="text-[10px] font-black text-accent uppercase tracking-widest">Workflow Suggestion</p>
-                       <p className="text-xs text-slate-300 leading-relaxed font-medium italic">
+                       <p className="type-label text-accent">Workflow Suggestion</p>
+                       <p className="type-body-sm text-slate-300 italic">
                          "Based on your 2 recent video projects, consider optimizing your export bitrate to 'Cinema Master' for Project Omega."
                        </p>
                     </div>
-                    <button className="w-full py-5 bg-accent text-white rounded-2xl text-[10px] font-black uppercase tracking-widest hover:brightness-110 transition-all shadow-xl shadow-accent/20" aria-label="Generate comprehensive asset audit report">
+                    <button className="lumina-btn lumina-btn-primary lumina-btn-lg w-full type-micro shadow-accent-elevated" aria-label="Generate comprehensive asset audit report">
                       Generate Asset Audit
                     </button>
                   </div>

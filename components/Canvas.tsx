@@ -739,13 +739,13 @@ const Canvas: React.FC = () => {
             ) : activeTab === 'ai' ? (
               <div className="flex flex-col h-full overflow-y-auto scrollbar-hide space-y-10">
                 <div className="flex items-center justify-between border-b border-slate-100 pb-4">
-                  <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Generative Intelligence</h4>
+                  <h4 className="type-label text-slate-400">Generative Intelligence</h4>
                 </div>
 
-                <div className="p-8 bg-purple-950 rounded-[3rem] text-white relative overflow-hidden shadow-2xl">
+                <div className="p-8 bg-purple-950 rounded-4xl text-white relative overflow-hidden shadow-prominent">
                    <i className="fas fa-sparkles absolute -top-4 -right-4 text-7xl opacity-10 rotate-12"></i>
-                   <p className="text-[10px] text-purple-400 font-black uppercase tracking-widest mb-1">Atmosphere Synthesis</p>
-                   <p className="text-xs font-bold mb-6 italic opacity-80">Design from abstract prompt</p>
+                   <p className="type-label text-purple-400 mb-1">Atmosphere Synthesis</p>
+                   <p className="type-body-sm mb-6 italic opacity-80">Design from abstract prompt</p>
                    <textarea
                     value={bgPrompt}
                     onChange={(e) => setBgPrompt(e.target.value)}
@@ -755,25 +755,25 @@ const Canvas: React.FC = () => {
                    />
                    
                    <div className="space-y-4 mb-8">
-                     <p className="text-[8px] font-black text-white/30 uppercase tracking-widest ml-1">Visual Style</p>
+                     <p className="type-micro text-white/30 ml-1">Visual Style</p>
                      <div className="grid grid-cols-3 gap-2">
                        {BG_STYLES.map(style => (
-                         <button 
-                          key={style.id} 
+                         <button
+                          key={style.id}
                           onClick={() => setSelectedBgStyle(style)}
-                          className={`p-3 rounded-xl border text-[8px] font-black uppercase transition-all flex flex-col items-center gap-1.5 hover:scale-105 active:scale-95 ${selectedBgStyle.id === style.id ? 'bg-white text-purple-900 border-white' : 'bg-white/5 border-white/10 text-white/40 hover:bg-white/10'}`}
+                          className={`p-3 rounded-xl border type-micro transition-all flex flex-col items-center gap-1.5 hover:scale-105 active:scale-95 ${selectedBgStyle.id === style.id ? 'bg-white text-purple-900 border-white' : 'bg-white/5 border-white/10 text-white/40 hover:bg-white/10'}`}
                          >
-                            <i className={`fas ${style.icon} text-[10px]`}></i>
+                            <i className={`fas ${style.icon} text-xs`}></i>
                             <span className="truncate w-full text-center">{style.label}</span>
                          </button>
                        ))}
                      </div>
                    </div>
 
-                   <button 
-                    onClick={() => handleGenerateBg()} 
-                    disabled={generatingBg || !bgPrompt} 
-                    className="w-full py-5 bg-white text-purple-900 rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-xl hover:brightness-110 active:scale-[0.98] hover:scale-[1.01] transition-all flex items-center justify-center gap-2 disabled:opacity-30"
+                   <button
+                    onClick={() => handleGenerateBg()}
+                    disabled={generatingBg || !bgPrompt}
+                    className="lumina-btn-primary w-full py-5 bg-white text-purple-900 rounded-2xl type-label shadow-elevated hover:brightness-110 active:scale-[0.98] hover:scale-[1.01] transition-all flex items-center justify-center gap-2 disabled:opacity-30"
                    >
                      {generatingBg ? <i className="fas fa-spinner fa-spin"></i> : <i className="fas fa-wand-magic"></i>}
                      Synthesize Background
@@ -784,7 +784,7 @@ const Canvas: React.FC = () => {
                   <div className="space-y-4 animate-in slide-in-from-bottom-4 duration-700">
                     <div className="flex items-center gap-2 px-2">
                        <i className="fas fa-sparkles text-purple-400 text-xs"></i>
-                       <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Magic Insights</h4>
+                       <h4 className="type-label text-slate-400">Magic Insights</h4>
                     </div>
                     <div className="space-y-3">
                       {aiSuggestions.map((suggestion, idx) => (
@@ -797,9 +797,9 @@ const Canvas: React.FC = () => {
                            <div className="absolute top-0 right-0 p-3 opacity-0 group-hover:opacity-100 transition-opacity">
                               <i className="fas fa-arrow-right text-purple-400 text-[10px]"></i>
                            </div>
-                           <p className="text-[11px] text-slate-600 font-medium leading-relaxed italic pr-4">"{suggestion}"</p>
+                           <p className="type-caption text-slate-600 leading-relaxed italic pr-4">"{suggestion}"</p>
                            <div className="mt-3 flex items-center gap-2">
-                              <span className="text-[8px] font-black uppercase tracking-widest text-purple-400">Contextual Match</span>
+                              <span className="type-micro text-purple-400">Contextual Match</span>
                            </div>
                         </button>
                       ))}
@@ -807,17 +807,17 @@ const Canvas: React.FC = () => {
                   </div>
                 )}
 
-                <div className="p-8 bg-slate-50 border border-slate-100 rounded-[2.5rem] shadow-inner text-center space-y-4">
-                   <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center mx-auto shadow-sm text-slate-300">
+                <div className="p-8 bg-slate-50 border border-slate-100 rounded-3xl shadow-inner-subtle text-center space-y-4">
+                   <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center mx-auto shadow-subtle text-slate-300">
                       <i className="fas fa-brain"></i>
                    </div>
-                   <p className="text-[10px] text-slate-400 font-bold leading-relaxed px-4">Lumina AI analyzes your canvas elements to suggest backgrounds that enhance your narrative.</p>
+                   <p className="type-label text-slate-400 leading-relaxed px-4">Lumina AI analyzes your canvas elements to suggest backgrounds that enhance your narrative.</p>
                 </div>
               </div>
             ) : (
               <div className="space-y-10 animate-in slide-in-from-right-4">
                  <div className="flex items-center justify-between border-b border-slate-100 pb-4">
-                    <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Geometric precision</h4>
+                    <h4 className="type-label text-slate-400">Geometric precision</h4>
                  </div>
                  {selectedEl ? (
                     <div className="space-y-8">
@@ -831,33 +831,33 @@ const Canvas: React.FC = () => {
                              <input id="element-y-position" type="number" value={Math.round(selectedEl.y)} onChange={(e) => updateElement(selectedEl.id, { y: parseInt(e.target.value) })} aria-label="Y Position" className="w-full bg-slate-50 border border-slate-100 rounded-xl px-4 py-3 text-xs font-bold focus:ring-1 focus:ring-accent outline-none hover:border-slate-300 transition-colors" />
                           </div>
                        </div>
-                       <div className="p-8 bg-slate-50 border border-slate-100 rounded-[2.5rem] space-y-8 shadow-inner">
+                       <div className="p-8 bg-slate-50 border border-slate-100 rounded-3xl space-y-8 shadow-inner-subtle">
                           <div className="space-y-4">
                              <div className="flex justify-between items-center px-1">
-                                <label htmlFor="skew-x-slider" className="text-[9px] font-black text-emerald-600 uppercase tracking-widest flex items-center gap-2"><i className="fas fa-arrows-left-right" aria-hidden="true"></i> Horizontal Skew</label>
-                                <span className="text-[10px] font-mono text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-lg border border-emerald-100">{selectedEl.skewX || 0}°</span>
+                                <label htmlFor="skew-x-slider" className="type-micro text-emerald-600 flex items-center gap-2"><i className="fas fa-arrows-left-right" aria-hidden="true"></i> Horizontal Skew</label>
+                                <span className="type-mono text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-lg border border-emerald-100">{selectedEl.skewX || 0}°</span>
                              </div>
                              <input id="skew-x-slider" type="range" min="-45" max="45" step="1" value={selectedEl.skewX || 0} onChange={(e) => updateElement(selectedEl.id, { skewX: parseInt(e.target.value) })} aria-label={`Horizontal Skew: ${selectedEl.skewX || 0} degrees`} className="w-full accent-emerald-500 h-1 bg-slate-200 rounded-full appearance-none cursor-pointer" />
                           </div>
                           <div className="space-y-4">
                              <div className="flex justify-between items-center px-1">
-                                <label htmlFor="skew-y-slider" className="text-[9px] font-black text-amber-600 uppercase tracking-widest flex items-center gap-2"><i className="fas fa-arrows-up-down" aria-hidden="true"></i> Vertical Skew</label>
-                                <span className="text-[10px] font-mono text-amber-600 bg-amber-50 px-2 py-0.5 rounded-lg border border-amber-100">{selectedEl.skewY || 0}°</span>
+                                <label htmlFor="skew-y-slider" className="type-micro text-amber-600 flex items-center gap-2"><i className="fas fa-arrows-up-down" aria-hidden="true"></i> Vertical Skew</label>
+                                <span className="type-mono text-amber-600 bg-amber-50 px-2 py-0.5 rounded-lg border border-amber-100">{selectedEl.skewY || 0}°</span>
                              </div>
                              <input id="skew-y-slider" type="range" min="-45" max="45" step="1" value={selectedEl.skewY || 0} onChange={(e) => updateElement(selectedEl.id, { skewY: parseInt(e.target.value) })} aria-label={`Vertical Skew: ${selectedEl.skewY || 0} degrees`} className="w-full accent-amber-500 h-1 bg-slate-200 rounded-full appearance-none cursor-pointer" />
                           </div>
                        </div>
-                       <div className="p-8 bg-slate-900 rounded-[2.5rem] text-white relative overflow-hidden shadow-2xl">
+                       <div className="p-8 bg-slate-900 rounded-3xl text-white relative overflow-hidden shadow-prominent">
                           <i className="fas fa-sparkles absolute -top-4 -right-4 text-6xl opacity-10"></i>
-                          <p className="text-[10px] text-accent font-black uppercase tracking-widest mb-1">Canvas Engine</p>
-                          <p className="text-xs font-bold mb-6 italic opacity-80">Syncing geometric state...</p>
-                          <button onClick={() => setShowExportModal(true)} className="w-full py-4 bg-accent text-white rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-xl shadow-accent/20 hover:brightness-110 hover:scale-[1.02] active:scale-[0.98] transition-all">Deliver Selection</button>
+                          <p className="type-label text-accent mb-1">Canvas Engine</p>
+                          <p className="type-body-sm mb-6 italic opacity-80">Syncing geometric state...</p>
+                          <button onClick={() => setShowExportModal(true)} className="lumina-btn-primary w-full py-4 bg-accent text-white rounded-2xl type-label shadow-accent-elevated hover:brightness-110 hover:scale-[1.02] active:scale-[0.98] transition-all">Deliver Selection</button>
                        </div>
                     </div>
                  ) : (
-                    <div className="text-center py-20 px-8 bg-slate-50 rounded-[3rem] border border-dashed border-slate-200 opacity-60">
-                       <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mx-auto mb-6 text-slate-200 shadow-inner"><i className="fas fa-mouse-pointer text-xl"></i></div>
-                       <p className="text-[11px] text-slate-500 font-bold leading-relaxed">Select an element to access geometric and skew properties.</p>
+                    <div className="text-center py-20 px-8 bg-slate-50 rounded-4xl border border-dashed border-slate-200 opacity-60">
+                       <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mx-auto mb-6 text-slate-200 shadow-inner-subtle"><i className="fas fa-mouse-pointer text-xl"></i></div>
+                       <p className="type-caption text-slate-500 leading-relaxed">Select an element to access geometric and skew properties.</p>
                     </div>
                  )}
               </div>
@@ -867,18 +867,18 @@ const Canvas: React.FC = () => {
       </div>
 
       {showExportModal && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-xl animate-in fade-in duration-500">
-           <div className="w-full max-w-lg bg-white p-16 rounded-[4rem] shadow-2xl relative overflow-hidden">
+        <div className="lumina-modal fixed inset-0 z-50 flex items-center justify-center animate-in fade-in duration-500">
+           <div className="w-full max-w-lg bg-white p-16 rounded-5xl shadow-dramatic relative overflow-hidden">
               <button onClick={() => setShowExportModal(false)} className="absolute top-10 right-10 text-slate-300 hover:text-slate-900 transition-colors hover:rotate-90"><i className="fas fa-times text-xl"></i></button>
-              <div className="w-20 h-20 bg-accent-soft rounded-[2.5rem] flex items-center justify-center text-accent mb-10 mx-auto shadow-inner"><i className="fas fa-file-export text-3xl"></i></div>
-              <h3 className="text-4xl font-black text-center mb-2 tracking-tighter uppercase">Deliver Design</h3>
-              <p className="text-center text-slate-400 text-sm mb-12 font-medium">Select professional-grade output parameters</p>
+              <div className="w-20 h-20 bg-accent-soft rounded-4xl flex items-center justify-center text-accent mb-10 mx-auto shadow-inner-subtle"><i className="fas fa-file-export text-3xl"></i></div>
+              <h3 className="type-page text-center mb-2">Deliver Design</h3>
+              <p className="type-body-sm text-center text-slate-400 mb-12">Select professional-grade output parameters</p>
               {exporting ? (
                 <div className="space-y-8 text-center py-10">
                   <LEDProgressBar progress={exportProgress} segments={24} className="max-w-xs mx-auto" />
                   <div className="flex flex-col items-center gap-2">
-                    <p className="text-[12px] font-black text-slate-900 uppercase tracking-[0.2em]">Rasterizing Composition</p>
-                    <p className="text-3xl font-black text-accent">{Math.round(exportProgress)}%</p>
+                    <p className="type-label text-slate-900">Rasterizing Composition</p>
+                    <p className="type-stat text-accent">{Math.round(exportProgress)}%</p>
                   </div>
                 </div>
               ) : (
@@ -889,11 +889,11 @@ const Canvas: React.FC = () => {
                     { format: 'webp', label: 'Hyper-WebP', desc: 'AI-optimized light format', icon: 'fa-bolt' },
                     { format: 'svg', label: 'Source SVG', desc: 'Layered vector data', icon: 'fa-code' },
                   ].map((opt) => (
-                    <button key={opt.format} onClick={() => handleExport(opt.format as any)} className="group p-8 bg-slate-50 border border-slate-100 rounded-[2.5rem] hover:border-accent hover:bg-accent-soft transition-all text-left flex items-center gap-8 hover:scale-[1.02] active:scale-[0.98]">
-                      <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center text-slate-300 group-hover:text-accent group-hover:shadow-xl transition-all border border-slate-100"><i className={`fas ${opt.icon} text-lg`}></i></div>
+                    <button key={opt.format} onClick={() => handleExport(opt.format as any)} className="group p-8 bg-slate-50 border border-slate-100 rounded-3xl hover:border-accent hover:bg-accent-soft transition-all text-left flex items-center gap-8 hover:scale-[1.02] active:scale-[0.98]">
+                      <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center text-slate-300 group-hover:text-accent group-hover:shadow-elevated transition-all border border-slate-100"><i className={`fas ${opt.icon} text-lg`}></i></div>
                       <div>
-                        <p className="text-sm font-black text-slate-900 uppercase tracking-tight mb-1">{opt.label}</p>
-                        <p className="text-[10px] text-slate-400 font-medium">{opt.desc}</p>
+                        <p className="type-card text-slate-900 mb-1">{opt.label}</p>
+                        <p className="type-label text-slate-400">{opt.desc}</p>
                       </div>
                     </button>
                   ))}

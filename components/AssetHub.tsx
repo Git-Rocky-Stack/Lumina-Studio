@@ -265,33 +265,33 @@ const AssetHub: React.FC = () => {
       <div className="w-72 bg-white border-r border-slate-200 flex flex-col p-8 gap-10 overflow-y-auto scrollbar-hide z-30 shadow-xl">
         <div className="space-y-6 scroll-reveal">
           <div className="flex items-center justify-between px-2">
-            <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Workspaces</h4>
+            <h4 className="type-label text-slate-400">Workspaces</h4>
             <button className="text-accent hover:scale-125 transition-transform duration-300"><i className="fas fa-plus-circle text-sm"></i></button>
           </div>
           <div className="space-y-1">
-             <button 
+             <button
                onClick={() => setFilterProject('all')}
-               className={`w-full flex items-center gap-3 px-4 py-3 rounded-2xl transition-all duration-300 hover:translate-x-1 ${filterProject === 'all' ? 'bg-accent text-white shadow-lg' : 'text-slate-500 hover:bg-slate-50'}`}
+               className={`w-full flex items-center gap-3 px-4 py-3 rounded-2xl transition-all duration-300 hover:translate-x-1 ${filterProject === 'all' ? 'bg-accent text-white shadow-elevated' : 'text-slate-500 hover:bg-slate-50'}`}
              >
                <i className="fas fa-border-all text-xs"></i>
-               <span className="text-[11px] font-black uppercase tracking-tight">All Assets</span>
+               <span className="type-caption font-bold uppercase">All Assets</span>
              </button>
              {projects.map((p, i) => (
-               <button 
-                key={p} 
+               <button
+                key={p}
                 onClick={() => setFilterProject(p)}
-                className={`w-full flex items-center gap-3 px-4 py-3 rounded-2xl transition-all duration-300 hover:translate-x-1 scroll-reveal ${filterProject === p ? 'bg-indigo-600 text-white shadow-lg' : 'text-slate-500 hover:bg-slate-50'}`}
+                className={`w-full flex items-center gap-3 px-4 py-3 rounded-2xl transition-all duration-300 hover:translate-x-1 scroll-reveal ${filterProject === p ? 'bg-indigo-600 text-white shadow-elevated' : 'text-slate-500 hover:bg-slate-50'}`}
                 style={{ animationDelay: `${i * 0.05}s` }}
                >
                  <i className="fas fa-folder-open text-xs"></i>
-                 <span className="text-[11px] font-black uppercase tracking-tight truncate">{p}</span>
+                 <span className="type-caption font-bold uppercase truncate">{p}</span>
                </button>
              ))}
           </div>
         </div>
 
         <div className="space-y-6 scroll-reveal" style={{ animationDelay: '0.3s' }}>
-           <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] px-2">Production Status</h4>
+           <h4 className="type-label text-slate-400 px-2">Production Status</h4>
            <div className="space-y-2">
               {[
                 { label: 'Synced', icon: 'fa-cloud-check', color: 'text-emerald-500' },
@@ -301,8 +301,8 @@ const AssetHub: React.FC = () => {
               ].map((status, i) => (
                 <button key={status.label} className="w-full flex items-center justify-between px-4 py-2 hover:bg-slate-50 rounded-xl transition-all duration-300 group hover:translate-x-1 scroll-reveal" style={{ animationDelay: `${0.4 + (i * 0.05)}s` }}>
                   <div className="flex items-center gap-3">
-                    <i className={`fas ${status.icon} ${status.color} text-[10px] transition-transform duration-300 group-hover:scale-110`}></i>
-                    <span className="text-[10px] font-bold text-slate-600 group-hover:text-slate-900">{status.label}</span>
+                    <i className={`fas ${status.icon} ${status.color} text-xs transition-transform duration-300 group-hover:scale-110`}></i>
+                    <span className="type-label text-slate-600 group-hover:text-slate-900">{status.label}</span>
                   </div>
                 </button>
               ))}
@@ -311,13 +311,13 @@ const AssetHub: React.FC = () => {
       </div>
 
       <div className="flex-1 flex flex-col overflow-hidden relative">
-        <header className="px-10 py-10 bg-white border-b border-slate-200 flex flex-col gap-10 shadow-sm z-20 animate-in fade-in duration-700">
+        <header className="px-10 py-10 bg-white border-b border-slate-200 flex flex-col gap-10 shadow-subtle z-20 animate-in fade-in duration-700">
           <div className="flex items-center justify-between">
             <div className="flex flex-col gap-1">
-              <h2 className="text-4xl font-black text-slate-900 tracking-tighter uppercase">Your Assets</h2>
+              <h2 className="type-page text-slate-900">Your Assets</h2>
               <div className="flex items-center gap-2">
                 <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></div>
-                <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest">
+                <p className="type-label text-slate-400">
                   Live Syncing with Project: <span className="text-indigo-600">{filterProject}</span>
                 </p>
               </div>
@@ -326,12 +326,12 @@ const AssetHub: React.FC = () => {
 
           <div className="flex items-center gap-6 scroll-reveal">
             <div className="flex-1 relative group">
-              <input 
-                type="text" 
+              <input
+                type="text"
                 value={searchQuery}
                 onChange={(e) => { setSearchQuery(e.target.value); setSemanticSearchType('keyword'); }}
-                placeholder={semanticSearchType === 'lumina' ? "Describe what you're looking for..." : "Search tags, names, or metadata..."} 
-                className={`w-full pl-14 pr-40 py-5 bg-slate-50 border border-slate-100 rounded-[2.5rem] text-sm font-medium outline-none focus:ring-2 focus:ring-accent focus:bg-white transition-all shadow-inner ${semanticSearchType === 'lumina' ? 'ring-2 ring-purple-500/20' : ''}`}
+                placeholder={semanticSearchType === 'lumina' ? "Describe what you're looking for..." : "Search tags, names, or metadata..."}
+                className={`lumina-input w-full pl-14 pr-40 py-5 rounded-4xl ${semanticSearchType === 'lumina' ? 'ring-2 ring-purple-500/20' : ''}`}
               />
               <i className={`fas ${semanticSearchType === 'lumina' ? 'fa-wand-magic-sparkles text-purple-500' : 'fa-search text-slate-300'} absolute left-6 top-1/2 -translate-y-1/2 group-focus-within:text-accent transition-colors`}></i>
             </div>
@@ -342,10 +342,10 @@ const AssetHub: React.FC = () => {
           <div className="flex-1 overflow-y-auto p-12 bg-slate-50/40 scrollbar-hide">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10">
               {filteredAssets.map((asset, i) => (
-                <div 
-                  key={asset.id} 
+                <div
+                  key={asset.id}
                   onClick={() => { setSelectedAssetId(asset.id); setActiveVersionId(null); setDeepAnalysis(null); }}
-                  className={`group bg-white rounded-[3.5rem] border-2 transition-all duration-500 overflow-hidden relative cursor-pointer hover:scale-[1.03] active:scale-[0.98] scroll-reveal ${selectedAssetId === asset.id ? 'border-accent ring-[15px] ring-accent/5' : 'border-white shadow-sm hover:shadow-2xl hover:border-slate-100'}`}
+                  className={`group lumina-card-interactive rounded-4xl border-2 overflow-hidden relative cursor-pointer scroll-reveal ${selectedAssetId === asset.id ? 'border-accent ring-[15px] ring-accent/5' : 'border-white hover:border-slate-100'}`}
                   style={{ animationDelay: `${(i % 12) * 0.05}s` }}
                 >
                   <div className="aspect-video w-full flex items-center justify-center bg-slate-900 relative overflow-hidden">
@@ -354,22 +354,22 @@ const AssetHub: React.FC = () => {
                       ) : (
                         <i className={`fas ${asset.type === 'video' ? 'fa-file-video' : asset.type === 'pdf' ? 'fa-file-pdf' : asset.type === 'model3d' ? 'fa-cube' : 'fa-file-image'} text-5xl text-white/10 group-hover:scale-125 transition-transform duration-1000`}></i>
                       )}
-                      
+
                       <div className="absolute inset-0 bg-slate-950/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[2px]">
-                        <button 
+                        <button
                           onClick={(e) => { e.stopPropagation(); setPreviewAsset(asset); setMediaLoading(true); }}
-                          className="w-16 h-16 bg-white rounded-full text-slate-900 flex items-center justify-center shadow-2xl hover:scale-110 active:scale-90 transition-transform"
+                          className="w-16 h-16 bg-white rounded-full text-slate-900 flex items-center justify-center shadow-prominent hover:scale-110 active:scale-90 transition-transform"
                         >
                           <i className="fas fa-expand-alt text-xl"></i>
                         </button>
                       </div>
                   </div>
 
-                  <div className="p-10">
-                    <h3 className="font-black text-slate-900 text-sm truncate pr-4 uppercase tracking-tight mb-4">{asset.name}</h3>
+                  <div className="card-spacious">
+                    <h3 className="type-card text-slate-900 truncate pr-4 mb-4">{asset.name}</h3>
                     <div className="flex gap-2 mb-6">
-                      <span className="px-2 py-1 bg-slate-900 text-white text-[8px] font-black rounded uppercase tracking-tighter">{asset.type}</span>
-                      <span className="px-2 py-1 bg-slate-100 text-slate-400 text-[8px] font-black rounded uppercase tracking-tighter">{asset.size}</span>
+                      <span className="px-2 py-1 bg-slate-900 text-white type-micro rounded-lg">{asset.type}</span>
+                      <span className="px-2 py-1 bg-slate-100 text-slate-400 type-micro rounded-lg">{asset.size}</span>
                     </div>
                   </div>
                 </div>
@@ -380,23 +380,23 @@ const AssetHub: React.FC = () => {
           <div className={`w-[500px] bg-white border-l border-slate-200 transition-all duration-500 flex flex-col z-40 ${selectedAssetId ? 'mr-0' : '-mr-[500px]'}`}>
             {selectedAsset && (
               <div className="flex-1 flex flex-col overflow-hidden">
-                 <div className="p-12 border-b border-slate-100 flex items-center justify-between bg-white sticky top-0 z-10 shadow-sm animate-in slide-in-from-right-4 duration-500">
-                    <h3 className="font-black text-slate-900 uppercase tracking-tighter text-2xl">Asset Intelligence</h3>
+                 <div className="p-12 border-b border-slate-100 flex items-center justify-between bg-white sticky top-0 z-10 shadow-subtle animate-in slide-in-from-right-4 duration-500">
+                    <h3 className="type-subsection text-slate-900 uppercase tracking-tighter">Asset Intelligence</h3>
                     <button onClick={() => setSelectedAssetId(null)} className="text-slate-300 hover:text-slate-900 hover:rotate-90 transition-all text-2xl"><i className="fas fa-times text-2xl"></i></button>
                  </div>
-                 
+
                  <div className="flex-1 overflow-y-auto p-12 space-y-12 scrollbar-hide">
-                    <div className="aspect-video w-full bg-slate-950 rounded-[3rem] border border-white/5 flex items-center justify-center overflow-hidden relative group shadow-2xl scroll-reveal">
-                       <img 
-                        src={activeVersion?.url || selectedAsset.thumbnail} 
-                        className="w-full h-full object-cover transition-all duration-1000 group-hover:scale-105 opacity-80" 
+                    <div className="aspect-video w-full bg-slate-950 rounded-4xl border border-white/5 flex items-center justify-center overflow-hidden relative group shadow-prominent scroll-reveal">
+                       <img
+                        src={activeVersion?.url || selectedAsset.thumbnail}
+                        className="w-full h-full object-cover transition-all duration-1000 group-hover:scale-105 opacity-80"
                        />
                     </div>
 
                     <div className="space-y-6 scroll-reveal">
                        <div className="flex items-center justify-between px-2">
-                         <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em]">AI Generated Preview</h4>
-                         <button onClick={handleDeepAnalysis} className="text-[10px] text-accent font-black uppercase tracking-widest flex items-center gap-2 hover:underline hover:scale-105 transition-transform active:scale-95">
+                         <h4 className="type-label text-slate-400">AI Generated Preview</h4>
+                         <button onClick={handleDeepAnalysis} className="type-label text-accent flex items-center gap-2 hover:underline hover:scale-105 transition-transform active:scale-95">
                            {isAnalyzingDeep ? <i className="fas fa-spinner fa-spin"></i> : <i className="fas fa-wand-magic"></i>} Synthesize Summary
                          </button>
                        </div>

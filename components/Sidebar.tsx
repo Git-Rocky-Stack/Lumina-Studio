@@ -50,10 +50,10 @@ const Sidebar: React.FC<SidebarProps> = ({
     <aside className="w-20 md:w-64 bg-slate-900 text-white h-screen flex flex-col border-r border-slate-800 transition-all duration-300 z-50">
       <div className="p-6 mb-8">
         <h1 className="text-xl md:text-2xl font-bold tracking-tighter flex items-center gap-2">
-          <div className="w-8 h-8 bg-accent rounded-lg flex items-center justify-center text-sm shadow-lg shadow-accent transition-all duration-500 hover:rotate-12">L</div>
+          <div className="w-8 h-8 bg-accent rounded-xl flex items-center justify-center text-sm shadow-elevated shadow-accent transition-all duration-500 hover:rotate-12">L</div>
           <span className="hidden md:flex items-center gap-2">
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">Lumina Studio</span>
-            <span className="px-1.5 py-0.5 text-[9px] font-bold tracking-wider bg-gradient-to-r from-indigo-500 to-violet-600 rounded text-white">OS</span>
+            <span className="px-1.5 py-0.5 type-micro bg-gradient-to-r from-indigo-500 to-violet-600 rounded-lg text-white">OS</span>
           </span>
         </h1>
       </div>
@@ -67,19 +67,19 @@ const Sidebar: React.FC<SidebarProps> = ({
             aria-current={currentMode === item.id ? 'page' : undefined}
             className={`w-full flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-300 group hover:scale-[1.02] active:scale-[0.98] ${
               currentMode === item.id
-                ? 'bg-white/10 text-white border border-white/20 shadow-[0_0_15px_rgba(255,255,255,0.05)]'
+                ? 'bg-white/10 text-white border border-white/20 shadow-glow-subtle'
                 : 'text-slate-400 hover:bg-white/5 hover:text-white border border-transparent hover:border-white/10'
             }`}
           >
             <i className={`fas ${item.icon} text-lg w-6 transition-transform duration-300 group-hover:rotate-6 ${currentMode === item.id ? 'text-accent' : 'group-hover:text-accent'}`} aria-hidden="true"></i>
-            <span className="hidden md:block font-medium tracking-tight">{item.label}</span>
+            <span className="hidden md:block type-body font-medium">{item.label}</span>
           </button>
         ))}
       </nav>
 
       <div className="p-4 mt-auto border-t border-slate-800 space-y-4">
         <div className="px-2">
-          <p className="text-[8px] font-black text-slate-500 uppercase tracking-widest mb-2 flex items-center justify-between">
+          <p className="type-micro text-slate-500 mb-2 flex items-center justify-between">
             System Logic <span>{isSyncing ? 'Linking...' : 'Ready'}</span>
           </p>
           <LEDProgressBar progress={isSyncing ? syncProgress : 100} segments={12} className="opacity-60" />
@@ -95,7 +95,7 @@ const Sidebar: React.FC<SidebarProps> = ({
             }`}
           >
             <i className="fas fa-sparkles text-lg w-6 transition-transform group-hover:scale-110" aria-hidden="true"></i>
-            <span className="hidden md:block text-sm">Features</span>
+            <span className="hidden md:block type-body-sm">Features</span>
           </button>
           <button
             onClick={() => setMode(StudioMode.PERSONALIZATION)}
@@ -106,19 +106,19 @@ const Sidebar: React.FC<SidebarProps> = ({
             }`}
           >
             <i className="fas fa-sliders text-lg w-6 transition-transform group-hover:rotate-12" aria-hidden="true"></i>
-            <span className="hidden md:block text-sm">Personalize</span>
+            <span className="hidden md:block type-body-sm">Personalize</span>
           </button>
           <button
             onClick={onDriveSync}
             disabled={isSyncing}
             aria-label={isSyncing ? 'Syncing with Google Drive' : 'Sync with Google Drive'}
             aria-busy={isSyncing}
-            className={`w-full flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-300 text-sm group ${
+            className={`w-full flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-300 group ${
               isSyncing ? 'text-accent bg-white/5' : 'text-slate-400 hover:bg-white/5 hover:text-white'
             }`}
           >
             <i className={`fab fa-google text-lg w-6 transition-all duration-500 ${isSyncing ? 'fa-spin text-accent' : 'group-hover:scale-110 group-hover:text-accent'}`} aria-hidden="true"></i>
-            <span className="hidden md:block">{isSyncing ? 'Syncing...' : 'Drive Sync'}</span>
+            <span className="hidden md:block type-body-sm">{isSyncing ? 'Syncing...' : 'Drive Sync'}</span>
           </button>
         </div>
 

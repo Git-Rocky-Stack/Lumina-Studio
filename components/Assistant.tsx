@@ -214,14 +214,14 @@ const Assistant: React.FC = () => {
       <div className="h-16 border-b border-white/5 px-8 flex items-center justify-between bg-white/5 backdrop-blur-md z-40">
         <div className="flex items-center gap-3">
           <div className={`w-2 h-2 rounded-full ${isActive ? 'bg-emerald-500 animate-pulse' : 'bg-slate-500'}`}></div>
-          <span className="text-[10px] font-black text-white uppercase tracking-[0.2em]">High-Speed Intelligence</span>
+          <span className="type-label text-white">High-Speed Intelligence</span>
         </div>
-        <div className="flex bg-slate-800 rounded-full p-1 border border-white/5 shadow-inner">
+        <div className="flex bg-slate-800 rounded-full p-1 border border-white/5 shadow-inner-subtle">
           {(['voice', 'chat', 'speech'] as const).map(m => (
-            <button 
+            <button
               key={m}
-              onClick={() => setMode(m)} 
-              className={`px-5 py-1.5 rounded-full text-[9px] font-black transition-all duration-300 hover:scale-110 active:scale-95 ${mode === m ? 'bg-accent text-white shadow-lg' : 'text-slate-400 hover:text-slate-200'}`}
+              onClick={() => setMode(m)}
+              className={`px-5 py-1.5 rounded-full type-micro transition-all duration-300 hover:scale-110 active:scale-95 ${mode === m ? 'bg-accent text-white shadow-elevated' : 'text-slate-400 hover:text-slate-200'}`}
             >
               {m.toUpperCase()}
             </button>
@@ -234,24 +234,24 @@ const Assistant: React.FC = () => {
           {transcriptions.map((msg, idx) => (
             <div key={idx} className={`flex flex-col ${msg.role === 'user' ? 'items-end' : 'items-start'} transition-all duration-500`}>
               {msg.mediaUrl && msg.mimeType?.startsWith('image/') && (
-                <div className="mb-4 max-w-sm rounded-[2rem] overflow-hidden border-4 border-white/10 shadow-2xl animate-in zoom-in duration-500 hover:scale-[1.02] transition-transform cursor-pointer">
+                <div className="mb-4 max-w-sm rounded-3xl overflow-hidden border-4 border-white/10 shadow-prominent animate-in zoom-in duration-500 hover:scale-[1.02] transition-transform cursor-pointer">
                   <img src={msg.mediaUrl} alt="User Upload" className="w-full h-auto" />
                 </div>
               )}
               {msg.mediaUrl && msg.mimeType?.startsWith('video/') && (
-                <div className="mb-4 max-w-sm rounded-[2rem] overflow-hidden border-4 border-white/10 shadow-2xl transition-transform hover:scale-[1.02] cursor-pointer">
+                <div className="mb-4 max-w-sm rounded-3xl overflow-hidden border-4 border-white/10 shadow-prominent transition-transform hover:scale-[1.02] cursor-pointer">
                   <video src={msg.mediaUrl} className="w-full h-auto" controls />
                 </div>
               )}
-              <div className={`p-8 rounded-[40px] max-w-2xl shadow-2xl relative group transition-all duration-500 hover:translate-y-[-2px] ${msg.role === 'user' ? 'bg-accent text-white rounded-tr-none' : 'bg-slate-800 text-slate-100 border border-white/10 rounded-tl-none'}`}>
+              <div className={`p-8 rounded-4xl max-w-2xl shadow-prominent relative group transition-all duration-500 hover:translate-y-[-2px] ${msg.role === 'user' ? 'bg-accent text-white rounded-tr-none' : 'bg-slate-800 text-slate-100 border border-white/10 rounded-tl-none'}`}>
                 {msg.type === 'analysis' && (
-                  <div className="absolute -top-3 left-6 px-3 py-1 bg-indigo-600 text-white text-[8px] font-black rounded-full uppercase tracking-widest flex items-center gap-2 shadow-lg">
+                  <div className="absolute -top-3 left-6 px-3 py-1 bg-indigo-600 text-white type-micro rounded-full flex items-center gap-2 shadow-elevated">
                     <i className="fas fa-microscope"></i> Visual Audit
                   </div>
                 )}
-                {msg.type === 'video' && <div className="absolute -top-3 left-6 px-3 py-1 bg-amber-600 text-white text-[8px] font-black rounded-full uppercase shadow-lg">Video Insight</div>}
-                {msg.type === 'transcription' && <div className="absolute -top-3 left-6 px-3 py-1 bg-purple-500 text-white text-[8px] font-black rounded-full uppercase shadow-lg">Audio Trace</div>}
-                <p className={`text-sm leading-relaxed font-medium ${msg.type === 'analysis' ? 'italic' : ''}`}>{msg.text}</p>
+                {msg.type === 'video' && <div className="absolute -top-3 left-6 px-3 py-1 bg-amber-600 text-white type-micro rounded-full shadow-elevated">Video Insight</div>}
+                {msg.type === 'transcription' && <div className="absolute -top-3 left-6 px-3 py-1 bg-purple-500 text-white type-micro rounded-full shadow-elevated">Audio Trace</div>}
+                <p className={`type-body-sm leading-relaxed ${msg.type === 'analysis' ? 'italic' : ''}`}>{msg.text}</p>
               </div>
             </div>
           ))}
@@ -260,7 +260,7 @@ const Assistant: React.FC = () => {
                <div className="bg-slate-800/50 px-8 py-5 rounded-full border border-white/5 flex items-center gap-4 transition-all animate-in fade-in slide-in-from-left-4">
                   <div className="w-1.5 h-1.5 bg-accent rounded-full animate-bounce"></div>
                   <div className="w-1.5 h-1.5 bg-accent rounded-full animate-bounce delay-150"></div>
-                  <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Processing...</span>
+                  <span className="type-label text-slate-500">Processing...</span>
                </div>
             </div>
           )}
@@ -272,25 +272,25 @@ const Assistant: React.FC = () => {
           {mode === 'speech' && (
             <div className="flex justify-center gap-4 animate-in slide-in-from-bottom-2">
                {(['Kore', 'Puck', 'Zephyr'] as const).map(v => (
-                 <button key={v} onClick={() => setSelectedVoice(v)} className={`px-4 py-2 rounded-xl text-[9px] font-black uppercase tracking-widest border transition-all duration-300 hover:scale-110 active:scale-95 ${selectedVoice === v ? 'bg-white text-slate-900 shadow-xl' : 'bg-slate-800 text-slate-400 border-white/10 hover:bg-slate-700'}`}>Voice: {v}</button>
+                 <button key={v} onClick={() => setSelectedVoice(v)} className={`px-4 py-2 rounded-xl type-micro border transition-all duration-300 hover:scale-110 active:scale-95 ${selectedVoice === v ? 'bg-white text-slate-900 shadow-elevated' : 'bg-slate-800 text-slate-400 border-white/10 hover:bg-slate-700'}`}>Voice: {v}</button>
                ))}
             </div>
           )}
           <div className="flex gap-4 items-center">
-            <label className="flex-shrink-0 w-14 h-14 bg-slate-800 rounded-full flex items-center justify-center text-slate-400 cursor-pointer border border-white/10 hover:bg-slate-700 transition-all hover:scale-110 active:scale-90 shadow-lg group">
+            <label className="flex-shrink-0 w-14 h-14 bg-slate-800 rounded-full flex items-center justify-center text-slate-400 cursor-pointer border border-white/10 hover:bg-slate-700 transition-all hover:scale-110 active:scale-90 shadow-elevated group">
                <i className="fas fa-camera transition-transform group-hover:rotate-12"></i>
                <input type="file" className="hidden" accept="image/*,audio/*,video/*" onChange={handleFileUpload} />
             </label>
             <div className="flex-1 relative group">
-              <input 
+              <input
                 type="text" value={chatInput} onChange={(e) => setChatInput(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleChatSubmit()}
                 placeholder={mode === 'voice' ? (isActive ? "Lumina is listening..." : "Activate Voice Command...") : mode === 'speech' ? "Enter text to speak..." : "Ask Gemini 3 Flash..."}
-                className="w-full bg-slate-800/50 border border-white/10 rounded-[32px] px-8 py-6 text-white text-sm focus:ring-2 focus:ring-accent outline-none transition-all placeholder:text-slate-600 group-hover:bg-slate-800 focus:bg-slate-800 shadow-inner"
+                className="w-full bg-slate-800/50 border border-white/10 rounded-4xl px-8 py-6 text-white type-body-sm focus:ring-2 focus:ring-accent outline-none transition-all placeholder:text-slate-600 group-hover:bg-slate-800 focus:bg-slate-800 shadow-inner-subtle"
               />
-              <button 
+              <button
                 onClick={isActive ? stopSession : (mode === 'voice' ? startSession : handleChatSubmit)}
-                className={`absolute right-3 top-3 bottom-3 w-14 rounded-[24px] flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-90 ${isActive ? 'bg-red-500 shadow-lg shadow-red-500/20' : 'bg-accent shadow-lg shadow-accent/20'}`}
+                className={`absolute right-3 top-3 bottom-3 w-14 rounded-3xl flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-90 ${isActive ? 'bg-red-500 shadow-elevated shadow-red-500/20' : 'bg-accent shadow-elevated shadow-accent/20'}`}
               >
                 <i className={`fas ${isActive ? 'fa-stop' : (mode === 'voice' ? 'fa-microphone' : 'fa-paper-plane')} transition-transform group-hover:scale-110`}></i>
               </button>
