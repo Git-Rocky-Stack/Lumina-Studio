@@ -37,6 +37,7 @@ const Sidebar: React.FC<SidebarProps> = ({
     { id: StudioMode.WORKSPACE, icon: 'fa-house', label: 'Dashboard' },
     { id: StudioMode.ASSETS, icon: 'fa-boxes-stacked', label: 'Your Assets' },
     { id: StudioMode.CANVAS, icon: 'fa-layer-group', label: 'Canvas' },
+    { id: StudioMode.TEMPLATES, icon: 'fa-wand-magic-sparkles', label: 'AI Templates' },
     { id: StudioMode.PRO_PHOTO, icon: 'fa-image-portrait', label: 'Pro Photo' },
     { id: StudioMode.VIDEO, icon: 'fa-video', label: 'Video Studio' },
     { id: StudioMode.STOCK, icon: 'fa-camera-retro', label: 'AI Stock' },

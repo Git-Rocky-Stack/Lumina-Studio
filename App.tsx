@@ -21,6 +21,7 @@ import {
 const Canvas = lazy(() => import('./components/Canvas'));
 const VideoStudio = lazy(() => import('./components/VideoStudio'));
 const AIStockGen = lazy(() => import('./components/AIStockGen'));
+const TemplateEngine = lazy(() => import('./components/TemplateEngine'));
 const PDFSuite = lazy(() => import('./components/PDFSuite'));
 const ProPhoto = lazy(() => import('./components/ProPhoto/index'));
 const Assistant = lazy(() => import('./components/Assistant'));
@@ -116,6 +117,10 @@ const App: React.FC = () => {
                setCurrentMode(StudioMode.STOCK);
             }
             break;
+          case 't':
+            e.preventDefault();
+            setCurrentMode(StudioMode.TEMPLATES);
+            break;
           case 'p':
             e.preventDefault();
             setCurrentMode(StudioMode.PDF);
@@ -162,6 +167,7 @@ const App: React.FC = () => {
         case StudioMode.CANVAS: return <Canvas />;
         case StudioMode.VIDEO: return <VideoStudio />;
         case StudioMode.STOCK: return <AIStockGen />;
+        case StudioMode.TEMPLATES: return <TemplateEngine />;
         case StudioMode.PDF: return <PDFSuite />;
         case StudioMode.PRO_PHOTO: return <ProPhoto />;
         case StudioMode.BRANDING: return <BrandHub />;

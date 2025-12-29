@@ -5,6 +5,7 @@ export enum StudioMode {
   CANVAS = 'canvas',
   VIDEO = 'video',
   STOCK = 'stock',
+  TEMPLATES = 'templates',
   PDF = 'pdf',
   PRO_PHOTO = 'pro_photo',
   ASSISTANT = 'assistant',

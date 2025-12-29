@@ -17,6 +17,7 @@ const modeLabels: Record<StudioMode, { label: string; icon: string }> = {
   [StudioMode.WORKSPACE]: { label: 'Dashboard', icon: 'fa-house' },
   [StudioMode.ASSETS]: { label: 'Assets', icon: 'fa-boxes-stacked' },
   [StudioMode.CANVAS]: { label: 'Canvas', icon: 'fa-layer-group' },
+  [StudioMode.TEMPLATES]: { label: 'AI Templates', icon: 'fa-wand-magic-sparkles' },
   [StudioMode.PRO_PHOTO]: { label: 'Pro Photo', icon: 'fa-image-portrait' },
   [StudioMode.VIDEO]: { label: 'Video Studio', icon: 'fa-video' },
   [StudioMode.STOCK]: { label: 'AI Stock', icon: 'fa-camera-retro' },
@@ -25,6 +26,7 @@ const modeLabels: Record<StudioMode, { label: string; icon: string }> = {
   [StudioMode.MARKETING]: { label: 'Marketing', icon: 'fa-bullhorn' },
   [StudioMode.ASSISTANT]: { label: 'AI Assistant', icon: 'fa-microphone' },
   [StudioMode.PERSONALIZATION]: { label: 'Settings', icon: 'fa-sliders' },
+  [StudioMode.FEATURES]: { label: 'Features', icon: 'fa-sparkles' },
 };
 
 const Breadcrumb: React.FC<BreadcrumbProps> = ({ currentMode, subPage, onNavigate }) => {
