@@ -3,8 +3,31 @@
 // Wrapper for pdf.js and pdf-lib operations
 // ============================================
 
-import * as pdfjsLib from 'pdfjs-dist';
-import { PDFDocument as PDFLibDocument, rgb, StandardFonts, degrees } from 'pdf-lib';
+// Dynamic imports for heavy libraries
+// These are loaded on-demand when PDF features are accessed
+type PdfjsLib = typeof import('pdfjs-dist');
+type PdfLibModule = typeof import('pdf-lib');
+
+let pdfjsLib: Awaited<PdfjsLib> | null = null;
+let pdfLibModule: Awaited<PdfLibModule> | null = null;
+
+// Lazy load pdfjs
+async function loadPdfjsLib(): Promise<Awaited<PdfjsLib>> {
+  if (!pdfjsLib) {
+    pdfjsLib = await import('pdfjs-dist');
+    // Configure pdf.js worker
+    pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
+  }
+  return pdfjsLib;
+}
+
+// Lazy load pdf-lib
+async function loadPdfLib(): Promise<Awaited<PdfLibModule>> {
+  if (!pdfLibModule) {
+    pdfLibModule = await import('pdf-lib');
+  }
+  return pdfLibModule;
+}
 import type {
   PDFPage,
   PDFMetadata,
