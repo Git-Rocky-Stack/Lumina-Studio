@@ -3,13 +3,12 @@
 // Wrapper for pdf.js and pdf-lib operations
 // ============================================
 
-// Dynamic imports for heavy libraries
-// These are loaded on-demand when PDF features are accessed
-type PdfjsLib = typeof import('pdfjs-dist');
-type PdfLibModule = typeof import('pdf-lib');
+// pdf-lib is imported statically (smaller, works well with bundlers)
+import { PDFDocument as PDFLibDocument, StandardFonts, rgb, degrees } from 'pdf-lib';
 
+// pdfjs-dist is loaded dynamically (larger, needs worker configuration)
+type PdfjsLib = typeof import('pdfjs-dist');
 let pdfjsLib: Awaited<PdfjsLib> | null = null;
-let pdfLibModule: Awaited<PdfLibModule> | null = null;
 
 // Lazy load pdfjs
 async function loadPdfjsLib(): Promise<Awaited<PdfjsLib>> {
@@ -20,14 +19,6 @@ async function loadPdfjsLib(): Promise<Awaited<PdfjsLib>> {
   }
   return pdfjsLib;
 }
-
-// Lazy load pdf-lib
-async function loadPdfLib(): Promise<Awaited<PdfLibModule>> {
-  if (!pdfLibModule) {
-    pdfLibModule = await import('pdf-lib');
-  }
-  return pdfLibModule;
-}
 import type {
   PDFPage,
   PDFMetadata,
@@ -36,18 +27,18 @@ import type {
   PageRange,
 } from '../components/PDFSuite/types';
 
-// Configure pdf.js worker
-pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
-
 // ============================================
 // DOCUMENT LOADING
 // ============================================
 
 export async function loadPDF(source: File | string | ArrayBuffer): Promise<{
-  proxy: pdfjsLib.PDFDocumentProxy;
+  proxy: any;
   metadata: PDFMetadata;
   pageCount: number;
 }> {
+  // Ensure pdfjs is loaded
+  const pdfjs = await loadPdfjsLib();
+
   let data: ArrayBuffer;
 
   if (source instanceof File) {
@@ -70,7 +61,7 @@ export async function loadPDF(source: File | string | ArrayBuffer): Promise<{
     data = source;
   }
 
-  const loadingTask = pdfjsLib.getDocument({ data });
+  const loadingTask = pdfjs.getDocument({ data });
   const proxy = await loadingTask.promise;
 
   // Extract metadata
@@ -101,7 +92,7 @@ export async function loadPDF(source: File | string | ArrayBuffer): Promise<{
 // ============================================
 
 export async function getPageData(
-  proxy: pdfjsLib.PDFDocumentProxy,
+  proxy: any,
   pageNumber: number,
   scale: number = 1
 ): Promise<PDFPage> {
@@ -121,7 +112,7 @@ export async function getPageData(
 }
 
 export async function renderPageToCanvas(
-  page: pdfjsLib.PDFPageProxy,
+  page: any,
   canvas: HTMLCanvasElement,
   scale: number = 1
 ): Promise<void> {
@@ -142,7 +133,7 @@ export async function renderPageToCanvas(
 }
 
 export async function getPageThumbnail(
-  page: pdfjsLib.PDFPageProxy,
+  page: any,
   maxSize: number = 150
 ): Promise<string> {
   const viewport = page.getViewport({ scale: 1 });
@@ -171,7 +162,7 @@ export async function getPageThumbnail(
 // ============================================
 
 export async function extractTextContent(
-  page: pdfjsLib.PDFPageProxy
+  page: any
 ): Promise<PDFTextContent> {
   const textContent = await page.getTextContent();
   const viewport = page.getViewport({ scale: 1 });
@@ -215,7 +206,7 @@ export async function extractTextContent(
 }
 
 export async function searchText(
-  proxy: pdfjsLib.PDFDocumentProxy,
+  proxy: any,
   query: string,
   options: { caseSensitive?: boolean; wholeWord?: boolean } = {}
 ): Promise<Array<{ pageNumber: number; matches: PDFTextItem[] }>> {
@@ -449,7 +440,7 @@ export async function extractPages(
 // ============================================
 
 export async function exportToImages(
-  proxy: pdfjsLib.PDFDocumentProxy,
+  proxy: any,
   format: 'png' | 'jpg' = 'png',
   scale: number = 2,
   pages?: number[]
@@ -601,8 +592,9 @@ export async function validatePDF(source: File | ArrayBuffer): Promise<{
   isEncrypted?: boolean;
 }> {
   try {
+    const pdfjs = await loadPdfjsLib();
     const data = source instanceof File ? await source.arrayBuffer() : source;
-    const loadingTask = pdfjsLib.getDocument({ data });
+    const loadingTask = pdfjs.getDocument({ data });
     const proxy = await loadingTask.promise;
 
     return {
@@ -1121,5 +1113,5 @@ export async function getDocumentInfo(pdfBytes: ArrayBuffer): Promise<{
   };
 }
 
-// Export pdf.js for advanced usage
-export { pdfjsLib };
+// Export loader for advanced usage
+export { loadPdfjsLib };
