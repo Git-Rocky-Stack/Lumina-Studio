@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
-import { Canvas, FabricImage, FabricObject, Shadow } from 'fabric';
-import type { PhotoLayerExtended, CanvasState, ExtendedBlendMode } from '../types';
+import { Canvas, FabricImage, FabricObject, Shadow, filters } from 'fabric';
+import type { PhotoLayerExtended, CanvasState, ExtendedBlendMode, ExtendedPhotoFilter } from '../types';
 
 interface UseFabricCanvasOptions {
   containerRef: React.RefObject<HTMLDivElement>;
@@ -261,6 +261,85 @@ export function useFabricCanvas(options: UseFabricCanvasOptions): UseFabricCanva
     }
   }, []);
 
+  // Helper to apply filters to a Fabric image
+  const applyFiltersToImage = useCallback((img: FabricImage, layerFilters: ExtendedPhotoFilter[]) => {
+    // Clear existing filters
+    img.filters = [];
+
+    // Apply each enabled filter
+    layerFilters.forEach(filter => {
+      if (!filter.enabled) return;
+
+      const value = typeof filter.value === 'number' ? filter.value : 0;
+
+      switch (filter.type) {
+        case 'brightness':
+          img.filters?.push(new filters.Brightness({ brightness: value / 100 }));
+          break;
+        case 'contrast':
+          img.filters?.push(new filters.Contrast({ contrast: value / 100 }));
+          break;
+        case 'saturation':
+          img.filters?.push(new filters.Saturation({ saturation: value / 100 }));
+          break;
+        case 'hue':
+          img.filters?.push(new filters.HueRotation({ rotation: value }));
+          break;
+        case 'exposure':
+          // Exposure approximated with brightness
+          img.filters?.push(new filters.Brightness({ brightness: value / 50 }));
+          break;
+        case 'vibrance':
+          // Vibrance approximated with saturation boost
+          img.filters?.push(new filters.Saturation({ saturation: value / 50 }));
+          break;
+        case 'gamma':
+          img.filters?.push(new filters.Gamma({ gamma: [1 + value / 100, 1 + value / 100, 1 + value / 100] }));
+          break;
+        case 'blur':
+          if (value > 0) {
+            img.filters?.push(new filters.Blur({ blur: value / 100 }));
+          }
+          break;
+        case 'sharpen':
+          if (value > 0) {
+            img.filters?.push(new filters.Convolute({
+              matrix: [0, -1, 0, -1, 5, -1, 0, -1, 0]
+            }));
+          }
+          break;
+        case 'noise':
+          if (value > 0) {
+            img.filters?.push(new filters.Noise({ noise: value }));
+          }
+          break;
+        case 'grayscale':
+          if (value > 0) {
+            img.filters?.push(new filters.Grayscale());
+          }
+          break;
+        case 'sepia':
+          if (value > 0) {
+            img.filters?.push(new filters.Sepia());
+          }
+          break;
+        case 'invert':
+          if (value > 0) {
+            img.filters?.push(new filters.Invert());
+          }
+          break;
+        case 'pixelate':
+          if (value > 1) {
+            img.filters?.push(new filters.Pixelate({ blocksize: value }));
+          }
+          break;
+      }
+    });
+
+    // Apply the filters
+    img.applyFilters();
+  }, []);
+
   // Update layer
   const updateLayer = useCallback((layerId: string, updates: Partial<PhotoLayerExtended>) => {
     const canvas = canvasRef.current;
@@ -293,9 +372,14 @@ export function useFabricCanvas(options: UseFabricCanvasOptions): UseFabricCanva
       obj.set('scaleY', updates.height / obj.height);
     }
 
+    // Apply filters if the object is an image and filters are provided
+    if (updates.filters !== undefined && obj instanceof FabricImage) {
+      applyFiltersToImage(obj, updates.filters);
+    }
+
     obj.setCoords();
     canvas.renderAll();
-  }, []);
+  }, [applyFiltersToImage]);
 
   // Reorder layers
   const reorderLayers = useCallback((fromIndex: number, toIndex: number) => {
