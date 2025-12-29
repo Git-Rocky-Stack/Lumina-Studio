@@ -7,16 +7,18 @@
 import { PDFDocument as PDFLibDocument, StandardFonts, rgb, degrees } from 'pdf-lib';
 
 // pdfjs-dist is loaded dynamically (larger, needs worker configuration)
-type PdfjsLib = typeof import('pdfjs-dist');
-let pdfjsLib: Awaited<PdfjsLib> | null = null;
+// Use Vite's ?url import for the worker to handle bundling correctly
+import * as pdfjs from 'pdfjs-dist';
+import pdfjsWorkerUrl from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
 
-// Lazy load pdfjs
-async function loadPdfjsLib(): Promise<Awaited<PdfjsLib>> {
-  if (!pdfjsLib) {
-    pdfjsLib = await import('pdfjs-dist');
-    // Configure pdf.js worker
-    pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
-  }
+// Configure worker immediately
+pdfjs.GlobalWorkerOptions.workerSrc = pdfjsWorkerUrl;
+
+// Export the configured pdfjs instance
+const pdfjsLib = pdfjs;
+
+// Async loader for compatibility with existing code
+async function loadPdfjsLib(): Promise<typeof pdfjs> {
   return pdfjsLib;
 }
 import type {
