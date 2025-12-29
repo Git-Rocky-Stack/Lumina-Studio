@@ -2,7 +2,7 @@
 import React, { useState, useEffect, lazy, Suspense } from 'react';
 import Sidebar from './components/Sidebar';
 import FileManager from './components/FileManager';
-import TutorialOverlay from './components/TutorialOverlay';
+import TutorialOverlay, { shouldShowTutorial } from './components/TutorialOverlay';
 import ShortcutGuide from './components/ShortcutGuide';
 import { StudioMode, ThemeColor } from './types';
 import { syncToGoogleDrive } from './services/exportService';
@@ -45,7 +45,7 @@ const ModuleLoader: React.FC = () => (
 
 const App: React.FC = () => {
   const [currentMode, setCurrentMode] = useState<StudioMode>(StudioMode.WORKSPACE);
-  const [showTutorial, setShowTutorial] = useState(true);
+  const [showTutorial, setShowTutorial] = useState(() => shouldShowTutorial());
   const [showShortcuts, setShowShortcuts] = useState(false);
   const [theme, setTheme] = useState<ThemeColor>('indigo');
   const [isGlobalSyncing, setIsGlobalSyncing] = useState(false);

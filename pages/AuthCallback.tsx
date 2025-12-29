@@ -14,64 +14,55 @@ const AuthCallback: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const handleCallback = async () => {
-      try {
-        // Get the auth code from URL
-        const hashParams = new URLSearchParams(window.location.hash.substring(1));
-        const queryParams = new URLSearchParams(window.location.search);
+    // Check for error in URL params first
+    const queryParams = new URLSearchParams(window.location.search);
+    const hashParams = new URLSearchParams(window.location.hash.substring(1));
+    const errorParam = queryParams.get('error') || hashParams.get('error');
+    const errorDescription = queryParams.get('error_description') || hashParams.get('error_description');
 
-        const accessToken = hashParams.get('access_token');
-        const refreshToken = hashParams.get('refresh_token');
-        const errorParam = queryParams.get('error') || hashParams.get('error');
-        const errorDescription = queryParams.get('error_description') || hashParams.get('error_description');
+    if (errorParam) {
+      setError(errorDescription || errorParam);
+      return;
+    }
 
-        if (errorParam) {
-          setError(errorDescription || errorParam);
-          return;
-        }
+    // Listen for auth state changes - this handles the PKCE code exchange
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_IN' && session) {
+        // Successfully authenticated, redirect to studio
+        navigate('/studio', { replace: true });
+      } else if (event === 'TOKEN_REFRESHED' && session) {
+        navigate('/studio', { replace: true });
+      }
+    });
 
-        if (accessToken && refreshToken) {
-          // Set the session manually if tokens are in the URL
-          const { error: sessionError } = await supabase.auth.setSession({
-            access_token: accessToken,
-            refresh_token: refreshToken,
-          });
+    // Also check for existing session (in case auth state already resolved)
+    const checkSession = async () => {
+      const { data: { session }, error: sessionError } = await supabase.auth.getSession();
 
-          if (sessionError) {
-            setError(sessionError.message);
-            return;
+      if (sessionError) {
+        setError(sessionError.message);
+        return;
+      }
+
+      if (session) {
+        navigate('/studio', { replace: true });
+      } else {
+        // Wait a bit for PKCE code exchange to complete
+        setTimeout(async () => {
+          const { data: { session: retrySession } } = await supabase.auth.getSession();
+          if (retrySession) {
+            navigate('/studio', { replace: true });
           }
-        }
-
-        // Check if we have a valid session
-        const { data: { session }, error: getSessionError } = await supabase.auth.getSession();
-
-        if (getSessionError) {
-          setError(getSessionError.message);
-          return;
-        }
-
-        if (session) {
-          // Successfully authenticated, redirect to studio
-          navigate('/studio', { replace: true });
-        } else {
-          // No session, might be email confirmation - wait a bit and check again
-          setTimeout(async () => {
-            const { data: { session: retrySession } } = await supabase.auth.getSession();
-            if (retrySession) {
-              navigate('/studio', { replace: true });
-            } else {
-              // Still no session, redirect to sign-in
-              navigate('/sign-in', { replace: true });
-            }
-          }, 1000);
-        }
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Authentication failed');
+          // If still no session after 3 seconds, the subscription will handle it
+        }, 2000);
       }
     };
 
-    handleCallback();
+    checkSession();
+
+    return () => {
+      subscription.unsubscribe();
+    };
   }, [navigate]);
 
   if (error) {
