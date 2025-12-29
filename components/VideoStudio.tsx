@@ -11,6 +11,7 @@ import {
 } from '../services/geminiService';
 import { Shot, Storyboard, TransitionType, VideoAspectRatio } from '../types';
 import { useToast } from '../design-system';
+import aistudio from '../services/aistudio';
 import {
   VideoStudioHeader,
   AudioLibraryPanel,
@@ -163,8 +164,7 @@ const VideoStudio: React.FC = () => {
 
   useEffect(() => {
     const checkKey = async () => {
-      // @ts-ignore
-      const selected = await window.aistudio.hasSelectedApiKey();
+      const selected = await aistudio.hasSelectedApiKey();
       setHasKey(selected);
     };
     checkKey();
@@ -178,8 +178,7 @@ const VideoStudio: React.FC = () => {
   }, []);
 
   const handleKeySelect = async () => {
-    // @ts-ignore
-    await window.aistudio.openSelectKey();
+    await aistudio.openSelectKey();
     setHasKey(true);
   };
 
