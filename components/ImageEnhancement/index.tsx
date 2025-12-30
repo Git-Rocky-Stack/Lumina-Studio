@@ -296,7 +296,7 @@ const OptionsPanel: React.FC<OptionsPanelProps> = ({ type, options, onChange }) 
                 <button
                   key={factor}
                   onClick={() => onChange({ ...options, upscaleFactor: factor })}
-                  className={`flex-1 py-2 rounded-lg text-sm font-medium transition-colors ${
+                  className={`flex-1 py-2 rounded-lg type-body-sm font-semibold transition-colors ${
                     options.upscaleFactor === factor
                       ? 'bg-blue-500 text-white'
                       : 'bg-white/10 text-white/70 hover:bg-white/20'

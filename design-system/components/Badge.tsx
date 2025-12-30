@@ -46,10 +46,11 @@ export const Badge: React.FC<BadgeProps> = ({
     outline: 'bg-zinc-400',
   };
 
+  // Typography: type-micro style - 10px/700/uppercase/tracking
   const sizeStyles = {
-    sm: 'text-xs px-1.5 py-0.5',
-    md: 'text-xs px-2 py-1',
-    lg: 'text-sm px-2.5 py-1',
+    sm: 'text-[0.5625rem] font-bold uppercase tracking-[0.15em] px-1.5 py-0.5',
+    md: 'text-[0.625rem] font-bold uppercase tracking-[0.15em] px-2 py-1',
+    lg: 'text-[0.6875rem] font-bold uppercase tracking-[0.1em] px-2.5 py-1',
   };
 
   return (
@@ -153,7 +154,7 @@ export const NotificationBadge: React.FC<NotificationBadgeProps> = ({
             ${dot ? 'w-2.5 h-2.5' : 'min-w-[18px] h-[18px] px-1'}
             ${colorStyles[color]}
             rounded-full flex items-center justify-center
-            text-[10px] font-bold text-white
+            text-[0.625rem] font-bold uppercase tracking-[0.1em] text-white
             ring-2 ring-white dark:ring-zinc-900
           `}
           initial={{ scale: 0 }}
@@ -210,7 +211,8 @@ export const StatusIndicator: React.FC<StatusIndicatorProps> = ({
         )}
       </span>
       {showLabel && (
-        <span className="text-xs text-zinc-600 dark:text-zinc-400">{config.label}</span>
+        /* Typography: type-caption - 11px/500 */
+        <span className="type-caption">{config.label}</span>
       )}
     </span>
   );
@@ -259,7 +261,7 @@ export const Tag: React.FC<TagProps> = ({
       type="button"
       onClick={onClick}
       className={`
-        inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-medium
+        inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[0.6875rem] font-bold uppercase tracking-[0.05em]
         border-2 transition-colors
         ${selected
           ? `${colors.bg} ${colors.text} ${colors.border}`

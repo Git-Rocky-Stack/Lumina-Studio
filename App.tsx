@@ -39,7 +39,8 @@ const ModuleLoader: React.FC = () => (
         <div className="absolute inset-0 rounded-full border-4 border-slate-200"></div>
         <div className="absolute inset-0 rounded-full border-4 border-t-accent animate-spin"></div>
       </div>
-      <p className="text-sm font-medium text-slate-500 uppercase tracking-widest">Loading Module</p>
+      {/* Typography: type-micro - 10px/700/uppercase/tracking */}
+      <p className="type-micro text-slate-500">Loading Module</p>
     </div>
   </div>
 );

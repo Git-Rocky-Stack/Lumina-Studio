@@ -348,7 +348,7 @@ const PluginDetailsModal: React.FC<PluginDetailsModalProps> = ({
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`px-6 py-3 text-sm font-medium capitalize transition-colors ${
+              className={`px-6 py-3 type-body-sm font-semibold capitalize transition-colors ${
                 activeTab === tab
                   ? 'text-blue-400 border-b-2 border-blue-400'
                   : 'text-white/50 hover:text-white/80'
@@ -715,7 +715,7 @@ export const PluginSystemPanel: React.FC = () => {
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`flex-1 px-3 py-2 text-sm font-medium rounded capitalize transition-colors ${
+              className={`flex-1 px-3 py-2 type-body-sm font-semibold rounded capitalize transition-colors ${
                 activeTab === tab
                   ? 'bg-white/10 text-white'
                   : 'text-white/50 hover:text-white/80'

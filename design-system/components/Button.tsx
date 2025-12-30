@@ -84,12 +84,14 @@ const variantStyles: Record<ButtonVariant, string> = {
   `,
 };
 
+// Typography: Consistent button text sizing with proper font weights
+// xs/sm: 10px type-micro style | md: 13px type-body-sm style | lg/xl: 15px type-body style
 const sizeStyles: Record<ButtonSize, string> = {
-  xs: 'h-7 px-2.5 text-xs rounded-md',
-  sm: 'h-8 px-3 text-sm rounded-lg',
-  md: 'h-10 px-4 text-sm rounded-lg',
-  lg: 'h-12 px-6 text-base rounded-xl',
-  xl: 'h-14 px-8 text-lg rounded-xl',
+  xs: 'h-7 px-2.5 text-[0.625rem] font-bold uppercase tracking-[0.1em] rounded-md',
+  sm: 'h-8 px-3 text-[0.625rem] font-bold uppercase tracking-[0.1em] rounded-lg',
+  md: 'h-10 px-4 text-[0.8125rem] font-semibold rounded-lg',
+  lg: 'h-12 px-6 text-[0.9375rem] font-semibold rounded-xl',
+  xl: 'h-14 px-8 text-[0.9375rem] font-bold rounded-xl',
 };
 
 const iconSizes: Record<ButtonSize, string> = {

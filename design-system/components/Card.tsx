@@ -153,11 +153,13 @@ export const CardHeader: React.FC<CardHeaderProps> = ({
   return (
     <div className={`flex items-start justify-between gap-4 ${className}`}>
       <div className="min-w-0 flex-1">
-        <h3 className="text-base font-semibold text-slate-900 dark:text-white truncate">
+        {/* Typography: type-card - 15px/700/uppercase */}
+        <h3 className="type-card text-slate-900 dark:text-white truncate">
           {title}
         </h3>
         {subtitle && (
-          <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+          /* Typography: type-body-sm - 13px/400 */
+          <p className="mt-1 type-body-sm">
             {subtitle}
           </p>
         )}
@@ -342,14 +344,17 @@ export const StatCard: React.FC<StatCardProps> = ({
     <Card padding="lg" className={className}>
       <div className="flex items-start justify-between">
         <div>
-          <p className="text-sm font-medium text-slate-500 dark:text-slate-400">
+          {/* Typography: type-label - 10px/700/uppercase/tracking */}
+          <p className="type-label">
             {label}
           </p>
-          <p className="mt-2 text-3xl font-bold text-slate-900 dark:text-white">
+          {/* Typography: type-stat - 36px/900 */}
+          <p className="mt-2 type-stat">
             {value}
           </p>
           {change && (
-            <p className={`mt-1 text-sm font-medium ${changeColors[change.type]}`}>
+            /* Typography: type-caption with color - 11px/500 */
+            <p className={`mt-1 type-caption font-semibold ${changeColors[change.type]}`}>
               {change.type === 'increase' && '↑ '}
               {change.type === 'decrease' && '↓ '}
               {change.value}

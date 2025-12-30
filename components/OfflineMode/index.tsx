@@ -231,7 +231,8 @@ export const OfflineModePanel: React.FC<OfflineModePanelProps> = ({
                 <i className="fa-solid fa-cloud" style={{ color: colors.accent.primary }} />
               </div>
               <div>
-                <h2 className="text-lg font-semibold" style={{ color: colors.text.primary }}>
+                {/* Typography: type-subsection - 20px/700 */}
+                <h2 className="type-subsection" style={{ color: colors.text.primary }}>
                   Offline Mode
                 </h2>
                 <div className="flex items-center gap-3">

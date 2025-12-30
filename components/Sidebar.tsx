@@ -50,10 +50,11 @@ const Sidebar: React.FC<SidebarProps> = ({
   return (
     <aside className="w-20 md:w-64 bg-slate-900 text-white h-screen flex flex-col border-r border-slate-800 transition-all duration-300 z-50">
       <div className="p-6 mb-8">
-        <h1 className="text-xl md:text-2xl font-bold tracking-tighter flex items-center gap-2">
-          <div className="w-8 h-8 bg-accent rounded-xl flex items-center justify-center text-sm shadow-elevated shadow-accent transition-all duration-500 hover:rotate-12">L</div>
+        {/* Typography: Custom brand lockup - matches type-section weight but smaller */}
+        <h1 className="flex items-center gap-2">
+          <div className="w-8 h-8 bg-accent rounded-xl flex items-center justify-center type-micro shadow-elevated shadow-accent transition-all duration-500 hover:rotate-12">L</div>
           <span className="hidden md:flex items-center gap-2">
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">Lumina Studio</span>
+            <span className="text-[1.25rem] font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">Lumina Studio</span>
             <span className="px-1.5 py-0.5 type-micro bg-gradient-to-r from-indigo-500 to-violet-600 rounded-lg text-white">OS</span>
           </span>
         </h1>

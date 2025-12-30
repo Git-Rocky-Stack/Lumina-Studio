@@ -677,7 +677,8 @@ const PresetsModal: React.FC<PresetsModalProps> = ({ presets, onApply, onClose }
           className="flex items-center justify-between px-6 py-4 border-b"
           style={{ borderColor: colors.border.subtle }}
         >
-          <h3 className="text-lg font-semibold" style={{ color: colors.text.primary }}>
+          {/* Typography: type-subsection - 20px/700 */}
+          <h3 className="type-subsection" style={{ color: colors.text.primary }}>
             Animation Presets
           </h3>
           <button onClick={onClose} className="p-2 rounded hover:bg-white/10">

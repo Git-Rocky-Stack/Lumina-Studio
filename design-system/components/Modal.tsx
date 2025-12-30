@@ -118,17 +118,19 @@ export const Modal: React.FC<ModalProps> = ({
               <div className="flex items-start justify-between p-6 pb-0">
                 <div>
                   {title && (
+                    /* Typography: type-subsection - 20px/700 */
                     <h2
                       id="modal-title"
-                      className="text-xl font-semibold text-zinc-900 dark:text-white"
+                      className="type-subsection text-zinc-900 dark:text-white"
                     >
                       {title}
                     </h2>
                   )}
                   {description && (
+                    /* Typography: type-body-sm - 13px/400 */
                     <p
                       id="modal-description"
-                      className="mt-1 text-sm text-zinc-500 dark:text-zinc-400"
+                      className="mt-1 type-body-sm"
                     >
                       {description}
                     </p>
@@ -192,19 +194,21 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="sm" title={title} description={description}>
       <div className="flex gap-3 mt-6">
+        {/* Typography: Button style - 13px/600 */}
         <motion.button
           onClick={onClose}
           disabled={loading}
-          className="flex-1 px-4 py-2.5 rounded-xl font-medium bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors disabled:opacity-50"
+          className="flex-1 px-4 py-2.5 rounded-xl text-[0.8125rem] font-semibold bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors disabled:opacity-50"
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
         >
           {cancelText}
         </motion.button>
+        {/* Typography: Button style - 13px/600 */}
         <motion.button
           onClick={onConfirm}
           disabled={loading}
-          className={`flex-1 px-4 py-2.5 rounded-xl font-medium transition-colors disabled:opacity-50 ${variantStyles[variant]}`}
+          className={`flex-1 px-4 py-2.5 rounded-xl text-[0.8125rem] font-semibold transition-colors disabled:opacity-50 ${variantStyles[variant]}`}
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
         >
@@ -297,7 +301,8 @@ export const Sheet: React.FC<SheetProps> = ({
 
             {title && (
               <div className="flex items-center justify-between px-6 py-4 border-b border-zinc-200 dark:border-zinc-700">
-                <h3 className="text-lg font-semibold text-zinc-900 dark:text-white">{title}</h3>
+                {/* Typography: type-subsection - 20px/700 */}
+                <h3 className="type-subsection text-zinc-900 dark:text-white">{title}</h3>
                 <motion.button
                   onClick={onClose}
                   className="p-2 rounded-lg text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800"

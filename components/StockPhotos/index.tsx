@@ -99,7 +99,8 @@ const PhotoCard: React.FC<PhotoCardProps> = ({
                     <i className="fa-solid fa-user text-xs text-white" />
                   </div>
                 )}
-                <span className="text-white text-sm font-medium truncate">
+                {/* Typography: type-body-sm - 13px */}
+                <span className="text-white type-body-sm font-medium truncate">
                   {photo.photographer.name}
                 </span>
               </div>
@@ -195,7 +196,8 @@ const PhotoDetailModal: React.FC<PhotoDetailModalProps> = ({
                 <i className="fa-solid fa-times" />
               </button>
             </div>
-            <h3 className="text-lg font-semibold text-white mb-2">{photo.title}</h3>
+            {/* Typography: type-subsection - 20px/700 */}
+            <h3 className="type-subsection text-white mb-2">{photo.title}</h3>
             <div className="flex items-center gap-2">
               <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center">
                 <i className="fa-solid fa-user text-white/50" />
@@ -395,7 +397,8 @@ export const StockPhotosPanel: React.FC<{
     <div className="h-full flex flex-col bg-[#0f0f1a]">
       {/* Header */}
       <div className="p-4 border-b border-white/10">
-        <h2 className="text-lg font-bold text-white flex items-center gap-2 mb-4">
+        {/* Typography: type-subsection - 20px/700 */}
+        <h2 className="type-subsection text-white flex items-center gap-2 mb-4">
           <i className="fa-solid fa-images text-green-400" />
           Stock Photos
         </h2>
@@ -406,7 +409,7 @@ export const StockPhotosPanel: React.FC<{
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`flex-1 px-3 py-2 text-sm font-medium rounded capitalize transition-colors ${
+              className={`flex-1 px-3 py-2 type-body-sm font-semibold rounded capitalize transition-colors ${
                 activeTab === tab
                   ? 'bg-white/10 text-white'
                   : 'text-white/50 hover:text-white/80'
