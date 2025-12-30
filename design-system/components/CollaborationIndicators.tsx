@@ -46,7 +46,7 @@ export const PresenceIndicator: React.FC<PresenceIndicatorProps> = ({
       />
 
       {showActivity && onlineCollaborators.length > 0 && (
-        <div className="flex items-center gap-1 text-xs text-zinc-500 dark:text-zinc-400">
+        <div className="flex items-center gap-1 type-caption text-zinc-500 dark:text-zinc-400">
           <Users size={12} />
           <span>{onlineCollaborators.length} online</span>
         </div>
@@ -98,7 +98,7 @@ export const LiveCursors: React.FC<LiveCursorsProps> = ({
 
           {/* Name tag */}
           <motion.div
-            className="absolute left-4 top-5 px-2 py-0.5 rounded-full text-xs font-medium text-white whitespace-nowrap"
+            className="absolute left-4 top-5 px-2 py-0.5 rounded-full type-caption font-semibold text-white whitespace-nowrap"
             style={{ backgroundColor: collaborator.color }}
             initial={{ opacity: 0, x: -5 }}
             animate={{ opacity: 1, x: 0 }}
@@ -168,7 +168,7 @@ export const ActivityFeed: React.FC<ActivityFeedProps> = ({
         {recentActivities.map((activity, index) => (
           <motion.div
             key={activity.id}
-            className="flex items-center gap-2 text-sm"
+            className="flex items-center gap-2 type-body-sm"
             initial={{ opacity: 0, x: -10 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: 10 }}
@@ -181,7 +181,7 @@ export const ActivityFeed: React.FC<ActivityFeedProps> = ({
             <span className="text-zinc-500 dark:text-zinc-400">
               {getActivityMessage(activity)}
             </span>
-            <span className="text-xs text-zinc-400 dark:text-zinc-500 ml-auto">
+            <span className="type-caption text-zinc-400 dark:text-zinc-500 ml-auto">
               {timeAgo(activity.timestamp)}
             </span>
           </motion.div>
@@ -211,7 +211,7 @@ export const CollaboratorTyping: React.FC<TypingIndicatorProps> = ({
 
   return (
     <motion.div
-      className={`flex items-center gap-2 text-sm text-zinc-500 dark:text-zinc-400 ${className}`}
+      className={`flex items-center gap-2 type-body-sm text-zinc-500 dark:text-zinc-400 ${className}`}
       initial={{ opacity: 0, y: 5 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: 5 }}
@@ -268,7 +268,7 @@ export const ConnectionStatus: React.FC<ConnectionStatusProps> = ({
 
   return (
     <motion.div
-      className={`flex items-center gap-1.5 text-xs ${color} ${className}`}
+      className={`flex items-center gap-1.5 type-caption ${color} ${className}`}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
     >
@@ -301,7 +301,7 @@ export const ElementLock: React.FC<ElementLockProps> = ({
 
   return (
     <motion.div
-      className={`flex items-center gap-1.5 px-2 py-1 rounded-full text-xs font-medium ${className}`}
+      className={`flex items-center gap-1.5 px-2 py-1 rounded-full type-caption font-semibold ${className}`}
       style={{ backgroundColor: `${lockedBy.color}20`, color: lockedBy.color }}
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
@@ -396,13 +396,13 @@ export const CollabNotification: React.FC<CollabNotificationProps> = ({
     >
       <Avatar src={user.avatar} name={user.name} size="sm" />
       <div className="flex-1 min-w-0">
-        <p className="text-sm">
+        <p className="type-body-sm">
           <span className="font-medium text-zinc-900 dark:text-white">{user.name}</span>
           {' '}
           <span className="text-zinc-500 dark:text-zinc-400">{text}</span>
         </p>
         {message && (
-          <p className="text-xs text-zinc-400 dark:text-zinc-500 truncate mt-0.5">
+          <p className="type-caption text-zinc-400 dark:text-zinc-500 truncate mt-0.5">
             {message}
           </p>
         )}
@@ -457,7 +457,7 @@ export const CollaborationPanel: React.FC<CollaborationPanelProps> = ({
             {/* Online */}
             {onlineCollaborators.length > 0 && (
               <div>
-                <h3 className="text-xs font-semibold text-zinc-400 dark:text-zinc-500 uppercase mb-2">
+                <h3 className="type-label text-zinc-400 dark:text-zinc-500 mb-2">
                   Online — {onlineCollaborators.length}
                 </h3>
                 <div className="space-y-2">
@@ -475,7 +475,7 @@ export const CollaborationPanel: React.FC<CollaborationPanelProps> = ({
             {/* Away */}
             {awayCollaborators.length > 0 && (
               <div>
-                <h3 className="text-xs font-semibold text-zinc-400 dark:text-zinc-500 uppercase mb-2">
+                <h3 className="type-label text-zinc-400 dark:text-zinc-500 mb-2">
                   Away — {awayCollaborators.length}
                 </h3>
                 <div className="space-y-2">
@@ -489,7 +489,7 @@ export const CollaborationPanel: React.FC<CollaborationPanelProps> = ({
             {/* Offline */}
             {offlineCollaborators.length > 0 && (
               <div>
-                <h3 className="text-xs font-semibold text-zinc-400 dark:text-zinc-500 uppercase mb-2">
+                <h3 className="type-label text-zinc-400 dark:text-zinc-500 mb-2">
                   Offline — {offlineCollaborators.length}
                 </h3>
                 <div className="space-y-2 opacity-50">
@@ -530,14 +530,14 @@ const CollaboratorRow: React.FC<{
       </div>
 
       <div className="flex-1 min-w-0">
-        <p className="text-sm font-medium text-zinc-900 dark:text-white truncate">
+        <p className="type-body-sm font-semibold text-zinc-900 dark:text-white truncate">
           {collaborator.name}
           {isCurrentUser && (
-            <span className="ml-1 text-xs text-zinc-400">(you)</span>
+            <span className="ml-1 type-caption text-zinc-400">(you)</span>
           )}
         </p>
         {collaborator.activity && collaborator.activity !== 'idle' && (
-          <p className="text-xs text-zinc-500 dark:text-zinc-400 flex items-center gap-1">
+          <p className="type-caption text-zinc-500 dark:text-zinc-400 flex items-center gap-1">
             {activityIcons[collaborator.activity]}
             <span className="capitalize">{collaborator.activity}</span>
           </p>

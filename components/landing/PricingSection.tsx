@@ -108,7 +108,7 @@ const PricingSection: React.FC = () => {
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            className="inline-flex items-center gap-2 px-5 py-2 rounded-full glass-card text-indigo-400 text-sm font-semibold mb-8"
+            className="inline-flex items-center gap-2 px-5 py-2 rounded-full glass-card text-indigo-400 type-body-sm font-semibold mb-8"
           >
             <i className="fas fa-tag text-xs" />
             Pricing
@@ -128,7 +128,7 @@ const PricingSection: React.FC = () => {
           <div className="inline-flex items-center gap-2 p-1.5 rounded-2xl glass-card">
             <button
               onClick={() => setIsYearly(false)}
-              className={`px-6 py-3 rounded-xl text-sm font-semibold transition-all duration-300 ${
+              className={`px-6 py-3 rounded-xl type-body-sm font-semibold transition-all duration-300 ${
                 !isYearly
                   ? 'bg-white text-slate-900 shadow-lg'
                   : 'text-slate-400 hover:text-white'
@@ -183,7 +183,7 @@ const PricingSection: React.FC = () => {
               href="https://aistudio.google.com/apikey"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-400 text-sm font-medium hover:bg-amber-500/20 transition-colors"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-400 type-body-sm font-semibold hover:bg-amber-500/20 transition-colors"
             >
               Get Free API Key
               <i className="fas fa-external-link text-xs" />
@@ -352,7 +352,7 @@ const PricingCard: React.FC<{
         {/* Popular badge */}
         {plan.popular && (
           <div className="absolute -top-px left-1/2 -translate-x-1/2">
-            <div className={`px-6 py-2 rounded-b-xl bg-gradient-to-r ${plan.gradient} text-sm font-bold shadow-lg`}>
+            <div className={`px-6 py-2 rounded-b-xl bg-gradient-to-r ${plan.gradient} type-body-sm font-semibold shadow-lg`}>
               Most Popular
             </div>
           </div>
@@ -362,7 +362,7 @@ const PricingCard: React.FC<{
         <div className="relative z-10 pt-4">
           {/* Plan name */}
           <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r ${plan.gradient} bg-opacity-20 mb-6`}>
-            <span className="text-sm font-semibold text-white">{plan.name}</span>
+            <span className="type-body-sm font-semibold text-white">{plan.name}</span>
           </div>
 
           {/* Price */}
@@ -416,7 +416,7 @@ const PricingCard: React.FC<{
             >
               <div className="flex items-center gap-2">
                 <i className={`fas fa-key text-xs ${plan.byokOnly ? 'text-amber-400' : 'text-indigo-400'}`} />
-                <span className={`text-xs font-semibold ${plan.byokOnly ? 'text-amber-300' : 'text-indigo-300'}`}>
+                <span className={`type-label ${plan.byokOnly ? 'text-amber-300' : 'text-indigo-300'}`}>
                   {plan.byokFeature}
                 </span>
               </div>

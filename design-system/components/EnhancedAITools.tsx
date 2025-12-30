@@ -100,7 +100,7 @@ export const AIPromptSuggestions: React.FC<AIPromptSuggestionsProps> = ({
       {showSuggestions && suggestions.length > 0 && (
         <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-slate-200 rounded-xl shadow-xl z-50 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
           <div className="p-2 border-b border-slate-100">
-            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider px-2">AI Suggestions</span>
+            <span className="type-micro text-slate-400 px-2">AI Suggestions</span>
           </div>
           <div className="max-h-60 overflow-y-auto">
             {suggestions.map((suggestion, idx) => (
@@ -261,7 +261,7 @@ export const AIHistory: React.FC<AIHistoryProps> = ({
           <button
             key={f}
             onClick={() => setFilter(f)}
-            className={`px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider whitespace-nowrap transition-all ${
+            className={`px-3 py-1.5 rounded-lg type-micro whitespace-nowrap transition-all ${
               filter === f
                 ? 'bg-accent text-white'
                 : 'bg-slate-100 text-slate-500 hover:bg-slate-200'
@@ -295,8 +295,8 @@ export const AIHistory: React.FC<AIHistoryProps> = ({
                   )}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-xs font-medium text-slate-700 truncate">{item.prompt}</p>
-                  <p className="text-[10px] text-slate-400 mt-1">{formatTime(item.timestamp)}</p>
+                  <p className="type-label text-slate-700 truncate">{item.prompt}</p>
+                  <p className="type-micro text-slate-400 mt-1">{formatTime(item.timestamp)}</p>
                 </div>
                 <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                   {onToggleLike && (
@@ -364,8 +364,8 @@ export const StyleTransferPanel: React.FC<StyleTransferProps> = ({
   return (
     <div className={`space-y-6 ${className}`}>
       <div className="flex items-center justify-between">
-        <h4 className="text-sm font-bold text-slate-700">Style Transfer</h4>
-        <span className="text-[10px] text-slate-400 uppercase tracking-wider">AI Powered</span>
+        <h4 className="type-body-sm font-semibold text-slate-700">Style Transfer</h4>
+        <span className="type-micro text-slate-400">AI Powered</span>
       </div>
 
       <div className="grid grid-cols-3 gap-3">
@@ -385,7 +385,7 @@ export const StyleTransferPanel: React.FC<StyleTransferProps> = ({
             />
             <div className="absolute inset-0 bg-black/30 flex flex-col items-center justify-center text-white">
               <i className={`fas ${style.icon} text-lg mb-1`} />
-              <span className="text-[8px] font-bold uppercase tracking-wider">{style.name}</span>
+              <span className="type-micro">{style.name}</span>
             </div>
           </button>
         ))}
@@ -446,8 +446,8 @@ export const BackgroundRemoval: React.FC<BackgroundRemovalProps> = ({
   return (
     <div className={`space-y-4 ${className}`}>
       <div className="flex items-center justify-between">
-        <h4 className="text-sm font-bold text-slate-700">Background Removal</h4>
-        <span className="px-2 py-0.5 bg-emerald-100 text-emerald-700 text-[9px] font-bold rounded-full uppercase">
+        <h4 className="type-body-sm font-semibold text-slate-700">Background Removal</h4>
+        <span className="px-2 py-0.5 bg-emerald-100 text-emerald-700 type-micro rounded-full">
           AI Powered
         </span>
       </div>
@@ -467,7 +467,7 @@ export const BackgroundRemoval: React.FC<BackgroundRemovalProps> = ({
           <div className="absolute inset-0 bg-white/80 backdrop-blur-sm flex items-center justify-center">
             <div className="text-center">
               <div className="w-12 h-12 border-3 border-accent/30 border-t-accent rounded-full animate-spin mb-3" />
-              <p className="text-sm font-medium text-slate-700">Removing Background...</p>
+              <p className="type-body-sm font-semibold text-slate-700">Removing Background...</p>
             </div>
           </div>
         )}
@@ -527,11 +527,11 @@ export const SmartCrop: React.FC<SmartCropProps> = ({
   return (
     <div className={`space-y-4 ${className}`}>
       <div className="flex items-center justify-between">
-        <h4 className="text-sm font-bold text-slate-700">Smart Crop</h4>
+        <h4 className="type-body-sm font-semibold text-slate-700">Smart Crop</h4>
         <button
           onClick={analyzeForSmartCrop}
           disabled={!image || isAnalyzing}
-          className="text-[10px] font-bold text-accent hover:underline disabled:opacity-50"
+          className="type-micro text-accent hover:underline disabled:opacity-50"
         >
           {isAnalyzing ? 'Analyzing...' : 'AI Suggest'}
         </button>
@@ -542,7 +542,7 @@ export const SmartCrop: React.FC<SmartCropProps> = ({
           <button
             key={preset.id}
             onClick={() => setSelectedPreset(preset.id)}
-            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
+            className={`px-3 py-1.5 rounded-lg type-label transition-all ${
               selectedPreset === preset.id
                 ? 'bg-accent text-white'
                 : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
@@ -557,14 +557,14 @@ export const SmartCrop: React.FC<SmartCropProps> = ({
         <div className="p-3 bg-accent/10 border border-accent/20 rounded-xl">
           <div className="flex items-center gap-2 text-accent mb-2">
             <i className="fas fa-lightbulb text-sm" />
-            <span className="text-xs font-bold">AI Suggestion</span>
+            <span className="type-label">AI Suggestion</span>
           </div>
-          <p className="text-xs text-slate-600">
+          <p className="type-caption text-slate-600">
             Focus detected at center. Recommended crop maintains subject visibility.
           </p>
           <button
             onClick={() => onCrop(suggestedCrop)}
-            className="mt-2 text-xs font-bold text-accent hover:underline"
+            className="mt-2 type-label text-accent hover:underline"
           >
             Apply Suggestion
           </button>
@@ -642,8 +642,8 @@ export const MagicEraser: React.FC<MagicEraserProps> = ({
   return (
     <div className={`space-y-4 ${className}`}>
       <div className="flex items-center justify-between">
-        <h4 className="text-sm font-bold text-slate-700">Magic Eraser</h4>
-        <span className="text-[10px] text-slate-400">Paint over objects to remove</span>
+        <h4 className="type-body-sm font-semibold text-slate-700">Magic Eraser</h4>
+        <span className="type-caption text-slate-400">Paint over objects to remove</span>
       </div>
 
       <div className="relative aspect-video bg-slate-100 rounded-xl overflow-hidden border border-slate-200">
@@ -659,7 +659,7 @@ export const MagicEraser: React.FC<MagicEraserProps> = ({
           <div className="absolute inset-0 bg-white/80 backdrop-blur-sm flex items-center justify-center">
             <div className="text-center">
               <div className="w-12 h-12 border-3 border-rose-500/30 border-t-rose-500 rounded-full animate-spin mb-3" />
-              <p className="text-sm font-medium text-slate-700">AI Processing...</p>
+              <p className="type-body-sm font-semibold text-slate-700">AI Processing...</p>
             </div>
           </div>
         )}
@@ -667,8 +667,8 @@ export const MagicEraser: React.FC<MagicEraserProps> = ({
 
       <div className="space-y-2">
         <div className="flex items-center justify-between">
-          <span className="text-xs font-medium text-slate-600">Brush Size</span>
-          <span className="text-xs text-slate-400">{brushSize}px</span>
+          <span className="type-label text-slate-600">Brush Size</span>
+          <span className="type-caption text-slate-400">{brushSize}px</span>
         </div>
         <input
           type="range"

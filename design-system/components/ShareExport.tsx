@@ -54,7 +54,7 @@ export const ShareLink: React.FC<ShareLinkProps> = ({
 
   return (
     <div className={`bg-white dark:bg-slate-900 rounded-2xl p-6 ${className}`}>
-      <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
+      <h3 className="type-subsection text-slate-900 dark:text-white mb-4 flex items-center gap-2">
         <i className="fas fa-share-nodes text-accent" />
         Share "{projectName}"
       </h3>
@@ -66,7 +66,7 @@ export const ShareLink: React.FC<ShareLinkProps> = ({
           <label className="flex items-center justify-between p-3 rounded-xl bg-slate-50 dark:bg-slate-800 cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
             <div className="flex items-center gap-3">
               <i className="fas fa-comment text-slate-400" />
-              <span className="text-sm text-slate-700 dark:text-slate-300">Allow comments</span>
+              <span className="type-body-sm text-slate-700 dark:text-slate-300">Allow comments</span>
             </div>
             <input
               type="checkbox"
@@ -79,7 +79,7 @@ export const ShareLink: React.FC<ShareLinkProps> = ({
           <label className="flex items-center justify-between p-3 rounded-xl bg-slate-50 dark:bg-slate-800 cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
             <div className="flex items-center gap-3">
               <i className="fas fa-download text-slate-400" />
-              <span className="text-sm text-slate-700 dark:text-slate-300">Allow download</span>
+              <span className="type-body-sm text-slate-700 dark:text-slate-300">Allow download</span>
             </div>
             <input
               type="checkbox"
@@ -92,7 +92,7 @@ export const ShareLink: React.FC<ShareLinkProps> = ({
           <label className="flex items-center justify-between p-3 rounded-xl bg-slate-50 dark:bg-slate-800 cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
             <div className="flex items-center gap-3">
               <i className="fas fa-lock text-slate-400" />
-              <span className="text-sm text-slate-700 dark:text-slate-300">Require password</span>
+              <span className="type-body-sm text-slate-700 dark:text-slate-300">Require password</span>
             </div>
             <input
               type="checkbox"
@@ -123,13 +123,13 @@ export const ShareLink: React.FC<ShareLinkProps> = ({
 
         {/* Expiration */}
         <div>
-          <label className="text-sm text-slate-500 mb-2 block">Link expires in</label>
+          <label className="type-body-sm text-slate-500 mb-2 block">Link expires in</label>
           <div className="flex gap-2">
             {(['1h', '24h', '7d', '30d', 'never'] as const).map(option => (
               <button
                 key={option}
                 onClick={() => setSettings({ ...settings, expiresIn: option })}
-                className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                className={`px-3 py-2 rounded-lg type-body-sm font-semibold transition-colors ${
                   settings.expiresIn === option
                     ? 'bg-accent text-white'
                     : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400'
@@ -165,7 +165,7 @@ export const ShareLink: React.FC<ShareLinkProps> = ({
             <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="text-sm text-emerald-500 mt-2"
+              className="type-body-sm text-emerald-500 mt-2"
             >
               Link copied to clipboard!
             </motion.p>
@@ -196,7 +196,7 @@ export const ShareLink: React.FC<ShareLinkProps> = ({
       {/* Social share buttons */}
       {generatedLink && (
         <div className="mt-4 pt-4 border-t border-slate-200 dark:border-slate-700">
-          <p className="text-sm text-slate-500 mb-3">Share on social</p>
+          <p className="type-body-sm text-slate-500 mb-3">Share on social</p>
           <div className="flex gap-2">
             {[
               { icon: 'fa-twitter', color: '#1DA1F2', name: 'Twitter' },
@@ -275,13 +275,13 @@ export const ExportPresets: React.FC<ExportPresetsProps> = ({
   return (
     <div className={`bg-white dark:bg-slate-900 rounded-2xl p-6 ${className}`}>
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-semibold text-slate-900 dark:text-white flex items-center gap-2">
+        <h3 className="type-subsection text-slate-900 dark:text-white flex items-center gap-2">
           <i className="fas fa-file-export text-accent" />
           Export Presets
         </h3>
         <motion.button
           onClick={() => setIsCreating(!isCreating)}
-          className="px-3 py-1.5 bg-accent/10 text-accent rounded-lg text-sm font-medium"
+          className="px-3 py-1.5 bg-accent/10 text-accent rounded-lg type-body-sm font-semibold"
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
         >
@@ -309,7 +309,7 @@ export const ExportPresets: React.FC<ExportPresetsProps> = ({
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="text-sm text-slate-500 mb-1 block">Format</label>
+                <label className="type-body-sm text-slate-500 mb-1 block">Format</label>
                 <select
                   value={newPreset.format}
                   onChange={e =>
@@ -326,7 +326,7 @@ export const ExportPresets: React.FC<ExportPresetsProps> = ({
               </div>
 
               <div>
-                <label className="text-sm text-slate-500 mb-1 block">Scale</label>
+                <label className="type-body-sm text-slate-500 mb-1 block">Scale</label>
                 <select
                   value={newPreset.scale}
                   onChange={e => setNewPreset({ ...newPreset, scale: Number(e.target.value) })}
@@ -342,7 +342,7 @@ export const ExportPresets: React.FC<ExportPresetsProps> = ({
             </div>
 
             <div>
-              <label className="text-sm text-slate-500 mb-1 block">
+              <label className="type-body-sm text-slate-500 mb-1 block">
                 Quality: {newPreset.quality}%
               </label>
               <input
@@ -380,7 +380,7 @@ export const ExportPresets: React.FC<ExportPresetsProps> = ({
             </div>
             <div className="flex-1">
               <div className="font-medium text-slate-900 dark:text-white">{preset.name}</div>
-              <div className="text-xs text-slate-500">
+              <div className="type-caption text-slate-500">
                 {preset.format.toUpperCase()} · {preset.scale}x · {preset.quality}%
               </div>
             </div>

@@ -214,7 +214,7 @@ export const KeyboardShortcutsPanel: React.FC<KeyboardShortcutsPanelProps> = ({
                 <i className="fa-solid fa-keyboard" style={{ color: colors.accent.primary }} />
               </div>
               <div>
-                <h2 className="text-lg font-semibold" style={{ color: colors.text.primary }}>
+                <h2 className="type-subsection" style={{ color: colors.text.primary }}>
                   Keyboard Shortcuts
                 </h2>
                 <p className="text-sm" style={{ color: colors.text.secondary }}>
@@ -239,7 +239,7 @@ export const KeyboardShortcutsPanel: React.FC<KeyboardShortcutsPanelProps> = ({
           >
             <button
               onClick={() => setActiveTab('shortcuts')}
-              className="px-6 py-3 text-sm font-medium transition-colors relative"
+              className="px-6 py-3 type-body-sm font-semibold transition-colors relative"
               style={{
                 color: activeTab === 'shortcuts' ? colors.accent.primary : colors.text.secondary
               }}
@@ -255,7 +255,7 @@ export const KeyboardShortcutsPanel: React.FC<KeyboardShortcutsPanelProps> = ({
             </button>
             <button
               onClick={() => setActiveTab('presets')}
-              className="px-6 py-3 text-sm font-medium transition-colors relative"
+              className="px-6 py-3 type-body-sm font-semibold transition-colors relative"
               style={{
                 color: activeTab === 'presets' ? colors.accent.primary : colors.text.secondary
               }}
@@ -382,7 +382,7 @@ export const KeyboardShortcutsPanel: React.FC<KeyboardShortcutsPanelProps> = ({
                       Object.entries(groupedShortcuts).map(([category, categoryShortcuts]) => (
                         <div key={category} className="mb-6">
                           <h3
-                            className="text-sm font-medium mb-3 flex items-center gap-2"
+                            className="type-body-sm font-semibold mb-3 flex items-center gap-2"
                             style={{ color: colors.text.secondary }}
                           >
                             <i className={`fa-solid ${CATEGORY_INFO[category as ShortcutCategory].icon}`} />
@@ -579,7 +579,7 @@ const ShortcutItem: React.FC<ShortcutItemProps> = ({
         <div>
           <div className="flex items-center gap-2">
             <span
-              className="text-sm font-medium"
+              className="type-body-sm font-semibold"
               style={{
                 color: shortcut.enabled ? colors.text.primary : colors.text.tertiary
               }}
@@ -733,7 +733,7 @@ const ShortcutEditor: React.FC<ShortcutEditorProps> = ({
         style={{ backgroundColor: colors.background.secondary }}
         onClick={e => e.stopPropagation()}
       >
-        <h3 className="text-lg font-semibold mb-2" style={{ color: colors.text.primary }}>
+        <h3 className="type-subsection mb-2" style={{ color: colors.text.primary }}>
           Edit Shortcut
         </h3>
         <p className="text-sm mb-6" style={{ color: colors.text.secondary }}>
@@ -779,7 +779,7 @@ const ShortcutEditor: React.FC<ShortcutEditorProps> = ({
         <div className="flex gap-3">
           <button
             onClick={onCancel}
-            className="flex-1 py-2 rounded-lg text-sm font-medium transition-colors"
+            className="flex-1 py-2 rounded-lg type-body-sm font-semibold transition-colors"
             style={{
               backgroundColor: colors.background.tertiary,
               color: colors.text.secondary
@@ -789,7 +789,7 @@ const ShortcutEditor: React.FC<ShortcutEditorProps> = ({
           </button>
           <button
             onClick={() => onSave(currentKey, currentModifiers)}
-            className="flex-1 py-2 rounded-lg text-sm font-medium transition-colors"
+            className="flex-1 py-2 rounded-lg type-body-sm font-semibold transition-colors"
             style={{
               backgroundColor: colors.accent.primary,
               color: '#ffffff'
@@ -1033,7 +1033,7 @@ export const ShortcutCheatsheet: React.FC<ShortcutCheatsheetProps> = ({
       style={{ backgroundColor: colors.background.secondary }}
     >
       <h4
-        className="text-sm font-medium mb-3 flex items-center gap-2"
+        className="type-body-sm font-semibold mb-3 flex items-center gap-2"
         style={{ color: colors.text.secondary }}
       >
         <i className="fa-solid fa-keyboard" />

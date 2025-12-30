@@ -179,7 +179,7 @@ export const ExportModal: React.FC<ExportModalProps> = ({
               <i className="fas fa-file-export text-white text-lg"></i>
             </div>
             <div>
-              <h2 className="text-lg font-bold text-white">Export Document</h2>
+              <h2 className="type-subsection text-white">Export Document</h2>
               <p className="text-xs text-white/70">{documentName}</p>
             </div>
           </div>
@@ -248,7 +248,7 @@ export const ExportModal: React.FC<ExportModalProps> = ({
                 <>
                   {selectedFormat === 'pdf' && (
                     <div>
-                      <label className="text-xs font-bold text-slate-500 uppercase tracking-wide mb-2 block">
+                      <label className="type-label text-slate-500 mb-2 block">
                         PDF Version
                       </label>
                       <select
@@ -267,7 +267,7 @@ export const ExportModal: React.FC<ExportModalProps> = ({
 
                   {selectedFormat === 'pdfa' && (
                     <div>
-                      <label className="text-xs font-bold text-slate-500 uppercase tracking-wide mb-2 block">
+                      <label className="type-label text-slate-500 mb-2 block">
                         PDF/A Conformance Level
                       </label>
                       <select
@@ -283,7 +283,7 @@ export const ExportModal: React.FC<ExportModalProps> = ({
                   )}
 
                   <div>
-                    <label className="text-xs font-bold text-slate-500 uppercase tracking-wide mb-2 block">
+                    <label className="type-label text-slate-500 mb-2 block">
                       Compression
                     </label>
                     <select
@@ -344,7 +344,7 @@ export const ExportModal: React.FC<ExportModalProps> = ({
                 <>
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="text-xs font-bold text-slate-500 uppercase tracking-wide mb-2 block">
+                      <label className="type-label text-slate-500 mb-2 block">
                         Image Format
                       </label>
                       <select
@@ -358,7 +358,7 @@ export const ExportModal: React.FC<ExportModalProps> = ({
                       </select>
                     </div>
                     <div>
-                      <label className="text-xs font-bold text-slate-500 uppercase tracking-wide mb-2 block">
+                      <label className="type-label text-slate-500 mb-2 block">
                         Quality
                       </label>
                       <select
@@ -374,7 +374,7 @@ export const ExportModal: React.FC<ExportModalProps> = ({
                     </div>
                   </div>
                   <div>
-                    <label className="text-xs font-bold text-slate-500 uppercase tracking-wide mb-2 block">
+                    <label className="type-label text-slate-500 mb-2 block">
                       Custom DPI
                     </label>
                     <input
@@ -426,7 +426,7 @@ export const ExportModal: React.FC<ExportModalProps> = ({
 
               {options.exportPages === 'range' && (
                 <div>
-                  <label className="text-xs font-bold text-slate-500 uppercase tracking-wide mb-2 block">
+                  <label className="type-label text-slate-500 mb-2 block">
                     Page Range
                   </label>
                   <input
@@ -455,7 +455,7 @@ export const ExportModal: React.FC<ExportModalProps> = ({
           {activeTab === 'security' && selectedFormat !== 'image' && (
             <div className="space-y-6">
               <div>
-                <label className="text-xs font-bold text-slate-500 uppercase tracking-wide mb-2 block">
+                <label className="type-label text-slate-500 mb-2 block">
                   Password Protection
                 </label>
                 <input
@@ -469,7 +469,7 @@ export const ExportModal: React.FC<ExportModalProps> = ({
 
               {options.password && (
                 <div>
-                  <label className="text-xs font-bold text-slate-500 uppercase tracking-wide mb-3 block">
+                  <label className="type-label text-slate-500 mb-3 block">
                     Permissions
                   </label>
                   <div className="space-y-3">

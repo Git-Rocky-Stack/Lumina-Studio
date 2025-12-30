@@ -612,7 +612,7 @@ const UserGuide: React.FC = () => {
             >
               <div className="sticky top-28">
                 <div className="glass-card rounded-2xl p-4">
-                  <h3 className="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-4 px-3">
+                  <h3 className="type-body-sm font-semibold text-slate-400 uppercase tracking-wider mb-4 px-3">
                     Documentation
                   </h3>
                   <nav className="space-y-1">
@@ -640,7 +640,7 @@ const UserGuide: React.FC = () => {
 
                 {/* Quick links */}
                 <div className="glass-card rounded-2xl p-4 mt-4">
-                  <h3 className="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-4 px-3">
+                  <h3 className="type-body-sm font-semibold text-slate-400 uppercase tracking-wider mb-4 px-3">
                     Quick Links
                   </h3>
                   <div className="space-y-2">
@@ -698,7 +698,7 @@ const UserGuide: React.FC = () => {
                   {/* Features grid */}
                   {currentContent && (
                     <>
-                      <h3 className="text-xl font-semibold mb-6 flex items-center gap-3">
+                      <h3 className="type-subsection mb-6 flex items-center gap-3">
                         <span className="w-8 h-8 rounded-lg bg-indigo-500/20 flex items-center justify-center">
                           <i className="fas fa-sparkles text-indigo-400 text-sm" />
                         </span>
@@ -727,7 +727,7 @@ const UserGuide: React.FC = () => {
                       </div>
 
                       {/* Tips section */}
-                      <h3 className="text-xl font-semibold mb-6 flex items-center gap-3">
+                      <h3 className="type-subsection mb-6 flex items-center gap-3">
                         <span className="w-8 h-8 rounded-lg bg-amber-500/20 flex items-center justify-center">
                           <i className="fas fa-lightbulb text-amber-400 text-sm" />
                         </span>
@@ -755,7 +755,7 @@ const UserGuide: React.FC = () => {
                       {/* Shortcuts table */}
                       {currentContent.shortcuts && (
                         <>
-                          <h3 className="text-xl font-semibold mb-6 flex items-center gap-3">
+                          <h3 className="type-subsection mb-6 flex items-center gap-3">
                             <span className="w-8 h-8 rounded-lg bg-violet-500/20 flex items-center justify-center">
                               <i className="fas fa-keyboard text-violet-400 text-sm" />
                             </span>
@@ -765,8 +765,8 @@ const UserGuide: React.FC = () => {
                             <table className="w-full">
                               <thead>
                                 <tr className="border-b border-slate-700/50">
-                                  <th className="text-left px-6 py-4 text-sm font-semibold text-slate-400">Shortcut</th>
-                                  <th className="text-left px-6 py-4 text-sm font-semibold text-slate-400">Action</th>
+                                  <th className="text-left px-6 py-4 type-body-sm font-semibold text-slate-400">Shortcut</th>
+                                  <th className="text-left px-6 py-4 type-body-sm font-semibold text-slate-400">Action</th>
                                 </tr>
                               </thead>
                               <tbody>

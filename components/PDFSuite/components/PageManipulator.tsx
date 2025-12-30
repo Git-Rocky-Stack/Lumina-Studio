@@ -279,7 +279,7 @@ export const PageManipulator: React.FC<PageManipulatorProps> = ({
               </svg>
             </div>
             <div>
-              <h2 className="text-lg font-semibold text-white">Organize Pages</h2>
+              <h2 className="type-subsection text-white">Organize Pages</h2>
               <p className="text-sm text-white/50">
                 {activePages.length} of {totalPages} pages
                 {deletedPages.length > 0 && ` • ${deletedPages.length} deleted`}
@@ -466,7 +466,7 @@ export const PageManipulator: React.FC<PageManipulatorProps> = ({
           {/* Deleted Pages */}
           {showDeleted && deletedPages.length > 0 && (
             <div className="mt-6 pt-4 border-t border-white/10">
-              <h3 className="text-sm font-medium text-white/50 mb-3 flex items-center gap-2">
+              <h3 className="type-body-sm font-semibold text-white/50 mb-3 flex items-center gap-2">
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                 </svg>

@@ -142,7 +142,7 @@ export const TemplateGallery: React.FC<TemplateGalleryProps> = ({
           <motion.button
             onClick={() => setShowFilters(!showFilters)}
             className={`
-              flex items-center gap-2 px-3 py-2 rounded-xl font-medium text-sm transition-colors
+              flex items-center gap-2 px-3 py-2 rounded-xl font-semibold type-body-sm transition-colors
               ${showFilters
                 ? 'bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400'
                 : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400'}
@@ -152,7 +152,7 @@ export const TemplateGallery: React.FC<TemplateGalleryProps> = ({
             <Filter size={16} />
             Filters
             {selectedTags.size > 0 && (
-              <span className="px-1.5 py-0.5 text-xs bg-indigo-500 text-white rounded-full">
+              <span className="px-1.5 py-0.5 type-caption bg-indigo-500 text-white rounded-full">
                 {selectedTags.size}
               </span>
             )}
@@ -162,7 +162,7 @@ export const TemplateGallery: React.FC<TemplateGalleryProps> = ({
           <select
             value={sortBy}
             onChange={e => setSortBy(e.target.value as any)}
-            className="px-3 py-2 rounded-xl bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 text-sm outline-none"
+            className="px-3 py-2 rounded-xl bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 type-body-sm outline-none"
           >
             <option value="popular">Most Popular</option>
             <option value="recent">Most Recent</option>
@@ -191,7 +191,7 @@ export const TemplateGallery: React.FC<TemplateGalleryProps> = ({
           <motion.button
             onClick={() => setSelectedCategory(null)}
             className={`
-              flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium whitespace-nowrap
+              flex items-center gap-1.5 px-3 py-1.5 rounded-full type-body-sm font-semibold whitespace-nowrap
               ${!selectedCategory
                 ? 'bg-indigo-500 text-white'
                 : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400'}
@@ -205,7 +205,7 @@ export const TemplateGallery: React.FC<TemplateGalleryProps> = ({
               key={category.id}
               onClick={() => setSelectedCategory(category.id)}
               className={`
-                flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium whitespace-nowrap
+                flex items-center gap-1.5 px-3 py-1.5 rounded-full type-body-sm font-semibold whitespace-nowrap
                 ${selectedCategory === category.id
                   ? 'bg-indigo-500 text-white'
                   : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400'}
@@ -214,7 +214,7 @@ export const TemplateGallery: React.FC<TemplateGalleryProps> = ({
             >
               {category.icon}
               {category.label}
-              <span className="text-xs opacity-70">({category.count})</span>
+              <span className="type-caption opacity-70">({category.count})</span>
             </motion.button>
           ))}
         </div>
@@ -234,7 +234,7 @@ export const TemplateGallery: React.FC<TemplateGalleryProps> = ({
                     key={tag}
                     onClick={() => toggleTag(tag)}
                     className={`
-                      px-2.5 py-1 rounded-lg text-xs font-medium transition-colors
+                      px-2.5 py-1 rounded-lg type-label transition-colors
                       ${selectedTags.has(tag)
                         ? 'bg-indigo-500 text-white'
                         : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700'}
@@ -260,7 +260,7 @@ export const TemplateGallery: React.FC<TemplateGalleryProps> = ({
             <h3 className="font-semibold text-zinc-900 dark:text-white mb-2">
               No templates found
             </h3>
-            <p className="text-sm text-zinc-500 dark:text-zinc-400">
+            <p className="type-body-sm text-zinc-500 dark:text-zinc-400">
               Try adjusting your search or filters
             </p>
           </div>
@@ -335,7 +335,7 @@ const TemplateCard: React.FC<TemplateCardProps> = ({
 
         {/* Premium badge */}
         {template.isPremium && (
-          <div className="absolute top-2 left-2 flex items-center gap-1 px-2 py-0.5 rounded-full bg-gradient-to-r from-amber-500 to-orange-500 text-white text-xs font-semibold">
+          <div className="absolute top-2 left-2 flex items-center gap-1 px-2 py-0.5 rounded-full bg-gradient-to-r from-amber-500 to-orange-500 text-white type-micro">
             <Star size={10} fill="currentColor" />
             PRO
           </div>
@@ -370,7 +370,7 @@ const TemplateCard: React.FC<TemplateCardProps> = ({
             >
               <motion.button
                 onClick={onPreview}
-                className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-white/20 text-white text-sm font-medium backdrop-blur-sm hover:bg-white/30"
+                className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-white/20 text-white type-body-sm font-semibold backdrop-blur-sm hover:bg-white/30"
                 initial={{ y: 10, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.05 }}
@@ -382,7 +382,7 @@ const TemplateCard: React.FC<TemplateCardProps> = ({
               </motion.button>
               <motion.button
                 onClick={onSelect}
-                className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-indigo-500 text-white text-sm font-medium hover:bg-indigo-600"
+                className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-indigo-500 text-white type-body-sm font-semibold hover:bg-indigo-600"
                 initial={{ y: 10, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.1 }}
@@ -402,12 +402,12 @@ const TemplateCard: React.FC<TemplateCardProps> = ({
         <h3 className="font-medium text-zinc-900 dark:text-white truncate">
           {template.title}
         </h3>
-        <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5 truncate">
+        <p className="type-caption text-zinc-500 dark:text-zinc-400 mt-0.5 truncate">
           {template.description}
         </p>
 
         <div className="flex items-center justify-between mt-2">
-          <div className="flex items-center gap-2 text-xs text-zinc-400">
+          <div className="flex items-center gap-2 type-caption text-zinc-400">
             <span className="flex items-center gap-0.5">
               <Download size={10} />
               {template.downloads}
@@ -442,7 +442,7 @@ const TemplateListItem: React.FC<TemplateCardProps> = ({
       <div className="relative w-24 h-16 rounded-lg overflow-hidden bg-zinc-200 dark:bg-zinc-700 shrink-0">
         <img src={template.thumbnail} alt="" className="w-full h-full object-cover" />
         {template.isPremium && (
-          <div className="absolute top-1 left-1 flex items-center gap-0.5 px-1 py-0.5 rounded-full bg-gradient-to-r from-amber-500 to-orange-500 text-white text-[10px] font-semibold">
+          <div className="absolute top-1 left-1 flex items-center gap-0.5 px-1 py-0.5 rounded-full bg-gradient-to-r from-amber-500 to-orange-500 text-white type-micro">
             <Star size={8} fill="currentColor" />
             PRO
           </div>
@@ -454,21 +454,21 @@ const TemplateListItem: React.FC<TemplateCardProps> = ({
         <h3 className="font-medium text-zinc-900 dark:text-white truncate">
           {template.title}
         </h3>
-        <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5 truncate">
+        <p className="type-caption text-zinc-500 dark:text-zinc-400 mt-0.5 truncate">
           {template.description}
         </p>
         <div className="flex items-center gap-3 mt-1.5">
-          <span className="flex items-center gap-1 text-xs text-zinc-400">
+          <span className="flex items-center gap-1 type-caption text-zinc-400">
             <Download size={10} />
             {template.downloads}
           </span>
-          <span className="flex items-center gap-1 text-xs text-zinc-400">
+          <span className="flex items-center gap-1 type-caption text-zinc-400">
             <Heart size={10} />
             {template.likes}
           </span>
           <div className="flex gap-1">
             {template.tags.slice(0, 2).map(tag => (
-              <span key={tag} className="px-1.5 py-0.5 text-[10px] bg-zinc-200 dark:bg-zinc-700 text-zinc-500 dark:text-zinc-400 rounded">
+              <span key={tag} className="px-1.5 py-0.5 type-micro bg-zinc-200 dark:bg-zinc-700 text-zinc-500 dark:text-zinc-400 rounded">
                 {tag}
               </span>
             ))}
@@ -496,7 +496,7 @@ const TemplateListItem: React.FC<TemplateCardProps> = ({
         </motion.button>
         <motion.button
           onClick={onSelect}
-          className="px-3 py-1.5 rounded-lg bg-indigo-500 text-white text-sm font-medium hover:bg-indigo-600"
+          className="px-3 py-1.5 rounded-lg bg-indigo-500 text-white type-body-sm font-semibold hover:bg-indigo-600"
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
         >
@@ -585,14 +585,14 @@ export const AIDesignSuggestions: React.FC<AIDesignSuggestionsProps> = ({
           </div>
           <div>
             <h3 className="font-semibold text-zinc-900 dark:text-white">AI Suggestions</h3>
-            <p className="text-xs text-zinc-500 dark:text-zinc-400">Improve your design</p>
+            <p className="type-caption text-zinc-500 dark:text-zinc-400">Improve your design</p>
           </div>
         </div>
 
         <motion.button
           onClick={generateSuggestions}
           disabled={isLoading}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-indigo-500 text-white text-sm font-medium disabled:opacity-50"
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-indigo-500 text-white type-body-sm font-semibold disabled:opacity-50"
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
         >
@@ -636,17 +636,17 @@ export const AIDesignSuggestions: React.FC<AIDesignSuggestionsProps> = ({
                     <h4 className="font-medium text-zinc-900 dark:text-white">
                       {suggestion.title}
                     </h4>
-                    <span className="text-xs text-zinc-400">
+                    <span className="type-caption text-zinc-400">
                       {Math.round(suggestion.confidence * 100)}% confident
                     </span>
                   </div>
-                  <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
+                  <p className="type-caption text-zinc-500 dark:text-zinc-400 mt-0.5">
                     {suggestion.description}
                   </p>
 
                   <motion.button
                     onClick={() => onApplySuggestion(suggestion)}
-                    className="flex items-center gap-1 mt-2 text-xs font-medium text-indigo-500 hover:text-indigo-600"
+                    className="flex items-center gap-1 mt-2 type-label text-indigo-500 hover:text-indigo-600"
                     whileHover={{ x: 2 }}
                   >
                     Apply suggestion
@@ -662,7 +662,7 @@ export const AIDesignSuggestions: React.FC<AIDesignSuggestionsProps> = ({
           <div className="w-12 h-12 rounded-full bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center mx-auto mb-3">
             <Wand2 size={20} className="text-zinc-400" />
           </div>
-          <p className="text-sm text-zinc-500 dark:text-zinc-400">
+          <p className="type-body-sm text-zinc-500 dark:text-zinc-400">
             Click "Analyze Design" to get AI-powered suggestions
           </p>
         </div>

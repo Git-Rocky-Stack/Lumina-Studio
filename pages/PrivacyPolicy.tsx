@@ -437,7 +437,7 @@ For fastest response, please use email and include:
             transition={{ delay: 0.3 }}
             className="glass-card rounded-2xl p-6"
           >
-            <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
+            <h2 className="type-subsection mb-4 flex items-center gap-2">
               <i className="fas fa-list text-indigo-400" />
               Table of Contents
             </h2>
@@ -486,7 +486,7 @@ For fastest response, please use email and include:
                       const [header, ...rest] = paragraph.split(':**');
                       return (
                         <div key={pIndex} className="mb-4">
-                          <h3 className="text-lg font-semibold text-white mb-2">
+                          <h3 className="type-subsection text-white mb-2">
                             {header.replace(/\*\*/g, '')}
                           </h3>
                           <p className="text-slate-400 leading-relaxed whitespace-pre-line">

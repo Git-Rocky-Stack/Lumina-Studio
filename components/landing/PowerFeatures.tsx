@@ -104,7 +104,7 @@ const PowerFeatures: React.FC = () => {
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            className="inline-flex items-center gap-2 px-5 py-2 rounded-full glass-card text-violet-400 text-sm font-semibold mb-8"
+            className="inline-flex items-center gap-2 px-5 py-2 rounded-full glass-card text-violet-400 type-body-sm font-semibold mb-8"
           >
             <i className="fas fa-bolt text-xs" />
             Power Features
@@ -211,7 +211,7 @@ const PowerFeatures: React.FC = () => {
                             <i className={`fas ${item.icon} text-amber-400 text-sm`} />
                             <span className="text-slate-400 text-xs">{item.label}</span>
                           </div>
-                          <span className="text-white font-medium text-sm">{item.value}</span>
+                          <span className="text-white type-body-sm font-semibold">{item.value}</span>
                         </motion.div>
                       ))}
                     </div>
@@ -248,7 +248,7 @@ const PowerFeatures: React.FC = () => {
                           initial={{ opacity: 0, scale: 0.8 }}
                           animate={{ opacity: 1, scale: 1 }}
                           transition={{ delay: i * 0.05 }}
-                          className="px-4 py-2 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-sm font-medium"
+                          className="px-4 py-2 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 type-body-sm font-semibold"
                         >
                           {platform}
                         </motion.span>
@@ -287,7 +287,7 @@ const PowerFeatures: React.FC = () => {
 
                 {/* CTA */}
                 <div className="flex items-center gap-4">
-                  <span className={`inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r ${activeFeature.gradient} text-sm font-semibold`}>
+                  <span className={`inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r ${activeFeature.gradient} type-body-sm font-semibold`}>
                     <i className={`fas ${activeFeature.icon} text-xs`} />
                     Included in all plans
                   </span>

@@ -200,7 +200,7 @@ export const SplitPanel: React.FC<SplitPanelProps> = ({
               </svg>
             </div>
             <div>
-              <h2 className="text-lg font-semibold text-white">Split PDF</h2>
+              <h2 className="type-subsection text-white">Split PDF</h2>
               <p className="text-sm text-white/50">{documentName} • {totalPages} pages</p>
             </div>
           </div>
@@ -410,7 +410,7 @@ export const SplitPanel: React.FC<SplitPanelProps> = ({
 
           {/* Output Settings */}
           <div className="bg-white/5 rounded-xl p-4">
-            <h3 className="text-sm font-medium text-white mb-3">Output Settings</h3>
+            <h3 className="type-body-sm font-semibold text-white mb-3">Output Settings</h3>
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-xs text-white/50 mb-1">Filename prefix</label>

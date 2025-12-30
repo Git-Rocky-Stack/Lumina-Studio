@@ -90,7 +90,7 @@ export const CommentsPanel: React.FC<CommentsProps> = ({
             <button
               key={f}
               onClick={() => setFilter(f)}
-              className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+              className={`px-3 py-1.5 rounded-lg type-body-sm font-semibold transition-colors ${
                 filter === f
                   ? 'bg-accent text-white'
                   : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400'
@@ -130,10 +130,10 @@ export const CommentsPanel: React.FC<CommentsProps> = ({
                   )}
                 </div>
                 <div className="flex-1">
-                  <div className="font-medium text-slate-900 dark:text-white text-sm">
+                  <div className="type-body-sm font-semibold text-slate-900 dark:text-white">
                     {comment.author.name}
                   </div>
-                  <div className="text-xs text-slate-500">{formatTime(comment.timestamp)}</div>
+                  <div className="type-caption text-slate-500">{formatTime(comment.timestamp)}</div>
                 </div>
                 {comment.resolved && (
                   <span className="px-2 py-0.5 bg-emerald-500 text-white text-xs rounded-full">
@@ -143,13 +143,13 @@ export const CommentsPanel: React.FC<CommentsProps> = ({
               </div>
 
               {/* Content */}
-              <p className="text-slate-700 dark:text-slate-300 text-sm mb-3">{comment.content}</p>
+              <p className="type-body-sm text-slate-700 dark:text-slate-300 mb-3">{comment.content}</p>
 
               {/* Actions */}
               <div className="flex items-center gap-2">
                 <button
                   onClick={() => setReplyingTo(replyingTo === comment.id ? null : comment.id)}
-                  className="text-xs text-slate-500 hover:text-accent"
+                  className="type-caption text-slate-500 hover:text-accent"
                 >
                   <i className="fas fa-reply mr-1" />
                   Reply
@@ -157,7 +157,7 @@ export const CommentsPanel: React.FC<CommentsProps> = ({
                 {!comment.resolved && (
                   <button
                     onClick={() => onResolve(comment.id)}
-                    className="text-xs text-slate-500 hover:text-emerald-500"
+                    className="type-caption text-slate-500 hover:text-emerald-500"
                   >
                     <i className="fas fa-check mr-1" />
                     Resolve
@@ -165,7 +165,7 @@ export const CommentsPanel: React.FC<CommentsProps> = ({
                 )}
                 <button
                   onClick={() => onDelete(comment.id)}
-                  className="text-xs text-slate-500 hover:text-red-500"
+                  className="type-caption text-slate-500 hover:text-red-500"
                 >
                   <i className="fas fa-trash mr-1" />
                   Delete
@@ -305,10 +305,10 @@ export const AnnotationPin: React.FC<AnnotationPinProps> = ({
             exit={{ opacity: 0, y: 5 }}
             className="absolute left-full ml-2 top-0 w-48 p-3 bg-white dark:bg-slate-800 rounded-lg shadow-xl border border-slate-200 dark:border-slate-700 z-10"
           >
-            <div className="font-medium text-sm text-slate-900 dark:text-white mb-1">
+            <div className="type-body-sm font-semibold text-slate-900 dark:text-white mb-1">
               {comment.author.name}
             </div>
-            <p className="text-xs text-slate-600 dark:text-slate-400 line-clamp-2">
+            <p className="type-caption text-slate-600 dark:text-slate-400 line-clamp-2">
               {comment.content}
             </p>
           </motion.div>

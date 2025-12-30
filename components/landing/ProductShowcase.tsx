@@ -87,7 +87,7 @@ const ProductShowcase: React.FC = () => {
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            className="inline-flex items-center gap-2 px-5 py-2 rounded-full glass-card text-indigo-400 text-sm font-semibold mb-8"
+            className="inline-flex items-center gap-2 px-5 py-2 rounded-full glass-card text-indigo-400 type-body-sm font-semibold mb-8"
           >
             <i className="fas fa-rocket text-xs" />
             Product Tour
@@ -143,7 +143,7 @@ const ProductShowcase: React.FC = () => {
                 <button
                   key={tool.id}
                   onClick={() => setActiveTab(tool.id)}
-                  className={`relative flex-1 px-6 py-5 text-sm font-medium transition-all duration-300 ${
+                  className={`relative flex-1 px-6 py-5 type-body-sm font-semibold transition-all duration-300 ${
                     activeTab === tool.id
                       ? 'text-white'
                       : 'text-slate-500 hover:text-slate-300'
@@ -269,7 +269,7 @@ const ProductShowcase: React.FC = () => {
                       className={`inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r ${activeTool.gradient} bg-opacity-20 mb-6`}
                     >
                       <i className={`fas ${activeTool.icon} text-white text-sm`} />
-                      <span className="text-sm font-semibold text-white">{activeTool.name}</span>
+                      <span className="type-body-sm font-semibold text-white">{activeTool.name}</span>
                     </motion.div>
 
                     <h3 className="text-3xl md:text-4xl font-bold mb-5 font-display">{activeTool.name}</h3>

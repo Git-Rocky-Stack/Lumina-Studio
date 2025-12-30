@@ -135,7 +135,7 @@ export const VersionHistoryPanel: React.FC<VersionHistoryPanelProps> = ({
               </svg>
             </div>
             <div>
-              <h3 className="text-lg font-semibold text-white">Version History</h3>
+              <h3 className="type-subsection text-white">Version History</h3>
               <p className="text-sm text-white/50">{versions.length} versions</p>
             </div>
           </div>
@@ -185,7 +185,7 @@ export const VersionHistoryPanel: React.FC<VersionHistoryPanelProps> = ({
                     // Compare action
                     console.log('Comparing versions:', compareVersions);
                   }}
-                  className="px-3 py-2 bg-purple-500 rounded-lg text-white text-sm font-medium"
+                  className="px-3 py-2 bg-purple-500 rounded-lg text-white type-body-sm font-semibold"
                 >
                   Compare
                 </button>
@@ -212,7 +212,7 @@ export const VersionHistoryPanel: React.FC<VersionHistoryPanelProps> = ({
           <div className="p-4">
             {Object.entries(groupedVersions).map(([date, dateVersions]) => (
               <div key={date} className="mb-6 last:mb-0">
-                <h4 className="text-xs font-medium text-white/40 uppercase tracking-wider mb-3">
+                <h4 className="type-label text-white/40 mb-3">
                   {date}
                 </h4>
                 <div className="space-y-2 relative">
@@ -252,7 +252,7 @@ export const VersionHistoryPanel: React.FC<VersionHistoryPanelProps> = ({
                           <div className="flex items-start justify-between mb-2">
                             <div>
                               <div className="flex items-center gap-2">
-                                <span className="text-sm font-medium text-white">
+                                <span className="type-body-sm font-semibold text-white">
                                   Version {version.versionNumber}
                                 </span>
                                 {version.versionNumber === versions[0].versionNumber && (
@@ -388,7 +388,7 @@ export const VersionBadge: React.FC<{
       <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
       </svg>
-      <span className="text-xs font-medium">{versionCount} versions</span>
+      <span className="type-label">{versionCount} versions</span>
     </button>
   );
 };

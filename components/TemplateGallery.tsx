@@ -153,7 +153,7 @@ const TemplateGallery: React.FC<TemplateGalleryProps> = ({
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
         <div>
-          <h3 className="text-xl font-semibold text-white flex items-center gap-3">
+          <h3 className="type-subsection text-white flex items-center gap-3">
             <i className="fas fa-grid-2 text-indigo-400" aria-hidden="true" />
             Template Gallery
           </h3>
@@ -201,7 +201,7 @@ const TemplateGallery: React.FC<TemplateGalleryProps> = ({
       <div className="flex flex-wrap gap-2 mb-6">
         <button
           onClick={() => setSelectedCategory(null)}
-          className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${
+          className={`px-4 py-2 rounded-xl type-body-sm font-semibold transition-all ${
             !selectedCategory
               ? 'bg-indigo-500 text-white'
               : 'bg-white/5 text-slate-400 hover:bg-white/10 hover:text-white'
@@ -213,7 +213,7 @@ const TemplateGallery: React.FC<TemplateGalleryProps> = ({
           <button
             key={cat}
             onClick={() => setSelectedCategory(cat)}
-            className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${
+            className={`px-4 py-2 rounded-xl type-body-sm font-semibold transition-all ${
               selectedCategory === cat
                 ? 'bg-indigo-500 text-white'
                 : 'bg-white/5 text-slate-400 hover:bg-white/10 hover:text-white'
@@ -271,14 +271,14 @@ const TemplateGallery: React.FC<TemplateGalleryProps> = ({
                   </div>
                   {/* Hover overlay */}
                   <div className="absolute inset-0 bg-indigo-500/0 group-hover:bg-indigo-500/20 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
-                    <span className="px-4 py-2 rounded-lg bg-white text-slate-900 text-sm font-medium shadow-lg">
+                    <span className="px-4 py-2 rounded-lg bg-white text-slate-900 type-body-sm font-semibold shadow-lg">
                       Use Template
                     </span>
                   </div>
                 </div>
                 {/* Info */}
                 <div className="p-3">
-                  <p className="text-white text-sm font-medium truncate">{template.name}</p>
+                  <p className="text-white type-body-sm font-semibold truncate">{template.name}</p>
                   <p className="text-slate-500 text-xs mt-1">
                     {formatDimensions(template.dimensions.width, template.dimensions.height)}
                   </p>
@@ -307,7 +307,7 @@ const TemplateGallery: React.FC<TemplateGalleryProps> = ({
                 />
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
-                    <p className="text-white text-sm font-medium truncate">{template.name}</p>
+                    <p className="text-white type-body-sm font-semibold truncate">{template.name}</p>
                     {template.new && (
                       <span className="px-1.5 py-0.5 rounded bg-emerald-500 text-white text-[9px] font-bold">NEW</span>
                     )}
@@ -332,7 +332,7 @@ const TemplateGallery: React.FC<TemplateGalleryProps> = ({
           <p className="text-slate-400">No templates found</p>
           <button
             onClick={() => { setSearchQuery(''); setSelectedCategory(null); }}
-            className="mt-4 text-indigo-400 hover:text-indigo-300 text-sm font-medium"
+            className="mt-4 text-indigo-400 hover:text-indigo-300 type-body-sm font-semibold"
           >
             Clear filters
           </button>

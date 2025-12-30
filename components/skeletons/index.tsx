@@ -284,7 +284,7 @@ export const SkeletonFullPage: React.FC<{
         <div className="absolute inset-0 rounded-full border-4 border-slate-200"></div>
         <div className="absolute inset-0 rounded-full border-4 border-t-accent animate-spin"></div>
       </div>
-      <p className="text-sm font-medium text-slate-500 uppercase tracking-widest">
+      <p className="type-body-sm font-semibold text-slate-500 uppercase tracking-widest">
         {message}
       </p>
     </div>

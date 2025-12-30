@@ -183,7 +183,7 @@ export const WatermarkEditor: React.FC<WatermarkEditorProps> = ({
               </svg>
             </div>
             <div>
-              <h2 className="text-lg font-semibold text-white">Add Watermark</h2>
+              <h2 className="type-subsection text-white">Add Watermark</h2>
               <p className="text-sm text-white/50">Protect your document with a watermark</p>
             </div>
           </div>

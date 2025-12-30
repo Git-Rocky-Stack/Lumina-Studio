@@ -266,7 +266,7 @@ export const StampPicker: React.FC<StampPickerProps> = ({
           <div className="bg-[#1a1a2e] w-full max-w-md rounded-2xl border border-white/10 shadow-2xl">
             {/* Header */}
             <div className="flex items-center justify-between p-4 border-b border-white/10">
-              <h3 className="text-lg font-semibold text-white">Create Custom Stamp</h3>
+              <h3 className="type-subsection text-white">Create Custom Stamp</h3>
               <button
                 onClick={() => setShowCreateModal(false)}
                 className="p-1 rounded hover:bg-white/10 text-white/60"

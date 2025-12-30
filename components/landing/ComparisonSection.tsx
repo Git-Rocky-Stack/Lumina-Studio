@@ -44,7 +44,7 @@ const ComparisonSection: React.FC = () => {
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            className="inline-flex items-center gap-2 px-5 py-2 rounded-full glass-card text-emerald-400 text-sm font-semibold mb-8"
+            className="inline-flex items-center gap-2 px-5 py-2 rounded-full glass-card text-emerald-400 type-body-sm font-semibold mb-8"
           >
             <i className="fas fa-calculator text-xs" />
             One Subscription, 6 Tools
@@ -75,7 +75,7 @@ const ComparisonSection: React.FC = () => {
               </div>
               <div className="text-xs text-slate-500 mb-1">{tool.tools}</div>
               <div className="text-red-400/70 text-sm line-through">${tool.cost}/mo</div>
-              <div className="text-emerald-400 text-xs font-medium mt-1">{tool.luminaFeature}</div>
+              <div className="type-label text-emerald-400 mt-1">{tool.luminaFeature}</div>
             </motion.div>
           ))}
         </div>
@@ -90,13 +90,13 @@ const ComparisonSection: React.FC = () => {
         >
           {/* Header */}
           <div className="grid grid-cols-3 gap-4 p-6 md:p-8 border-b border-slate-800/50 bg-slate-900/50">
-            <div className="text-sm font-semibold text-slate-400 uppercase tracking-wider">
+            <div className="type-label text-slate-400">
               Feature
             </div>
-            <div className="text-sm font-semibold text-slate-500 uppercase tracking-wider text-center">
+            <div className="type-label text-slate-500 text-center">
               Traditional
             </div>
-            <div className="text-sm font-semibold text-indigo-400 uppercase tracking-wider text-center flex items-center justify-center gap-2">
+            <div className="type-label text-indigo-400 text-center flex items-center justify-center gap-2">
               <div className="w-6 h-6 rounded-lg bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center">
                 <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M13 10V3L4 14h7v7l9-11h-7z" />
@@ -153,7 +153,7 @@ const ComparisonSection: React.FC = () => {
             <div className="relative grid md:grid-cols-3 gap-8 items-center">
               {/* Old cost */}
               <div className="text-center">
-                <div className="text-slate-500 text-sm font-medium mb-2">Separate subscriptions</div>
+                <div className="text-slate-500 type-body-sm font-semibold mb-2">Separate subscriptions</div>
                 <div className="text-3xl md:text-4xl font-black text-slate-500 line-through decoration-red-400/50">
                   ${totalToolsCost}/mo
                 </div>
@@ -168,7 +168,7 @@ const ComparisonSection: React.FC = () => {
 
               {/* Lumina cost */}
               <div className="text-center">
-                <div className="text-emerald-400 text-sm font-medium mb-2">Lumina Pro</div>
+                <div className="text-emerald-400 type-body-sm font-semibold mb-2">Lumina Pro</div>
                 <div className="text-3xl md:text-4xl font-black text-white">
                   $29/mo
                 </div>

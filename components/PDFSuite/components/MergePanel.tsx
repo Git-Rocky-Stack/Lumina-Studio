@@ -219,7 +219,7 @@ export const MergePanel: React.FC<MergePanelProps> = ({
               </svg>
             </div>
             <div>
-              <h2 className="text-lg font-semibold text-white">Merge PDFs</h2>
+              <h2 className="type-subsection text-white">Merge PDFs</h2>
               <p className="text-sm text-white/50">Combine multiple PDF files into one</p>
             </div>
           </div>

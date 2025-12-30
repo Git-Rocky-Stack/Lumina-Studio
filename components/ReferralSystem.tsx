@@ -104,7 +104,7 @@ const ReferralSystem: React.FC<ReferralSystemProps> = ({ userId = 'user123', cla
       <div className="space-y-4 mb-8">
         {/* Code */}
         <div>
-          <label className="text-sm font-medium text-slate-400 mb-2 block">Your Referral Code</label>
+          <label className="type-body-sm font-semibold text-slate-400 mb-2 block">Your Referral Code</label>
           <div className="flex items-center gap-2">
             <div className="flex-1 px-4 py-3 rounded-xl bg-slate-800 border border-white/10 font-mono text-lg text-white tracking-wider">
               {stats.referralCode}
@@ -121,7 +121,7 @@ const ReferralSystem: React.FC<ReferralSystemProps> = ({ userId = 'user123', cla
 
         {/* Link */}
         <div>
-          <label className="text-sm font-medium text-slate-400 mb-2 block">Or share your link</label>
+          <label className="type-body-sm font-semibold text-slate-400 mb-2 block">Or share your link</label>
           <div className="flex items-center gap-2">
             <div className="flex-1 px-4 py-3 rounded-xl bg-slate-800 border border-white/10 text-slate-300 text-sm truncate">
               {stats.referralLink}
@@ -139,7 +139,7 @@ const ReferralSystem: React.FC<ReferralSystemProps> = ({ userId = 'user123', cla
 
       {/* Share buttons */}
       <div className="mb-8">
-        <p className="text-sm font-medium text-slate-400 mb-3">Share via</p>
+        <p className="type-body-sm font-semibold text-slate-400 mb-3">Share via</p>
         <div className="flex items-center gap-3">
           {shareLinks.map((link) => (
             <a
@@ -158,7 +158,7 @@ const ReferralSystem: React.FC<ReferralSystemProps> = ({ userId = 'user123', cla
 
       {/* Rewards tiers */}
       <div>
-        <h4 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+        <h4 className="type-subsection text-white mb-4 flex items-center gap-2">
           <i className="fas fa-trophy text-amber-400" aria-hidden="true" />
           Reward Milestones
         </h4>

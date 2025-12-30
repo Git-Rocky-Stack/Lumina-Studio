@@ -62,7 +62,7 @@ const FAQItem: React.FC<{
           }`}>
             <i className={`fas ${icon} ${isOpen ? 'text-white' : 'text-slate-500 group-hover:text-slate-300'} transition-colors`} />
           </div>
-          <span className={`text-lg font-semibold transition-colors ${
+          <span className={`type-subsection transition-colors ${
             isOpen ? 'text-white' : 'text-slate-300 group-hover:text-white'
           }`}>
             {question}
@@ -128,7 +128,7 @@ const FAQSection: React.FC = () => {
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            className="inline-flex items-center gap-2 px-5 py-2 rounded-full glass-card text-cyan-400 text-sm font-semibold mb-8"
+            className="inline-flex items-center gap-2 px-5 py-2 rounded-full glass-card text-cyan-400 type-body-sm font-semibold mb-8"
           >
             <i className="fas fa-circle-question text-xs" />
             FAQ

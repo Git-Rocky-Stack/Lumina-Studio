@@ -401,7 +401,7 @@ export const SmartGuidesSettings: React.FC<SmartGuidesSettingsProps> = ({ onClos
         />
 
         <div className="border-t pt-4" style={{ borderColor: colors.border.subtle }}>
-          <h5 className="text-sm font-medium mb-3" style={{ color: colors.text.secondary }}>
+          <h5 className="type-body-sm font-semibold mb-3" style={{ color: colors.text.secondary }}>
             Guide Types
           </h5>
 
@@ -449,7 +449,7 @@ export const SmartGuidesSettings: React.FC<SmartGuidesSettingsProps> = ({ onClos
         </div>
 
         <div className="border-t pt-4" style={{ borderColor: colors.border.subtle }}>
-          <h5 className="text-sm font-medium mb-3" style={{ color: colors.text.secondary }}>
+          <h5 className="type-body-sm font-semibold mb-3" style={{ color: colors.text.secondary }}>
             Snap Behavior
           </h5>
 
@@ -519,7 +519,7 @@ export const SmartGuidesSettings: React.FC<SmartGuidesSettingsProps> = ({ onClos
         </div>
 
         <div className="border-t pt-4" style={{ borderColor: colors.border.subtle }}>
-          <h5 className="text-sm font-medium mb-3" style={{ color: colors.text.secondary }}>
+          <h5 className="type-body-sm font-semibold mb-3" style={{ color: colors.text.secondary }}>
             Colors
           </h5>
 

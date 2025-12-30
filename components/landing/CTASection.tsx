@@ -103,7 +103,7 @@ const CTASection: React.FC = () => {
                 <div className="w-8 h-8 rounded-lg bg-slate-800/50 flex items-center justify-center">
                   <i className={`fas ${item.icon} text-sm`} />
                 </div>
-                <span className="text-sm font-medium">{item.label}</span>
+                <span className="type-body-sm font-semibold">{item.label}</span>
               </motion.div>
             ))}
           </motion.div>

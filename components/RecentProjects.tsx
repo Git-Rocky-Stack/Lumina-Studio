@@ -115,13 +115,13 @@ const RecentProjects: React.FC<RecentProjectsProps> = ({
     <div className={className}>
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
-        <h3 className="text-lg font-semibold text-white flex items-center gap-3">
+        <h3 className="type-subsection text-white flex items-center gap-3">
           <i className="fas fa-clock-rotate-left text-slate-400" aria-hidden="true" />
           Recent Projects
         </h3>
         <button
           onClick={onNewProject}
-          className="flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-indigo-500 to-violet-600 text-white text-sm font-medium shadow-lg shadow-indigo-500/25 hover:shadow-xl hover:scale-[1.02] transition-all"
+          className="flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-indigo-500 to-violet-600 text-white type-body-sm font-semibold shadow-lg shadow-indigo-500/25 hover:shadow-xl hover:scale-[1.02] transition-all"
         >
           <i className="fas fa-plus" aria-hidden="true" />
           New Project
@@ -137,7 +137,7 @@ const RecentProjects: React.FC<RecentProjectsProps> = ({
           <p className="text-slate-400 mb-4">No recent projects</p>
           <button
             onClick={onNewProject}
-            className="px-6 py-2.5 rounded-xl bg-indigo-500 text-white text-sm font-medium hover:bg-indigo-600 transition-colors"
+            className="px-6 py-2.5 rounded-xl bg-indigo-500 text-white type-body-sm font-semibold hover:bg-indigo-600 transition-colors"
           >
             Create your first project
           </button>
@@ -187,7 +187,7 @@ const RecentProjects: React.FC<RecentProjectsProps> = ({
 
               {/* Hover actions */}
               <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                <div className="px-4 py-2 rounded-xl bg-indigo-500 text-white text-sm font-medium shadow-lg shadow-indigo-500/30">
+                <div className="px-4 py-2 rounded-xl bg-indigo-500 text-white type-body-sm font-semibold shadow-lg shadow-indigo-500/30">
                   Open Project
                 </div>
               </div>
@@ -199,7 +199,7 @@ const RecentProjects: React.FC<RecentProjectsProps> = ({
       {/* View all link */}
       {projects.length > maxItems && (
         <div className="mt-6 text-center">
-          <button className="text-indigo-400 hover:text-indigo-300 text-sm font-medium transition-colors">
+          <button className="text-indigo-400 hover:text-indigo-300 type-body-sm font-semibold transition-colors">
             View all projects ({projects.length}) →
           </button>
         </div>

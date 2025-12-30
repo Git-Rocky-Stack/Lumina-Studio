@@ -177,14 +177,14 @@ const UpdateToast: React.FC<UpdateToastProps> = ({ onUpdate, onDismiss }) => {
 
       <div className="flex-1">
         <p className="font-medium text-zinc-900 dark:text-white">Update available</p>
-        <p className="text-sm text-zinc-500 dark:text-zinc-400">
+        <p className="type-body-sm text-zinc-500 dark:text-zinc-400">
           A new version is ready to install
         </p>
       </div>
 
       <motion.button
         onClick={onUpdate}
-        className="px-4 py-2 rounded-lg bg-indigo-500 text-white text-sm font-medium hover:bg-indigo-600"
+        className="px-4 py-2 rounded-lg bg-indigo-500 text-white type-body-sm font-semibold hover:bg-indigo-600"
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}
       >
@@ -223,7 +223,7 @@ const OfflineToast: React.FC<OfflineToastProps> = ({ onDismiss }) => {
 
       <div>
         <p className="font-medium text-amber-900 dark:text-amber-100">You're offline</p>
-        <p className="text-sm text-amber-700 dark:text-amber-300">
+        <p className="type-body-sm text-amber-700 dark:text-amber-300">
           Some features may be unavailable
         </p>
       </div>
@@ -246,7 +246,7 @@ export const ConnectionIndicator: React.FC<{ className?: string }> = ({ classNam
 
   return (
     <motion.div
-      className={`flex items-center gap-1.5 text-xs font-medium ${className}`}
+      className={`flex items-center gap-1.5 type-caption font-semibold ${className}`}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
     >
@@ -318,14 +318,14 @@ export const InstallPrompt: React.FC = () => {
           <h3 className="font-semibold text-zinc-900 dark:text-white">
             Install Lumina Studio
           </h3>
-          <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-1">
+          <p className="type-body-sm text-zinc-500 dark:text-zinc-400 mt-1">
             Install the app for a better experience with offline access
           </p>
 
           <div className="flex gap-2 mt-3">
             <motion.button
               onClick={handleInstall}
-              className="px-4 py-2 rounded-lg bg-indigo-500 text-white text-sm font-medium hover:bg-indigo-600"
+              className="px-4 py-2 rounded-lg bg-indigo-500 text-white type-body-sm font-semibold hover:bg-indigo-600"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >
@@ -333,7 +333,7 @@ export const InstallPrompt: React.FC = () => {
             </motion.button>
             <motion.button
               onClick={() => setShowPrompt(false)}
-              className="px-4 py-2 rounded-lg text-zinc-600 dark:text-zinc-400 text-sm font-medium hover:bg-zinc-100 dark:hover:bg-zinc-700"
+              className="px-4 py-2 rounded-lg text-zinc-600 dark:text-zinc-400 type-body-sm font-semibold hover:bg-zinc-100 dark:hover:bg-zinc-700"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >

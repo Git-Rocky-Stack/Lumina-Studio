@@ -118,7 +118,7 @@ const ExitIntentModal: React.FC<ExitIntentModalProps> = ({ enabled = true }) => 
                     <button
                       key={option.id}
                       onClick={() => handleFeedbackSelect(option.id)}
-                      className={`p-4 rounded-xl border text-sm font-medium transition-all ${
+                      className={`p-4 rounded-xl border type-body-sm font-semibold transition-all ${
                         selectedFeedback === option.id
                           ? 'border-amber-500 bg-amber-500/10 text-amber-400'
                           : 'border-white/10 bg-white/5 text-slate-400 hover:border-white/20 hover:bg-white/10'
@@ -142,7 +142,7 @@ const ExitIntentModal: React.FC<ExitIntentModalProps> = ({ enabled = true }) => 
 
               <button
                 onClick={handleClose}
-                className="text-slate-500 hover:text-slate-300 text-sm font-medium transition-colors"
+                className="text-slate-500 hover:text-slate-300 type-body-sm font-semibold transition-colors"
               >
                 No thanks, I'll miss out
               </button>

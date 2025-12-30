@@ -166,7 +166,7 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ isOpen, 
             {/* Header */}
             <div className="p-6 border-b border-slate-200 dark:border-slate-700">
               <div className="flex items-center justify-between">
-                <h2 className="text-xl font-semibold text-slate-900 dark:text-white flex items-center gap-2">
+                <h2 className="type-subsection text-slate-900 dark:text-white flex items-center gap-2">
                   <i className="fas fa-universal-access text-accent" />
                   Accessibility Settings
                 </h2>
@@ -177,7 +177,7 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ isOpen, 
                   <i className="fas fa-times text-slate-400" />
                 </button>
               </div>
-              <p className="text-sm text-slate-500 mt-1">
+              <p className="type-body-sm text-slate-500 mt-1">
                 Customize your experience for better accessibility
               </p>
             </div>
@@ -186,13 +186,13 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ isOpen, 
             <div className="p-6 space-y-6 max-h-[60vh] overflow-y-auto">
               {/* Motion */}
               <div>
-                <h3 className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-3">
+                <h3 className="type-body-sm font-semibold text-slate-700 dark:text-slate-300 mb-3">
                   Motion & Animation
                 </h3>
                 <label className="flex items-center justify-between p-4 rounded-xl bg-slate-50 dark:bg-slate-800 cursor-pointer">
                   <div>
                     <div className="font-medium text-slate-900 dark:text-white">Reduced Motion</div>
-                    <div className="text-sm text-slate-500">Minimize animations and transitions</div>
+                    <div className="type-body-sm text-slate-500">Minimize animations and transitions</div>
                   </div>
                   <input
                     type="checkbox"
@@ -205,14 +205,14 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ isOpen, 
 
               {/* Visual */}
               <div>
-                <h3 className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-3">
+                <h3 className="type-body-sm font-semibold text-slate-700 dark:text-slate-300 mb-3">
                   Visual
                 </h3>
                 <div className="space-y-3">
                   <label className="flex items-center justify-between p-4 rounded-xl bg-slate-50 dark:bg-slate-800 cursor-pointer">
                     <div>
                       <div className="font-medium text-slate-900 dark:text-white">High Contrast</div>
-                      <div className="text-sm text-slate-500">Increase color contrast</div>
+                      <div className="type-body-sm text-slate-500">Increase color contrast</div>
                     </div>
                     <input
                       type="checkbox"
@@ -227,7 +227,7 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ isOpen, 
                       <div className="font-medium text-slate-900 dark:text-white">
                         Enhanced Focus Indicators
                       </div>
-                      <div className="text-sm text-slate-500">Show clear focus outlines</div>
+                      <div className="type-body-sm text-slate-500">Show clear focus outlines</div>
                     </div>
                     <input
                       type="checkbox"
@@ -241,7 +241,7 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ isOpen, 
 
               {/* Typography */}
               <div>
-                <h3 className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-3">
+                <h3 className="type-body-sm font-semibold text-slate-700 dark:text-slate-300 mb-3">
                   Typography
                 </h3>
                 <div className="space-y-3">
@@ -252,7 +252,7 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ isOpen, 
                         <button
                           key={size}
                           onClick={() => updateSetting('fontSize', size)}
-                          className={`flex-1 py-2 rounded-lg text-sm font-medium transition-colors ${
+                          className={`flex-1 py-2 rounded-lg type-body-sm font-semibold transition-colors ${
                             settings.fontSize === size
                               ? 'bg-accent text-white'
                               : 'bg-white dark:bg-slate-700 text-slate-600 dark:text-slate-400'
@@ -269,7 +269,7 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ isOpen, 
                       <div className="font-medium text-slate-900 dark:text-white">
                         Dyslexia-Friendly Font
                       </div>
-                      <div className="text-sm text-slate-500">Use OpenDyslexic font</div>
+                      <div className="type-body-sm text-slate-500">Use OpenDyslexic font</div>
                     </div>
                     <input
                       type="checkbox"
@@ -283,7 +283,7 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ isOpen, 
 
               {/* Screen Reader */}
               <div>
-                <h3 className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-3">
+                <h3 className="type-body-sm font-semibold text-slate-700 dark:text-slate-300 mb-3">
                   Screen Reader
                 </h3>
                 <label className="flex items-center justify-between p-4 rounded-xl bg-slate-50 dark:bg-slate-800 cursor-pointer">
@@ -291,7 +291,7 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ isOpen, 
                     <div className="font-medium text-slate-900 dark:text-white">
                       Screen Reader Mode
                     </div>
-                    <div className="text-sm text-slate-500">
+                    <div className="type-body-sm text-slate-500">
                       Optimize for screen readers with enhanced ARIA labels
                     </div>
                   </div>

@@ -119,7 +119,7 @@ export const VersionHistory: React.FC<VersionHistoryProps> = ({
             setSelectedVersions([]);
           }}
           className={`
-            px-3 py-1.5 rounded-lg text-sm font-medium transition-colors
+            px-3 py-1.5 rounded-lg type-body-sm font-semibold transition-colors
             ${compareMode
               ? 'bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400'
               : 'text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800'}
@@ -140,14 +140,14 @@ export const VersionHistory: React.FC<VersionHistoryProps> = ({
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
           >
-            <span className="text-sm text-indigo-600 dark:text-indigo-400">
+            <span className="type-body-sm text-indigo-600 dark:text-indigo-400">
               Select 2 versions to compare
               {selectedVersions.length > 0 && ` (${selectedVersions.length}/2)`}
             </span>
             {selectedVersions.length === 2 && (
               <motion.button
                 onClick={handleCompare}
-                className="px-3 py-1 rounded-lg text-sm font-medium bg-indigo-500 text-white"
+                className="px-3 py-1 rounded-lg type-body-sm font-semibold bg-indigo-500 text-white"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
@@ -163,7 +163,7 @@ export const VersionHistory: React.FC<VersionHistoryProps> = ({
         {Array.from(groupedVersions.entries()).map(([date, dateVersions]) => (
           <div key={date}>
             {/* Date header */}
-            <div className="sticky top-0 px-4 py-2 bg-zinc-50 dark:bg-zinc-800/50 text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase">
+            <div className="sticky top-0 px-4 py-2 bg-zinc-50 dark:bg-zinc-800/50 type-label text-zinc-500 dark:text-zinc-400">
               {date}
             </div>
 
@@ -284,31 +284,31 @@ const VersionItem: React.FC<VersionItemProps> = ({
                   {version.title}
                 </span>
                 {isCurrent && (
-                  <span className="px-1.5 py-0.5 text-[10px] font-semibold bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 rounded">
+                  <span className="px-1.5 py-0.5 type-micro bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 rounded">
                     CURRENT
                   </span>
                 )}
                 {version.isAutoSave && (
-                  <span className="px-1.5 py-0.5 text-[10px] font-semibold bg-zinc-100 dark:bg-zinc-800 text-zinc-500 rounded">
+                  <span className="px-1.5 py-0.5 type-micro bg-zinc-100 dark:bg-zinc-800 text-zinc-500 rounded">
                     AUTO
                   </span>
                 )}
               </div>
 
-              <div className="flex items-center gap-1 text-xs text-zinc-400">
+              <div className="flex items-center gap-1 type-caption text-zinc-400">
                 <Clock size={12} />
                 {formatTime(version.timestamp)}
               </div>
             </div>
 
             {version.description && (
-              <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-1">
+              <p className="type-body-sm text-zinc-500 dark:text-zinc-400 mt-1">
                 {version.description}
               </p>
             )}
 
             {/* Author */}
-            <div className="flex items-center gap-1.5 mt-2 text-xs text-zinc-400">
+            <div className="flex items-center gap-1.5 mt-2 type-caption text-zinc-400">
               <Avatar src={version.author.avatar} name={version.author.name} size="xs" />
               <span>{version.author.name}</span>
             </div>
@@ -332,18 +332,18 @@ const VersionItem: React.FC<VersionItemProps> = ({
                   {/* Changes */}
                   {version.changes.length > 0 && (
                     <div className="mt-3 space-y-1">
-                      <p className="text-xs font-semibold text-zinc-500 dark:text-zinc-400">
+                      <p className="type-label text-zinc-500 dark:text-zinc-400">
                         Changes
                       </p>
                       {version.changes.slice(0, 5).map((change, i) => (
-                        <div key={i} className="flex items-center gap-2 text-xs text-zinc-600 dark:text-zinc-400">
+                        <div key={i} className="flex items-center gap-2 type-caption text-zinc-600 dark:text-zinc-400">
                           {changeIcons[change.type]}
                           <span className="capitalize">{change.type}</span>
                           <span className="font-medium">{change.target}</span>
                         </div>
                       ))}
                       {version.changes.length > 5 && (
-                        <p className="text-xs text-zinc-400">
+                        <p className="type-caption text-zinc-400">
                           +{version.changes.length - 5} more changes
                         </p>
                       )}
@@ -358,7 +358,7 @@ const VersionItem: React.FC<VersionItemProps> = ({
                           e.stopPropagation();
                           onPreview();
                         }}
-                        className="flex items-center gap-1 px-3 py-1.5 text-xs font-medium rounded-lg bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700"
+                        className="flex items-center gap-1 px-3 py-1.5 type-label rounded-lg bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700"
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
                       >
@@ -370,7 +370,7 @@ const VersionItem: React.FC<VersionItemProps> = ({
                           e.stopPropagation();
                           onRestore();
                         }}
-                        className="flex items-center gap-1 px-3 py-1.5 text-xs font-medium rounded-lg bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-200 dark:hover:bg-indigo-900/50"
+                        className="flex items-center gap-1 px-3 py-1.5 type-label rounded-lg bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-200 dark:hover:bg-indigo-900/50"
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
                       >
@@ -445,7 +445,7 @@ export const VisualDiff: React.FC<VisualDiffProps> = ({
                 key={m}
                 onClick={() => setViewMode(m)}
                 className={`
-                  px-3 py-1 text-xs font-medium rounded-md transition-colors
+                  px-3 py-1 type-label rounded-md transition-colors
                   ${viewMode === m
                     ? 'bg-white text-black'
                     : 'text-white/70 hover:text-white'}
@@ -469,14 +469,14 @@ export const VisualDiff: React.FC<VisualDiffProps> = ({
 
       {/* Version labels */}
       <div className="flex justify-between px-4 py-2">
-        <div className="flex items-center gap-2 text-white/70 text-sm">
+        <div className="flex items-center gap-2 text-white/70 type-body-sm">
           <ArrowLeft size={14} />
           <span>{before.version.title}</span>
           <span className="text-white/40">
             {before.version.timestamp.toLocaleDateString()}
           </span>
         </div>
-        <div className="flex items-center gap-2 text-white/70 text-sm">
+        <div className="flex items-center gap-2 text-white/70 type-body-sm">
           <span>{after.version.title}</span>
           <span className="text-white/40">
             {after.version.timestamp.toLocaleDateString()}

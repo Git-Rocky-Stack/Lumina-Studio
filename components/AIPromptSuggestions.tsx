@@ -115,7 +115,7 @@ const AIPromptSuggestions: React.FC<AIPromptSuggestionsProps> = ({
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h3 className="text-lg font-semibold text-white flex items-center gap-3">
+          <h3 className="type-subsection text-white flex items-center gap-3">
             <i className="fas fa-wand-magic-sparkles text-violet-400" aria-hidden="true" />
             Prompt Ideas
           </h3>
@@ -123,7 +123,7 @@ const AIPromptSuggestions: React.FC<AIPromptSuggestionsProps> = ({
         </div>
         <button
           onClick={randomSuggestion}
-          className="flex items-center gap-2 px-4 py-2 rounded-xl bg-violet-500/10 text-violet-400 text-sm font-medium border border-violet-500/20 hover:bg-violet-500/20 transition-all"
+          className="flex items-center gap-2 px-4 py-2 rounded-xl bg-violet-500/10 text-violet-400 type-body-sm font-semibold border border-violet-500/20 hover:bg-violet-500/20 transition-all"
         >
           <i className="fas fa-shuffle" aria-hidden="true" />
           Surprise Me
@@ -147,7 +147,7 @@ const AIPromptSuggestions: React.FC<AIPromptSuggestionsProps> = ({
       <div className="flex flex-wrap gap-2 mb-6">
         <button
           onClick={() => setSelectedCategory(null)}
-          className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${
+          className={`px-4 py-2 rounded-xl type-body-sm font-semibold transition-all ${
             !selectedCategory
               ? 'bg-indigo-500 text-white'
               : 'bg-white/5 text-slate-400 hover:bg-white/10 hover:text-white'
@@ -159,7 +159,7 @@ const AIPromptSuggestions: React.FC<AIPromptSuggestionsProps> = ({
           <button
             key={cat}
             onClick={() => setSelectedCategory(cat)}
-            className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${
+            className={`px-4 py-2 rounded-xl type-body-sm font-semibold transition-all ${
               selectedCategory === cat
                 ? 'bg-indigo-500 text-white'
                 : 'bg-white/5 text-slate-400 hover:bg-white/10 hover:text-white'

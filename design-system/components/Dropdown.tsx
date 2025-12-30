@@ -140,7 +140,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
           className={`
             flex items-center justify-between gap-2 px-4 py-2.5 min-w-[180px] rounded-xl
             bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700
-            text-zinc-900 dark:text-white text-sm font-medium
+            text-zinc-900 dark:text-white type-body-sm font-semibold
             hover:border-zinc-300 dark:hover:border-zinc-600
             focus:outline-none focus:ring-2 focus:ring-indigo-500/50
             disabled:opacity-50 disabled:cursor-not-allowed
@@ -222,7 +222,7 @@ const DropdownItem: React.FC<DropdownItemProps> = ({
         onClick={() => onSelect(option)}
         disabled={option.disabled}
         className={`
-          flex items-center justify-between w-full px-3 py-2 text-left text-sm
+          flex items-center justify-between w-full px-3 py-2 text-left type-body-sm
           ${option.disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
           ${option.danger
             ? 'text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20'
@@ -240,7 +240,7 @@ const DropdownItem: React.FC<DropdownItemProps> = ({
           <span className="flex flex-col">
             <span>{option.label}</span>
             {option.description && (
-              <span className="text-xs text-zinc-400 dark:text-zinc-500">{option.description}</span>
+              <span className="type-caption text-zinc-400 dark:text-zinc-500">{option.description}</span>
             )}
           </span>
         </span>

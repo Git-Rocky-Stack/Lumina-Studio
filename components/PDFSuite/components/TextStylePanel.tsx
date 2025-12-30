@@ -55,7 +55,7 @@ export const TextStylePanel: React.FC<TextStylePanelProps> = ({
   const SectionHeader: React.FC<{ id: string; label: string }> = ({ id, label }) => (
     <button
       onClick={() => setExpandedSection(expandedSection === id ? null : id)}
-      className="w-full flex items-center justify-between py-2 text-sm font-medium text-white/80 hover:text-white"
+      className="w-full flex items-center justify-between py-2 type-body-sm font-semibold text-white/80 hover:text-white"
     >
       {label}
       <svg
@@ -382,7 +382,7 @@ export const TextStylePanel: React.FC<TextStylePanelProps> = ({
       {showPresetModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
           <div className="bg-[#1a1a2e] w-full max-w-sm rounded-xl border border-white/10 p-4">
-            <h3 className="text-lg font-medium text-white mb-3">Save Style Preset</h3>
+            <h3 className="type-subsection text-white mb-3">Save Style Preset</h3>
             <input
               type="text"
               value={newPresetName}

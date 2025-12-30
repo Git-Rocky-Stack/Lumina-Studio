@@ -177,7 +177,7 @@ const WhatsNewModal: React.FC<WhatsNewModalProps> = ({ forceOpen = false }) => {
                 <button
                   key={entry.version}
                   onClick={() => setSelectedVersion(idx)}
-                  className={`px-4 py-2 rounded-xl text-sm font-medium whitespace-nowrap transition-all ${
+                  className={`px-4 py-2 rounded-xl type-body-sm font-semibold whitespace-nowrap transition-all ${
                     selectedVersion === idx
                       ? 'bg-indigo-500 text-white'
                       : 'bg-white/5 text-slate-400 hover:bg-white/10 hover:text-white'
@@ -205,7 +205,7 @@ const WhatsNewModal: React.FC<WhatsNewModalProps> = ({ forceOpen = false }) => {
                 >
                   <div className="mb-6">
                     <div className="flex items-center gap-3 mb-2">
-                      <h3 className="text-lg font-bold text-white">
+                      <h3 className="type-subsection text-white">
                         {changelog[selectedVersion].title}
                       </h3>
                       <span className="px-2 py-1 rounded-lg bg-white/5 text-slate-500 text-xs">

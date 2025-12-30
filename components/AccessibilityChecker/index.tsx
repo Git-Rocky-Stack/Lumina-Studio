@@ -340,7 +340,7 @@ const IssueBadge: React.FC<IssueBadgeProps> = ({ severity, count }) => {
 
   return (
     <span
-      className="px-1.5 py-0.5 rounded text-xs font-medium"
+      className="px-1.5 py-0.5 rounded type-label"
       style={{
         backgroundColor: SEVERITY_INFO[severity].color + '20',
         color: SEVERITY_INFO[severity].color
@@ -473,7 +473,7 @@ const IssueCard: React.FC<IssueCardProps> = ({
       />
       <div className="flex-1 min-w-0">
         <div
-          className="text-sm font-medium truncate"
+          className="type-body-sm font-semibold truncate"
           style={{ color: colors.text.primary }}
         >
           {issue.title}
@@ -561,7 +561,7 @@ const IssueDetailDrawer: React.FC<IssueDetailDrawerProps> = ({
     <div className="p-4 space-y-4">
       {/* WCAG Info */}
       <div>
-        <div className="text-xs font-medium mb-1" style={{ color: colors.text.tertiary }}>
+        <div className="type-label mb-1" style={{ color: colors.text.tertiary }}>
           WCAG Criterion
         </div>
         <div className="text-sm" style={{ color: colors.text.secondary }}>
@@ -571,7 +571,7 @@ const IssueDetailDrawer: React.FC<IssueDetailDrawerProps> = ({
 
       {/* Description */}
       <div>
-        <div className="text-xs font-medium mb-1" style={{ color: colors.text.tertiary }}>
+        <div className="type-label mb-1" style={{ color: colors.text.tertiary }}>
           Description
         </div>
         <p className="text-sm" style={{ color: colors.text.secondary }}>
@@ -581,7 +581,7 @@ const IssueDetailDrawer: React.FC<IssueDetailDrawerProps> = ({
 
       {/* Impact */}
       <div>
-        <div className="text-xs font-medium mb-1" style={{ color: colors.text.tertiary }}>
+        <div className="type-label mb-1" style={{ color: colors.text.tertiary }}>
           Impact
         </div>
         <p className="text-sm" style={{ color: colors.text.secondary }}>
@@ -591,7 +591,7 @@ const IssueDetailDrawer: React.FC<IssueDetailDrawerProps> = ({
 
       {/* Recommendation */}
       <div>
-        <div className="text-xs font-medium mb-1" style={{ color: colors.text.tertiary }}>
+        <div className="type-label mb-1" style={{ color: colors.text.tertiary }}>
           How to Fix
         </div>
         <p className="text-sm" style={{ color: colors.text.secondary }}>
@@ -646,7 +646,7 @@ const SimulationTab: React.FC<SimulationTabProps> = ({
 }) => (
   <div className="p-3 space-y-4">
     <div>
-      <h4 className="text-sm font-medium mb-3" style={{ color: colors.text.primary }}>
+      <h4 className="type-body-sm font-semibold mb-3" style={{ color: colors.text.primary }}>
         Color Blindness Simulation
       </h4>
       <p className="text-xs mb-3" style={{ color: colors.text.tertiary }}>
@@ -699,7 +699,7 @@ const SimulationTab: React.FC<SimulationTabProps> = ({
 
     {/* Color Preview */}
     <div>
-      <h4 className="text-sm font-medium mb-3" style={{ color: colors.text.primary }}>
+      <h4 className="type-body-sm font-semibold mb-3" style={{ color: colors.text.primary }}>
         Color Preview
       </h4>
       <div className="grid grid-cols-4 gap-2">
@@ -741,7 +741,7 @@ const SettingsTab: React.FC<SettingsTabProps> = ({
   <div className="p-3 space-y-4">
     {/* WCAG Level */}
     <div>
-      <h4 className="text-sm font-medium mb-3" style={{ color: colors.text.primary }}>
+      <h4 className="type-body-sm font-semibold mb-3" style={{ color: colors.text.primary }}>
         WCAG Conformance Target
       </h4>
       <div className="flex gap-2">
@@ -768,7 +768,7 @@ const SettingsTab: React.FC<SettingsTabProps> = ({
 
     {/* Export */}
     <div>
-      <h4 className="text-sm font-medium mb-3" style={{ color: colors.text.primary }}>
+      <h4 className="type-body-sm font-semibold mb-3" style={{ color: colors.text.primary }}>
         Export Report
       </h4>
       <button
@@ -786,7 +786,7 @@ const SettingsTab: React.FC<SettingsTabProps> = ({
       className="p-3 rounded-lg"
       style={{ backgroundColor: colors.background.tertiary }}
     >
-      <h4 className="text-sm font-medium mb-2" style={{ color: colors.text.primary }}>
+      <h4 className="type-body-sm font-semibold mb-2" style={{ color: colors.text.primary }}>
         About WCAG
       </h4>
       <p className="text-xs" style={{ color: colors.text.tertiary }}>

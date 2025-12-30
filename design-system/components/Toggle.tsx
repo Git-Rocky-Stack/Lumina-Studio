@@ -146,7 +146,7 @@ export const Toggle: React.FC<ToggleProps> = ({
             </span>
           )}
           {description && (
-            <span className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
+            <span className="type-caption text-zinc-500 dark:text-zinc-400 mt-0.5">
               {description}
             </span>
           )}
@@ -331,12 +331,12 @@ export const Checkbox: React.FC<CheckboxProps> = ({
       {(label || description) && (
         <div className="flex flex-col">
           {label && (
-            <span className="text-sm font-medium text-zinc-900 dark:text-white">
+            <span className="type-body-sm font-semibold text-zinc-900 dark:text-white">
               {label}
             </span>
           )}
           {description && (
-            <span className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
+            <span className="type-caption text-zinc-500 dark:text-zinc-400 mt-0.5">
               {description}
             </span>
           )}
@@ -410,12 +410,12 @@ export const Radio: React.FC<RadioProps> = ({
       {(label || description) && (
         <div className="flex flex-col">
           {label && (
-            <span className="text-sm font-medium text-zinc-900 dark:text-white">
+            <span className="type-body-sm font-semibold text-zinc-900 dark:text-white">
               {label}
             </span>
           )}
           {description && (
-            <span className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
+            <span className="type-caption text-zinc-500 dark:text-zinc-400 mt-0.5">
               {description}
             </span>
           )}

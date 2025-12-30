@@ -74,7 +74,7 @@ const TrustBadges: React.FC<TrustBadgesProps> = ({ variant = 'full', className =
             className={`flex items-center gap-2 px-3 py-2 rounded-lg ${colorClasses[badge.color].bg} border ${colorClasses[badge.color].border}`}
           >
             <i className={`fas ${badge.icon} ${colorClasses[badge.color].text}`} aria-hidden="true" />
-            <span className="text-slate-300 text-sm font-medium">{badge.label}</span>
+            <span className="text-slate-300 type-body-sm font-semibold">{badge.label}</span>
           </div>
         ))}
       </div>
@@ -97,7 +97,7 @@ const TrustBadges: React.FC<TrustBadgesProps> = ({ variant = 'full', className =
             <div className={`w-10 h-10 mx-auto mb-3 rounded-lg ${colorClasses[badge.color].bg} flex items-center justify-center`}>
               <i className={`fas ${badge.icon} ${colorClasses[badge.color].text}`} aria-hidden="true" />
             </div>
-            <p className="text-white font-semibold text-sm mb-1">{badge.label}</p>
+            <p className="text-white type-body-sm font-semibold mb-1">{badge.label}</p>
             <p className="text-slate-500 text-xs">{badge.description}</p>
           </motion.div>
         ))}

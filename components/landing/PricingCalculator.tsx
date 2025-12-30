@@ -53,7 +53,7 @@ const PricingCalculator: React.FC = () => {
   return (
     <div className="glass-card rounded-3xl p-8 md:p-10">
       <div className="text-center mb-10">
-        <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-500/10 text-indigo-400 text-sm font-semibold mb-4">
+        <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-500/10 text-indigo-400 type-body-sm font-semibold mb-4">
           <i className="fas fa-calculator" aria-hidden="true" />
           ROI Calculator
         </span>
@@ -160,7 +160,7 @@ const PricingCalculator: React.FC = () => {
         {/* Detailed comparison toggle */}
         <button
           onClick={() => setShowComparison(!showComparison)}
-          className="w-full text-center text-indigo-400 hover:text-indigo-300 text-sm font-medium transition-colors flex items-center justify-center gap-2"
+          className="w-full text-center text-indigo-400 hover:text-indigo-300 type-body-sm font-semibold transition-colors flex items-center justify-center gap-2"
         >
           {showComparison ? 'Hide' : 'Show'} detailed comparison
           <i className={`fas fa-chevron-${showComparison ? 'up' : 'down'} text-xs`} aria-hidden="true" />

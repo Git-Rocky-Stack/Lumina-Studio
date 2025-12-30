@@ -71,7 +71,7 @@ export const AIColorPalette: React.FC<AIColorPaletteProps> = ({ onSelect, classN
 
   return (
     <div className={`bg-white dark:bg-slate-900 rounded-2xl p-6 ${className}`}>
-      <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
+      <h3 className="type-subsection text-slate-900 dark:text-white mb-4 flex items-center gap-2">
         <i className="fas fa-palette text-accent" />
         AI Color Palette Generator
       </h3>
@@ -208,7 +208,7 @@ export const AITextGenerator: React.FC<AITextGeneratorProps> = ({ onGenerate, cl
 
   return (
     <div className={`bg-white dark:bg-slate-900 rounded-2xl p-6 ${className}`}>
-      <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
+      <h3 className="type-subsection text-slate-900 dark:text-white mb-4 flex items-center gap-2">
         <i className="fas fa-pen-fancy text-accent" />
         AI Copy Generator
       </h3>
@@ -219,7 +219,7 @@ export const AITextGenerator: React.FC<AITextGeneratorProps> = ({ onGenerate, cl
           <button
             key={t}
             onClick={() => setType(t)}
-            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+            className={`px-4 py-2 rounded-lg type-body-sm font-semibold transition-colors ${
               type === t
                 ? 'bg-accent text-white'
                 : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200'
@@ -263,7 +263,7 @@ export const AITextGenerator: React.FC<AITextGeneratorProps> = ({ onGenerate, cl
             <p className="flex-1 text-slate-700 dark:text-slate-300">{text}</p>
             <motion.button
               onClick={() => onGenerate(text)}
-              className="px-3 py-1.5 bg-accent/10 text-accent rounded-lg text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity"
+              className="px-3 py-1.5 bg-accent/10 text-accent rounded-lg type-body-sm font-semibold opacity-0 group-hover:opacity-100 transition-opacity"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
@@ -335,14 +335,14 @@ export const AILayoutSuggestions: React.FC<AILayoutSuggestionsProps> = ({
   return (
     <div className={`bg-white dark:bg-slate-900 rounded-2xl p-6 ${className}`}>
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-semibold text-slate-900 dark:text-white flex items-center gap-2">
+        <h3 className="type-subsection text-slate-900 dark:text-white flex items-center gap-2">
           <i className="fas fa-th-large text-accent" />
           AI Layout Suggestions
         </h3>
         <motion.button
           onClick={analyze}
           disabled={isAnalyzing}
-          className="px-4 py-2 bg-accent text-white rounded-lg text-sm font-medium disabled:opacity-50"
+          className="px-4 py-2 bg-accent text-white rounded-lg type-body-sm font-semibold disabled:opacity-50"
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
         >
@@ -374,7 +374,7 @@ export const AILayoutSuggestions: React.FC<AILayoutSuggestionsProps> = ({
             <div className="font-medium text-slate-900 dark:text-white group-hover:text-accent transition-colors">
               {layout.name}
             </div>
-            <div className="text-sm text-slate-500">{layout.description}</div>
+            <div className="type-body-sm text-slate-500">{layout.description}</div>
           </motion.button>
         ))}
       </div>
@@ -413,7 +413,7 @@ export const ImageUpscaler: React.FC<ImageUpscalerProps> = ({
 
   return (
     <div className={`bg-white dark:bg-slate-900 rounded-2xl p-6 ${className}`}>
-      <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
+      <h3 className="type-subsection text-slate-900 dark:text-white mb-4 flex items-center gap-2">
         <i className="fas fa-expand text-accent" />
         AI Image Upscaler
       </h3>
@@ -432,7 +432,7 @@ export const ImageUpscaler: React.FC<ImageUpscalerProps> = ({
 
       {/* Scale selector */}
       <div className="flex items-center gap-4 mb-4">
-        <span className="text-sm text-slate-500">Scale:</span>
+        <span className="type-body-sm text-slate-500">Scale:</span>
         {[2, 4, 8].map(s => (
           <button
             key={s}
@@ -450,11 +450,11 @@ export const ImageUpscaler: React.FC<ImageUpscalerProps> = ({
 
       {/* Info */}
       <div className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800 rounded-lg mb-4">
-        <div className="text-sm text-slate-500">
-          <span className="font-medium text-slate-700 dark:text-slate-300">Output:</span>{' '}
+        <div className="type-body-sm text-slate-500">
+          <span className="font-semibold text-slate-700 dark:text-slate-300">Output:</span>{' '}
           {scale * 1920} x {scale * 1080}px
         </div>
-        <div className="text-sm text-emerald-500">
+        <div className="type-body-sm text-emerald-500">
           <i className="fas fa-check-circle mr-1" />
           AI Enhanced
         </div>

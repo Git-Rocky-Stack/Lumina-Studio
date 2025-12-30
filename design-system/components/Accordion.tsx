@@ -352,7 +352,7 @@ export const Details: React.FC<DetailsProps> = ({
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 text-sm font-medium text-zinc-900 dark:text-white hover:text-indigo-500 transition-colors"
+        className="flex items-center gap-2 type-body-sm font-semibold text-zinc-900 dark:text-white hover:text-indigo-500 transition-colors"
       >
         <motion.div
           animate={{ rotate: isOpen ? 90 : 0 }}
@@ -372,7 +372,7 @@ export const Details: React.FC<DetailsProps> = ({
             transition={{ duration: 0.2 }}
             className="overflow-hidden"
           >
-            <div className="text-sm text-zinc-600 dark:text-zinc-400">
+            <div className="type-body-sm text-zinc-600 dark:text-zinc-400">
               {children}
             </div>
           </motion.div>

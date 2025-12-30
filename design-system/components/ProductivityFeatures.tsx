@@ -46,9 +46,9 @@ export const BatchOperationsBar: React.FC<BatchOperationsBarProps> = ({
             {selectedCount}
           </div>
           <div>
-            <p className="text-sm font-bold">Selected</p>
+            <p className="type-body-sm font-semibold">Selected</p>
             {totalCount && (
-              <p className="text-[10px] text-slate-400">of {totalCount} items</p>
+              <p className="type-micro text-slate-400">of {totalCount} items</p>
             )}
           </div>
         </div>
@@ -60,7 +60,7 @@ export const BatchOperationsBar: React.FC<BatchOperationsBarProps> = ({
             <button
               key={op.id}
               onClick={() => op.action(selectedIds)}
-              className={`px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-2 transition-all hover:scale-105 active:scale-95 ${
+              className={`px-4 py-2 rounded-xl type-label flex items-center gap-2 transition-all hover:scale-105 active:scale-95 ${
                 op.destructive
                   ? 'bg-rose-500/20 text-rose-400 hover:bg-rose-500/30'
                   : 'bg-white/10 hover:bg-white/20'
@@ -78,7 +78,7 @@ export const BatchOperationsBar: React.FC<BatchOperationsBarProps> = ({
           {onSelectAll && (
             <button
               onClick={onSelectAll}
-              className="px-3 py-1.5 text-[10px] font-bold text-slate-400 hover:text-white transition-colors"
+              className="px-3 py-1.5 type-micro text-slate-400 hover:text-white transition-colors"
             >
               Select All
             </button>
@@ -134,7 +134,7 @@ export const SmartFolders: React.FC<SmartFoldersProps> = ({
   return (
     <div className={`space-y-2 ${className}`}>
       <div className="flex items-center justify-between mb-4">
-        <h4 className="text-xs font-bold text-slate-500 uppercase tracking-wider">Smart Folders</h4>
+        <h4 className="type-label text-slate-500">Smart Folders</h4>
         {onCreateFolder && (
           <button
             onClick={onCreateFolder}
@@ -162,10 +162,10 @@ export const SmartFolders: React.FC<SmartFoldersProps> = ({
             <i className={`fas ${folder.icon} text-sm`} />
           </div>
           <div className="flex-1 text-left">
-            <p className={`text-xs font-bold ${activeId === folder.id ? 'text-accent' : 'text-slate-700'}`}>
+            <p className={`type-label ${activeId === folder.id ? 'text-accent' : 'text-slate-700'}`}>
               {folder.name}
             </p>
-            <p className="text-[10px] text-slate-400">{folder.count} items</p>
+            <p className="type-micro text-slate-400">{folder.count} items</p>
           </div>
           {onEditFolder && (
             <button
@@ -240,8 +240,8 @@ export const SessionRecoveryModal: React.FC<SessionRecoveryModalProps> = ({
               <i className="fas fa-clock-rotate-left text-amber-600 text-xl" />
             </div>
             <div>
-              <h3 className="text-lg font-bold text-slate-900">Recover Unsaved Work</h3>
-              <p className="text-sm text-slate-500">
+              <h3 className="type-subsection text-slate-900">Recover Unsaved Work</h3>
+              <p className="type-body-sm text-slate-500">
                 {sessions.length} unsaved session{sessions.length > 1 ? 's' : ''} found
               </p>
             </div>
@@ -262,21 +262,21 @@ export const SessionRecoveryModal: React.FC<SessionRecoveryModalProps> = ({
                 )}
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-bold text-slate-700 truncate">{session.name}</p>
-                <p className="text-xs text-slate-400">
+                <p className="type-body-sm font-semibold text-slate-700 truncate">{session.name}</p>
+                <p className="type-caption text-slate-400">
                   {formatTime(session.lastModified)} • {session.unsavedChanges} changes
                 </p>
               </div>
               <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                 <button
                   onClick={() => onRecover(session)}
-                  className="px-3 py-1.5 bg-accent text-white rounded-lg text-xs font-bold hover:brightness-110 transition-all"
+                  className="px-3 py-1.5 bg-accent text-white rounded-lg type-label hover:brightness-110 transition-all"
                 >
                   Recover
                 </button>
                 <button
                   onClick={() => onDiscard(session.id)}
-                  className="px-3 py-1.5 bg-slate-100 text-slate-500 rounded-lg text-xs font-bold hover:bg-slate-200 transition-all"
+                  className="px-3 py-1.5 bg-slate-100 text-slate-500 rounded-lg type-label hover:bg-slate-200 transition-all"
                 >
                   Discard
                 </button>
@@ -288,13 +288,13 @@ export const SessionRecoveryModal: React.FC<SessionRecoveryModalProps> = ({
         <div className="p-4 border-t border-slate-100 flex justify-between">
           <button
             onClick={onDiscardAll}
-            className="px-4 py-2 text-rose-500 text-sm font-bold hover:bg-rose-50 rounded-lg transition-colors"
+            className="px-4 py-2 text-rose-500 type-body-sm font-semibold hover:bg-rose-50 rounded-lg transition-colors"
           >
             Discard All
           </button>
           <button
             onClick={onClose}
-            className="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg text-sm font-bold hover:bg-slate-200 transition-colors"
+            className="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg type-body-sm font-semibold hover:bg-slate-200 transition-colors"
           >
             Close
           </button>
@@ -491,9 +491,9 @@ export const GlobalSearch: React.FC<GlobalSearchProps> = ({
                   <i className={`fas ${result.icon} text-sm ${typeColors[result.type].split(' ')[1]}`} />
                 </div>
                 <div className="flex-1 text-left">
-                  <p className="text-sm font-medium text-slate-700">{result.title}</p>
+                  <p className="type-body-sm font-semibold text-slate-700">{result.title}</p>
                   {result.subtitle && (
-                    <p className="text-xs text-slate-400">{result.subtitle}</p>
+                    <p className="type-caption text-slate-400">{result.subtitle}</p>
                   )}
                 </div>
                 <span className="text-[10px] text-slate-400 uppercase bg-slate-100 px-2 py-0.5 rounded">
@@ -508,7 +508,7 @@ export const GlobalSearch: React.FC<GlobalSearchProps> = ({
             </div>
           ) : recentSearches.length > 0 ? (
             <div className="p-4">
-              <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Recent</p>
+              <p className="type-label text-slate-400 mb-3">Recent</p>
               {recentSearches.map((search, idx) => (
                 <button
                   key={idx}
@@ -565,7 +565,7 @@ export const ThemeToggle: React.FC<ThemeToggleProps> = ({
         <button
           key={t.id}
           onClick={() => onThemeChange(t.id)}
-          className={`flex-1 py-2 px-3 rounded-lg text-xs font-bold flex items-center justify-center gap-1.5 transition-all ${
+          className={`flex-1 py-2 px-3 rounded-lg type-label flex items-center justify-center gap-1.5 transition-all ${
             theme === t.id
               ? 'bg-white text-accent shadow-sm'
               : 'text-slate-500 hover:text-slate-700'

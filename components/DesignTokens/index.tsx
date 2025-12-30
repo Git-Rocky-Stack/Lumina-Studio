@@ -179,7 +179,7 @@ export const DesignTokensPanel: React.FC<DesignTokensPanelProps> = ({
                     <i className="fa-solid fa-swatchbook" style={{ color: colors.accent.secondary }} />
                   </div>
                   <div>
-                    <h2 className="font-semibold" style={{ color: colors.text.primary }}>
+                    <h2 className="type-subsection" style={{ color: colors.text.primary }}>
                       Design Tokens
                     </h2>
                     <p className="text-xs" style={{ color: colors.text.tertiary }}>
@@ -234,7 +234,7 @@ export const DesignTokensPanel: React.FC<DesignTokensPanelProps> = ({
                 Object.entries(groupedTokens).map(([category, categoryTokens]) => (
                   <div key={category} className="mb-4">
                     <div
-                      className="text-xs font-medium px-2 py-1 mb-1"
+                      className="type-label px-2 py-1 mb-1"
                       style={{ color: colors.text.tertiary }}
                     >
                       {CATEGORY_INFO[category as TokenCategory]?.label || category}
@@ -431,7 +431,7 @@ const TokenListItem: React.FC<TokenListItemProps> = ({
     <TokenPreview token={token} size="sm" />
     <div className="flex-1 min-w-0">
       <div
-        className="text-sm font-medium truncate"
+        className="type-body-sm font-semibold truncate"
         style={{ color: isSelected ? colors.accent.primary : colors.text.primary }}
       >
         {token.name}
@@ -601,7 +601,7 @@ const TokenDetailView: React.FC<TokenDetailViewProps> = ({
                 }}
               />
             ) : (
-              <h3 className="text-xl font-semibold" style={{ color: colors.text.primary }}>
+              <h3 className="type-subsection" style={{ color: colors.text.primary }}>
                 {token.name}
               </h3>
             )}
@@ -679,7 +679,7 @@ const TokenDetailView: React.FC<TokenDetailViewProps> = ({
 
       {/* Description */}
       <div className="mb-6">
-        <label className="text-sm font-medium mb-2 block" style={{ color: colors.text.secondary }}>
+        <label className="type-body-sm font-semibold mb-2 block" style={{ color: colors.text.secondary }}>
           Description
         </label>
         {isEditing ? (
@@ -703,7 +703,7 @@ const TokenDetailView: React.FC<TokenDetailViewProps> = ({
 
       {/* Value */}
       <div className="mb-6">
-        <label className="text-sm font-medium mb-2 block" style={{ color: colors.text.secondary }}>
+        <label className="type-body-sm font-semibold mb-2 block" style={{ color: colors.text.secondary }}>
           Value
         </label>
         <TokenValueEditor token={token} onUpdate={onUpdate} />
@@ -711,7 +711,7 @@ const TokenDetailView: React.FC<TokenDetailViewProps> = ({
 
       {/* Tags */}
       <div className="mb-6">
-        <label className="text-sm font-medium mb-2 block" style={{ color: colors.text.secondary }}>
+        <label className="type-body-sm font-semibold mb-2 block" style={{ color: colors.text.secondary }}>
           Tags
         </label>
         <div className="flex flex-wrap gap-2">
@@ -735,7 +735,7 @@ const TokenDetailView: React.FC<TokenDetailViewProps> = ({
 
       {/* CSS Variable */}
       <div className="mb-6">
-        <label className="text-sm font-medium mb-2 block" style={{ color: colors.text.secondary }}>
+        <label className="type-body-sm font-semibold mb-2 block" style={{ color: colors.text.secondary }}>
           CSS Variable
         </label>
         <code
@@ -884,13 +884,13 @@ const TokenOverview: React.FC<TokenOverviewProps> = ({ tokens }) => {
 
   return (
     <div>
-      <h3 className="text-lg font-semibold mb-6" style={{ color: colors.text.primary }}>
+      <h3 className="type-subsection mb-6" style={{ color: colors.text.primary }}>
         Token Overview
       </h3>
 
       {/* Color Palette */}
       <div className="mb-8">
-        <h4 className="text-sm font-medium mb-3" style={{ color: colors.text.secondary }}>
+        <h4 className="type-body-sm font-semibold mb-3" style={{ color: colors.text.secondary }}>
           Color Palette
         </h4>
         <div className="flex flex-wrap gap-2">
@@ -919,7 +919,7 @@ const TokenOverview: React.FC<TokenOverviewProps> = ({ tokens }) => {
 
       {/* Typography Scale */}
       <div className="mb-8">
-        <h4 className="text-sm font-medium mb-3" style={{ color: colors.text.secondary }}>
+        <h4 className="type-body-sm font-semibold mb-3" style={{ color: colors.text.secondary }}>
           Typography Scale
         </h4>
         <div className="space-y-3">
@@ -951,7 +951,7 @@ const TokenOverview: React.FC<TokenOverviewProps> = ({ tokens }) => {
 
       {/* Spacing Scale */}
       <div>
-        <h4 className="text-sm font-medium mb-3" style={{ color: colors.text.secondary }}>
+        <h4 className="type-body-sm font-semibold mb-3" style={{ color: colors.text.secondary }}>
           Spacing Scale
         </h4>
         <div className="flex items-end gap-2">
@@ -1042,7 +1042,7 @@ const CreateTokenModal: React.FC<CreateTokenModalProps> = ({ onClose, onCreate }
         style={{ backgroundColor: colors.background.secondary }}
         onClick={e => e.stopPropagation()}
       >
-        <h3 className="text-lg font-semibold mb-4" style={{ color: colors.text.primary }}>
+        <h3 className="type-subsection mb-4" style={{ color: colors.text.primary }}>
           Create Token
         </h3>
 
@@ -1274,7 +1274,7 @@ const ExportModal: React.FC<ExportModalProps> = ({ onClose }) => {
         onClick={e => e.stopPropagation()}
       >
         <div className="p-4 border-b" style={{ borderColor: colors.border.subtle }}>
-          <h3 className="text-lg font-semibold" style={{ color: colors.text.primary }}>
+          <h3 className="type-subsection" style={{ color: colors.text.primary }}>
             Export Tokens
           </h3>
         </div>

@@ -113,7 +113,7 @@ const SignUpPage: React.FC = () => {
       {/* Sign Up Form */}
       <div className="relative z-10 w-full max-w-md">
         <div className="bg-slate-800/80 backdrop-blur-xl border border-slate-700/50 shadow-2xl shadow-black/20 rounded-2xl p-8">
-          <h2 className="text-xl font-semibold text-white text-center mb-2">Create your account</h2>
+          <h2 className="type-subsection text-white text-center mb-2">Create your account</h2>
           <p className="text-slate-400 text-center mb-6 text-sm">Start creating with AI-powered tools</p>
 
           {/* Google Sign In */}
@@ -141,7 +141,7 @@ const SignUpPage: React.FC = () => {
           {/* Email Form */}
           <form onSubmit={handleEmailSignUp} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-slate-300 mb-2">
+              <label className="block type-body-sm font-semibold text-slate-300 mb-2">
                 Email address
               </label>
               <input
@@ -155,7 +155,7 @@ const SignUpPage: React.FC = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-300 mb-2">
+              <label className="block type-body-sm font-semibold text-slate-300 mb-2">
                 Password
               </label>
               <input
@@ -170,7 +170,7 @@ const SignUpPage: React.FC = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-300 mb-2">
+              <label className="block type-body-sm font-semibold text-slate-300 mb-2">
                 Confirm Password
               </label>
               <input

@@ -156,7 +156,7 @@ const OnboardingFlow: React.FC<OnboardingFlowProps> = ({ onComplete, isOpen }) =
               {currentStep < onboardingSteps.length - 1 && (
                 <button
                   onClick={handleSkip}
-                  className="text-slate-400 hover:text-white text-sm font-medium transition-colors"
+                  className="text-slate-400 hover:text-white type-body-sm font-semibold transition-colors"
                 >
                   Skip tour
                 </button>

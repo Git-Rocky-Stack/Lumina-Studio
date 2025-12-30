@@ -75,7 +75,7 @@ const StatCard: React.FC<StatCardProps> = ({ label, value, change, trend, icon, 
       transition={{ delay: index * 0.1 }}
     >
       <div className="flex items-center justify-between mb-2">
-        <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400">{label}</h3>
+        <h3 className="type-body-sm font-semibold text-gray-600 dark:text-gray-400">{label}</h3>
         <div className="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center text-slate-500">
           <i className={`fas ${icon}`} aria-hidden="true"></i>
         </div>

@@ -432,7 +432,7 @@ export const PDFViewer = forwardRef<PDFViewerHandle, PDFViewerProps>(
                 </div>
 
                 {/* Page number badge */}
-                <div className="absolute bottom-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-slate-900/80 text-white text-xs font-bold rounded-full backdrop-blur-sm">
+                <div className="absolute bottom-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-slate-900/80 text-white type-micro rounded-full backdrop-blur-sm">
                   {page.pageNumber}
                 </div>
               </div>

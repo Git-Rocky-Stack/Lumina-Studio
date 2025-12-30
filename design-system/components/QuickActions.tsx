@@ -63,7 +63,7 @@ export const QuickActionsBar: React.FC<QuickActionsBarProps> = ({
                       initial={{ opacity: 0, x: 10 }}
                       animate={{ opacity: 1, x: 0 }}
                       exit={{ opacity: 0, x: 10 }}
-                      className="absolute right-full mr-3 px-3 py-1.5 bg-slate-900 text-white text-sm rounded-lg whitespace-nowrap"
+                      className="absolute right-full mr-3 px-3 py-1.5 bg-slate-900 text-white type-body-sm rounded-lg whitespace-nowrap"
                     >
                       {action.label}
                       {action.shortcut && (
@@ -207,7 +207,7 @@ export const SmartSearch: React.FC<SmartSearchProps> = ({
                 className="flex-1 bg-transparent text-lg outline-none text-slate-900 dark:text-white placeholder-slate-400"
                 autoFocus
               />
-              <kbd className="px-2 py-1 text-xs bg-slate-100 dark:bg-slate-800 rounded text-slate-500">
+              <kbd className="px-2 py-1 type-caption bg-slate-100 dark:bg-slate-800 rounded text-slate-500">
                 ESC
               </kbd>
             </div>
@@ -242,10 +242,10 @@ export const SmartSearch: React.FC<SmartSearchProps> = ({
                           {result.title}
                         </div>
                         {result.subtitle && (
-                          <div className="text-sm text-slate-500">{result.subtitle}</div>
+                          <div className="type-body-sm text-slate-500">{result.subtitle}</div>
                         )}
                       </div>
-                      <span className="text-xs text-slate-400 capitalize">{result.type}</span>
+                      <span className="type-caption text-slate-400 capitalize">{result.type}</span>
                     </motion.button>
                   ))}
                 </div>
@@ -258,7 +258,7 @@ export const SmartSearch: React.FC<SmartSearchProps> = ({
                 <div className="p-4">
                   {recentSearches.length > 0 && (
                     <>
-                      <div className="text-xs font-medium text-slate-400 uppercase tracking-wider mb-2 px-2">
+                      <div className="type-label text-slate-400 mb-2 px-2">
                         Recent Searches
                       </div>
                       {recentSearches.map((search, index) => (
@@ -274,7 +274,7 @@ export const SmartSearch: React.FC<SmartSearchProps> = ({
                     </>
                   )}
 
-                  <div className="text-xs font-medium text-slate-400 uppercase tracking-wider mb-2 px-2 mt-4">
+                  <div className="type-label text-slate-400 mb-2 px-2 mt-4">
                     Quick Actions
                   </div>
                   <div className="grid grid-cols-2 gap-2">
@@ -289,10 +289,10 @@ export const SmartSearch: React.FC<SmartSearchProps> = ({
                         className="flex items-center gap-3 p-3 rounded-xl bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors"
                       >
                         <i className={`fas ${action.icon} text-accent`} />
-                        <span className="flex-1 text-sm text-slate-700 dark:text-slate-300">
+                        <span className="flex-1 type-body-sm text-slate-700 dark:text-slate-300">
                           {action.label}
                         </span>
-                        <kbd className="text-xs text-slate-400">{action.shortcut}</kbd>
+                        <kbd className="type-caption text-slate-400">{action.shortcut}</kbd>
                       </button>
                     ))}
                   </div>
@@ -301,7 +301,7 @@ export const SmartSearch: React.FC<SmartSearchProps> = ({
             </div>
 
             {/* Footer */}
-            <div className="p-3 border-t border-slate-200 dark:border-slate-700 flex items-center justify-between text-xs text-slate-400">
+            <div className="p-3 border-t border-slate-200 dark:border-slate-700 flex items-center justify-between type-caption text-slate-400">
               <div className="flex items-center gap-4">
                 <span>
                   <kbd className="px-1.5 py-0.5 bg-slate-100 dark:bg-slate-800 rounded">↑↓</kbd>{' '}
@@ -367,7 +367,7 @@ export const FavoritesBar: React.FC<FavoritesBarProps> = ({
             ) : (
               <i className={`fas ${favorite.icon || 'fa-star'} text-amber-500`} />
             )}
-            <span className="text-sm text-slate-700 dark:text-slate-300 max-w-[100px] truncate">
+            <span className="type-body-sm text-slate-700 dark:text-slate-300 max-w-[100px] truncate">
               {favorite.title}
             </span>
           </button>
@@ -386,7 +386,7 @@ export const FavoritesBar: React.FC<FavoritesBarProps> = ({
       ))}
 
       {favorites.length === 0 && (
-        <div className="text-sm text-slate-400 italic">
+        <div className="type-body-sm text-slate-400 italic">
           <i className="fas fa-star mr-2" />
           No favorites yet
         </div>
@@ -434,11 +434,11 @@ export const RecentFiles: React.FC<RecentFilesProps> = ({
   return (
     <div className={`space-y-2 ${className}`}>
       <div className="flex items-center justify-between mb-3">
-        <h3 className="text-sm font-medium text-slate-700 dark:text-slate-300">
+        <h3 className="type-body-sm font-semibold text-slate-700 dark:text-slate-300">
           <i className="fas fa-clock mr-2 text-slate-400" />
           Recent Files
         </h3>
-        <button className="text-xs text-accent hover:underline">View All</button>
+        <button className="type-caption text-accent hover:underline">View All</button>
       </div>
 
       {files.slice(0, maxItems).map((file, index) => (
@@ -462,12 +462,12 @@ export const RecentFiles: React.FC<RecentFilesProps> = ({
             </div>
           )}
           <div className="flex-1 text-left">
-            <div className="text-sm font-medium text-slate-700 dark:text-slate-300 group-hover:text-accent transition-colors">
+            <div className="type-body-sm font-semibold text-slate-700 dark:text-slate-300 group-hover:text-accent transition-colors">
               {file.title}
             </div>
-            <div className="text-xs text-slate-400">{formatDate(file.lastModified)}</div>
+            <div className="type-caption text-slate-400">{formatDate(file.lastModified)}</div>
           </div>
-          <span className="text-xs text-slate-400 uppercase">{file.type}</span>
+          <span className="type-label text-slate-400">{file.type}</span>
         </motion.button>
       ))}
     </div>

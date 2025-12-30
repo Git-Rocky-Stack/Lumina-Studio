@@ -189,15 +189,15 @@ export const DragDropUpload: React.FC<DragDropUploadProps> = ({
             </motion.div>
 
             <div>
-              <p className="font-medium text-zinc-900 dark:text-white">
+              <p className="type-body-sm font-semibold text-zinc-900 dark:text-white">
                 {isDragging ? 'Drop files here' : 'Drag and drop files here'}
               </p>
-              <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-1">
+              <p className="type-body-sm text-zinc-500 dark:text-zinc-400 mt-1">
                 or click to browse
               </p>
             </div>
 
-            <p className="text-xs text-zinc-400 dark:text-zinc-500">
+            <p className="type-caption text-zinc-400 dark:text-zinc-500">
               Max {formatFileSize(maxSize)} per file • Up to {maxFiles} files
             </p>
           </div>
@@ -253,10 +253,10 @@ export const DragDropUpload: React.FC<DragDropUploadProps> = ({
 
                 {/* File info */}
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-zinc-900 dark:text-white truncate">
+                  <p className="type-body-sm font-semibold text-zinc-900 dark:text-white truncate">
                     {file.file.name}
                   </p>
-                  <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                  <p className="type-caption text-zinc-500 dark:text-zinc-400">
                     {formatFileSize(file.file.size)}
                   </p>
                 </div>
@@ -391,10 +391,10 @@ export const GlobalDropZone: React.FC<GlobalDropZoneProps> = ({
                 <Upload size={32} className="text-indigo-500" />
               </motion.div>
               <div className="text-center">
-                <h3 className="text-xl font-semibold text-zinc-900 dark:text-white">
+                <h3 className="type-subsection text-zinc-900 dark:text-white">
                   Drop your files
                 </h3>
-                <p className="text-zinc-500 dark:text-zinc-400 mt-1">
+                <p className="type-body-sm text-zinc-500 dark:text-zinc-400 mt-1">
                   Release to upload
                 </p>
               </div>

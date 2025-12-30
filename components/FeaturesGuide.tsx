@@ -1046,7 +1046,7 @@ const FeaturesGuide: React.FC = () => {
 
           <div className="grid md:grid-cols-3 gap-6">
             <GlassPanel className="p-6">
-              <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+              <h3 className="type-subsection mb-4 flex items-center gap-2">
                 <i className="fas fa-compass text-indigo-400" />
                 Navigation
               </h3>
@@ -1073,7 +1073,7 @@ const FeaturesGuide: React.FC = () => {
             </GlassPanel>
 
             <GlassPanel className="p-6">
-              <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+              <h3 className="type-subsection mb-4 flex items-center gap-2">
                 <i className="fas fa-pencil text-pink-400" />
                 Editing
               </h3>
@@ -1099,7 +1099,7 @@ const FeaturesGuide: React.FC = () => {
             </GlassPanel>
 
             <GlassPanel className="p-6">
-              <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+              <h3 className="type-subsection mb-4 flex items-center gap-2">
                 <i className="fas fa-wand-magic-sparkles text-amber-400" />
                 Quick Actions
               </h3>

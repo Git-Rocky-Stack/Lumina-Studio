@@ -305,7 +305,7 @@ const ProfileSurvey: React.FC<ProfileSurveyProps> = ({ onComplete }) => {
                       <span className="text-3xl">{role.icon}</span>
                       <div>
                         <div className="font-semibold text-slate-900 dark:text-white">{role.label}</div>
-                        <div className="text-sm text-slate-500 dark:text-slate-400">{role.desc}</div>
+                        <div className="type-body-sm text-slate-500 dark:text-slate-400">{role.desc}</div>
                       </div>
                     </motion.button>
                   ))}
@@ -353,7 +353,7 @@ const ProfileSurvey: React.FC<ProfileSurveyProps> = ({ onComplete }) => {
 
                 <button
                   onClick={() => setStep(0)}
-                  className="mt-4 text-sm text-slate-500 hover:text-slate-700 dark:hover:text-slate-300"
+                  className="mt-4 type-body-sm text-slate-500 hover:text-slate-700 dark:hover:text-slate-300"
                 >
                   ← Back
                 </button>
@@ -388,7 +388,7 @@ const ProfileSurvey: React.FC<ProfileSurveyProps> = ({ onComplete }) => {
                         setProfile({ ...profile, goals: newGoals });
                       }}
                       className={`
-                        p-3 rounded-xl border-2 transition-all text-sm font-medium
+                        p-3 rounded-xl border-2 transition-all type-body-sm font-semibold
                         ${(profile.goals || []).includes(goal.id)
                           ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300'
                           : 'border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:border-indigo-300'
@@ -403,7 +403,7 @@ const ProfileSurvey: React.FC<ProfileSurveyProps> = ({ onComplete }) => {
                 <div className="flex items-center justify-between">
                   <button
                     onClick={() => setStep(1)}
-                    className="text-sm text-slate-500 hover:text-slate-700 dark:hover:text-slate-300"
+                    className="type-body-sm text-slate-500 hover:text-slate-700 dark:hover:text-slate-300"
                   >
                     ← Back
                   </button>
@@ -565,7 +565,7 @@ const StepTooltip: React.FC<StepTooltipProps> = ({
           <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2">
             {step.title}
           </h3>
-          <p className="text-sm text-slate-600 dark:text-slate-300 mb-4">
+          <p className="type-body-sm text-slate-600 dark:text-slate-300 mb-4">
             {step.description}
           </p>
 
@@ -595,7 +595,7 @@ const StepTooltip: React.FC<StepTooltipProps> = ({
           <div className="flex items-center justify-between">
             <button
               onClick={onSkip}
-              className="text-sm text-slate-500 hover:text-slate-700 dark:hover:text-slate-300"
+              className="type-body-sm text-slate-500 hover:text-slate-700 dark:hover:text-slate-300"
             >
               Skip tour
             </button>
@@ -603,14 +603,14 @@ const StepTooltip: React.FC<StepTooltipProps> = ({
               {currentStep > 0 && (
                 <button
                   onClick={onPrevious}
-                  className="px-4 py-2 rounded-lg text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700"
+                  className="px-4 py-2 rounded-lg type-body-sm font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700"
                 >
                   Back
                 </button>
               )}
               <button
                 onClick={onNext}
-                className="px-4 py-2 rounded-lg text-sm font-semibold bg-indigo-500 text-white hover:bg-indigo-600"
+                className="px-4 py-2 rounded-lg type-body-sm font-semibold bg-indigo-500 text-white hover:bg-indigo-600"
               >
                 {currentStep === totalSteps - 1 ? 'Finish' : 'Next'}
               </button>

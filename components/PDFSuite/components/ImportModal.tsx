@@ -196,7 +196,7 @@ export const ImportModal: React.FC<ImportModalProps> = ({
               <i className="fas fa-file-import text-white text-lg"></i>
             </div>
             <div>
-              <h2 className="text-lg font-bold text-white">Import Document</h2>
+              <h2 className="type-subsection text-white">Import Document</h2>
               <p className="text-xs text-white/70">
                 {step === 'select' && 'Choose a file format to import'}
                 {step === 'configure' && 'Configure import options'}
@@ -276,7 +276,7 @@ export const ImportModal: React.FC<ImportModalProps> = ({
               {/* Selected files */}
               {files.length > 0 && (
                 <div>
-                  <label className="text-xs font-bold text-slate-500 uppercase tracking-wide mb-2 block">
+                  <label className="type-label text-slate-500 mb-2 block">
                     Selected Files ({files.length})
                   </label>
                   <div className="space-y-2 max-h-40 overflow-y-auto">
@@ -305,7 +305,7 @@ export const ImportModal: React.FC<ImportModalProps> = ({
               {/* URL input */}
               {selectedFormat === 'url' && (
                 <div>
-                  <label className="text-xs font-bold text-slate-500 uppercase tracking-wide mb-2 block">
+                  <label className="type-label text-slate-500 mb-2 block">
                     Web Page URL
                   </label>
                   <input
@@ -322,7 +322,7 @@ export const ImportModal: React.FC<ImportModalProps> = ({
               {selectedFormat === 'image' && (
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="text-xs font-bold text-slate-500 uppercase tracking-wide mb-2 block">
+                    <label className="type-label text-slate-500 mb-2 block">
                       Image Quality
                     </label>
                     <select
@@ -336,7 +336,7 @@ export const ImportModal: React.FC<ImportModalProps> = ({
                     </select>
                   </div>
                   <div>
-                    <label className="text-xs font-bold text-slate-500 uppercase tracking-wide mb-2 block">
+                    <label className="type-label text-slate-500 mb-2 block">
                       Page Fit
                     </label>
                     <select
@@ -379,7 +379,7 @@ export const ImportModal: React.FC<ImportModalProps> = ({
               {/* Import destination */}
               {currentPageCount > 0 && (
                 <div>
-                  <label className="text-xs font-bold text-slate-500 uppercase tracking-wide mb-3 block">
+                  <label className="type-label text-slate-500 mb-3 block">
                     Import Destination
                   </label>
                   <div className="space-y-2">

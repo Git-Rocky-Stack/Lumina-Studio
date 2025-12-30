@@ -123,7 +123,7 @@ export const Stepper: React.FC<StepperProps> = ({
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
                     className={`
-                      font-semibold text-sm
+                      font-semibold type-body-sm
                       ${isCurrent(index)
                         ? 'text-indigo-500'
                         : step.error
@@ -158,7 +158,7 @@ export const Stepper: React.FC<StepperProps> = ({
               <div className={`${isVertical ? 'flex-1' : 'text-center'}`}>
                 <p
                   className={`
-                    font-medium text-sm
+                    font-semibold type-body-sm
                     ${isCurrent(index)
                       ? 'text-indigo-600 dark:text-indigo-400'
                       : isCompleted(index)
@@ -168,11 +168,11 @@ export const Stepper: React.FC<StepperProps> = ({
                 >
                   {step.title}
                   {step.optional && (
-                    <span className="ml-1 text-xs text-zinc-400">(Optional)</span>
+                    <span className="ml-1 type-caption text-zinc-400">(Optional)</span>
                   )}
                 </p>
                 {step.description && (
-                  <p className="text-xs text-zinc-400 dark:text-zinc-500 mt-0.5">
+                  <p className="type-caption text-zinc-400 dark:text-zinc-500 mt-0.5">
                     {step.description}
                   </p>
                 )}
@@ -268,7 +268,7 @@ const ProgressStepper: React.FC<Pick<StepperProps, 'steps' | 'currentStep' | 'cl
           <div
             key={step.id}
             className={`
-              text-xs font-medium transition-colors
+              type-label transition-colors
               ${index <= currentStep
                 ? 'text-indigo-600 dark:text-indigo-400'
                 : 'text-zinc-400 dark:text-zinc-500'}
@@ -327,7 +327,7 @@ export const StepContent: React.FC<StepContentProps> = ({
           transition={{ duration: 0.2 }}
           className="mb-8"
         >
-          <h2 className="text-xl font-semibold text-zinc-900 dark:text-white mb-2">
+          <h2 className="type-subsection text-zinc-900 dark:text-white mb-2">
             {currentStepData.title}
           </h2>
           {currentStepData.description && (
@@ -403,7 +403,7 @@ export const BreadcrumbStepper: React.FC<BreadcrumbStepperProps> = ({
             )}
             <span
               className={`
-                text-sm font-medium
+                type-body-sm font-semibold
                 ${index < currentStep
                   ? 'text-indigo-600 dark:text-indigo-400'
                   : index === currentStep

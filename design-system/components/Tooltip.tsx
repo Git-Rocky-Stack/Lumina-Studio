@@ -160,7 +160,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
             ref={tooltipRef}
             role="tooltip"
             className={`
-              fixed z-50 px-3 py-2 text-sm text-white
+              fixed z-50 px-3 py-2 type-body-sm text-white
               bg-zinc-900 dark:bg-zinc-700 rounded-lg shadow-lg
               ${className}
             `}
@@ -271,10 +271,10 @@ export const ContextualTooltip: React.FC<ContextualTooltipProps> = ({
             />
 
             <div className="relative">
-              <div className="text-sm font-medium mb-2">{content}</div>
+              <div className="type-body-sm font-semibold mb-2">{content}</div>
               <button
                 onClick={handleDismiss}
-                className="text-xs text-white/70 hover:text-white underline"
+                className="type-caption text-white/70 hover:text-white underline"
               >
                 Got it
               </button>

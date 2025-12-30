@@ -167,12 +167,12 @@ export const Slider: React.FC<SliderProps> = ({
       {(label || showValue) && (
         <div className="flex items-center justify-between mb-2">
           {label && (
-            <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
+            <label className="type-body-sm font-semibold text-zinc-700 dark:text-zinc-300">
               {label}
             </label>
           )}
           {showValue && (
-            <span className="text-sm font-medium text-zinc-900 dark:text-white">
+            <span className="type-body-sm font-semibold text-zinc-900 dark:text-white">
               {formatValue(value)}
             </span>
           )}
@@ -217,7 +217,7 @@ export const Slider: React.FC<SliderProps> = ({
                 ${mark.value <= value ? 'bg-white' : 'bg-zinc-400 dark:bg-zinc-500'}
               `} />
               {mark.label && (
-                <span className="absolute top-4 left-1/2 -translate-x-1/2 text-xs text-zinc-500 dark:text-zinc-400 whitespace-nowrap">
+                <span className="absolute top-4 left-1/2 -translate-x-1/2 type-caption text-zinc-500 dark:text-zinc-400 whitespace-nowrap">
                   {mark.label}
                 </span>
               )}
@@ -250,7 +250,7 @@ export const Slider: React.FC<SliderProps> = ({
           {/* Tooltip */}
           {showTooltip && (isDragging || isHovered) && (
             <motion.div
-              className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 text-xs font-medium text-white bg-zinc-900 rounded-md whitespace-nowrap"
+              className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 type-caption font-semibold text-white bg-zinc-900 rounded-md whitespace-nowrap"
               initial={{ opacity: 0, y: 5 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 5 }}
@@ -349,12 +349,12 @@ export const RangeSlider: React.FC<RangeSliderProps> = ({
       {(label || showValue) && (
         <div className="flex items-center justify-between mb-2">
           {label && (
-            <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
+            <label className="type-body-sm font-semibold text-zinc-700 dark:text-zinc-300">
               {label}
             </label>
           )}
           {showValue && (
-            <span className="text-sm font-medium text-zinc-900 dark:text-white">
+            <span className="type-body-sm font-semibold text-zinc-900 dark:text-white">
               {formatValue(value[0])} - {formatValue(value[1])}
             </span>
           )}

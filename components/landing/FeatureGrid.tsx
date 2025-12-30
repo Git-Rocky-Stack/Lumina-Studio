@@ -69,7 +69,7 @@ const FeatureGrid: React.FC = () => {
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            className="inline-flex items-center gap-2 px-5 py-2 rounded-full glass-card text-violet-400 text-sm font-semibold mb-8"
+            className="inline-flex items-center gap-2 px-5 py-2 rounded-full glass-card text-violet-400 type-body-sm font-semibold mb-8"
           >
             <i className="fas fa-cubes text-xs" />
             6 Pro Tools, One Platform
@@ -110,7 +110,7 @@ const FeatureGrid: React.FC = () => {
           <div className="glass-card rounded-2xl p-8 max-w-2xl mx-auto">
             <div className="flex items-center justify-center gap-3 mb-4">
               <div className="w-3 h-3 rounded-full bg-emerald-400 animate-pulse" />
-              <span className="text-slate-400 text-sm font-medium">New features added weekly</span>
+              <span className="text-slate-400 type-body-sm font-semibold">New features added weekly</span>
             </div>
             <p className="text-slate-300 mb-6">
               Join our community and help shape the future of creative tools.

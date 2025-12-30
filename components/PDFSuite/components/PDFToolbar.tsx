@@ -210,7 +210,7 @@ export const PDFToolbar: React.FC<PDFToolbarProps> = ({
         <div className="flex items-center gap-2 pr-4 border-r border-slate-200">
           <button
             onClick={() => fileInputRef.current?.click()}
-            className="px-4 py-2 bg-indigo-600 text-white rounded-xl text-xs font-bold uppercase tracking-wider hover:bg-indigo-700 transition-all flex items-center gap-2 shadow-lg shadow-indigo-600/20"
+            className="px-4 py-2 bg-indigo-600 text-white rounded-xl type-micro hover:bg-indigo-700 transition-all flex items-center gap-2 shadow-lg shadow-indigo-600/20"
           >
             <i className="fas fa-folder-open"></i>
             Open

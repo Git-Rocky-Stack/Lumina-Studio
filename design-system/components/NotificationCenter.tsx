@@ -109,7 +109,7 @@ export const NotificationCenter: React.FC<NotificationCenterProps> = ({
             <button
               key={f}
               onClick={() => setFilter(f)}
-              className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+              className={`px-3 py-1.5 rounded-lg type-body-sm font-semibold transition-colors ${
                 filter === f
                   ? 'bg-accent text-white'
                   : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400'
@@ -158,15 +158,15 @@ export const NotificationCenter: React.FC<NotificationCenterProps> = ({
                   <div className="flex-1 min-w-0">
                     <div className="flex items-start justify-between gap-2">
                       <div>
-                        <div className="font-medium text-sm text-slate-900 dark:text-white">
+                        <div className="type-body-sm font-semibold text-slate-900 dark:text-white">
                           {notification.title}
                         </div>
-                        <p className="text-sm text-slate-600 dark:text-slate-400 line-clamp-2">
+                        <p className="type-body-sm text-slate-600 dark:text-slate-400 line-clamp-2">
                           {notification.message}
                         </p>
                       </div>
                       <div className="flex items-center gap-2 flex-shrink-0">
-                        <span className="text-xs text-slate-400">
+                        <span className="type-caption text-slate-400">
                           {formatTime(notification.timestamp)}
                         </span>
                         {!notification.read && (
@@ -182,7 +182,7 @@ export const NotificationCenter: React.FC<NotificationCenterProps> = ({
                           e.stopPropagation();
                           notification.action?.onClick();
                         }}
-                        className="mt-2 px-3 py-1.5 bg-accent/10 text-accent rounded-lg text-xs font-medium hover:bg-accent/20"
+                        className="mt-2 px-3 py-1.5 bg-accent/10 text-accent rounded-lg type-label hover:bg-accent/20"
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
                       >
@@ -294,7 +294,7 @@ export const ToastNotification: React.FC<ToastNotificationProps> = ({
         <i className={`fas ${config.icon} text-lg mt-0.5`} />
         <div className="flex-1">
           <div className="font-medium text-slate-900 dark:text-white">{notification.title}</div>
-          <p className="text-sm text-slate-600 dark:text-slate-400">{notification.message}</p>
+          <p className="type-body-sm text-slate-600 dark:text-slate-400">{notification.message}</p>
         </div>
         <button onClick={onDismiss} className="text-slate-400 hover:text-slate-600">
           <i className="fas fa-times" />

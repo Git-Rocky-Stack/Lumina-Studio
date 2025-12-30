@@ -84,7 +84,7 @@ const Navigation: React.FC = () => {
                       to={link.href}
                       onMouseEnter={() => setHoveredLink(link.label)}
                       onMouseLeave={() => setHoveredLink(null)}
-                      className="relative px-5 py-2 text-sm font-medium text-slate-300 hover:text-white transition-colors rounded-full"
+                      className="relative px-5 py-2 type-body-sm font-semibold text-slate-300 hover:text-white transition-colors rounded-full"
                     >
                       {hoveredLink === link.label && (
                         <motion.div
@@ -101,7 +101,7 @@ const Navigation: React.FC = () => {
                       href={link.href}
                       onMouseEnter={() => setHoveredLink(link.label)}
                       onMouseLeave={() => setHoveredLink(null)}
-                      className="relative px-5 py-2 text-sm font-medium text-slate-300 hover:text-white transition-colors rounded-full"
+                      className="relative px-5 py-2 type-body-sm font-semibold text-slate-300 hover:text-white transition-colors rounded-full"
                     >
                       {hoveredLink === link.label && (
                         <motion.div
@@ -122,13 +122,13 @@ const Navigation: React.FC = () => {
               <ThemeToggle variant="icon" />
               <Link
                 to="/sign-in"
-                className="px-5 py-2.5 text-sm font-medium text-slate-300 hover:text-white transition-colors rounded-xl hover:bg-white/5"
+                className="px-5 py-2.5 type-body-sm font-semibold text-slate-300 hover:text-white transition-colors rounded-xl hover:bg-white/5"
               >
                 Sign In
               </Link>
               <Link
                 to="/sign-up"
-                className="group relative px-6 py-2.5 rounded-xl font-semibold text-sm overflow-hidden"
+                className="group relative px-6 py-2.5 rounded-xl type-body-sm font-semibold overflow-hidden"
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-violet-600 transition-transform group-hover:scale-105" />
                 <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -228,7 +228,7 @@ const Navigation: React.FC = () => {
                         <Link
                           to={link.href}
                           onClick={() => setMobileMenuOpen(false)}
-                          className="block py-4 px-4 text-lg font-medium text-slate-200 hover:text-white hover:bg-white/5 rounded-xl transition-all"
+                          className="block py-4 px-4 type-subsection text-slate-200 hover:text-white hover:bg-white/5 rounded-xl transition-all"
                         >
                           {link.label}
                         </Link>
@@ -241,7 +241,7 @@ const Navigation: React.FC = () => {
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: i * 0.1 }}
                         onClick={() => setMobileMenuOpen(false)}
-                        className="block py-4 px-4 text-lg font-medium text-slate-200 hover:text-white hover:bg-white/5 rounded-xl transition-all"
+                        className="block py-4 px-4 type-subsection text-slate-200 hover:text-white hover:bg-white/5 rounded-xl transition-all"
                       >
                         {link.label}
                       </motion.a>

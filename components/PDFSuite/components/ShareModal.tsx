@@ -198,7 +198,7 @@ export const ShareModal: React.FC<ShareModalProps> = ({
                 </svg>
               </div>
               <div>
-                <h2 className="text-lg font-semibold text-white">Share Document</h2>
+                <h2 className="type-subsection text-white">Share Document</h2>
                 <p className="text-sm text-white/50 truncate max-w-xs">{file.name}</p>
               </div>
             </div>
@@ -217,7 +217,7 @@ export const ShareModal: React.FC<ShareModalProps> = ({
         <div className="flex border-b border-white/10">
           <button
             onClick={() => setActiveTab('link')}
-            className={`flex-1 py-3 text-sm font-medium transition-colors ${
+            className={`flex-1 py-3 type-body-sm font-semibold transition-colors ${
               activeTab === 'link'
                 ? 'text-purple-400 border-b-2 border-purple-500'
                 : 'text-white/50 hover:text-white'
@@ -227,7 +227,7 @@ export const ShareModal: React.FC<ShareModalProps> = ({
           </button>
           <button
             onClick={() => setActiveTab('people')}
-            className={`flex-1 py-3 text-sm font-medium transition-colors ${
+            className={`flex-1 py-3 type-body-sm font-semibold transition-colors ${
               activeTab === 'people'
                 ? 'text-purple-400 border-b-2 border-purple-500'
                 : 'text-white/50 hover:text-white'
@@ -279,7 +279,7 @@ export const ShareModal: React.FC<ShareModalProps> = ({
                   />
                   <button
                     onClick={handleCopyLink}
-                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                    className={`px-4 py-2 rounded-lg type-body-sm font-semibold transition-colors ${
                       isCopied
                         ? 'bg-green-500 text-white'
                         : 'bg-purple-500 hover:bg-purple-600 text-white'
@@ -389,7 +389,7 @@ export const ShareModal: React.FC<ShareModalProps> = ({
                 <button
                   onClick={handleInvite}
                   disabled={!inviteEmail.trim()}
-                  className="px-4 py-2 bg-purple-500 hover:bg-purple-600 disabled:opacity-50 disabled:cursor-not-allowed rounded-lg text-white text-sm font-medium transition-colors"
+                  className="px-4 py-2 bg-purple-500 hover:bg-purple-600 disabled:opacity-50 disabled:cursor-not-allowed rounded-lg text-white type-body-sm font-semibold transition-colors"
                 >
                   Invite
                 </button>
@@ -463,7 +463,7 @@ export const ShareModal: React.FC<ShareModalProps> = ({
               handleUpdateSettings();
               onClose();
             }}
-            className="px-4 py-2 bg-purple-500 hover:bg-purple-600 rounded-lg text-white font-medium transition-colors"
+            className="px-4 py-2 bg-purple-500 hover:bg-purple-600 rounded-lg text-white type-body-sm font-semibold transition-colors"
           >
             Done
           </button>

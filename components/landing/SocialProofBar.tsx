@@ -34,7 +34,7 @@ const SocialProofBar: React.FC = () => {
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center text-slate-500 text-sm font-medium mb-12 uppercase tracking-[0.2em]"
+          className="text-center text-slate-500 type-label mb-12"
         >
           Trusted by creative teams at
         </motion.p>
@@ -60,7 +60,7 @@ const SocialProofBar: React.FC = () => {
                         style={{ ['--hover-color' as string]: logo.color }}
                       />
                     </div>
-                    <span className="text-lg font-semibold text-slate-400 group-hover:text-white hidden sm:block transition-colors">
+                    <span className="type-subsection text-slate-400 group-hover:text-white hidden sm:block transition-colors">
                       {logo.name}
                     </span>
                   </div>
@@ -81,7 +81,7 @@ const SocialProofBar: React.FC = () => {
                     <div className="w-12 h-12 rounded-xl bg-slate-800/50 flex items-center justify-center group-hover:bg-slate-700/50 transition-colors">
                       <i className={`fab ${logo.icon} text-2xl text-slate-400`} />
                     </div>
-                    <span className="text-lg font-semibold text-slate-400 group-hover:text-white hidden sm:block transition-colors">
+                    <span className="type-subsection text-slate-400 group-hover:text-white hidden sm:block transition-colors">
                       {logo.name}
                     </span>
                   </div>
@@ -111,7 +111,7 @@ const SocialProofBar: React.FC = () => {
               <div className={`w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center group-hover:scale-110 transition-transform`}>
                 <i className={`fas ${badge.icon} ${badge.color} text-sm`} />
               </div>
-              <span className="text-sm text-slate-400 font-medium group-hover:text-slate-200 transition-colors">
+              <span className="type-body-sm font-semibold text-slate-400 group-hover:text-slate-200 transition-colors">
                 {badge.label}
               </span>
             </motion.div>
