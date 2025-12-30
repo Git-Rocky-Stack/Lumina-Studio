@@ -20,6 +20,8 @@ import AuthCallback from './pages/AuthCallback';
 import UserGuide from './pages/UserGuide';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import Terms from './pages/Terms';
+import CheckoutSuccess from './pages/CheckoutSuccess';
+import CheckoutCancel from './pages/CheckoutCancel';
 
 // Design System
 import { ToastProvider } from './design-system';
@@ -67,6 +69,8 @@ root.render(
               <Route path="/sign-in" element={<SignInPage />} />
               <Route path="/sign-up" element={<SignUpPage />} />
               <Route path="/auth/callback" element={<AuthCallback />} />
+              <Route path="/checkout/success" element={<CheckoutSuccess />} />
+              <Route path="/checkout/cancel" element={<CheckoutCancel />} />
 
               {/* Protected studio route */}
               <Route

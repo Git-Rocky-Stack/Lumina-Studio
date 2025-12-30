@@ -31,10 +31,15 @@ export interface Env {
   // Google AI / Gemini (secrets)
   GOOGLE_AI_API_KEY: string;
 
-  // LemonSqueezy Payments (secrets)
-  LEMONSQUEEZY_API_KEY: string;
-  LEMONSQUEEZY_WEBHOOK_SECRET: string;
-  LEMONSQUEEZY_STORE_ID: string;
+  // LemonSqueezy Payments (secrets) - DEPRECATED, use Stripe
+  LEMONSQUEEZY_API_KEY?: string;
+  LEMONSQUEEZY_WEBHOOK_SECRET?: string;
+  LEMONSQUEEZY_STORE_ID?: string;
+
+  // Stripe Payments (secrets)
+  STRIPE_SECRET_KEY: string;
+  STRIPE_WEBHOOK_SECRET: string;
+  STRIPE_PUBLISHABLE_KEY?: string;
 
   // Optional integrations
   SENTRY_DSN?: string;
@@ -47,7 +52,7 @@ declare module 'hono' {
     userId: string;
     sessionId: string;
     userRole?: 'owner' | 'admin' | 'editor' | 'viewer';
-    userTier?: 'free' | 'pro' | 'team' | 'enterprise';
+    userTier?: 'free' | 'starter' | 'pro' | 'team' | 'enterprise';
   }
 }
 
@@ -57,10 +62,11 @@ export interface User {
   email: string;
   display_name: string | null;
   avatar_url: string | null;
-  tier: 'free' | 'pro' | 'team' | 'enterprise';
+  tier: 'free' | 'starter' | 'pro' | 'team' | 'enterprise';
   subscription_status: 'active' | 'cancelled' | 'past_due' | 'trialing';
   subscription_id: string | null;
   subscription_expires_at: number | null;
+  stripe_customer_id: string | null;
   theme_color: string;
   default_workspace_id: string | null;
   created_at: number;

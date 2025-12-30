@@ -71,11 +71,15 @@ vars = { ENVIRONMENT = "development" }
 # - CLERK_WEBHOOK_SECRET
 # - CLERK_PUBLISHABLE_KEY
 # - GOOGLE_AI_API_KEY
+# - STRIPE_SECRET_KEY (required for payments)
+# - STRIPE_WEBHOOK_SECRET (required for webhooks)
+# - SENTRY_DSN (optional)
+# - RESEND_API_KEY (optional)
+#
+# DEPRECATED (use Stripe instead):
 # - LEMONSQUEEZY_API_KEY
 # - LEMONSQUEEZY_WEBHOOK_SECRET
 # - LEMONSQUEEZY_STORE_ID
-# - SENTRY_DSN (optional)
-# - RESEND_API_KEY (optional)
 
 # Build configuration
 [build]

@@ -111,7 +111,18 @@ const HeroSection: React.FC = () => {
             transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
             className="text-5xl sm:text-6xl md:text-7xl lg:text-[5.5rem] xl:text-[6.5rem] font-black tracking-[-0.04em] leading-[0.9] font-display"
           >
-            <span className="block text-white">Create Without</span>
+            <span className="block text-white">The Only Creative</span>
+          </motion.h1>
+        </div>
+
+        <div className="overflow-hidden mb-4">
+          <motion.h1
+            initial={{ y: 120 }}
+            animate={{ y: 0 }}
+            transition={{ duration: 1, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
+            className="text-5xl sm:text-6xl md:text-7xl lg:text-[5.5rem] xl:text-[6.5rem] font-black tracking-[-0.04em] leading-[0.9] font-display"
+          >
+            <span className="block text-white">Subscription</span>
           </motion.h1>
         </div>
 
@@ -119,42 +130,64 @@ const HeroSection: React.FC = () => {
           <motion.h1
             initial={{ y: 120 }}
             animate={{ y: 0 }}
-            transition={{ duration: 1, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 1, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
             className="text-5xl sm:text-6xl md:text-7xl lg:text-[5.5rem] xl:text-[6.5rem] font-black tracking-[-0.04em] leading-[0.9] font-display"
           >
             <span className="block bg-gradient-to-r from-indigo-400 via-violet-400 to-purple-400 bg-clip-text text-transparent animate-gradient bg-[length:200%_auto]">
-              Limits
+              You Need
             </span>
           </motion.h1>
         </div>
 
-        {/* Subheadline - Improved contrast */}
+        {/* Subheadline - Outcome focused */}
         <motion.p
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          className="text-lg sm:text-xl md:text-2xl text-slate-300 max-w-3xl mx-auto mb-14 leading-relaxed font-light"
+          transition={{ duration: 1, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          className="text-lg sm:text-xl md:text-2xl text-slate-300 max-w-3xl mx-auto mb-8 leading-relaxed font-light"
         >
-          The all-in-one AI creative suite for designers, marketers, and content creators.
+          Cancel your other subscriptions.{' '}
+          <span className="text-white font-normal">Generate images, edit photos, create videos, manage PDFs</span>
           <br className="hidden sm:block" />
-          <span className="text-white font-normal">Generate stunning visuals in seconds.</span>
+          — all in one place, for one price.
         </motion.p>
+
+        {/* Tools replaced badge */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          className="flex flex-wrap items-center justify-center gap-3 mb-14"
+        >
+          <span className="text-slate-500 text-sm">Cancel:</span>
+          {['Midjourney', 'Photoshop', 'Premiere', 'Acrobat', 'Canva'].map((tool, i) => (
+            <span
+              key={tool}
+              className="px-3 py-1.5 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400/80 text-xs font-medium line-through"
+            >
+              {tool}
+            </span>
+          ))}
+          <span className="px-3 py-1.5 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-semibold">
+            Save $80+/mo
+          </span>
+        </motion.div>
 
         {/* CTA Buttons - Improved copy and ARIA */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.65, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 1, delay: 0.8, ease: [0.16, 1, 0.3, 1] }}
           className="flex flex-col items-center gap-6 mb-20"
         >
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
             <Link
               to="/sign-up"
-              aria-label="Create your first AI design for free"
+              aria-label="Start creating for free"
               className="group relative px-10 py-5 rounded-2xl bg-gradient-to-r from-indigo-500 via-violet-500 to-purple-500 font-bold text-lg shadow-2xl shadow-indigo-500/25 btn-premium flex items-center gap-3 animate-gradient bg-[length:200%_auto]"
             >
               <span className="relative z-10 flex items-center gap-3">
-                Create Your First AI Design
+                Start Creating — It's Free
                 <span className="w-8 h-8 rounded-lg bg-white/20 flex items-center justify-center group-hover:bg-white/30 transition-colors" aria-hidden="true">
                   <i className="fas fa-arrow-right text-sm group-hover:translate-x-0.5 transition-transform" />
                 </span>
@@ -185,7 +218,7 @@ const HeroSection: React.FC = () => {
             </span>
             <span className="hidden sm:flex items-center gap-2">
               <i className="fas fa-bolt text-amber-400" aria-hidden="true" />
-              20 free AI generations
+              15 free AI generations
             </span>
             <span className="hidden md:flex items-center gap-2">
               <i className="fas fa-clock text-indigo-400" aria-hidden="true" />

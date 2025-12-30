@@ -1,8 +1,10 @@
 import React, { useState, useRef } from 'react';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import PricingCalculator from './PricingCalculator';
 import TrustBadges from './TrustBadges';
+import { redirectToCheckout, PlanName, BillingInterval } from '../../services/stripeService';
+import { useAuthContext } from '../../contexts/AuthContext';
 
 const plans = [
   {
@@ -11,10 +13,10 @@ const plans = [
     yearlyPrice: 0,
     description: 'Try Lumina with included credits',
     features: [
-      '20 AI images/month',
-      '3 AI videos/month',
-      '1GB storage',
+      '15 AI images/month',
+      '2 AI videos/month',
       'Basic export formats',
+      'Local project saves',
       'Community support',
     ],
     byokFeature: 'Or unlimited with your own API key',
@@ -24,36 +26,36 @@ const plans = [
   },
   {
     name: 'Starter',
-    monthlyPrice: 9,
-    yearlyPrice: 7,
-    description: 'BYOK-only — bring your own Gemini key',
+    monthlyPrice: 12,
+    yearlyPrice: 10,
+    description: 'Best for API key holders',
     features: [
       'Unlimited AI images (BYOK)',
       'Unlimited AI videos (BYOK)',
-      '10GB storage',
+      'Cloud sync (Drive, Dropbox, OneDrive)',
       'All export formats',
       'Email support',
       'Full platform access',
     ],
-    byokFeature: 'Your API key = unlimited generation',
-    cta: 'Start Creating',
+    byokFeature: 'Bring your Gemini key = $0 generation costs',
+    cta: 'Start with BYOK',
     popular: false,
-    gradient: 'from-emerald-500 to-teal-600',
+    gradient: 'from-amber-500 to-orange-600',
     byokOnly: true,
+    badge: 'BYOK',
   },
   {
     name: 'Pro',
-    monthlyPrice: 19,
-    yearlyPrice: 15,
+    monthlyPrice: 29,
+    yearlyPrice: 24,
     description: 'Included credits + BYOK unlimited',
     features: [
-      '500 AI images/month included',
-      '50 AI videos/month included',
-      '50GB storage',
+      '150 AI images/month included',
+      '12 AI videos/month included',
+      'Cloud sync (Drive, Dropbox, OneDrive)',
       'All export formats',
       'Priority support',
       'Brand kit',
-      'API access',
     ],
     byokFeature: '+ Unlimited with your own API key',
     cta: 'Start Pro Trial',
@@ -62,13 +64,13 @@ const plans = [
   },
   {
     name: 'Team',
-    monthlyPrice: 49,
-    yearlyPrice: 39,
+    monthlyPrice: 79,
+    yearlyPrice: 65,
     description: 'Maximum power for teams',
     features: [
-      '2000 AI images/month included',
-      '200 AI videos/month included',
-      '200GB storage',
+      '500 AI images/month included',
+      '40 AI videos/month included',
+      'Cloud sync (Drive, Dropbox, OneDrive)',
       'All Pro features',
       'Up to 10 team members',
       'Advanced analytics',
@@ -112,11 +114,14 @@ const PricingSection: React.FC = () => {
             Pricing
           </motion.span>
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 font-display tracking-tight">
-            Simple,{' '}
-            <span className="text-gradient-primary">Transparent</span> Pricing
+            One Platform.{' '}
+            <span className="text-gradient-primary">Your Choice.</span>
           </h2>
-          <p className="text-xl text-slate-400 max-w-2xl mx-auto leading-relaxed mb-12">
-            Start free, upgrade when you need more power.
+          <p className="text-xl text-slate-400 max-w-2xl mx-auto leading-relaxed mb-4">
+            Use our included credits, or bring your own API key for unlimited generation.
+          </p>
+          <p className="text-sm text-slate-500 mb-12">
+            Already have a Gemini API key? The <span className="text-amber-400 font-semibold">Starter plan</span> gives you unlimited generation for just $12/mo.
           </p>
 
           {/* Billing toggle */}
@@ -167,17 +172,20 @@ const PricingSection: React.FC = () => {
           transition={{ duration: 0.6, delay: 0.3 }}
           className="mt-12 text-center"
         >
-          <div className="inline-flex items-center gap-3 px-6 py-3 rounded-2xl glass-card">
-            <i className="fas fa-key text-emerald-400" />
-            <span className="text-slate-300 text-sm">
-              <strong className="text-white">BYOK</strong> = Bring Your Own Key — use your Gemini API key for unlimited AI generation at Google's pay-as-you-go rates
-            </span>
+          <div className="inline-flex flex-col sm:flex-row items-center gap-3 px-6 py-4 rounded-2xl glass-card border-amber-500/20">
+            <div className="flex items-center gap-3">
+              <i className="fas fa-key text-amber-400" />
+              <span className="text-slate-300 text-sm">
+                <strong className="text-amber-400">BYOK</strong> = Bring Your Own Key — use your Gemini API key for unlimited AI generation
+              </span>
+            </div>
             <a
               href="https://aistudio.google.com/apikey"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-indigo-400 hover:text-indigo-300 transition-colors"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-400 text-sm font-medium hover:bg-amber-500/20 transition-colors"
             >
+              Get Free API Key
               <i className="fas fa-external-link text-xs" />
             </a>
           </div>
@@ -245,6 +253,9 @@ const PricingCard: React.FC<{
   delay: number;
 }> = ({ plan, isYearly, delay }) => {
   const cardRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
+  const { user, isAuthenticated } = useAuthContext();
+  const [isLoading, setIsLoading] = useState(false);
 
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
@@ -266,6 +277,44 @@ const PricingCard: React.FC<{
   };
 
   const price = isYearly ? plan.yearlyPrice : plan.monthlyPrice;
+
+  const handleCheckout = async () => {
+    // Free plan - just go to sign up
+    if (plan.name === 'Free') {
+      navigate('/sign-up');
+      return;
+    }
+
+    // Team plan - contact sales
+    if (plan.name === 'Team') {
+      window.location.href = 'mailto:sales@lumina-os.com?subject=Team Plan Inquiry';
+      return;
+    }
+
+    // Paid plans - redirect to Stripe checkout
+    // If not authenticated, go to sign-up first
+    if (!isAuthenticated) {
+      navigate('/sign-up', { state: { redirectTo: 'checkout', plan: plan.name.toLowerCase() } });
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const planName = plan.name.toLowerCase() as PlanName;
+      const interval: BillingInterval = isYearly ? 'yearly' : 'monthly';
+      await redirectToCheckout(
+        planName,
+        interval,
+        user?.email,
+        user?.id
+      );
+    } catch (error) {
+      console.error('Checkout error:', error);
+      // Could show a toast notification here
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <motion.div
@@ -361,13 +410,13 @@ const PricingCard: React.FC<{
               transition={{ delay: delay + 0.3 }}
               className={`mb-6 p-3 rounded-xl ${
                 plan.byokOnly
-                  ? 'bg-emerald-500/10 border border-emerald-500/30'
+                  ? 'bg-amber-500/10 border border-amber-500/30'
                   : 'bg-indigo-500/10 border border-indigo-500/20'
               }`}
             >
               <div className="flex items-center gap-2">
-                <i className={`fas fa-key text-xs ${plan.byokOnly ? 'text-emerald-400' : 'text-indigo-400'}`} />
-                <span className={`text-xs font-semibold ${plan.byokOnly ? 'text-emerald-300' : 'text-indigo-300'}`}>
+                <i className={`fas fa-key text-xs ${plan.byokOnly ? 'text-amber-400' : 'text-indigo-400'}`} />
+                <span className={`text-xs font-semibold ${plan.byokOnly ? 'text-amber-300' : 'text-indigo-300'}`}>
                   {plan.byokFeature}
                 </span>
               </div>
@@ -375,16 +424,24 @@ const PricingCard: React.FC<{
           )}
 
           {/* CTA */}
-          <Link
-            to="/sign-up"
-            className={`block w-full py-4 rounded-xl font-semibold text-center transition-all duration-300 ${
+          <button
+            onClick={handleCheckout}
+            disabled={isLoading}
+            className={`block w-full py-4 rounded-xl font-semibold text-center transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed ${
               plan.popular
                 ? `bg-gradient-to-r ${plan.gradient} hover:opacity-90 shadow-lg shadow-indigo-500/25 hover:shadow-xl hover:shadow-indigo-500/30`
                 : 'glass-card glass-card-hover'
             }`}
           >
-            {plan.cta}
-          </Link>
+            {isLoading ? (
+              <span className="flex items-center justify-center gap-2">
+                <i className="fas fa-spinner fa-spin" />
+                Processing...
+              </span>
+            ) : (
+              plan.cta
+            )}
+          </button>
         </div>
       </div>
     </motion.div>

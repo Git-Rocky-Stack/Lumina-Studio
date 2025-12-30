@@ -11,6 +11,7 @@ import { logger } from 'hono/logger';
 import { prettyJSON } from 'hono/pretty-json';
 import { secureHeaders } from 'hono/secure-headers';
 import { Webhook } from 'svix';
+import Stripe from 'stripe';
 import { Env, AIGenerationResponse } from './types/env';
 
 // Create the main Hono app
@@ -1095,6 +1096,348 @@ v1.get('/usage/current', authMiddleware, async (c) => {
 
 // Protect usage routes
 v1.use('/usage/*', authMiddleware);
+
+// ===========================================
+// Stripe Payment Endpoints
+// ===========================================
+
+// Price IDs mapped to plan names (configure these in Stripe Dashboard)
+const STRIPE_PRICE_MAP: Record<string, { plan: string; interval: string }> = {
+  // These will be set dynamically from client request
+};
+
+// Plan to tier mapping
+const PLAN_TO_TIER: Record<string, string> = {
+  starter: 'starter',
+  pro: 'pro',
+  team: 'team',
+};
+
+// Create Stripe checkout session (public - handles its own auth)
+v1.post('/stripe/create-checkout-session', async (c) => {
+  const body = await c.req.json();
+  const { priceId, planName, interval, userEmail, userId, successUrl, cancelUrl } = body;
+
+  if (!priceId || !successUrl || !cancelUrl) {
+    return c.json({ error: 'Missing required fields' }, 400);
+  }
+
+  try {
+    const stripe = new Stripe(c.env.STRIPE_SECRET_KEY, {
+      apiVersion: '2024-12-18.acacia',
+    });
+
+    // Build checkout session parameters
+    const sessionParams: Stripe.Checkout.SessionCreateParams = {
+      mode: 'subscription',
+      payment_method_types: ['card'],
+      line_items: [
+        {
+          price: priceId,
+          quantity: 1,
+        },
+      ],
+      success_url: successUrl,
+      cancel_url: cancelUrl,
+      metadata: {
+        planName: planName || '',
+        interval: interval || '',
+        userId: userId || '',
+      },
+      subscription_data: {
+        metadata: {
+          planName: planName || '',
+          userId: userId || '',
+        },
+      },
+    };
+
+    // Add customer email if provided
+    if (userEmail) {
+      sessionParams.customer_email = userEmail;
+    }
+
+    // If we have a userId, try to find existing Stripe customer
+    if (userId) {
+      const user = await c.env.DB.prepare(
+        'SELECT stripe_customer_id FROM users WHERE id = ?'
+      ).bind(userId).first();
+
+      if (user?.stripe_customer_id) {
+        sessionParams.customer = user.stripe_customer_id as string;
+        delete sessionParams.customer_email; // Can't use both
+      }
+    }
+
+    const session = await stripe.checkout.sessions.create(sessionParams);
+
+    return c.json({
+      sessionId: session.id,
+      url: session.url,
+    });
+  } catch (error) {
+    console.error('Stripe checkout error:', error);
+    return c.json({
+      error: 'Failed to create checkout session',
+      message: error instanceof Error ? error.message : 'Unknown error',
+    }, 500);
+  }
+});
+
+// Create Stripe billing portal session (requires auth)
+v1.post('/stripe/create-portal-session', authMiddleware, async (c) => {
+  const userId = c.get('userId');
+  const body = await c.req.json();
+  const { returnUrl } = body;
+
+  if (!returnUrl) {
+    return c.json({ error: 'Missing returnUrl' }, 400);
+  }
+
+  try {
+    // Get user's Stripe customer ID
+    const user = await c.env.DB.prepare(
+      'SELECT stripe_customer_id FROM users WHERE id = ?'
+    ).bind(userId).first();
+
+    if (!user?.stripe_customer_id) {
+      return c.json({ error: 'No subscription found' }, 404);
+    }
+
+    const stripe = new Stripe(c.env.STRIPE_SECRET_KEY, {
+      apiVersion: '2024-12-18.acacia',
+    });
+
+    const session = await stripe.billingPortal.sessions.create({
+      customer: user.stripe_customer_id as string,
+      return_url: returnUrl,
+    });
+
+    return c.json({ url: session.url });
+  } catch (error) {
+    console.error('Stripe portal error:', error);
+    return c.json({
+      error: 'Failed to create portal session',
+      message: error instanceof Error ? error.message : 'Unknown error',
+    }, 500);
+  }
+});
+
+// Get subscription status (requires auth)
+v1.get('/stripe/subscription-status', authMiddleware, async (c) => {
+  const userId = c.get('userId');
+
+  try {
+    const user = await c.env.DB.prepare(
+      'SELECT tier, subscription_status, subscription_id, subscription_expires_at, stripe_customer_id FROM users WHERE id = ?'
+    ).bind(userId).first();
+
+    if (!user) {
+      return c.json({ error: 'User not found' }, 404);
+    }
+
+    // If no Stripe customer, return free tier
+    if (!user.stripe_customer_id || !user.subscription_id) {
+      return c.json({
+        active: false,
+        plan: 'free',
+        interval: null,
+        currentPeriodEnd: null,
+        cancelAtPeriodEnd: false,
+      });
+    }
+
+    // Fetch fresh subscription data from Stripe
+    const stripe = new Stripe(c.env.STRIPE_SECRET_KEY, {
+      apiVersion: '2024-12-18.acacia',
+    });
+
+    try {
+      const subscription = await stripe.subscriptions.retrieve(user.subscription_id as string);
+
+      return c.json({
+        active: subscription.status === 'active' || subscription.status === 'trialing',
+        plan: user.tier || 'free',
+        interval: subscription.items.data[0]?.price?.recurring?.interval || null,
+        currentPeriodEnd: new Date(subscription.current_period_end * 1000).toISOString(),
+        cancelAtPeriodEnd: subscription.cancel_at_period_end,
+      });
+    } catch (stripeError) {
+      // Subscription not found in Stripe, return DB state
+      return c.json({
+        active: user.subscription_status === 'active',
+        plan: user.tier || 'free',
+        interval: null,
+        currentPeriodEnd: user.subscription_expires_at
+          ? new Date((user.subscription_expires_at as number) * 1000).toISOString()
+          : null,
+        cancelAtPeriodEnd: false,
+      });
+    }
+  } catch (error) {
+    console.error('Subscription status error:', error);
+    return c.json({ error: 'Failed to get subscription status' }, 500);
+  }
+});
+
+// Stripe webhook handler (public endpoint, verifies signature)
+v1.post('/stripe/webhook', async (c) => {
+  const signature = c.req.header('stripe-signature');
+
+  if (!signature) {
+    return c.json({ error: 'Missing stripe-signature header' }, 400);
+  }
+
+  const webhookSecret = c.env.STRIPE_WEBHOOK_SECRET;
+  if (!webhookSecret) {
+    console.error('STRIPE_WEBHOOK_SECRET not configured');
+    return c.json({ error: 'Webhook configuration error' }, 500);
+  }
+
+  try {
+    const stripe = new Stripe(c.env.STRIPE_SECRET_KEY, {
+      apiVersion: '2024-12-18.acacia',
+    });
+
+    const body = await c.req.text();
+    const event = stripe.webhooks.constructEvent(body, signature, webhookSecret);
+
+    console.log(`Stripe webhook received: ${event.type}`);
+
+    const now = Math.floor(Date.now() / 1000);
+
+    switch (event.type) {
+      case 'checkout.session.completed': {
+        const session = event.data.object as Stripe.Checkout.Session;
+        const customerId = session.customer as string;
+        const subscriptionId = session.subscription as string;
+        const userId = session.metadata?.userId;
+        const planName = session.metadata?.planName;
+
+        if (userId && subscriptionId) {
+          // Get subscription details
+          const subscription = await stripe.subscriptions.retrieve(subscriptionId);
+          const tier = PLAN_TO_TIER[planName || ''] || 'pro';
+
+          // Update user with Stripe customer ID and subscription
+          await c.env.DB.prepare(`
+            UPDATE users SET
+              stripe_customer_id = ?,
+              subscription_id = ?,
+              tier = ?,
+              subscription_status = 'active',
+              subscription_expires_at = ?,
+              updated_at = ?
+            WHERE id = ?
+          `).bind(
+            customerId,
+            subscriptionId,
+            tier,
+            subscription.current_period_end,
+            now,
+            userId
+          ).run();
+
+          console.log(`User ${userId} subscribed to ${tier} plan`);
+        }
+        break;
+      }
+
+      case 'customer.subscription.updated': {
+        const subscription = event.data.object as Stripe.Subscription;
+        const customerId = subscription.customer as string;
+
+        // Find user by Stripe customer ID
+        const user = await c.env.DB.prepare(
+          'SELECT id FROM users WHERE stripe_customer_id = ?'
+        ).bind(customerId).first();
+
+        if (user) {
+          const status = subscription.status === 'active' || subscription.status === 'trialing'
+            ? 'active'
+            : subscription.status === 'past_due'
+              ? 'past_due'
+              : 'cancelled';
+
+          await c.env.DB.prepare(`
+            UPDATE users SET
+              subscription_status = ?,
+              subscription_expires_at = ?,
+              updated_at = ?
+            WHERE id = ?
+          `).bind(
+            status,
+            subscription.current_period_end,
+            now,
+            user.id
+          ).run();
+
+          console.log(`Subscription updated for user ${user.id}: ${status}`);
+        }
+        break;
+      }
+
+      case 'customer.subscription.deleted': {
+        const subscription = event.data.object as Stripe.Subscription;
+        const customerId = subscription.customer as string;
+
+        // Find user by Stripe customer ID
+        const user = await c.env.DB.prepare(
+          'SELECT id FROM users WHERE stripe_customer_id = ?'
+        ).bind(customerId).first();
+
+        if (user) {
+          // Downgrade to free tier
+          await c.env.DB.prepare(`
+            UPDATE users SET
+              tier = 'free',
+              subscription_status = 'cancelled',
+              subscription_id = NULL,
+              subscription_expires_at = NULL,
+              updated_at = ?
+            WHERE id = ?
+          `).bind(now, user.id).run();
+
+          console.log(`Subscription cancelled for user ${user.id}`);
+        }
+        break;
+      }
+
+      case 'invoice.payment_failed': {
+        const invoice = event.data.object as Stripe.Invoice;
+        const customerId = invoice.customer as string;
+
+        // Find user by Stripe customer ID
+        const user = await c.env.DB.prepare(
+          'SELECT id FROM users WHERE stripe_customer_id = ?'
+        ).bind(customerId).first();
+
+        if (user) {
+          await c.env.DB.prepare(`
+            UPDATE users SET
+              subscription_status = 'past_due',
+              updated_at = ?
+            WHERE id = ?
+          `).bind(now, user.id).run();
+
+          console.log(`Payment failed for user ${user.id}`);
+        }
+        break;
+      }
+
+      default:
+        console.log(`Unhandled Stripe event: ${event.type}`);
+    }
+
+    return c.json({ received: true });
+  } catch (error) {
+    console.error('Stripe webhook error:', error);
+    return c.json({
+      error: 'Webhook processing failed',
+      message: error instanceof Error ? error.message : 'Unknown error',
+    }, 400);
+  }
+});
 
 // Mount v1 routes
 app.route('/v1', v1);

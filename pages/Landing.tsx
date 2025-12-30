@@ -12,9 +12,11 @@ import HeroSection from '../components/landing/HeroSection';
 import SocialProofBar from '../components/landing/SocialProofBar';
 import ProductShowcase from '../components/landing/ProductShowcase';
 import FeatureGrid from '../components/landing/FeatureGrid';
+import PowerFeatures from '../components/landing/PowerFeatures';
 import WorkflowSteps from '../components/landing/WorkflowSteps';
 import Testimonials from '../components/landing/Testimonials';
 import ComparisonSection from '../components/landing/ComparisonSection';
+import BYOKSection from '../components/landing/BYOKSection';
 import PricingSection from '../components/landing/PricingSection';
 import FAQSection from '../components/landing/FAQSection';
 import CTASection from '../components/landing/CTASection';
@@ -76,6 +78,9 @@ const LandingPage: React.FC = () => {
           {/* Features Grid - What it does */}
           <FeatureGrid />
 
+          {/* Power Features - Advanced capabilities */}
+          <PowerFeatures />
+
           {/* Workflow Steps - How it works */}
           <WorkflowSteps />
 
@@ -84,6 +89,9 @@ const LandingPage: React.FC = () => {
 
           {/* Comparison - Why choose us */}
           <ComparisonSection />
+
+          {/* BYOK - Bring Your Own Key option */}
+          <BYOKSection />
 
           {/* Pricing - Convert visitors */}
           <PricingSection />

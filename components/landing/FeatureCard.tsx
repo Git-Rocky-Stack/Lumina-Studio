@@ -5,6 +5,7 @@ interface FeatureCardProps {
   icon: string;
   title: string;
   description: string;
+  outcome?: string;
   gradient?: string;
   size?: 'normal' | 'large';
   delay?: number;
@@ -14,6 +15,7 @@ const FeatureCard: React.FC<FeatureCardProps> = ({
   icon,
   title,
   description,
+  outcome,
   gradient = 'from-indigo-500 to-violet-600',
   size = 'normal',
   delay = 0,
@@ -108,12 +110,19 @@ const FeatureCard: React.FC<FeatureCardProps> = ({
           </motion.div>
 
           {/* Title */}
-          <h3 className="text-xl font-bold mb-3 group-hover:text-white transition-colors duration-300">
+          <h3 className="text-xl font-bold mb-2 group-hover:text-white transition-colors duration-300">
             {title}
           </h3>
 
+          {/* Outcome tagline */}
+          {outcome && (
+            <p className={`text-sm font-semibold mb-3 bg-gradient-to-r ${gradient} bg-clip-text text-transparent`}>
+              {outcome}
+            </p>
+          )}
+
           {/* Description */}
-          <p className="text-slate-400 leading-relaxed group-hover:text-slate-300 transition-colors duration-300">
+          <p className="text-slate-400 text-sm leading-relaxed group-hover:text-slate-300 transition-colors duration-300">
             {description}
           </p>
 

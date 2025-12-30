@@ -12,18 +12,18 @@ const DESIGNER_HOURLY = 75; // Average designer hourly rate
 const DESIGNS_PER_HOUR = 2; // Designs a designer can make per hour
 
 const plans = [
-  { name: 'Free', monthlyPrice: 0, images: 20, videos: 3 },
-  { name: 'Pro', monthlyPrice: 19, images: 500, videos: 50 },
-  { name: 'Team', monthlyPrice: 49, images: 2000, videos: 200 },
+  { name: 'Free', monthlyPrice: 0, images: 15, videos: 2 },
+  { name: 'Pro', monthlyPrice: 29, images: 150, videos: 12 },
+  { name: 'Team', monthlyPrice: 79, images: 500, videos: 40 },
 ];
 
 const PricingCalculator: React.FC = () => {
-  const [usage, setUsage] = useState<UsageEstimate>({ images: 100, videos: 10 });
+  const [usage, setUsage] = useState<UsageEstimate>({ images: 50, videos: 5 });
   const [showComparison, setShowComparison] = useState(false);
 
   const recommendedPlan = useMemo(() => {
-    if (usage.images <= 20 && usage.videos <= 3) return plans[0];
-    if (usage.images <= 500 && usage.videos <= 50) return plans[1];
+    if (usage.images <= 15 && usage.videos <= 2) return plans[0];
+    if (usage.images <= 150 && usage.videos <= 12) return plans[1];
     return plans[2];
   }, [usage]);
 
@@ -74,17 +74,17 @@ const PricingCalculator: React.FC = () => {
           </label>
           <input
             type="range"
-            min="10"
+            min="5"
             max="500"
-            step="10"
+            step="5"
             value={usage.images}
             onChange={(e) => setUsage({ ...usage, images: Number(e.target.value) })}
             className="w-full h-2 bg-slate-700 rounded-full appearance-none cursor-pointer accent-indigo-500"
             aria-label="Number of AI images per month"
           />
           <div className="flex justify-between text-xs text-slate-500 mt-2">
-            <span>10</span>
-            <span>250</span>
+            <span>5</span>
+            <span>150</span>
             <span>500</span>
           </div>
         </div>
@@ -97,8 +97,8 @@ const PricingCalculator: React.FC = () => {
           <input
             type="range"
             min="0"
-            max="100"
-            step="5"
+            max="50"
+            step="2"
             value={usage.videos}
             onChange={(e) => setUsage({ ...usage, videos: Number(e.target.value) })}
             className="w-full h-2 bg-slate-700 rounded-full appearance-none cursor-pointer accent-violet-500"
@@ -106,8 +106,8 @@ const PricingCalculator: React.FC = () => {
           />
           <div className="flex justify-between text-xs text-slate-500 mt-2">
             <span>0</span>
+            <span>25</span>
             <span>50</span>
-            <span>100</span>
           </div>
         </div>
       </div>

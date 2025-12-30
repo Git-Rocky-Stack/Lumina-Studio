@@ -4,39 +4,45 @@ import FeatureCard from './FeatureCard';
 
 const features = [
   {
-    icon: 'fa-layer-group',
-    title: 'Canvas Editor',
-    description: 'Design stunning graphics with timeline animations, smart layers, and an intuitive drag-and-drop interface.',
-    gradient: 'from-indigo-500 to-violet-600',
+    icon: 'fa-images',
+    title: 'AI Stock Generation',
+    outcome: 'Never pay for stock photos again',
+    description: 'Generate unlimited, royalty-free images tailored to your brand. No more $50 stock photo purchases.',
+    gradient: 'from-purple-500 to-pink-600',
   },
   {
     icon: 'fa-film',
     title: 'Video Studio',
-    description: 'AI-powered storyboarding and video generation. Create professional videos from text prompts.',
+    outcome: 'Script to video in 10 minutes',
+    description: 'Turn text prompts into professional videos. Storyboards, transitions, and AI voiceover included.',
     gradient: 'from-violet-500 to-purple-600',
-  },
-  {
-    icon: 'fa-images',
-    title: 'AI Stock Generation',
-    description: 'Generate unlimited, royalty-free stock images and animated loops tailored to your brand.',
-    gradient: 'from-purple-500 to-pink-600',
-  },
-  {
-    icon: 'fa-file-pdf',
-    title: 'PDF Suite',
-    description: 'Edit documents, redact sensitive information, manage typography, and merge files seamlessly.',
-    gradient: 'from-pink-500 to-rose-600',
   },
   {
     icon: 'fa-camera-retro',
     title: 'Pro Photo Editor',
-    description: 'Professional photo editing with AI-powered enhancements, filters, and batch processing.',
+    outcome: 'Photoshop-level edits, zero learning curve',
+    description: 'Layers, filters, batch processing, AI enhancements. Professional results without the complexity.',
     gradient: 'from-rose-500 to-orange-600',
+  },
+  {
+    icon: 'fa-file-pdf',
+    title: 'PDF Suite',
+    outcome: 'Sign, edit, merge — no Adobe required',
+    description: 'Complete PDF toolkit: edit text, redact sensitive info, merge files, add signatures. Done.',
+    gradient: 'from-pink-500 to-rose-600',
+  },
+  {
+    icon: 'fa-layer-group',
+    title: 'Canvas Editor',
+    outcome: 'Design anything, export everywhere',
+    description: 'Drag-and-drop graphics editor with smart layers, animations, and one-click export to 20+ platforms.',
+    gradient: 'from-indigo-500 to-violet-600',
   },
   {
     icon: 'fa-bullhorn',
     title: 'Marketing Hub',
-    description: 'Plan and schedule social media campaigns with AI-generated content suggestions.',
+    outcome: 'Plan a month of content in an afternoon',
+    description: 'Content calendar, AI-generated post ideas, and multi-platform scheduling in one place.',
     gradient: 'from-orange-500 to-amber-600',
   },
 ];
@@ -65,15 +71,16 @@ const FeatureGrid: React.FC = () => {
             viewport={{ once: true }}
             className="inline-flex items-center gap-2 px-5 py-2 rounded-full glass-card text-violet-400 text-sm font-semibold mb-8"
           >
-            <i className="fas fa-sparkles text-xs" />
-            Features
+            <i className="fas fa-cubes text-xs" />
+            6 Pro Tools, One Platform
           </motion.span>
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 font-display tracking-tight">
-            Everything You Need to{' '}
-            <span className="text-gradient-primary">Create</span>
+            A Complete{' '}
+            <span className="text-gradient-primary">Creative Suite</span>
           </h2>
-          <p className="text-xl text-slate-400 max-w-2xl mx-auto leading-relaxed">
-            A complete creative toolkit powered by the latest AI technology.
+          <p className="text-xl text-slate-400 max-w-3xl mx-auto leading-relaxed">
+            Other AI tools just generate images. Lumina gives you professional photo editing,
+            video production, PDF management, and AI generation — all in one subscription.
           </p>
         </motion.div>
 
@@ -84,6 +91,7 @@ const FeatureGrid: React.FC = () => {
               key={feature.title}
               icon={feature.icon}
               title={feature.title}
+              outcome={feature.outcome}
               description={feature.description}
               gradient={feature.gradient}
               delay={i * 0.1}

@@ -23,20 +23,29 @@ export interface UsageRecord {
 }
 
 // Tier limits per month
+// Updated for sustainable margins based on actual API costs:
+// - Images: ~$0.134/image (Gemini 3 Pro 2K)
+// - Videos: ~$0.80-1.60/video (Veo 3.1 Fast 8s)
 export const TIER_LIMITS: Record<string, TierLimits> = {
   free: {
-    images: 20,
-    videos: 3,
+    images: 15,
+    videos: 2,
     text: 100,
   },
+  starter: {
+    // BYOK-only tier - no included credits, users bring their own API key
+    images: 0,
+    videos: 0,
+    text: 0,
+  },
   pro: {
-    images: 500,
-    videos: 50,
+    images: 150,
+    videos: 12,
     text: 2000,
   },
   team: {
-    images: 2000,
-    videos: 200,
+    images: 500,
+    videos: 40,
     text: 10000,
   },
   enterprise: {

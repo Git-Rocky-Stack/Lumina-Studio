@@ -1,6 +1,16 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
+// Tools that Lumina replaces
+const toolsReplaced = [
+  { category: 'AI Image Generation', tools: 'Midjourney, Leonardo, DALL-E', cost: 20, icon: 'fa-wand-magic-sparkles', luminaFeature: 'AI Stock Gen' },
+  { category: 'Photo Editing', tools: 'Photoshop, Lightroom', cost: 23, icon: 'fa-camera-retro', luminaFeature: 'Pro Photo Editor' },
+  { category: 'Video Production', tools: 'Runway, Premiere', cost: 18, icon: 'fa-film', luminaFeature: 'Video Studio' },
+  { category: 'PDF Management', tools: 'Adobe Acrobat', cost: 20, icon: 'fa-file-pdf', luminaFeature: 'PDF Suite' },
+  { category: 'Design Platform', tools: 'Canva Pro', cost: 15, icon: 'fa-layer-group', luminaFeature: 'Canvas Editor' },
+  { category: 'Marketing Tools', tools: 'Buffer, Later', cost: 15, icon: 'fa-bullhorn', luminaFeature: 'Marketing Hub' },
+];
+
 const comparisons = [
   { feature: 'Asset Creation Time', traditional: '2-4 hours', lumina: '30 seconds', icon: 'fa-clock' },
   { feature: 'Stock Image Costs', traditional: '$50-200/image', lumina: 'Unlimited included', icon: 'fa-dollar-sign' },
@@ -9,6 +19,8 @@ const comparisons = [
   { feature: 'Multi-platform Export', traditional: 'Multiple tools', lumina: 'One click', icon: 'fa-share-nodes' },
   { feature: 'Learning Curve', traditional: 'Weeks of training', lumina: 'Start instantly', icon: 'fa-graduation-cap' },
 ];
+
+const totalToolsCost = toolsReplaced.reduce((sum, t) => sum + t.cost, 0);
 
 const ComparisonSection: React.FC = () => {
   return (
@@ -32,18 +44,41 @@ const ComparisonSection: React.FC = () => {
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            className="inline-flex items-center gap-2 px-5 py-2 rounded-full glass-card text-rose-400 text-sm font-semibold mb-8"
+            className="inline-flex items-center gap-2 px-5 py-2 rounded-full glass-card text-emerald-400 text-sm font-semibold mb-8"
           >
-            <i className="fas fa-chart-bar text-xs" />
-            Comparison
+            <i className="fas fa-calculator text-xs" />
+            One Subscription, 6 Tools
           </motion.span>
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 font-display tracking-tight">
-            The <span className="text-gradient-primary">Lumina</span> Advantage
+            Replace{' '}
+            <span className="text-gradient-primary">${totalToolsCost}+/month</span>
+            {' '}in Subscriptions
           </h2>
           <p className="text-xl text-slate-400 max-w-2xl mx-auto leading-relaxed">
-            See how Lumina Studio compares to traditional creative workflows.
+            Stop juggling multiple apps. Get pro-grade tools for every creative need in one platform.
           </p>
         </motion.div>
+
+        {/* Tools replaced grid */}
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 mb-16">
+          {toolsReplaced.map((tool, i) => (
+            <motion.div
+              key={tool.category}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: i * 0.05 }}
+              className="glass-card rounded-xl p-4 text-center group hover:border-emerald-500/30 transition-colors"
+            >
+              <div className="w-10 h-10 rounded-lg bg-slate-800 flex items-center justify-center mx-auto mb-3 group-hover:bg-emerald-500/20 transition-colors">
+                <i className={`fas ${tool.icon} text-slate-400 group-hover:text-emerald-400 transition-colors`} />
+              </div>
+              <div className="text-xs text-slate-500 mb-1">{tool.tools}</div>
+              <div className="text-red-400/70 text-sm line-through">${tool.cost}/mo</div>
+              <div className="text-emerald-400 text-xs font-medium mt-1">{tool.luminaFeature}</div>
+            </motion.div>
+          ))}
+        </div>
 
         {/* Comparison table */}
         <motion.div
@@ -115,16 +150,42 @@ const ComparisonSection: React.FC = () => {
         >
           <div className="relative glass-card rounded-3xl p-10 overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/5 via-indigo-500/5 to-violet-500/5" />
-            <div className="relative flex flex-col md:flex-row items-center justify-center gap-8">
-              <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-emerald-500 to-emerald-600 flex items-center justify-center shadow-2xl shadow-emerald-500/25">
-                <i className="fas fa-piggy-bank text-3xl text-white" />
-              </div>
-              <div className="text-center md:text-left">
-                <div className="text-5xl md:text-6xl font-black text-white mb-2 font-display">
-                  <span className="text-emerald-400">$12,000+</span>
+            <div className="relative grid md:grid-cols-3 gap-8 items-center">
+              {/* Old cost */}
+              <div className="text-center">
+                <div className="text-slate-500 text-sm font-medium mb-2">Separate subscriptions</div>
+                <div className="text-3xl md:text-4xl font-black text-slate-500 line-through decoration-red-400/50">
+                  ${totalToolsCost}/mo
                 </div>
-                <div className="text-slate-400">
-                  Average annual savings vs traditional software stack
+              </div>
+
+              {/* Arrow */}
+              <div className="hidden md:flex justify-center">
+                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-lg shadow-emerald-500/25">
+                  <i className="fas fa-arrow-right text-white text-xl" />
+                </div>
+              </div>
+
+              {/* Lumina cost */}
+              <div className="text-center">
+                <div className="text-emerald-400 text-sm font-medium mb-2">Lumina Pro</div>
+                <div className="text-3xl md:text-4xl font-black text-white">
+                  $29/mo
+                </div>
+              </div>
+            </div>
+
+            {/* Savings */}
+            <div className="relative mt-8 pt-8 border-t border-white/10 text-center">
+              <div className="inline-flex items-center gap-4 px-6 py-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/20">
+                <i className="fas fa-piggy-bank text-emerald-400 text-2xl" />
+                <div className="text-left">
+                  <div className="text-2xl font-bold text-emerald-400">
+                    Save ${totalToolsCost - 29}/month
+                  </div>
+                  <div className="text-slate-400 text-sm">
+                    That's ${(totalToolsCost - 29) * 12}+ back in your pocket every year
+                  </div>
                 </div>
               </div>
             </div>
