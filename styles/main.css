@@ -15,6 +15,7 @@
 .type-page {
   font-size: 3rem; /* 48px */
   font-weight: 900;
+  font-style: italic;
   letter-spacing: -0.025em;
   text-transform: uppercase;
   line-height: 1.1;
