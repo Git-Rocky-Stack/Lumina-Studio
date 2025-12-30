@@ -769,21 +769,21 @@ const PDFSuite: React.FC<PDFSuiteProps> = ({ className = '' }) => {
                 <div className="w-32 h-32 mx-auto mb-6 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-3xl flex items-center justify-center shadow-2xl shadow-indigo-600/30">
                   <i className="fas fa-file-pdf text-5xl text-white"></i>
                 </div>
-                <h2 className="text-2xl font-black text-slate-800 mb-2">
+                <h2 className="type-page text-slate-800 mb-2">
                   Lumina PDF Suite Pro
                 </h2>
-                <p className="text-slate-500 mb-6">
+                <p className="type-body text-slate-500 mb-6">
                   Open a PDF to start editing, annotating, and creating forms.
                   Drag and drop a file here or click the button below.
                 </p>
                 <button
                   onClick={handleOpenFile}
-                  className="px-8 py-3 bg-indigo-600 text-white rounded-xl text-sm font-bold uppercase tracking-wider hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-600/30 flex items-center gap-2 mx-auto"
+                  className="px-8 py-3 bg-indigo-600 text-white rounded-xl type-label hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-600/30 flex items-center gap-2 mx-auto"
                 >
                   <i className="fas fa-folder-open"></i>
                   Open PDF
                 </button>
-                <p className="text-xs text-slate-400 mt-4">
+                <p className="type-caption text-slate-400 mt-4">
                   Supports PDF files up to 100MB
                 </p>
               </div>

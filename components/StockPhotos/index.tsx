@@ -397,8 +397,7 @@ export const StockPhotosPanel: React.FC<{
     <div className="h-full flex flex-col bg-[#0f0f1a]">
       {/* Header */}
       <div className="p-4 border-b border-white/10">
-        {/* Typography: type-subsection - 20px/700 */}
-        <h2 className="type-subsection text-white flex items-center gap-2 mb-4">
+        <h2 className="type-page text-white flex items-center gap-2 mb-4">
           <i className="fa-solid fa-images text-green-400" />
           Stock Photos
         </h2>
