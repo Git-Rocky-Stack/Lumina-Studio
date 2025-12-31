@@ -32,10 +32,16 @@ import PDFMergePanel from './components/PDFMergePanel';
 import BookmarksPanel from './components/BookmarksPanel';
 import WatermarkPanel from './components/WatermarkPanel';
 import FormFieldCreator from './components/FormFieldCreator';
+import QRCodeInsertPanel from './components/QRCodeInsertPanel';
+import VersionHistory from './components/VersionHistory';
+import PDFAValidator from './components/PDFAValidator';
+import TemplateGallery from './components/TemplateGallery';
 import type { FormFieldType } from './components/FormFieldCreator';
 import type { WatermarkSettings } from './components/WatermarkPanel';
 import type { BookmarkItem } from './components/BookmarksPanel';
 import type { RecentFile } from './hooks/useRecentFiles';
+import type { QRCodeInsertSettings } from './components/QRCodeInsertPanel';
+import type { DocumentVersion, ValidationResult, PDFALevel } from './components/PDFAValidator';
 
 // Types
 import type {
@@ -325,6 +331,12 @@ const PDFSuite: React.FC<PDFSuiteProps> = ({ className = '' }) => {
   const [selectedFormFieldType, setSelectedFormFieldType] = useState<FormFieldType | null>(null);
   const [redactionMarks, setRedactionMarks] = useState<RedactionMark[]>([]);
   const [aiSuggestions, setAISuggestions] = useState<PrivacyScanResult[]>([]);
+  const [showQRCodePanel, setShowQRCodePanel] = useState(false);
+  const [showVersionHistory, setShowVersionHistory] = useState(false);
+  const [showPDFAValidator, setShowPDFAValidator] = useState(false);
+  const [showTemplateGallery, setShowTemplateGallery] = useState(false);
+  const [documentVersions, setDocumentVersions] = useState<DocumentVersion[]>([]);
+  const [currentVersionId, setCurrentVersionId] = useState<string>('initial');
 
   // File handling
   const handleOpenFile = useCallback(() => {
@@ -469,6 +481,160 @@ const PDFSuite: React.FC<PDFSuiteProps> = ({ className = '' }) => {
     // Switch to form tool to allow placement
     setActiveTool('formField');
   }, [currentPage, addAction]);
+
+  // Handle QR code insertion
+  const handleQRCodeInsert = useCallback((qrCodeDataUrl: string, settings: QRCodeInsertSettings) => {
+    // Insert QR code as an image annotation
+    addAnnotationToStore('image' as any, settings.pageNumber, {
+      x: 50,
+      y: 50,
+      width: settings.size,
+      height: settings.size,
+    }, {
+      contents: `QR Code: ${settings.content}`,
+      imageData: qrCodeDataUrl,
+      isLocked: false,
+    });
+
+    addAction({
+      type: 'addQRCode',
+      description: `Added QR code on page ${settings.pageNumber}`,
+      data: settings,
+      inverse: null,
+    });
+  }, [addAnnotationToStore, addAction]);
+
+  // Handle version history operations
+  const handleCreateVersion = useCallback((name: string, description: string) => {
+    const newVersion: DocumentVersion = {
+      id: `version-${Date.now()}`,
+      name,
+      description,
+      author: 'You',
+      timestamp: Date.now(),
+      changeType: 'edit',
+      changeCount: textEdits.length + annotations.length,
+      isCurrent: false,
+      isAutoSave: false,
+    };
+
+    setDocumentVersions((prev) => [newVersion, ...prev.map((v) => ({ ...v, isCurrent: false }))]);
+    setCurrentVersionId(newVersion.id);
+  }, [textEdits.length, annotations.length]);
+
+  const handleRestoreVersion = useCallback((versionId: string) => {
+    console.log('Restoring version:', versionId);
+    // In a full implementation, this would restore the document state
+    setCurrentVersionId(versionId);
+    setDocumentVersions((prev) =>
+      prev.map((v) => ({ ...v, isCurrent: v.id === versionId }))
+    );
+  }, []);
+
+  const handleCompareVersions = useCallback((versionA: string, versionB: string) => {
+    console.log('Comparing versions:', versionA, versionB);
+    // In a full implementation, this would show a diff view
+  }, []);
+
+  const handleDeleteVersion = useCallback((versionId: string) => {
+    setDocumentVersions((prev) => prev.filter((v) => v.id !== versionId));
+  }, []);
+
+  const handleDownloadVersion = useCallback((versionId: string) => {
+    console.log('Downloading version:', versionId);
+    // In a full implementation, this would download the version as PDF
+  }, []);
+
+  // Handle PDF/A validation
+  const handlePDFAValidate = useCallback(async (targetLevel: PDFALevel): Promise<ValidationResult> => {
+    // Simulated validation - in production, use a real PDF/A validation library
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+
+    return {
+      isCompliant: false,
+      targetLevel,
+      totalIssues: 3,
+      errors: 1,
+      warnings: 1,
+      info: 1,
+      issues: [
+        {
+          id: 'meta-001',
+          category: 'metadata',
+          severity: 'error',
+          code: 'MISSING_XMP',
+          message: 'Missing XMP metadata',
+          description: 'XMP metadata stream is required for PDF/A compliance.',
+          suggestion: 'Add XMP metadata with required properties.',
+          autoFixable: true,
+        },
+        {
+          id: 'font-001',
+          category: 'fonts',
+          severity: 'warning',
+          code: 'FONT_NOT_EMBEDDED',
+          message: 'Font not fully embedded',
+          description: 'Some font subsets may not be complete.',
+          location: 'Page 1',
+          suggestion: 'Embed complete fonts.',
+          autoFixable: true,
+        },
+        {
+          id: 'struct-001',
+          category: 'structure',
+          severity: 'info',
+          code: 'MISSING_TAGS',
+          message: 'Document not tagged',
+          description: 'For accessibility compliance, add structure tags.',
+          suggestion: 'Enable tagging in export settings.',
+          autoFixable: false,
+        },
+      ],
+      timestamp: Date.now(),
+      duration: 1500,
+    };
+  }, []);
+
+  const handlePDFAAutoFix = useCallback(async (issueIds: string[]) => {
+    console.log('Auto-fixing issues:', issueIds);
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+  }, []);
+
+  const handleExportPDFAReport = useCallback((result: ValidationResult) => {
+    const report = `PDF/A Compliance Report\n` +
+      `=========================\n\n` +
+      `Target Level: PDF/A-${result.targetLevel}\n` +
+      `Status: ${result.isCompliant ? 'COMPLIANT' : 'NON-COMPLIANT'}\n\n` +
+      `Summary:\n` +
+      `- Errors: ${result.errors}\n` +
+      `- Warnings: ${result.warnings}\n` +
+      `- Info: ${result.info}\n\n` +
+      `Issues:\n` +
+      result.issues.map((i) => `[${i.severity.toUpperCase()}] ${i.message}\n  ${i.description}`).join('\n\n');
+
+    const blob = new Blob([report], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const link = window.document.createElement('a');
+    link.href = url;
+    link.download = 'pdfa-compliance-report.txt';
+    link.click();
+    URL.revokeObjectURL(url);
+  }, []);
+
+  // Handle template selection
+  const handleTemplateSelect = useCallback((template: any) => {
+    console.log('Selected template:', template.name);
+    // Apply template fields to current document
+    if (template.fields && Array.isArray(template.fields)) {
+      const newFields = template.fields.map((field: any, index: number) => ({
+        ...field,
+        id: `field-${Date.now()}-${index}`,
+        pageNumber: currentPage,
+      }));
+      setFormFields((prev) => [...prev, ...newFields]);
+    }
+    setShowTemplateGallery(false);
+  }, [currentPage]);
 
   // Tool handling
   const handleToolChange = useCallback((tool: PDFTool) => {
@@ -1465,6 +1631,34 @@ const PDFSuite: React.FC<PDFSuiteProps> = ({ className = '' }) => {
             >
               <i className="fas fa-wpforms"></i>
             </button>
+            <button
+              onClick={() => setShowQRCodePanel(true)}
+              className="hover:text-violet-600 transition-colors"
+              title="Insert QR Code"
+            >
+              <i className="fas fa-qrcode"></i>
+            </button>
+            <button
+              onClick={() => setShowVersionHistory(true)}
+              className="hover:text-amber-600 transition-colors"
+              title="Version History"
+            >
+              <i className="fas fa-history"></i>
+            </button>
+            <button
+              onClick={() => setShowPDFAValidator(true)}
+              className="hover:text-emerald-600 transition-colors"
+              title="PDF/A Compliance"
+            >
+              <i className="fas fa-check-circle"></i>
+            </button>
+            <button
+              onClick={() => setShowTemplateGallery(true)}
+              className="hover:text-indigo-600 transition-colors"
+              title="Template Gallery"
+            >
+              <i className="fas fa-layer-group"></i>
+            </button>
             <span>|</span>
             <span>
               {annotationCount} annotation{annotationCount !== 1 ? 's' : ''}
@@ -1550,6 +1744,44 @@ const PDFSuite: React.FC<PDFSuiteProps> = ({ className = '' }) => {
         onCreateField={handleCreateFormField}
         selectedFieldType={selectedFormFieldType}
         onFieldTypeChange={setSelectedFormFieldType}
+      />
+
+      {/* QR Code Insert Panel */}
+      <QRCodeInsertPanel
+        isOpen={showQRCodePanel}
+        onClose={() => setShowQRCodePanel(false)}
+        onInsert={handleQRCodeInsert}
+        currentPage={currentPage}
+        totalPages={pages.length}
+      />
+
+      {/* Version History */}
+      <VersionHistory
+        isOpen={showVersionHistory}
+        onClose={() => setShowVersionHistory(false)}
+        versions={documentVersions}
+        currentVersionId={currentVersionId}
+        onRestoreVersion={handleRestoreVersion}
+        onCompareVersions={handleCompareVersions}
+        onCreateVersion={handleCreateVersion}
+        onDeleteVersion={handleDeleteVersion}
+        onDownloadVersion={handleDownloadVersion}
+      />
+
+      {/* PDF/A Validator */}
+      <PDFAValidator
+        isOpen={showPDFAValidator}
+        onClose={() => setShowPDFAValidator(false)}
+        onValidate={handlePDFAValidate}
+        onAutoFix={handlePDFAAutoFix}
+        onExportReport={handleExportPDFAReport}
+      />
+
+      {/* Template Gallery */}
+      <TemplateGallery
+        isOpen={showTemplateGallery}
+        onClose={() => setShowTemplateGallery(false)}
+        onSelectTemplate={handleTemplateSelect}
       />
     </div>
   );
