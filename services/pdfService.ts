@@ -90,6 +90,74 @@ export async function loadPDF(source: File | string | ArrayBuffer): Promise<{
 }
 
 // ============================================
+// BOOKMARKS / OUTLINE
+// ============================================
+
+export interface PDFBookmark {
+  title: string;
+  pageNumber: number;
+  dest?: unknown;
+  items?: PDFBookmark[];
+}
+
+export async function getBookmarks(proxy: any): Promise<PDFBookmark[]> {
+  try {
+    const outline = await proxy.getOutline();
+    if (!outline || outline.length === 0) {
+      return [];
+    }
+
+    const processOutlineItem = async (item: any): Promise<PDFBookmark> => {
+      let pageNumber = 1;
+
+      // Try to resolve destination to page number
+      if (item.dest) {
+        try {
+          let dest = item.dest;
+          // If dest is a string, resolve it first
+          if (typeof dest === 'string') {
+            dest = await proxy.getDestination(dest);
+          }
+          if (dest && Array.isArray(dest)) {
+            const ref = dest[0];
+            if (ref) {
+              pageNumber = await proxy.getPageIndex(ref) + 1;
+            }
+          }
+        } catch {
+          // Failed to resolve destination, use page 1 as fallback
+        }
+      }
+
+      // Process children recursively
+      const items: PDFBookmark[] = [];
+      if (item.items && item.items.length > 0) {
+        for (const child of item.items) {
+          items.push(await processOutlineItem(child));
+        }
+      }
+
+      return {
+        title: item.title || 'Untitled',
+        pageNumber,
+        dest: item.dest,
+        items: items.length > 0 ? items : undefined,
+      };
+    };
+
+    const bookmarks: PDFBookmark[] = [];
+    for (const item of outline) {
+      bookmarks.push(await processOutlineItem(item));
+    }
+
+    return bookmarks;
+  } catch (error) {
+    console.error('Failed to get bookmarks:', error);
+    return [];
+  }
+}
+
+// ============================================
 // PAGE OPERATIONS
 // ============================================
 

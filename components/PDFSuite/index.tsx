@@ -14,6 +14,7 @@ import { usePDFText } from './hooks/usePDFText';
 import { usePDFAnnotations } from './hooks/usePDFAnnotations';
 import { useFindReplace } from './hooks/useFindReplace';
 import { useRecentFiles } from './hooks/useRecentFiles';
+import { usePageManagement } from './hooks/usePageManagement';
 
 // Components
 import PDFViewer, { PDFViewerHandle } from './components/PDFViewer';
@@ -26,6 +27,14 @@ import CommentPanel from './components/CommentPanel';
 import RedactionTool from './components/RedactionTool';
 import KeyboardShortcutsPanel from './components/KeyboardShortcutsPanel';
 import RecentFilesPanel from './components/RecentFilesPanel';
+import PageActionsToolbar from './components/PageActionsToolbar';
+import PDFMergePanel from './components/PDFMergePanel';
+import BookmarksPanel from './components/BookmarksPanel';
+import WatermarkPanel from './components/WatermarkPanel';
+import FormFieldCreator from './components/FormFieldCreator';
+import type { FormFieldType } from './components/FormFieldCreator';
+import type { WatermarkSettings } from './components/WatermarkPanel';
+import type { BookmarkItem } from './components/BookmarksPanel';
 import type { RecentFile } from './hooks/useRecentFiles';
 
 // Types
@@ -43,6 +52,7 @@ import { DEFAULT_TOOL_SETTINGS, DEFAULT_GLYPH_SETTINGS } from './types';
 
 // Services
 import { scanForSensitiveData, reflowDocumentText } from '../../services/geminiService';
+import { getBookmarks } from '../../services/pdfService';
 
 interface PDFSuiteProps {
   className?: string;
@@ -64,6 +74,7 @@ const PDFSuite: React.FC<PDFSuiteProps> = ({ className = '' }) => {
     closeDocument,
     saveDocument,
     getPageTextContent,
+    documentProxy,
   } = usePDFDocument({
     generateThumbnails: true,
     thumbnailSize: 150,
@@ -74,6 +85,31 @@ const PDFSuite: React.FC<PDFSuiteProps> = ({ className = '' }) => {
       console.error('Document error:', err);
     },
   });
+
+  // Load bookmarks when document changes
+  useEffect(() => {
+    async function loadBookmarks() {
+      if (documentProxy) {
+        try {
+          const pdfBookmarks = await getBookmarks(documentProxy);
+          // Convert to BookmarkItem format
+          const convertBookmark = (b: any): BookmarkItem => ({
+            title: b.title,
+            pageNumber: b.pageNumber,
+            dest: b.dest,
+            items: b.items?.map(convertBookmark),
+          });
+          setBookmarks(pdfBookmarks.map(convertBookmark));
+        } catch (error) {
+          console.error('Failed to load bookmarks:', error);
+          setBookmarks([]);
+        }
+      } else {
+        setBookmarks([]);
+      }
+    }
+    loadBookmarks();
+  }, [documentProxy]);
 
   // Pages hook
   const {
@@ -233,6 +269,41 @@ const PDFSuite: React.FC<PDFSuiteProps> = ({ className = '' }) => {
     formatDate,
   } = useRecentFiles();
 
+  // Page management hook
+  const {
+    managedPages,
+    setManagedPages,
+    reorderPage,
+    deletePage,
+    deletePages,
+    rotatePage,
+    rotatePages,
+    extractPages,
+    duplicatePage,
+    movePagesToStart,
+    movePagesToEnd,
+    selectedPages,
+    setSelectedPages,
+    selectAll: selectAllPages,
+    deselectAll: deselectAllPages,
+    hasChanges: hasPageChanges,
+  } = usePageManagement(pages, {
+    onPagesChange: (newPages) => {
+      console.log('Pages changed:', newPages.length);
+    },
+    onPageExtract: (pageNumbers) => {
+      console.log('Extract pages:', pageNumbers);
+      // TODO: Implement actual PDF extraction with pdf-lib
+    },
+  });
+
+  // Sync pages from document to page management
+  useEffect(() => {
+    if (pages.length > 0) {
+      setManagedPages(pages);
+    }
+  }, [pages, setManagedPages]);
+
   // Local state
   const [activeTool, setActiveTool] = useState<PDFTool>('select');
   const [toolSettings, setToolSettings] = useState<ToolSettings>(DEFAULT_TOOL_SETTINGS);
@@ -246,6 +317,12 @@ const PDFSuite: React.FC<PDFSuiteProps> = ({ className = '' }) => {
   const [showSearch, setShowSearch] = useState(false);
   const [showComments, setShowComments] = useState(false);
   const [showRedactionTool, setShowRedactionTool] = useState(false);
+  const [showMergePanel, setShowMergePanel] = useState(false);
+  const [leftSidebarTab, setLeftSidebarTab] = useState<'thumbnails' | 'bookmarks'>('thumbnails');
+  const [bookmarks, setBookmarks] = useState<BookmarkItem[]>([]);
+  const [showWatermarkPanel, setShowWatermarkPanel] = useState(false);
+  const [showFormFieldCreator, setShowFormFieldCreator] = useState(false);
+  const [selectedFormFieldType, setSelectedFormFieldType] = useState<FormFieldType | null>(null);
   const [redactionMarks, setRedactionMarks] = useState<RedactionMark[]>([]);
   const [aiSuggestions, setAISuggestions] = useState<PrivacyScanResult[]>([]);
 
@@ -286,6 +363,112 @@ const PDFSuite: React.FC<PDFSuiteProps> = ({ className = '' }) => {
   const handlePrint = useCallback(() => {
     window.print();
   }, []);
+
+  // Handle merge complete - download the merged PDF
+  const handleMergeComplete = useCallback((mergedPdf: Uint8Array, filename: string) => {
+    const blob = new Blob([mergedPdf], { type: 'application/pdf' });
+    const url = URL.createObjectURL(blob);
+    const link = window.document.createElement('a');
+    link.href = url;
+    link.download = filename;
+    link.click();
+    URL.revokeObjectURL(url);
+  }, []);
+
+  // Handle watermark apply
+  const handleWatermarkApply = useCallback((settings: WatermarkSettings) => {
+    console.log('Applying watermark:', settings);
+    // For now, create watermark as annotations on each page
+    // In a full implementation, this would modify the PDF directly using pdf-lib
+    const pagesToApply: number[] = [];
+    const totalPageCount = managedPages.length || pages.length;
+
+    if (settings.applyTo === 'all') {
+      for (let i = 1; i <= totalPageCount; i++) {
+        pagesToApply.push(i);
+      }
+    } else if (settings.applyTo === 'even') {
+      for (let i = 2; i <= totalPageCount; i += 2) {
+        pagesToApply.push(i);
+      }
+    } else if (settings.applyTo === 'odd') {
+      for (let i = 1; i <= totalPageCount; i += 2) {
+        pagesToApply.push(i);
+      }
+    } else if (settings.applyTo === 'range' && settings.pageRange) {
+      // Parse page range like "1-5, 8, 10-12"
+      const ranges = settings.pageRange.split(',').map(s => s.trim());
+      ranges.forEach(range => {
+        if (range.includes('-')) {
+          const [start, end] = range.split('-').map(n => parseInt(n.trim()));
+          for (let i = start; i <= Math.min(end, totalPageCount); i++) {
+            pagesToApply.push(i);
+          }
+        } else {
+          const page = parseInt(range);
+          if (page >= 1 && page <= totalPageCount) {
+            pagesToApply.push(page);
+          }
+        }
+      });
+    }
+
+    // Add watermark as freeText annotations (visual approximation)
+    pagesToApply.forEach(pageNumber => {
+      if (settings.type === 'text') {
+        addAnnotationToStore('freeText', pageNumber, {
+          x: 100,
+          y: 400,
+          width: 400,
+          height: 100,
+        }, {
+          contents: settings.text,
+          color: settings.color,
+          opacity: settings.opacity,
+          fontSize: settings.fontSize,
+          isLocked: true,
+        });
+      }
+    });
+
+    addAction({
+      type: 'addWatermark',
+      description: `Added watermark to ${pagesToApply.length} pages`,
+      data: settings,
+      inverse: null,
+    });
+  }, [managedPages, pages, addAnnotationToStore, addAction]);
+
+  // Handle form field creation
+  const handleCreateFormField = useCallback((fieldConfig: Partial<PDFFormField>) => {
+    const newField: PDFFormField = {
+      id: fieldConfig.id || `field-${Date.now()}`,
+      name: fieldConfig.name || 'unnamed_field',
+      type: fieldConfig.type || 'text',
+      pageNumber: currentPage,
+      rect: { x: 100, y: 100, width: 200, height: 30 },
+      required: fieldConfig.required || false,
+      placeholder: fieldConfig.placeholder,
+      value: '',
+      isLocked: false,
+      isHidden: false,
+      ...fieldConfig,
+    };
+
+    setFormFields((prev) => [...prev, newField]);
+    setShowFormFieldCreator(false);
+    setSelectedFormFieldType(null);
+
+    addAction({
+      type: 'addFormField',
+      description: `Added ${fieldConfig.type} form field`,
+      data: newField,
+      inverse: null,
+    });
+
+    // Switch to form tool to allow placement
+    setActiveTool('formField');
+  }, [currentPage, addAction]);
 
   // Tool handling
   const handleToolChange = useCallback((tool: PDFTool) => {
@@ -881,15 +1064,63 @@ const PDFSuite: React.FC<PDFSuiteProps> = ({ className = '' }) => {
 
       {/* Main Content */}
       <div className="flex-1 flex overflow-hidden">
-        {/* Left Sidebar - Page Thumbnails */}
+        {/* Left Sidebar - Page Thumbnails & Bookmarks */}
         {showThumbnails && document && (
-          <div className="w-48 flex-shrink-0 border-r border-slate-200">
-            <PageThumbnails
-              pages={pages}
-              currentPage={currentPage}
-              onPageSelect={goToPage}
-              isLoading={isLoading}
-            />
+          <div className="w-48 flex-shrink-0 border-r border-slate-200 flex flex-col">
+            {/* Tab buttons */}
+            <div className="flex border-b border-slate-200 bg-slate-50">
+              <button
+                onClick={() => setLeftSidebarTab('thumbnails')}
+                className={`flex-1 py-2 text-xs font-medium transition-colors ${
+                  leftSidebarTab === 'thumbnails'
+                    ? 'text-indigo-600 border-b-2 border-indigo-600 bg-white'
+                    : 'text-slate-500 hover:text-slate-700'
+                }`}
+              >
+                <i className="fas fa-images mr-1"></i>
+                Pages
+              </button>
+              <button
+                onClick={() => setLeftSidebarTab('bookmarks')}
+                className={`flex-1 py-2 text-xs font-medium transition-colors ${
+                  leftSidebarTab === 'bookmarks'
+                    ? 'text-indigo-600 border-b-2 border-indigo-600 bg-white'
+                    : 'text-slate-500 hover:text-slate-700'
+                }`}
+              >
+                <i className="fas fa-bookmark mr-1"></i>
+                Bookmarks
+                {bookmarks.length > 0 && (
+                  <span className="ml-1 text-[10px] bg-slate-200 px-1 rounded">{bookmarks.length}</span>
+                )}
+              </button>
+            </div>
+
+            {/* Tab content */}
+            <div className="flex-1 overflow-hidden">
+              {leftSidebarTab === 'thumbnails' ? (
+                <PageThumbnails
+                  pages={managedPages.length > 0 ? managedPages : pages}
+                  currentPage={currentPage}
+                  onPageSelect={goToPage}
+                  onPageReorder={reorderPage}
+                  onPageDelete={deletePage}
+                  onPageRotate={rotatePage}
+                  selectedPages={selectedPages}
+                  onSelectionChange={setSelectedPages}
+                  isLoading={isLoading}
+                />
+              ) : (
+                <BookmarksPanel
+                  bookmarks={bookmarks}
+                  currentPage={currentPage}
+                  onNavigate={(page) => {
+                    goToPage(page);
+                    viewerRef.current?.scrollToPage(page);
+                  }}
+                />
+              )}
+            </div>
           </div>
         )}
 
@@ -945,13 +1176,22 @@ const PDFSuite: React.FC<PDFSuiteProps> = ({ className = '' }) => {
                     Open a PDF to start editing, annotating, and creating forms.
                     Drag and drop a file here or click the button below.
                   </p>
-                  <button
-                    onClick={handleOpenFile}
-                    className="px-8 py-3 bg-indigo-600 text-white rounded-xl type-label hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-600/30 flex items-center gap-2 mx-auto"
-                  >
-                    <i className="fas fa-folder-open"></i>
-                    Open PDF
-                  </button>
+                  <div className="flex items-center gap-3 justify-center">
+                    <button
+                      onClick={handleOpenFile}
+                      className="px-8 py-3 bg-indigo-600 text-white rounded-xl type-label hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-600/30 flex items-center gap-2"
+                    >
+                      <i className="fas fa-folder-open"></i>
+                      Open PDF
+                    </button>
+                    <button
+                      onClick={() => setShowMergePanel(true)}
+                      className="px-6 py-3 bg-emerald-600 text-white rounded-xl type-label hover:bg-emerald-700 transition-all shadow-lg shadow-emerald-600/30 flex items-center gap-2"
+                    >
+                      <i className="fas fa-object-group"></i>
+                      Merge PDFs
+                    </button>
+                  </div>
                   <p className="type-caption text-slate-400 mt-4">
                     Supports PDF files up to 100MB
                   </p>
@@ -1211,6 +1451,20 @@ const PDFSuite: React.FC<PDFSuiteProps> = ({ className = '' }) => {
             >
               <i className="fas fa-eraser"></i>
             </button>
+            <button
+              onClick={() => setShowWatermarkPanel(true)}
+              className="hover:text-blue-600 transition-colors"
+              title="Add Watermark"
+            >
+              <i className="fas fa-stamp"></i>
+            </button>
+            <button
+              onClick={() => setShowFormFieldCreator(true)}
+              className="hover:text-violet-600 transition-colors"
+              title="Create Form Field"
+            >
+              <i className="fas fa-wpforms"></i>
+            </button>
             <span>|</span>
             <span>
               {annotationCount} annotation{annotationCount !== 1 ? 's' : ''}
@@ -1248,10 +1502,54 @@ const PDFSuite: React.FC<PDFSuiteProps> = ({ className = '' }) => {
         </div>
       )}
 
+      {/* Page Actions Toolbar - appears when pages are selected */}
+      {document && selectedPages.length > 0 && (
+        <PageActionsToolbar
+          selectedCount={selectedPages.length}
+          totalPages={managedPages.length || pages.length}
+          onRotateLeft={() => rotatePages(selectedPages, 'ccw')}
+          onRotateRight={() => rotatePages(selectedPages, 'cw')}
+          onDelete={() => deletePages(selectedPages)}
+          onExtract={() => extractPages(selectedPages)}
+          onDuplicate={() => selectedPages.length === 1 && duplicatePage(selectedPages[0])}
+          onMoveToStart={() => movePagesToStart(selectedPages)}
+          onMoveToEnd={() => movePagesToEnd(selectedPages)}
+          onSelectAll={selectAllPages}
+          onDeselectAll={deselectAllPages}
+        />
+      )}
+
       {/* Keyboard Shortcuts Panel */}
       <KeyboardShortcutsPanel
         isOpen={showKeyboardShortcuts}
         onClose={() => setShowKeyboardShortcuts(false)}
+      />
+
+      {/* PDF Merge Panel */}
+      <PDFMergePanel
+        isOpen={showMergePanel}
+        onClose={() => setShowMergePanel(false)}
+        onMergeComplete={handleMergeComplete}
+      />
+
+      {/* Watermark Panel */}
+      <WatermarkPanel
+        isOpen={showWatermarkPanel}
+        onClose={() => setShowWatermarkPanel(false)}
+        onApply={handleWatermarkApply}
+        totalPages={managedPages.length || pages.length}
+      />
+
+      {/* Form Field Creator */}
+      <FormFieldCreator
+        isOpen={showFormFieldCreator}
+        onClose={() => {
+          setShowFormFieldCreator(false);
+          setSelectedFormFieldType(null);
+        }}
+        onCreateField={handleCreateFormField}
+        selectedFieldType={selectedFormFieldType}
+        onFieldTypeChange={setSelectedFormFieldType}
       />
     </div>
   );
