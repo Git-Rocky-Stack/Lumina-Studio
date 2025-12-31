@@ -13,6 +13,7 @@ import { usePDFHistory } from './hooks/usePDFHistory';
 import { usePDFText } from './hooks/usePDFText';
 import { usePDFAnnotations } from './hooks/usePDFAnnotations';
 import { useFindReplace } from './hooks/useFindReplace';
+import { useRecentFiles } from './hooks/useRecentFiles';
 
 // Components
 import PDFViewer, { PDFViewerHandle } from './components/PDFViewer';
@@ -23,6 +24,9 @@ import FindReplacePanel from './components/FindReplacePanel';
 import TextEditor from './components/TextEditor';
 import CommentPanel from './components/CommentPanel';
 import RedactionTool from './components/RedactionTool';
+import KeyboardShortcutsPanel from './components/KeyboardShortcutsPanel';
+import RecentFilesPanel from './components/RecentFilesPanel';
+import type { RecentFile } from './hooks/useRecentFiles';
 
 // Types
 import type {
@@ -219,9 +223,20 @@ const PDFSuite: React.FC<PDFSuiteProps> = ({ className = '' }) => {
     },
   });
 
+  // Recent files hook
+  const {
+    recentFiles,
+    addRecentFile,
+    removeRecentFile,
+    clearRecentFiles,
+    formatFileSize,
+    formatDate,
+  } = useRecentFiles();
+
   // Local state
   const [activeTool, setActiveTool] = useState<PDFTool>('select');
   const [toolSettings, setToolSettings] = useState<ToolSettings>(DEFAULT_TOOL_SETTINGS);
+  const [showKeyboardShortcuts, setShowKeyboardShortcuts] = useState(false);
   const [glyphSettings, setGlyphSettings] = useState<GlyphSettings>(DEFAULT_GLYPH_SETTINGS);
   const [formFields, setFormFields] = useState<PDFFormField[]>([]);
   const [selectedFormFieldId, setSelectedFormFieldId] = useState<string>();
@@ -243,15 +258,23 @@ const PDFSuite: React.FC<PDFSuiteProps> = ({ className = '' }) => {
     async (e: React.ChangeEvent<HTMLInputElement>) => {
       const file = e.target.files?.[0];
       if (file) {
-        await loadDocument(file);
+        const doc = await loadDocument(file);
         clearHistory();
+        // Add to recent files
+        if (doc) {
+          addRecentFile({
+            name: file.name,
+            size: file.size,
+            pageCount: doc.pageCount,
+          });
+        }
       }
       // Reset input
       if (fileInputRef.current) {
         fileInputRef.current.value = '';
       }
     },
-    [loadDocument, clearHistory]
+    [loadDocument, clearHistory, addRecentFile]
   );
 
   const handleSave = useCallback(async () => {
@@ -603,6 +626,71 @@ const PDFSuite: React.FC<PDFSuiteProps> = ({ className = '' }) => {
     [activeTool, toolSettings, zoom, addAnnotationToStore, handleAddRedaction]
   );
 
+  // Shape completion handling (drag-to-draw)
+  const handleShapeComplete = useCallback(
+    (pageNumber: number, tool: PDFTool, rect: { x: number; y: number; width: number; height: number }) => {
+      console.log(`Shape completed on page ${pageNumber}:`, tool, rect);
+
+      switch (tool) {
+        case 'rectangle':
+          addAnnotationToStore('rectangle', pageNumber, rect, {
+            color: toolSettings.color,
+            opacity: toolSettings.opacity,
+            borderWidth: toolSettings.borderWidth || 2,
+            fillColor: 'transparent',
+          });
+          break;
+
+        case 'ellipse':
+          addAnnotationToStore('ellipse', pageNumber, rect, {
+            color: toolSettings.color,
+            opacity: toolSettings.opacity,
+            borderWidth: toolSettings.borderWidth || 2,
+            fillColor: 'transparent',
+          });
+          break;
+
+        case 'line':
+          addAnnotationToStore('line', pageNumber, rect, {
+            color: toolSettings.color,
+            opacity: toolSettings.opacity,
+            borderWidth: toolSettings.borderWidth || 2,
+          });
+          break;
+
+        case 'arrow':
+          addAnnotationToStore('arrow', pageNumber, rect, {
+            color: toolSettings.color,
+            opacity: toolSettings.opacity,
+            borderWidth: toolSettings.borderWidth || 2,
+          });
+          break;
+
+        case 'highlight':
+          addAnnotationToStore('highlight', pageNumber, rect, {
+            color: toolSettings.color,
+            opacity: 50,
+            borderWidth: 0,
+          });
+          break;
+
+        case 'freeText':
+          addAnnotationToStore('freeText', pageNumber, rect, {
+            color: toolSettings.color,
+            opacity: toolSettings.opacity,
+            contents: 'Double-click to edit',
+            fontSize: toolSettings.fontSize || 12,
+            borderWidth: 1,
+          });
+          break;
+
+        default:
+          break;
+      }
+    },
+    [toolSettings, addAnnotationToStore]
+  );
+
   // Annotation click handling
   const handleAnnotationClick = useCallback((annotation: PDFAnnotation) => {
     selectAnnotation(annotation.id);
@@ -629,6 +717,11 @@ const PDFSuite: React.FC<PDFSuiteProps> = ({ className = '' }) => {
 
       // Tool shortcuts
       if (!e.ctrlKey && !e.metaKey && !e.altKey) {
+        switch (e.key) {
+          case '?':
+            setShowKeyboardShortcuts(true);
+            break;
+        }
         switch (e.key.toLowerCase()) {
           case 'v':
             setActiveTool('select');
@@ -652,6 +745,7 @@ const PDFSuite: React.FC<PDFSuiteProps> = ({ className = '' }) => {
             setShowSearch(false);
             setShowComments(false);
             setShowRedactionTool(false);
+            setShowKeyboardShortcuts(false);
             deselectAllAnnotations();
             break;
         }
@@ -698,6 +792,13 @@ const PDFSuite: React.FC<PDFSuiteProps> = ({ className = '' }) => {
     deselectAllAnnotations,
   ]);
 
+  // Recent file handling
+  const handleRecentFileSelect = useCallback((_file: RecentFile) => {
+    // Since we can't store actual file data in localStorage,
+    // we prompt the user to re-open the file
+    handleOpenFile();
+  }, [handleOpenFile]);
+
   // Drop zone handling
   const handleDragOver = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -709,11 +810,19 @@ const PDFSuite: React.FC<PDFSuiteProps> = ({ className = '' }) => {
       e.preventDefault();
       const file = e.dataTransfer.files[0];
       if (file && file.type === 'application/pdf') {
-        await loadDocument(file);
+        const doc = await loadDocument(file);
         clearHistory();
+        // Add to recent files
+        if (doc) {
+          addRecentFile({
+            name: file.name,
+            size: file.size,
+            pageCount: doc.pageCount,
+          });
+        }
       }
     },
-    [loadDocument, clearHistory]
+    [loadDocument, clearHistory, addRecentFile]
   );
 
   return (
@@ -823,27 +932,44 @@ const PDFSuite: React.FC<PDFSuiteProps> = ({ className = '' }) => {
           {/* Empty State */}
           {!document && !isLoading && !error && (
             <div className="absolute inset-0 flex items-center justify-center">
-              <div className="text-center max-w-md">
-                <div className="w-32 h-32 mx-auto mb-6 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-3xl flex items-center justify-center shadow-2xl shadow-indigo-600/30">
-                  <i className="fas fa-file-pdf text-5xl text-white"></i>
+              <div className="flex gap-8 items-start max-w-4xl mx-auto px-8">
+                {/* Main CTA */}
+                <div className="text-center flex-1">
+                  <div className="w-32 h-32 mx-auto mb-6 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-3xl flex items-center justify-center shadow-2xl shadow-indigo-600/30">
+                    <i className="fas fa-file-pdf text-5xl text-white"></i>
+                  </div>
+                  <h2 className="type-page text-slate-800 mb-2">
+                    PDF Suite
+                  </h2>
+                  <p className="type-body text-slate-500 mb-6">
+                    Open a PDF to start editing, annotating, and creating forms.
+                    Drag and drop a file here or click the button below.
+                  </p>
+                  <button
+                    onClick={handleOpenFile}
+                    className="px-8 py-3 bg-indigo-600 text-white rounded-xl type-label hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-600/30 flex items-center gap-2 mx-auto"
+                  >
+                    <i className="fas fa-folder-open"></i>
+                    Open PDF
+                  </button>
+                  <p className="type-caption text-slate-400 mt-4">
+                    Supports PDF files up to 100MB
+                  </p>
                 </div>
-                <h2 className="type-page text-slate-800 mb-2">
-                  PDF Suite
-                </h2>
-                <p className="type-body text-slate-500 mb-6">
-                  Open a PDF to start editing, annotating, and creating forms.
-                  Drag and drop a file here or click the button below.
-                </p>
-                <button
-                  onClick={handleOpenFile}
-                  className="px-8 py-3 bg-indigo-600 text-white rounded-xl type-label hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-600/30 flex items-center gap-2 mx-auto"
-                >
-                  <i className="fas fa-folder-open"></i>
-                  Open PDF
-                </button>
-                <p className="type-caption text-slate-400 mt-4">
-                  Supports PDF files up to 100MB
-                </p>
+
+                {/* Recent Files Panel */}
+                {recentFiles.length > 0 && (
+                  <div className="w-80 bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden">
+                    <RecentFilesPanel
+                      recentFiles={recentFiles}
+                      onFileSelect={handleRecentFileSelect}
+                      onFileRemove={removeRecentFile}
+                      onClearAll={clearRecentFiles}
+                      formatFileSize={formatFileSize}
+                      formatDate={formatDate}
+                    />
+                  </div>
+                )}
               </div>
             </div>
           )}
@@ -859,10 +985,15 @@ const PDFSuite: React.FC<PDFSuiteProps> = ({ className = '' }) => {
                 rotation={rotation}
                 viewMode={viewMode}
                 fitMode={fitMode}
+                activeTool={activeTool}
+                toolColor={toolSettings.color}
+                toolOpacity={toolSettings.opacity}
+                toolBorderWidth={toolSettings.borderWidth}
                 annotations={annotations}
                 formFields={formFields}
                 showGrid={showGrid}
                 onPageClick={handlePageClick}
+                onShapeComplete={handleShapeComplete}
                 onTextSelect={handleTextSelect}
                 onAnnotationClick={handleAnnotationClick}
                 onZoomChange={setZoom}
@@ -1116,6 +1247,12 @@ const PDFSuite: React.FC<PDFSuiteProps> = ({ className = '' }) => {
           </div>
         </div>
       )}
+
+      {/* Keyboard Shortcuts Panel */}
+      <KeyboardShortcutsPanel
+        isOpen={showKeyboardShortcuts}
+        onClose={() => setShowKeyboardShortcuts(false)}
+      />
     </div>
   );
 };

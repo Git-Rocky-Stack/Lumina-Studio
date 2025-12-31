@@ -778,3 +778,66 @@ body {
     background: rgba(99, 102, 241, 0.3);
     color: #fff;
 }
+
+/* ===== PDF TEXT LAYER ===== */
+/* Makes PDF text selectable while remaining invisible */
+.text-layer {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+    line-height: 1.0;
+    text-align: initial;
+    pointer-events: auto;
+}
+
+.text-layer > span {
+    color: transparent;
+    position: absolute;
+    white-space: pre;
+    transform-origin: 0% 0%;
+    pointer-events: all;
+}
+
+.text-layer > span::selection {
+    background: rgba(99, 102, 241, 0.4);
+}
+
+.text-layer > span::-moz-selection {
+    background: rgba(99, 102, 241, 0.4);
+}
+
+/* Highlight tool active - show selection more prominently */
+.text-layer.highlight-mode > span::selection {
+    background: rgba(255, 235, 59, 0.6);
+}
+
+.text-layer.underline-mode > span::selection {
+    background: rgba(244, 67, 54, 0.4);
+}
+
+.text-layer.strikethrough-mode > span::selection {
+    background: rgba(156, 39, 176, 0.4);
+}
+
+/* Ensure text layer is above canvas but below annotations */
+.text-layer {
+    z-index: 1;
+}
+
+/* Annotation layer should be above text layer */
+.annotation-layer {
+    z-index: 2;
+}
+
+/* Drawing layer for shapes being drawn */
+.drawing-layer {
+    z-index: 3;
+    pointer-events: none;
+}
+
+.drawing-layer.active {
+    pointer-events: auto;
+}

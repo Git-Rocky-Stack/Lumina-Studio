@@ -35,7 +35,7 @@ interface UsePDFDocumentReturn {
   error: string | null;
 
   // Document operations
-  loadDocument: (source: File | string | ArrayBuffer) => Promise<void>;
+  loadDocument: (source: File | string | ArrayBuffer) => Promise<PDFDocument | null>;
   closeDocument: () => void;
   saveDocument: (filename?: string) => Promise<void>;
 
@@ -87,7 +87,7 @@ export function usePDFDocument(
 
   // Load document
   const loadDocument = useCallback(
-    async (source: File | string | ArrayBuffer) => {
+    async (source: File | string | ArrayBuffer): Promise<PDFDocument | null> => {
       // Cancel any previous loading
       if (abortControllerRef.current) {
         abortControllerRef.current.abort();
@@ -169,6 +169,8 @@ export function usePDFDocument(
         if (onLoad) {
           onLoad(doc);
         }
+
+        return doc;
       } catch (err) {
         const errorMessage = err instanceof Error ? err.message : 'Failed to load PDF';
         if (errorMessage !== 'Loading cancelled') {
@@ -177,6 +179,7 @@ export function usePDFDocument(
             onError(err instanceof Error ? err : new Error(errorMessage));
           }
         }
+        return null;
       } finally {
         setIsLoading(false);
       }

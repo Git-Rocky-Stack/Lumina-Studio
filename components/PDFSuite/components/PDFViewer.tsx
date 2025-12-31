@@ -14,7 +14,10 @@ import React, {
 } from 'react';
 import type { PDFPageProxy } from 'pdfjs-dist';
 import { renderPageToCanvas } from '../../../services/pdfService';
-import type { PDFPage, PDFAnnotation, PDFFormField, ViewMode, FitMode } from '../types';
+import type { PDFPage, PDFAnnotation, PDFFormField, ViewMode, FitMode, PDFTool, StampType } from '../types';
+import { TextLayer } from './TextLayer';
+import { DrawingOverlay } from './DrawingOverlay';
+import { StampSVG } from './Stamps';
 
 interface PDFViewerProps {
   pages: PDFPage[];
@@ -23,11 +26,16 @@ interface PDFViewerProps {
   rotation: number;
   viewMode: ViewMode;
   fitMode: FitMode;
+  activeTool?: PDFTool;
+  toolColor?: string;
+  toolOpacity?: number;
+  toolBorderWidth?: number;
   annotations?: PDFAnnotation[];
   formFields?: PDFFormField[];
   showGrid?: boolean;
   gridSize?: number;
   onPageClick?: (pageNumber: number, x: number, y: number) => void;
+  onShapeComplete?: (pageNumber: number, tool: PDFTool, rect: { x: number; y: number; width: number; height: number }) => void;
   onTextSelect?: (text: string, pageNumber: number, bounds: DOMRect) => void;
   onAnnotationClick?: (annotation: PDFAnnotation) => void;
   onFormFieldClick?: (field: PDFFormField) => void;
@@ -50,11 +58,16 @@ export const PDFViewer = forwardRef<PDFViewerHandle, PDFViewerProps>(
       rotation,
       viewMode,
       fitMode,
+      activeTool = 'select',
+      toolColor = '#6366f1',
+      toolOpacity = 100,
+      toolBorderWidth = 2,
       annotations = [],
       formFields = [],
       showGrid = false,
       gridSize = 10,
       onPageClick,
+      onShapeComplete,
       onTextSelect,
       onAnnotationClick,
       onFormFieldClick,
@@ -347,37 +360,214 @@ export const PDFViewer = forwardRef<PDFViewerHandle, PDFViewerProps>(
         );
 
         return pageAnnotations.map((annotation) => {
-          const { rect, color, opacity, type } = annotation;
-
-          const style: React.CSSProperties = {
-            position: 'absolute',
-            left: rect.x * zoom,
-            top: rect.y * zoom,
+          const { rect, color, opacity, type, borderWidth = 2 } = annotation;
+          const scaledRect = {
+            x: rect.x * zoom,
+            y: rect.y * zoom,
             width: rect.width * zoom,
             height: rect.height * zoom,
-            backgroundColor:
-              type === 'highlight'
-                ? `${color}${Math.round(opacity * 0.5 * 2.55)
-                    .toString(16)
-                    .padStart(2, '0')}`
-                : 'transparent',
-            border:
-              type === 'rectangle' || type === 'ellipse'
-                ? `2px solid ${color}`
-                : 'none',
-            borderRadius: type === 'ellipse' ? '50%' : 0,
-            cursor: 'pointer',
-            opacity: opacity / 100,
           };
 
-          return (
-            <div
-              key={annotation.id}
-              style={style}
-              onClick={() => onAnnotationClick?.(annotation)}
-              title={annotation.contents || ''}
-            />
-          );
+          const baseStyle: React.CSSProperties = {
+            position: 'absolute',
+            left: scaledRect.x,
+            top: scaledRect.y,
+            width: scaledRect.width,
+            height: scaledRect.height,
+            cursor: 'pointer',
+            pointerEvents: 'auto',
+          };
+
+          // Render based on annotation type
+          switch (type) {
+            case 'highlight':
+              return (
+                <div
+                  key={annotation.id}
+                  style={{
+                    ...baseStyle,
+                    backgroundColor: color,
+                    opacity: 0.4,
+                  }}
+                  onClick={() => onAnnotationClick?.(annotation)}
+                  title={annotation.contents || ''}
+                />
+              );
+
+            case 'underline':
+              return (
+                <div
+                  key={annotation.id}
+                  style={{
+                    ...baseStyle,
+                    borderBottom: `2px solid ${color}`,
+                    opacity: opacity / 100,
+                  }}
+                  onClick={() => onAnnotationClick?.(annotation)}
+                  title={annotation.contents || ''}
+                />
+              );
+
+            case 'strikethrough':
+              return (
+                <div
+                  key={annotation.id}
+                  style={{
+                    ...baseStyle,
+                    display: 'flex',
+                    alignItems: 'center',
+                    opacity: opacity / 100,
+                  }}
+                  onClick={() => onAnnotationClick?.(annotation)}
+                  title={annotation.contents || ''}
+                >
+                  <div style={{ width: '100%', height: 2, backgroundColor: color }} />
+                </div>
+              );
+
+            case 'rectangle':
+              return (
+                <div
+                  key={annotation.id}
+                  style={{
+                    ...baseStyle,
+                    border: `${borderWidth}px solid ${color}`,
+                    opacity: opacity / 100,
+                  }}
+                  onClick={() => onAnnotationClick?.(annotation)}
+                  title={annotation.contents || ''}
+                />
+              );
+
+            case 'ellipse':
+              return (
+                <div
+                  key={annotation.id}
+                  style={{
+                    ...baseStyle,
+                    border: `${borderWidth}px solid ${color}`,
+                    borderRadius: '50%',
+                    opacity: opacity / 100,
+                  }}
+                  onClick={() => onAnnotationClick?.(annotation)}
+                  title={annotation.contents || ''}
+                />
+              );
+
+            case 'line':
+            case 'arrow':
+              const lineLength = Math.sqrt(scaledRect.width ** 2 + scaledRect.height ** 2);
+              const angle = Math.atan2(scaledRect.height, scaledRect.width) * (180 / Math.PI);
+              return (
+                <div
+                  key={annotation.id}
+                  style={{
+                    position: 'absolute',
+                    left: scaledRect.x,
+                    top: scaledRect.y,
+                    width: lineLength,
+                    height: borderWidth,
+                    backgroundColor: color,
+                    opacity: opacity / 100,
+                    transformOrigin: '0 50%',
+                    transform: `rotate(${angle}deg)`,
+                    cursor: 'pointer',
+                    pointerEvents: 'auto',
+                  }}
+                  onClick={() => onAnnotationClick?.(annotation)}
+                  title={annotation.contents || ''}
+                >
+                  {type === 'arrow' && (
+                    <div
+                      style={{
+                        position: 'absolute',
+                        right: -8,
+                        top: '50%',
+                        transform: 'translateY(-50%)',
+                        width: 0,
+                        height: 0,
+                        borderLeft: `10px solid ${color}`,
+                        borderTop: '5px solid transparent',
+                        borderBottom: '5px solid transparent',
+                      }}
+                    />
+                  )}
+                </div>
+              );
+
+            case 'note':
+              return (
+                <div
+                  key={annotation.id}
+                  style={{
+                    ...baseStyle,
+                    width: 24 * zoom,
+                    height: 24 * zoom,
+                    opacity: opacity / 100,
+                  }}
+                  onClick={() => onAnnotationClick?.(annotation)}
+                  title={annotation.contents || 'Note'}
+                >
+                  <svg viewBox="0 0 24 24" fill={color} style={{ width: '100%', height: '100%' }}>
+                    <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z" />
+                  </svg>
+                </div>
+              );
+
+            case 'stamp':
+              return (
+                <div
+                  key={annotation.id}
+                  style={{
+                    ...baseStyle,
+                    opacity: opacity / 100,
+                  }}
+                  onClick={() => onAnnotationClick?.(annotation)}
+                  title={annotation.stampType || 'Stamp'}
+                >
+                  <StampSVG
+                    type={(annotation.stampType as StampType) || 'approved'}
+                    width={scaledRect.width}
+                    height={scaledRect.height}
+                  />
+                </div>
+              );
+
+            case 'freeText':
+              return (
+                <div
+                  key={annotation.id}
+                  style={{
+                    ...baseStyle,
+                    border: `1px solid ${color}`,
+                    backgroundColor: 'rgba(255,255,255,0.95)',
+                    padding: 4,
+                    fontSize: (annotation.fontSize || 12) * zoom,
+                    color: color,
+                    overflow: 'hidden',
+                    opacity: opacity / 100,
+                  }}
+                  onClick={() => onAnnotationClick?.(annotation)}
+                  title={annotation.contents || ''}
+                >
+                  {annotation.contents || 'Text'}
+                </div>
+              );
+
+            default:
+              return (
+                <div
+                  key={annotation.id}
+                  style={{
+                    ...baseStyle,
+                    border: `${borderWidth}px solid ${color}`,
+                    opacity: opacity / 100,
+                  }}
+                  onClick={() => onAnnotationClick?.(annotation)}
+                  title={annotation.contents || ''}
+                />
+              );
+          }
         });
       },
       [annotations, zoom, onAnnotationClick]
@@ -427,6 +617,25 @@ export const PDFViewer = forwardRef<PDFViewerHandle, PDFViewerProps>(
                   style={{ width: scaledWidth, height: scaledHeight }}
                 />
 
+                {/* Text layer for text selection */}
+                {page.proxy && renderedPages.has(page.pageNumber) && (
+                  <TextLayer
+                    page={page.proxy}
+                    scale={zoom}
+                    rotation={rotation}
+                    onTextSelect={(text, bounds) => {
+                      if (onTextSelect) {
+                        onTextSelect(text, page.pageNumber, bounds);
+                      }
+                    }}
+                    className={
+                      activeTool === 'highlight' ? 'highlight-mode' :
+                      activeTool === 'underline' ? 'underline-mode' :
+                      activeTool === 'strikethrough' ? 'strikethrough-mode' : ''
+                    }
+                  />
+                )}
+
                 {/* Loading placeholder */}
                 {!renderedPages.has(page.pageNumber) && (
                   <div className="absolute inset-0 bg-slate-100 animate-pulse flex items-center justify-center">
@@ -440,9 +649,23 @@ export const PDFViewer = forwardRef<PDFViewerHandle, PDFViewerProps>(
                 {renderGrid(scaledWidth, scaledHeight)}
 
                 {/* Annotations layer */}
-                <div className="absolute inset-0 pointer-events-none">
+                <div className="absolute inset-0 pointer-events-none annotation-layer">
                   {renderAnnotations(page.pageNumber, page.width, page.height)}
                 </div>
+
+                {/* Drawing overlay for shape tools */}
+                <DrawingOverlay
+                  activeTool={activeTool}
+                  zoom={zoom}
+                  color={toolColor}
+                  opacity={toolOpacity}
+                  borderWidth={toolBorderWidth}
+                  onShapeComplete={(tool, rect) => {
+                    if (onShapeComplete) {
+                      onShapeComplete(page.pageNumber, tool, rect);
+                    }
+                  }}
+                />
 
                 {/* Page number badge */}
                 <div className="absolute bottom-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-slate-900/80 text-white type-micro rounded-full backdrop-blur-sm">
