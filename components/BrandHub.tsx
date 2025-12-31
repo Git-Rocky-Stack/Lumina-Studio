@@ -9,7 +9,7 @@ const BrandHub: React.FC = () => {
       <div className="max-w-5xl mx-auto">
         <header className="mb-12 animate-in fade-in slide-in-from-top-4 duration-700">
           <div className="inline-block px-3 py-1 rounded-full bg-indigo-50 text-indigo-600 type-micro mb-4">Brand Intelligence</div>
-          <h2 className="type-page text-slate-900 mb-2">The Soul of your Brand</h2>
+          <h2 className="type-page text-slate-900 mb-2">Brand Hub</h2>
           <p className="type-body text-slate-500 text-lg">Define how Gemini perceives your creative voice. This context is used in every generation.</p>
         </header>
 

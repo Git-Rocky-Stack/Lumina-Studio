@@ -770,7 +770,7 @@ const PDFSuite: React.FC<PDFSuiteProps> = ({ className = '' }) => {
                   <i className="fas fa-file-pdf text-5xl text-white"></i>
                 </div>
                 <h2 className="type-page text-slate-800 mb-2">
-                  Lumina PDF Suite Pro
+                  PDF Suite
                 </h2>
                 <p className="type-body text-slate-500 mb-6">
                   Open a PDF to start editing, annotating, and creating forms.

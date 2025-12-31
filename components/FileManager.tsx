@@ -146,7 +146,7 @@ const FileManager: React.FC = () => {
               <span className="w-2 h-2 rounded-full bg-accent animate-pulse"></span>
               <p className="type-label text-slate-400">Workspace instrumentation active</p>
             </div>
-            <h2 className="type-page">Command Bay</h2>
+            <h2 className="type-page text-slate-900">Dashboard</h2>
             <p className="type-body">Real-time oversight of your creative production pipeline.</p>
           </div>
           <div className="flex gap-4">

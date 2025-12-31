@@ -209,7 +209,7 @@ const TemplateEngine: React.FC<TemplateEngineProps> = ({ onApplyTemplate, brandK
               AI Template Engine
             </div>
             <h1 className="type-page text-slate-900">
-              Create Stunning Templates Instantly
+              AI Templates
             </h1>
           </div>
 

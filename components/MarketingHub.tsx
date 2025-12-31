@@ -131,7 +131,7 @@ const MarketingHub: React.FC = () => {
       <div className="max-w-6xl mx-auto space-y-12">
         <header className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 animate-in fade-in duration-700">
           <div className="space-y-2">
-            <h2 className="type-page text-slate-900">Growth Hub</h2>
+            <h2 className="type-page text-slate-900">Marketing</h2>
             <p className="type-body text-slate-500 text-lg">Orchestrate viral campaigns across your social ecosystem.</p>
           </div>
         </header>

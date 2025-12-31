@@ -61,7 +61,7 @@ const Personalization: React.FC<PersonalizationProps> = ({ currentTheme, setThem
       <div className="max-w-5xl mx-auto">
         <header className="mb-16">
           <div className="inline-block px-4 py-1 rounded-full bg-accent-soft text-accent type-label mb-4 border border-accent/10">Engine Preferences</div>
-          <h2 className="type-page text-slate-900 mb-4">Command & Personality</h2>
+          <h2 className="type-page text-slate-900 mb-4">Settings</h2>
           <p className="type-body text-slate-500 text-xl leading-relaxed max-w-2xl">Modify the visual and cognitive parameters of Lumina Studio to match your professional workflow.</p>
         </header>
 

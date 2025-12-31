@@ -267,8 +267,8 @@ export default function AIStockGen() {
             <QuotaBadge type={prodMode === 'still' ? 'image' : 'video'} />
           </div>
         </div>
-        <h2 className="type-display mb-4">Synthesis Lab</h2>
-        <p className="type-body text-xl max-w-3xl leading-relaxed">
+        <h2 className="type-page text-slate-900 mb-4">AI Stock</h2>
+        <p className="type-body max-w-3xl leading-relaxed">
           Orchestrate high-fidelity stock photography and cinematic loops for professional creative workflows.
         </p>
       </header>
