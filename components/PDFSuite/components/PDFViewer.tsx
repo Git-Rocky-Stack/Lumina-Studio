@@ -66,8 +66,10 @@ export const PDFViewer = forwardRef<PDFViewerHandle, PDFViewerProps>(
     const containerRef = useRef<HTMLDivElement>(null);
     const canvasRefs = useRef<Map<number, HTMLCanvasElement>>(new Map());
     const [renderedPages, setRenderedPages] = useState<Set<number>>(new Set());
-    const [isRendering, setIsRendering] = useState(false);
+    const isRenderingRef = useRef(false);
     const renderQueueRef = useRef<number[]>([]);
+    const currentZoomRef = useRef(zoom);
+    const currentRotationRef = useRef(rotation);
 
     // Expose methods via ref
     useImperativeHandle(ref, () => ({
@@ -110,63 +112,74 @@ export const PDFViewer = forwardRef<PDFViewerHandle, PDFViewerProps>(
       },
     }));
 
-    // Render a single page
+    // Render a single page - using ref for zoom to avoid dependency issues
     const renderPage = useCallback(
-      async (page: PDFPage) => {
+      async (page: PDFPage, zoomLevel: number) => {
         if (!page.proxy) return;
 
         const canvas = canvasRefs.current.get(page.pageNumber);
         if (!canvas) return;
 
         try {
-          await renderPageToCanvas(page.proxy, canvas, zoom);
+          await renderPageToCanvas(page.proxy, canvas, zoomLevel);
           setRenderedPages((prev) => new Set([...prev, page.pageNumber]));
         } catch (error) {
           console.error(`Failed to render page ${page.pageNumber}:`, error);
         }
       },
-      [zoom]
+      []
     );
 
-    // Process render queue
-    const processRenderQueue = useCallback(async () => {
-      if (isRendering || renderQueueRef.current.length === 0) return;
+    // Process render queue - stable function using refs
+    const processRenderQueue = useCallback(async (pagesData: PDFPage[], zoomLevel: number) => {
+      if (isRenderingRef.current || renderQueueRef.current.length === 0) return;
 
-      setIsRendering(true);
+      isRenderingRef.current = true;
 
       while (renderQueueRef.current.length > 0) {
         const pageNumber = renderQueueRef.current.shift()!;
-        const page = pages.find((p) => p.pageNumber === pageNumber);
+        const page = pagesData.find((p) => p.pageNumber === pageNumber);
         if (page) {
-          await renderPage(page);
+          await renderPage(page, zoomLevel);
         }
       }
 
-      setIsRendering(false);
-    }, [isRendering, pages, renderPage]);
+      isRenderingRef.current = false;
+    }, [renderPage]);
 
-    // Queue page for rendering
+    // Queue page for rendering - stable function
     const queuePageRender = useCallback(
-      (pageNumber: number) => {
+      (pageNumber: number, pagesData: PDFPage[], zoomLevel: number) => {
         if (!renderQueueRef.current.includes(pageNumber)) {
           renderQueueRef.current.push(pageNumber);
-          processRenderQueue();
+          processRenderQueue(pagesData, zoomLevel);
         }
       },
       [processRenderQueue]
     );
 
-    // Re-render on zoom change
+    // Re-render only when zoom or rotation actually changes, or when pages load
     useEffect(() => {
-      setRenderedPages(new Set());
-      renderQueueRef.current = [];
+      const zoomChanged = currentZoomRef.current !== zoom;
+      const rotationChanged = currentRotationRef.current !== rotation;
+      const needsFullRerender = zoomChanged || rotationChanged;
 
-      // Queue visible pages first, then others
-      const visiblePages =
+      // Update refs
+      currentZoomRef.current = zoom;
+      currentRotationRef.current = rotation;
+
+      // Only clear rendered pages if zoom/rotation changed
+      if (needsFullRerender) {
+        setRenderedPages(new Set());
+        renderQueueRef.current = [];
+      }
+
+      // Queue visible pages for rendering
+      const visiblePageNumbers =
         viewMode === 'single' ? [currentPage] : pages.map((p) => p.pageNumber);
 
-      visiblePages.forEach((pageNum) => {
-        queuePageRender(pageNum);
+      visiblePageNumbers.forEach((pageNum) => {
+        queuePageRender(pageNum, pages, zoom);
       });
     }, [zoom, rotation, pages, currentPage, viewMode, queuePageRender]);
 
@@ -189,7 +202,7 @@ export const PDFViewer = forwardRef<PDFViewerHandle, PDFViewerProps>(
             offsetTop < scrollTop + clientHeight + buffer;
 
           if (isNearVisible && !renderedPages.has(page.pageNumber)) {
-            queuePageRender(page.pageNumber);
+            queuePageRender(page.pageNumber, pages, currentZoomRef.current);
           }
         }
       });
