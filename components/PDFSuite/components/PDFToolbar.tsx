@@ -3,7 +3,7 @@
 // Main toolbar with tools, navigation, and actions
 // ============================================
 
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import type { PDFTool, ViewMode, FitMode } from '../types';
 
 interface PDFToolbarProps {
@@ -122,7 +122,6 @@ export const PDFToolbar: React.FC<PDFToolbarProps> = ({
   className = '',
 }) => {
   const [pageInput, setPageInput] = useState(currentPage.toString());
-  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Update page input when current page changes
   React.useEffect(() => {
@@ -209,23 +208,12 @@ export const PDFToolbar: React.FC<PDFToolbarProps> = ({
         {/* File Actions */}
         <div className="flex items-center gap-2 pr-4 border-r border-slate-200">
           <button
-            onClick={() => fileInputRef.current?.click()}
+            onClick={onOpenFile}
             className="px-4 py-2 bg-indigo-600 text-white rounded-xl type-micro hover:bg-indigo-700 transition-all flex items-center gap-2 shadow-lg shadow-indigo-600/20"
           >
             <i className="fas fa-folder-open"></i>
             Open
           </button>
-          <input
-            ref={fileInputRef}
-            type="file"
-            accept=".pdf"
-            className="hidden"
-            onChange={(e) => {
-              if (e.target.files?.[0]) {
-                onOpenFile();
-              }
-            }}
-          />
 
           <button
             onClick={onSave}

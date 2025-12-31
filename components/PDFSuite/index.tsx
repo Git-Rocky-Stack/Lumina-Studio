@@ -479,6 +479,64 @@ const PDFSuite: React.FC<PDFSuiteProps> = ({ className = '' }) => {
           handleAddRedaction(redactionMark);
           break;
 
+        case 'freeText':
+          // Create a text box annotation
+          addAnnotationToStore('freeText', pageNumber, { x, y, width: 150, height: 40 }, {
+            color: toolSettings.color,
+            opacity: toolSettings.opacity,
+            contents: 'Double-click to edit',
+            fontSize: toolSettings.fontSize || 12,
+            borderWidth: 1,
+          });
+          break;
+
+        case 'rectangle':
+          // Create a rectangle annotation
+          addAnnotationToStore('rectangle', pageNumber, { x, y, width: 100, height: 60 }, {
+            color: toolSettings.color,
+            opacity: toolSettings.opacity,
+            borderWidth: toolSettings.borderWidth || 2,
+            fillColor: 'transparent',
+          });
+          break;
+
+        case 'ellipse':
+          // Create an ellipse annotation
+          addAnnotationToStore('ellipse', pageNumber, { x, y, width: 80, height: 60 }, {
+            color: toolSettings.color,
+            opacity: toolSettings.opacity,
+            borderWidth: toolSettings.borderWidth || 2,
+            fillColor: 'transparent',
+          });
+          break;
+
+        case 'line':
+          // Create a line annotation
+          addAnnotationToStore('line', pageNumber, { x, y, width: 100, height: 2 }, {
+            color: toolSettings.color,
+            opacity: toolSettings.opacity,
+            borderWidth: toolSettings.borderWidth || 2,
+          });
+          break;
+
+        case 'arrow':
+          // Create an arrow annotation
+          addAnnotationToStore('arrow', pageNumber, { x, y, width: 100, height: 2 }, {
+            color: toolSettings.color,
+            opacity: toolSettings.opacity,
+            borderWidth: toolSettings.borderWidth || 2,
+          });
+          break;
+
+        case 'highlight':
+          // Create a highlight annotation at click position
+          addAnnotationToStore('highlight', pageNumber, { x, y, width: 100, height: 20 }, {
+            color: toolSettings.color,
+            opacity: 50,
+            borderWidth: 0,
+          });
+          break;
+
         default:
           break;
       }
@@ -513,8 +571,8 @@ const PDFSuite: React.FC<PDFSuiteProps> = ({ className = '' }) => {
           color: toolSettings.color,
           contents: text,
         });
-      } else if (activeTool === 'strikeout') {
-        addAnnotationToStore('strikeout', pageNumber, {
+      } else if (activeTool === 'strikethrough') {
+        addAnnotationToStore('strikethrough', pageNumber, {
           x: bounds.x / zoom,
           y: bounds.y / zoom,
           width: bounds.width / zoom,
