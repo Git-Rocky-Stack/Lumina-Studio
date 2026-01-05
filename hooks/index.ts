@@ -11,6 +11,14 @@ export type {
   UseAuthReturn,
 } from './useAuth';
 
+// Analytics
+export { useAnalytics, useAnalyticsTracking } from './useAnalytics';
+export type { UseAnalyticsReturn, UseAnalyticsOptions } from './useAnalytics';
+
+// Collaboration
+export { useCollaboration, usePresence, useInvitations } from './useCollaboration';
+export type { UsePresenceReturn, UseInvitationsReturn } from './useCollaboration';
+
 // Animation
 export { useScrollAnimation } from './useScrollAnimation';
 

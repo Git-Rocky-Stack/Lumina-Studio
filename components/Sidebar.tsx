@@ -44,6 +44,7 @@ const Sidebar: React.FC<SidebarProps> = ({
     { id: StudioMode.PDF, icon: 'fa-file-pdf', label: 'PDF Suite' },
     { id: StudioMode.BRANDING, icon: 'fa-fingerprint', label: 'Brand Hub' },
     { id: StudioMode.MARKETING, icon: 'fa-bullhorn', label: 'Marketing' },
+    { id: StudioMode.ANALYTICS, icon: 'fa-chart-line', label: 'Analytics' },
     { id: StudioMode.ASSISTANT, icon: 'fa-microphone', label: 'AI Assistant' },
   ];
 

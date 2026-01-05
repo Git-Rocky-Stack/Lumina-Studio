@@ -11,6 +11,7 @@ export enum StudioMode {
   ASSISTANT = 'assistant',
   BRANDING = 'branding',
   MARKETING = 'marketing',
+  ANALYTICS = 'analytics',
   PERSONALIZATION = 'personalization',
   FEATURES = 'features'
 }

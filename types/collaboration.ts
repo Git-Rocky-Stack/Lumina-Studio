@@ -490,3 +490,229 @@ export const ACTIVITY_ICONS: Record<ActivityType, string> = {
   rename: 'fa-tag',
   version_save: 'fa-save',
 };
+
+// ============================================================================
+// COLLABORATION ROOMS (NEW)
+// ============================================================================
+
+/**
+ * Resource types that support collaboration
+ */
+export type CollaborationResourceType = 'canvas' | 'document' | 'video' | 'pdf' | 'photo';
+
+/**
+ * Collaboration room - represents a shared workspace
+ */
+export interface CollaborationRoom {
+  id: string;
+  name: string;
+  resource_type: CollaborationResourceType;
+  resource_id: string;
+  created_by: string;
+  is_public: boolean;
+  max_participants: number;
+  settings: Record<string, any>;
+  created_at: string;
+  updated_at: string;
+}
+
+/**
+ * Room participant with real-time state
+ */
+export interface RoomParticipant {
+  id: string;
+  room_id: string;
+  user_id: string;
+  display_name: string;
+  avatar_url?: string;
+  color: string;
+  permission_level: 'view' | 'comment' | 'edit' | 'admin';
+  cursor_position?: CursorPosition;
+  selection_range?: SelectionRange;
+  status: 'active' | 'idle' | 'away';
+  joined_at: string;
+  last_seen_at: string;
+}
+
+/**
+ * Cursor position data
+ */
+export interface CursorPosition {
+  x: number;
+  y: number;
+  elementId?: string;
+  viewport?: { scrollX: number; scrollY: number };
+}
+
+/**
+ * Selection range for text/elements
+ */
+export interface SelectionRange {
+  elementId: string;
+  startOffset: number;
+  endOffset: number;
+}
+
+// ============================================================================
+// CRDT OPERATIONS (NEW)
+// ============================================================================
+
+/**
+ * Operation types for CRDT-style sync
+ */
+export type OperationType = 'insert' | 'delete' | 'update' | 'move' | 'transform' | 'style';
+
+/**
+ * Collaboration operation - for operational transformation
+ */
+export interface CollaborationOperation {
+  id: string;
+  room_id: string;
+  user_id: string;
+  operation_type: OperationType;
+  target_type: string;
+  target_id?: string;
+  operation_data: Record<string, any>;
+  vector_clock: Record<string, number>;
+  client_timestamp: string;
+  server_timestamp: string;
+  is_applied: boolean;
+}
+
+/**
+ * Operation batch for atomic changes
+ */
+export interface OperationBatch {
+  operations: Omit<CollaborationOperation, 'id' | 'server_timestamp' | 'is_applied'>[];
+  transaction_id: string;
+}
+
+// ============================================================================
+// VERSION HISTORY (NEW)
+// ============================================================================
+
+/**
+ * Version snapshot for history
+ */
+export interface CollaborationVersion {
+  id: string;
+  room_id: string;
+  version_number: number;
+  snapshot_data: Record<string, any>;
+  created_by: string;
+  description?: string;
+  created_at: string;
+  author?: {
+    display_name: string;
+    avatar_url?: string;
+  };
+}
+
+// ============================================================================
+// ROOM INVITATIONS (NEW)
+// ============================================================================
+
+/**
+ * Room invitation status
+ */
+export type InvitationStatus = 'pending' | 'accepted' | 'declined' | 'expired';
+
+/**
+ * Room invitation
+ */
+export interface RoomInvitation {
+  id: string;
+  room_id: string;
+  inviter_id: string;
+  invitee_email: string;
+  invitee_id?: string;
+  permission_level: 'view' | 'comment' | 'edit' | 'admin';
+  status: InvitationStatus;
+  expires_at: string;
+  created_at: string;
+  room?: {
+    name: string;
+    resource_type: CollaborationResourceType;
+  };
+  inviter?: {
+    display_name: string;
+    avatar_url?: string;
+  };
+}
+
+// ============================================================================
+// PRESENCE STATE (NEW)
+// ============================================================================
+
+/**
+ * Complete presence state for a room
+ */
+export interface RoomPresenceState {
+  participants: RoomParticipant[];
+  cursors: Map<string, CursorPosition>;
+  selections: Map<string, SelectionRange>;
+  lastUpdated: number;
+}
+
+// ============================================================================
+// COLLABORATION HOOKS TYPES (NEW)
+// ============================================================================
+
+/**
+ * Collaboration hook options
+ */
+export interface UseCollaborationOptions {
+  resourceType: CollaborationResourceType;
+  resourceId: string;
+  autoConnect?: boolean;
+  onParticipantJoin?: (participant: RoomParticipant) => void;
+  onParticipantLeave?: (userId: string) => void;
+  onOperation?: (operation: CollaborationOperation) => void;
+  onCursorMove?: (userId: string, position: CursorPosition) => void;
+}
+
+/**
+ * Collaboration hook return type
+ */
+export interface UseCollaborationReturn {
+  // Connection state
+  isConnected: boolean;
+  isConnecting: boolean;
+  error: string | null;
+
+  // Room
+  room: CollaborationRoom | null;
+
+  // Participants
+  participants: RoomParticipant[];
+  currentUser: RoomParticipant | null;
+
+  // Presence
+  cursors: Map<string, CursorPosition>;
+  selections: Map<string, SelectionRange>;
+
+  // Actions
+  connect: () => Promise<boolean>;
+  disconnect: () => Promise<void>;
+  updateCursor: (position: CursorPosition) => void;
+  updateSelection: (selection: SelectionRange | null) => void;
+  updateStatus: (status: 'active' | 'idle' | 'away') => void;
+
+  // Operations
+  sendOperation: (
+    type: OperationType,
+    targetType: string,
+    data: Record<string, any>,
+    targetId?: string
+  ) => Promise<CollaborationOperation | null>;
+
+  // Comments
+  addComment: (content: string, positionData?: Record<string, any>) => Promise<void>;
+
+  // Invitations
+  inviteUser: (email: string, permission: 'view' | 'comment' | 'edit') => Promise<RoomInvitation | null>;
+
+  // Versions
+  createSnapshot: (description?: string) => Promise<string | null>;
+  getVersionHistory: () => Promise<CollaborationVersion[]>;
+}

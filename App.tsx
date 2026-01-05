@@ -28,6 +28,7 @@ const Assistant = lazy(() => import('./components/Assistant'));
 const BrandHub = lazy(() => import('./components/BrandHub'));
 const MarketingHub = lazy(() => import('./components/MarketingHub'));
 const AssetHub = lazy(() => import('./components/AssetHub'));
+const AnalyticsDashboard = lazy(() => import('./pages/AnalyticsDashboard'));
 const Personalization = lazy(() => import('./components/Personalization'));
 const FeaturesGuide = lazy(() => import('./components/FeaturesGuide'));
 
@@ -173,6 +174,7 @@ const App: React.FC = () => {
         case StudioMode.PRO_PHOTO: return <ProPhoto />;
         case StudioMode.BRANDING: return <BrandHub />;
         case StudioMode.MARKETING: return <MarketingHub />;
+        case StudioMode.ANALYTICS: return <AnalyticsDashboard />;
         case StudioMode.ASSISTANT: return <Assistant />;
         case StudioMode.PERSONALIZATION: return <Personalization currentTheme={theme} setTheme={setTheme} />;
         case StudioMode.FEATURES: return <FeaturesGuide />;

@@ -701,6 +701,9 @@ export const CollaborationToolbar: React.FC<CollaborationToolbarProps> = ({
   );
 };
 
+// Re-export new room-based collaboration components
+export { LiveCursors, PresenceAvatars, ConnectionStatus } from './LiveCursors';
+
 export default {
   CursorOverlay,
   SelectionOverlay,
