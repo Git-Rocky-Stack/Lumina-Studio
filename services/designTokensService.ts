@@ -780,6 +780,331 @@ class DesignTokensManager {
   private notifyChange(): void {
     this.onTokensChange?.(this.getAllTokens());
   }
+
+  // ============================================================================
+  // CLOUD SYNC (SUPABASE INTEGRATION)
+  // ============================================================================
+
+  /**
+   * Sync tokens to Supabase cloud
+   */
+  async syncToCloud(): Promise<boolean> {
+    try {
+      // Dynamic import to avoid circular deps
+      const { supabase } = await import('../lib/supabase');
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return false;
+
+      const collection = this.getActiveCollection();
+      if (!collection) return false;
+
+      const tokens = this.getAllTokens();
+      const tokenData = {
+        name: collection.name,
+        version: collection.version,
+        tokens: this.exportToJson(tokens, { format: 'json' }),
+        color_tokens: this.exportToJson(this.getTokensByCategory('colors'), { format: 'json' }),
+        typography_tokens: this.exportToJson(this.getTokensByCategory('typography'), { format: 'json' }),
+        spacing_tokens: this.exportToJson(this.getTokensByCategory('spacing'), { format: 'json' }),
+        shadow_tokens: this.exportToJson(this.getTokensByCategory('shadows'), { format: 'json' }),
+        border_tokens: this.exportToJson(this.getTokensByCategory('borders'), { format: 'json' }),
+        css_output: this.exportToCss(tokens, { format: 'css' }),
+        scss_output: this.exportToScss(tokens, { format: 'scss' }),
+      };
+
+      const { error } = await supabase
+        .from('design_tokens')
+        .upsert({
+          user_id: user.id,
+          ...tokenData,
+          updated_at: new Date().toISOString(),
+        }, {
+          onConflict: 'user_id,name'
+        });
+
+      if (error) {
+        console.error('Failed to sync tokens to cloud:', error);
+        return false;
+      }
+
+      return true;
+    } catch (error) {
+      console.error('Cloud sync error:', error);
+      return false;
+    }
+  }
+
+  /**
+   * Load tokens from Supabase cloud
+   */
+  async loadFromCloud(tokenSetId?: string): Promise<boolean> {
+    try {
+      const { supabase } = await import('../lib/supabase');
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return false;
+
+      let query = supabase
+        .from('design_tokens')
+        .select('*')
+        .eq('user_id', user.id);
+
+      if (tokenSetId) {
+        query = query.eq('id', tokenSetId);
+      } else {
+        query = query.order('updated_at', { ascending: false }).limit(1);
+      }
+
+      const { data, error } = await query.single();
+
+      if (error || !data) {
+        console.error('Failed to load tokens from cloud:', error);
+        return false;
+      }
+
+      // Import the tokens
+      if (data.tokens) {
+        const result = this.importTokens(
+          typeof data.tokens === 'string' ? data.tokens : JSON.stringify(data.tokens)
+        );
+        return result.success;
+      }
+
+      return false;
+    } catch (error) {
+      console.error('Cloud load error:', error);
+      return false;
+    }
+  }
+
+  /**
+   * Get all cloud token sets
+   */
+  async getCloudTokenSets(): Promise<Array<{ id: string; name: string; version: string; updated_at: string }>> {
+    try {
+      const { supabase } = await import('../lib/supabase');
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return [];
+
+      const { data, error } = await supabase
+        .from('design_tokens')
+        .select('id, name, version, updated_at')
+        .eq('user_id', user.id)
+        .order('updated_at', { ascending: false });
+
+      if (error) {
+        console.error('Failed to fetch cloud token sets:', error);
+        return [];
+      }
+
+      return data || [];
+    } catch (error) {
+      console.error('Failed to get cloud token sets:', error);
+      return [];
+    }
+  }
+
+  /**
+   * Export to Tailwind config format
+   */
+  exportToTailwind(tokens?: DesignToken[]): object {
+    const allTokens = tokens || this.getAllTokens();
+    const config: any = {
+      theme: {
+        extend: {
+          colors: {},
+          spacing: {},
+          fontSize: {},
+          fontFamily: {},
+          borderRadius: {},
+          boxShadow: {},
+        },
+      },
+    };
+
+    // Colors
+    this.getTokensByCategory('colors').forEach(token => {
+      const key = token.name.toLowerCase().replace(/\s+/g, '-');
+      config.theme.extend.colors[key] = this.getCssValue(token.id);
+    });
+
+    // Spacing
+    this.getTokensByCategory('spacing').forEach(token => {
+      const key = token.name.toLowerCase().replace(/\s+/g, '-');
+      config.theme.extend.spacing[key] = this.getCssValue(token.id);
+    });
+
+    // Typography
+    this.getTokensByCategory('typography').forEach(token => {
+      const key = token.name.toLowerCase().replace(/\s+/g, '-');
+      const value = token.value;
+      if (value.type === 'dimension') {
+        config.theme.extend.fontSize[key] = this.getCssValue(token.id);
+      } else if (value.type === 'font-family') {
+        config.theme.extend.fontFamily[key] = [value.value];
+      }
+    });
+
+    // Borders
+    this.getTokensByCategory('borders').forEach(token => {
+      const key = token.name.toLowerCase().replace(/\s+/g, '-');
+      config.theme.extend.borderRadius[key] = this.getCssValue(token.id);
+    });
+
+    // Shadows
+    this.getTokensByCategory('shadows').forEach(token => {
+      const key = token.name.toLowerCase().replace(/\s+/g, '-');
+      config.theme.extend.boxShadow[key] = this.getCssValue(token.id);
+    });
+
+    return config;
+  }
+
+  /**
+   * Export to Figma Tokens format
+   */
+  exportToFigmaTokens(): object {
+    const output: any = {};
+
+    const categories: TokenCategory[] = ['colors', 'typography', 'spacing', 'borders', 'shadows'];
+
+    categories.forEach(category => {
+      output[category] = {};
+      this.getTokensByCategory(category).forEach(token => {
+        const key = token.name.replace(/\s+/g, '-');
+        output[category][key] = {
+          value: this.getCssValue(token.id),
+          type: this.mapCategoryToFigmaType(category),
+          description: token.description || '',
+        };
+      });
+    });
+
+    return output;
+  }
+
+  private mapCategoryToFigmaType(category: TokenCategory): string {
+    const map: Record<string, string> = {
+      colors: 'color',
+      typography: 'fontSizes',
+      spacing: 'spacing',
+      borders: 'borderRadius',
+      shadows: 'boxShadow',
+    };
+    return map[category] || 'other';
+  }
+
+  /**
+   * Download tokens as file
+   */
+  downloadTokens(format: TokenExportFormat, filename?: string): void {
+    let content: string;
+    let extension: string;
+    let mimeType: string;
+
+    switch (format) {
+      case 'css':
+        content = this.exportTokens({ format: 'css' });
+        extension = 'css';
+        mimeType = 'text/css';
+        break;
+      case 'scss':
+        content = this.exportTokens({ format: 'scss' });
+        extension = 'scss';
+        mimeType = 'text/plain';
+        break;
+      case 'ts':
+        content = this.exportTokens({ format: 'ts' });
+        extension = 'ts';
+        mimeType = 'text/typescript';
+        break;
+      case 'js':
+        content = this.exportTokens({ format: 'js' });
+        extension = 'js';
+        mimeType = 'text/javascript';
+        break;
+      case 'style-dictionary':
+        content = this.exportTokens({ format: 'style-dictionary' });
+        extension = 'json';
+        mimeType = 'application/json';
+        break;
+      case 'json':
+      default:
+        content = this.exportTokens({ format: 'json' });
+        extension = 'json';
+        mimeType = 'application/json';
+        break;
+    }
+
+    const blob = new Blob([content], { type: mimeType });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${filename || 'design-tokens'}.${extension}`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  /**
+   * Generate tokens from brand kit
+   */
+  async generateFromBrandKit(brandKitId: string): Promise<boolean> {
+    try {
+      const { supabase } = await import('../lib/supabase');
+      const { data: brandKit, error } = await supabase
+        .from('brand_kits')
+        .select('*')
+        .eq('id', brandKitId)
+        .single();
+
+      if (error || !brandKit) {
+        console.error('Failed to load brand kit:', error);
+        return false;
+      }
+
+      // Clear existing tokens
+      this.getAllTokens().forEach(t => this.deleteToken(t.id));
+
+      // Create color tokens
+      this.createToken('Primary', 'colors', { type: 'color', value: brandKit.primary_color });
+      if (brandKit.secondary_color) {
+        this.createToken('Secondary', 'colors', { type: 'color', value: brandKit.secondary_color });
+      }
+      if (brandKit.accent_color) {
+        this.createToken('Accent', 'colors', { type: 'color', value: brandKit.accent_color });
+      }
+      this.createToken('Background', 'colors', { type: 'color', value: brandKit.background_color || '#ffffff' });
+      this.createToken('Text', 'colors', { type: 'color', value: brandKit.text_color || '#111827' });
+
+      // Create typography tokens
+      this.createToken('Heading Font', 'typography', { type: 'font-family', value: brandKit.heading_font || 'Inter' });
+      this.createToken('Body Font', 'typography', { type: 'font-family', value: brandKit.body_font || 'Inter' });
+
+      // Create spacing tokens based on spacing unit
+      const baseUnit = brandKit.spacing_unit || 8;
+      [1, 2, 3, 4, 5, 6, 8, 10, 12, 16].forEach(multiplier => {
+        this.createToken(`Space ${multiplier}`, 'spacing', {
+          type: 'dimension',
+          value: baseUnit * multiplier,
+          unit: 'px'
+        });
+      });
+
+      // Create border radius tokens
+      const radius = brandKit.border_radius || 8;
+      this.createToken('Radius SM', 'borders', { type: 'dimension', value: radius / 2, unit: 'px' });
+      this.createToken('Radius MD', 'borders', { type: 'dimension', value: radius, unit: 'px' });
+      this.createToken('Radius LG', 'borders', { type: 'dimension', value: radius * 1.5, unit: 'px' });
+      this.createToken('Radius XL', 'borders', { type: 'dimension', value: radius * 2, unit: 'px' });
+      this.createToken('Radius Full', 'borders', { type: 'dimension', value: 9999, unit: 'px' });
+
+      return true;
+    } catch (error) {
+      console.error('Failed to generate from brand kit:', error);
+      return false;
+    }
+  }
 }
 
 // ============================================================================
@@ -787,3 +1112,4 @@ class DesignTokensManager {
 // ============================================================================
 
 export const designTokensManager = new DesignTokensManager();
+export default designTokensManager;

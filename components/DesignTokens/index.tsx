@@ -1340,3 +1340,6 @@ const ExportModal: React.FC<ExportModalProps> = ({ onClose }) => {
 };
 
 export default DesignTokensPanel;
+
+// Export the simpler sidebar panel version
+export { TokensPanel } from './TokensPanel';

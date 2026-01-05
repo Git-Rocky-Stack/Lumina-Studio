@@ -669,6 +669,358 @@ class SocialPublishingService {
 
     return Array.from(suggestions).slice(0, 30);
   }
+
+  // =============================================
+  // Enhanced Publishing Schedules
+  // =============================================
+
+  async getPublishingSchedules(): Promise<Array<{
+    id: string;
+    name: string;
+    description?: string;
+    schedule_type: 'optimal' | 'fixed' | 'recurring';
+    fixed_times?: string[];
+    recurrence_rule?: string;
+    timezone: string;
+    platforms: string[];
+    platform_settings: Record<string, any>;
+    auto_queue: boolean;
+    queue_from_folder?: string;
+    is_active: boolean;
+    created_at: string;
+  }>> {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return [];
+
+    const { data, error } = await supabase
+      .from('publishing_schedules')
+      .select('*')
+      .eq('user_id', user.id)
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      console.error('Failed to fetch publishing schedules:', error);
+      return [];
+    }
+
+    return data || [];
+  }
+
+  async createPublishingSchedule(schedule: {
+    name: string;
+    description?: string;
+    schedule_type: 'optimal' | 'fixed' | 'recurring';
+    fixed_times?: string[];
+    recurrence_rule?: string;
+    timezone?: string;
+    platforms?: string[];
+    auto_queue?: boolean;
+  }): Promise<string | null> {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return null;
+
+    const { data, error } = await supabase
+      .from('publishing_schedules')
+      .insert({
+        user_id: user.id,
+        name: schedule.name,
+        description: schedule.description,
+        schedule_type: schedule.schedule_type,
+        fixed_times: schedule.fixed_times,
+        recurrence_rule: schedule.recurrence_rule,
+        timezone: schedule.timezone || 'UTC',
+        platforms: schedule.platforms || [],
+        auto_queue: schedule.auto_queue || false,
+        is_active: true,
+      })
+      .select('id')
+      .single();
+
+    if (error) {
+      console.error('Failed to create publishing schedule:', error);
+      return null;
+    }
+
+    return data?.id;
+  }
+
+  async updatePublishingSchedule(
+    scheduleId: string,
+    updates: Partial<{
+      name: string;
+      description: string;
+      schedule_type: 'optimal' | 'fixed' | 'recurring';
+      fixed_times: string[];
+      recurrence_rule: string;
+      timezone: string;
+      platforms: string[];
+      is_active: boolean;
+    }>
+  ): Promise<boolean> {
+    const { error } = await supabase
+      .from('publishing_schedules')
+      .update({ ...updates, updated_at: new Date().toISOString() })
+      .eq('id', scheduleId);
+
+    if (error) {
+      console.error('Failed to update publishing schedule:', error);
+      return false;
+    }
+
+    return true;
+  }
+
+  async deletePublishingSchedule(scheduleId: string): Promise<boolean> {
+    const { error } = await supabase
+      .from('publishing_schedules')
+      .delete()
+      .eq('id', scheduleId);
+
+    if (error) {
+      console.error('Failed to delete publishing schedule:', error);
+      return false;
+    }
+
+    return true;
+  }
+
+  // =============================================
+  // AI-Powered Optimal Time Suggestions
+  // =============================================
+
+  async suggestOptimalTimes(
+    platform: SocialPlatform,
+    accountId?: string,
+    count: number = 5
+  ): Promise<Array<{ datetime: Date; score: number; reason: string }>> {
+    // Platform-specific optimal time ranges (based on industry research)
+    const platformOptimalHours: Record<SocialPlatform, number[]> = {
+      instagram: [9, 11, 14, 17, 19, 21], // Best: 11am-1pm, 7-9pm
+      tiktok: [7, 9, 12, 15, 19, 22],     // Best: 7-9am, 12pm, 7-10pm
+      twitter: [8, 10, 12, 17, 21],       // Best: 8am, 12pm, 5pm
+      linkedin: [7, 8, 9, 12, 17, 18],    // Best: 7-9am, 12pm (weekdays)
+      facebook: [9, 13, 16, 19],          // Best: 1-4pm
+      youtube: [12, 15, 17, 21],          // Best: 12pm, 3pm, 5pm
+      pinterest: [14, 20, 21, 22],        // Best: 2pm, 8-11pm
+    };
+
+    const platformBestDays: Record<SocialPlatform, number[]> = {
+      instagram: [1, 2, 3, 4, 5, 6], // Mon-Sat
+      tiktok: [1, 2, 3, 4, 5],       // Weekdays
+      twitter: [1, 2, 3, 4, 5],      // Weekdays
+      linkedin: [1, 2, 3, 4],        // Mon-Thu
+      facebook: [3, 4, 5],           // Wed-Fri
+      youtube: [4, 5, 6, 0],         // Thu-Sun
+      pinterest: [6, 0],             // Weekend
+    };
+
+    const suggestions: Array<{ datetime: Date; score: number; reason: string }> = [];
+    const now = new Date();
+    const optimalHours = platformOptimalHours[platform];
+    const bestDays = platformBestDays[platform];
+
+    // If we have account-specific data, use it
+    if (accountId) {
+      const accountOptimalTimes = await this.getOptimalPostTimes(accountId);
+      if (accountOptimalTimes.length > 0) {
+        // Use historical data
+        for (const optimal of accountOptimalTimes.slice(0, count)) {
+          const nextDate = this.getNextDateForDayAndHour(optimal.day_of_week, optimal.hour_utc);
+          suggestions.push({
+            datetime: nextDate,
+            score: optimal.score,
+            reason: `Based on your audience engagement (${optimal.sample_size} posts analyzed)`,
+          });
+        }
+        return suggestions;
+      }
+    }
+
+    // Generate suggestions based on platform best practices
+    for (let i = 0; i < count; i++) {
+      const targetDate = new Date(now);
+      targetDate.setDate(targetDate.getDate() + i);
+
+      // Find the next best day
+      while (!bestDays.includes(targetDate.getDay())) {
+        targetDate.setDate(targetDate.getDate() + 1);
+      }
+
+      // Pick an optimal hour
+      const hourIndex = i % optimalHours.length;
+      targetDate.setHours(optimalHours[hourIndex], 0, 0, 0);
+
+      // Calculate score based on hour and day
+      const hourScore = 1 - (hourIndex / optimalHours.length) * 0.3;
+      const dayScore = bestDays.includes(targetDate.getDay()) ? 1 : 0.7;
+      const score = hourScore * dayScore;
+
+      suggestions.push({
+        datetime: targetDate,
+        score: Math.round(score * 100) / 100,
+        reason: `Optimal time for ${platformConfig[platform].name} based on industry best practices`,
+      });
+    }
+
+    return suggestions.sort((a, b) => b.score - a.score);
+  }
+
+  private getNextDateForDayAndHour(dayOfWeek: number, hour: number): Date {
+    const now = new Date();
+    const result = new Date(now);
+
+    // Find the next occurrence of this day
+    const daysUntil = (dayOfWeek - now.getDay() + 7) % 7 || 7;
+    result.setDate(result.getDate() + daysUntil);
+    result.setHours(hour, 0, 0, 0);
+
+    // If the time has already passed today, use next week
+    if (result <= now) {
+      result.setDate(result.getDate() + 7);
+    }
+
+    return result;
+  }
+
+  // =============================================
+  // Time Slot Analysis
+  // =============================================
+
+  async getTimeSlotHeatmap(
+    accountId: string,
+    startDate: string,
+    endDate: string
+  ): Promise<Array<{ day: number; hour: number; posts: number; avgEngagement: number }>> {
+    // Get posts in date range
+    const { data, error } = await supabase
+      .from('scheduled_posts')
+      .select('scheduled_for, initial_likes, initial_comments, initial_shares')
+      .eq('social_account_id', accountId)
+      .eq('status', 'published')
+      .gte('scheduled_for', startDate)
+      .lte('scheduled_for', endDate);
+
+    if (error || !data) {
+      return [];
+    }
+
+    // Build heatmap
+    const heatmap: Record<string, { posts: number; totalEngagement: number }> = {};
+
+    data.forEach(post => {
+      const date = new Date(post.scheduled_for);
+      const day = date.getDay();
+      const hour = date.getHours();
+      const key = `${day}-${hour}`;
+      const engagement = (post.initial_likes || 0) +
+        (post.initial_comments || 0) * 2 +
+        (post.initial_shares || 0) * 3;
+
+      if (!heatmap[key]) {
+        heatmap[key] = { posts: 0, totalEngagement: 0 };
+      }
+      heatmap[key].posts++;
+      heatmap[key].totalEngagement += engagement;
+    });
+
+    // Convert to array
+    return Object.entries(heatmap).map(([key, value]) => {
+      const [day, hour] = key.split('-').map(Number);
+      return {
+        day,
+        hour,
+        posts: value.posts,
+        avgEngagement: value.posts > 0 ? value.totalEngagement / value.posts : 0,
+      };
+    });
+  }
+
+  // =============================================
+  // Bulk Scheduling
+  // =============================================
+
+  async bulkSchedulePosts(posts: Array<{
+    social_account_id: string;
+    media_url?: string;
+    caption?: string;
+    hashtags?: string[];
+    scheduled_for: string;
+  }>): Promise<{ success: number; failed: number; ids: string[] }> {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return { success: 0, failed: 0, ids: [] };
+
+    const postsWithUser = posts.map(post => ({
+      ...post,
+      user_id: user.id,
+      status: 'scheduled',
+      timezone: 'UTC',
+      media_type: 'image',
+    }));
+
+    const { data, error } = await supabase
+      .from('scheduled_posts')
+      .insert(postsWithUser)
+      .select('id');
+
+    if (error) {
+      console.error('Failed to bulk schedule posts:', error);
+      return { success: 0, failed: posts.length, ids: [] };
+    }
+
+    return {
+      success: data?.length || 0,
+      failed: posts.length - (data?.length || 0),
+      ids: data?.map(d => d.id) || [],
+    };
+  }
+
+  // =============================================
+  // Queue Management
+  // =============================================
+
+  async getPostQueue(accountId: string): Promise<ScheduledPost[]> {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return [];
+
+    const { data, error } = await supabase
+      .from('scheduled_posts')
+      .select('*, social_account:social_accounts(*)')
+      .eq('user_id', user.id)
+      .eq('social_account_id', accountId)
+      .in('status', ['draft', 'scheduled'])
+      .order('scheduled_for', { ascending: true });
+
+    if (error) {
+      console.error('Failed to fetch post queue:', error);
+      return [];
+    }
+
+    return data || [];
+  }
+
+  async reorderQueue(
+    accountId: string,
+    postIds: string[]
+  ): Promise<boolean> {
+    // Get current scheduled posts
+    const queue = await this.getPostQueue(accountId);
+    if (queue.length === 0) return false;
+
+    // Get the scheduled times
+    const times = queue
+      .filter(p => p.status === 'scheduled')
+      .map(p => new Date(p.scheduled_for))
+      .sort((a, b) => a.getTime() - b.getTime());
+
+    // Reassign times in new order
+    for (let i = 0; i < postIds.length && i < times.length; i++) {
+      await this.updateScheduledPost(postIds[i], {
+        scheduled_for: times[i].toISOString(),
+      });
+    }
+
+    return true;
+  }
 }
 
 // Export singleton
