@@ -50,7 +50,8 @@
       "Bash(start https://972438e0.lumina-studio-7w9.pages.dev)",
       "Bash(start https://1c31000e.lumina-studio-7w9.pages.dev)",
       "Bash(start https://add0f15a.lumina-studio-7w9.pages.dev)",
-      "Bash(cd:*)"
+      "Bash(cd:*)",
+      "Bash(du:*)"
     ]
   }
 }

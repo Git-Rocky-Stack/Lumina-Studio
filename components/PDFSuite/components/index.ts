@@ -47,6 +47,17 @@ export { ShareModal } from './ShareModal';
 export { QRCodeGenerator, QRCodePreview } from './QRCodeGenerator';
 export { VersionHistoryPanel, VersionBadge } from './VersionHistoryPanel';
 
+// Phase 7 - Enhanced Annotations (NEW)
+export { AnnotationLayersPanel } from './AnnotationLayersPanel';
+export { RichTextToolbar } from './RichTextToolbar';
+export { VoiceNoteRecorder } from './VoiceNoteRecorder';
+export { AISuggestionsPanel } from './AISuggestionsPanel';
+export { AnnotationTemplatesGallery } from './AnnotationTemplatesGallery';
+export { CollaboratorPresence } from './CollaboratorPresence';
+export { AnnotationSearchFilter } from './AnnotationSearchFilter';
+export { EnhancedCommentThreads } from './EnhancedCommentThreads';
+export { EnhancedPDFAnnotationDemo } from './EnhancedPDFAnnotationDemo';
+
 // Type exports
 export type { PDFViewerHandle } from './PDFViewer';
 export type { FormTemplate, TemplateCategory } from './TemplateGallery';
