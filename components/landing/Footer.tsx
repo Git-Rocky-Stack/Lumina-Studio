@@ -1,3 +1,4 @@
+// Build: 2026-01-06T12:00:00Z - v0.2.0
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
