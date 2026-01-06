@@ -7,7 +7,7 @@ export default defineConfig({
   test: {
     globals: true,
     environment: 'happy-dom',
-    setupFiles: ['./test/setup.ts'],
+    setupFiles: ['./src/design-system/__tests__/setup.ts'],
     include: ['**/*.{test,spec}.{ts,tsx}'],
     exclude: ['node_modules', 'dist', 'build', '.next'],
     coverage: {
@@ -16,12 +16,19 @@ export default defineConfig({
       exclude: [
         'node_modules/',
         'test/',
+        '__tests__/',
         '**/*.d.ts',
         '**/*.config.*',
         '**/mockData',
         'dist/',
         'build/',
       ],
+      thresholds: {
+        lines: 80,
+        functions: 80,
+        branches: 75,
+        statements: 80,
+      },
     },
     css: true,
     mockReset: true,

@@ -1,0 +1,100 @@
+# Lumina Studio Design System
+
+Welcome to the **Lumina Studio Design System** - a comprehensive, production-ready React component library built with TypeScript, Tailwind CSS, and Framer Motion.
+
+## Overview
+
+This design system provides 40+ accessible, animated components designed for professional creative applications. Every component is built with:
+
+- **Accessibility First** - WCAG AA compliance, keyboard navigation, screen reader support
+- **Framer Motion Animations** - Spring physics, micro-interactions, gesture support
+- **Responsive Design** - Mobile-first with responsive props and breakpoint utilities
+- **Dark Mode** - Seamless light/dark theme switching
+- **TypeScript** - Complete type definitions with IntelliSense support
+
+## Getting Started
+
+### Installation
+
+```bash
+npm install framer-motion lucide-react clsx tailwind-merge
+```
+
+### Quick Start
+
+```tsx
+import { Button } from './design-system/components/Button';
+import { Card, CardBody } from './design-system/components/Card';
+
+function App() {
+  return (
+    <Card variant="elevated">
+      <CardBody>
+        <h2>Hello World</h2>
+        <Button variant="primary">Get Started</Button>
+      </CardBody>
+    </Card>
+  );
+}
+```
+
+## Component Categories
+
+### Core Components
+- **Button** - Primary interaction element with 6 variants and 5 sizes
+- **Card** - Content container with multiple compositions
+- **Input** - Form input with validation and addons
+- **Modal** - Accessible overlay dialog
+
+### Animated Components
+- **AnimatedButton** - Button with micro-interactions
+- **AnimatedCard** - Card with entrance and hover animations
+- **AnimatedList** - Staggered list animations
+- **AnimatedCountUp** - Smooth number counter animations
+
+### Data Display
+- **DashboardWidget** - Real-time stat cards with trends and sparklines
+- **Toast** - Notification system with stacking
+
+### Navigation
+- **Sidebar** - Collapsible navigation with nested items
+- **Dialog** - Confirmation and alert modals
+- **Drawer** - Slide-in panels
+
+### Responsive Utilities
+- **Container** - Max-width responsive container
+- **ResponsiveGrid** - Auto-responsive grid layout
+- **Stack** - Flexible stacking layout
+- **Show/Hide** - Conditional rendering by breakpoint
+
+### Accessibility
+- **VisuallyHidden** - Screen reader only content
+- **LiveRegion** - Dynamic announcements
+
+## Design Principles
+
+### 1. Accessibility First
+Every component is built with accessibility as a core requirement. We follow WCAG 2.1 AA standards and implement proper ARIA attributes, keyboard navigation, and screen reader support.
+
+### 2. Animation with Purpose
+Animations enhance user experience without sacrificing performance. Components respect `prefers-reduced-motion` settings automatically.
+
+### 3. Composable Architecture
+Components are designed to work together. Use composition patterns to build complex UIs from simple building blocks.
+
+### 4. Type Safety
+Full TypeScript support ensures type safety and excellent developer experience with IntelliSense.
+
+## Browser Support
+
+- Chrome 90+
+- Firefox 88+
+- Safari 14+
+- Edge 90+
+
+## Resources
+
+- [Documentation](./docs/README.md)
+- [API Reference](./docs/API_REFERENCE.md)
+- [Best Practices](./docs/BEST_PRACTICES.md)
+- [Migration Guide](./docs/MIGRATION_GUIDE.md)
