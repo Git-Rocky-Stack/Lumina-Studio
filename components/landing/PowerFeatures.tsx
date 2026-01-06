@@ -77,6 +77,23 @@ const powerFeatures = [
       ],
     },
   },
+  {
+    id: 'enterprise',
+    icon: 'fa-building',
+    title: 'Enterprise Suite',
+    tagline: 'Security & compliance built-in',
+    description: 'Team workspaces with role-based access, approval workflows, comprehensive audit logs, SSO/SAML authentication, and complete white-labeling — everything enterprises need to scale creative operations.',
+    gradient: 'from-emerald-500 to-teal-600',
+    demo: {
+      type: 'checks',
+      items: [
+        { status: 'pass', label: 'SSO/SAML enabled' },
+        { status: 'pass', label: 'Audit logging' },
+        { status: 'pass', label: 'Approval workflows' },
+        { status: 'pass', label: 'White-label ready' },
+      ],
+    },
+  },
 ];
 
 const PowerFeatures: React.FC = () => {

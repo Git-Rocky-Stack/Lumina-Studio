@@ -45,6 +45,13 @@ const features = [
     description: 'Content calendar, AI-generated post ideas, and multi-platform scheduling in one place.',
     gradient: 'from-orange-500 to-amber-600',
   },
+  {
+    icon: 'fa-building',
+    title: 'Enterprise Suite',
+    outcome: 'Team collaboration with enterprise security',
+    description: 'Workspaces, approval workflows, audit logs, SSO/SAML, and white-labeling for agencies and enterprises.',
+    gradient: 'from-emerald-500 to-teal-600',
+  },
 ];
 
 const FeatureGrid: React.FC = () => {
@@ -72,7 +79,7 @@ const FeatureGrid: React.FC = () => {
             className="inline-flex items-center gap-2 px-5 py-2 rounded-full glass-card text-violet-400 type-body-sm font-semibold mb-8"
           >
             <i className="fas fa-cubes text-xs" />
-            6 Pro Tools, One Platform
+            7 Pro Tools, One Platform
           </motion.span>
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 font-display tracking-tight">
             A Complete{' '}

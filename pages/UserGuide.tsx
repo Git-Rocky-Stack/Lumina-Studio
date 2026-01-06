@@ -97,6 +97,13 @@ const guideSections = [
     description: 'Connect with your favorite tools and services',
   },
   {
+    id: 'enterprise',
+    title: 'Enterprise Features',
+    icon: 'fa-building',
+    color: 'from-emerald-500 to-green-600',
+    description: 'Team workspaces, approval workflows, SSO, and compliance tools',
+  },
+  {
     id: 'export',
     title: 'Export & Sharing',
     icon: 'fa-share-nodes',
@@ -385,6 +392,29 @@ const sectionContent: Record<string, { features: { title: string; description: s
       'Use the Slack integration for real-time notifications',
       'Import your existing designs to continue work in Lumina Studio',
       'Check the API documentation for custom integration options',
+    ],
+  },
+  enterprise: {
+    features: [
+      { title: 'Team Workspaces', description: 'Create dedicated spaces for teams with shared assets, unified permissions, and role-based access control.', icon: 'fa-users-cog' },
+      { title: 'Approval Workflows', description: 'Set up multi-stage review processes with custom templates, sequential approvers, and deadline tracking.', icon: 'fa-check-double' },
+      { title: 'Audit Logs', description: 'Track all user actions for compliance with detailed filtering, risk indicators, and export capabilities.', icon: 'fa-clipboard-list' },
+      { title: 'SSO/SAML', description: 'Enterprise authentication with SAML 2.0 and OIDC support for Okta, Azure AD, Google, and more.', icon: 'fa-key' },
+      { title: 'White-labeling', description: 'Complete branding customization including logos, colors, custom domains, and branded emails.', icon: 'fa-palette' },
+      { title: 'Domain Verification', description: 'Verify your organization domains with DNS TXT records for enhanced security.', icon: 'fa-shield-alt' },
+    ],
+    tips: [
+      'Set up SSO first to streamline team onboarding',
+      'Create approval workflow templates for recurring project types',
+      'Configure audit log retention policies based on your compliance requirements',
+      'Use white-labeling to present a professional, branded experience to clients',
+      'Organize teams into separate workspaces for better asset management',
+      'Enable domain allowlists to restrict sign-ups to verified domains',
+    ],
+    shortcuts: [
+      { key: 'Ctrl+Shift+W', action: 'Switch workspace' },
+      { key: 'Ctrl+Shift+A', action: 'View pending approvals' },
+      { key: 'Ctrl+Shift+L', action: 'Open audit logs' },
     ],
   },
   export: {
