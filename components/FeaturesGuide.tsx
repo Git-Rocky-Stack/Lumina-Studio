@@ -253,6 +253,24 @@ const featureCategories: FeatureCategory[] = [
         isNew: true,
       },
       {
+        name: 'Design Critique AI',
+        description: 'Automated professional feedback on typography, spacing, and accessibility',
+        details: [
+          'Overall design score with category breakdowns',
+          'Typography analysis (font sizes, line height, consistency)',
+          'Spacing analysis (8pt grid alignment, gap consistency)',
+          'WCAG accessibility compliance (Level A, AA, AAA)',
+          'Color contrast ratio checking with auto-fix suggestions',
+          'Layout alignment and visual hierarchy analysis',
+          'Touch target size validation (44px minimum)',
+          'Alt text and focus indicator verification',
+          'Issue severity levels (error, warning, info)',
+          'Auto-fixable issues with one-click repair',
+          'Filter by analysis type (full, typography, spacing, accessibility, color, layout)',
+        ],
+        isNew: true,
+      },
+      {
         name: 'Smart Cropping',
         description: 'AI-powered content-aware cropping',
         details: [
@@ -304,16 +322,20 @@ const featureCategories: FeatureCategory[] = [
         isNew: true,
       },
       {
-        name: 'Keyboard Shortcuts Manager',
-        description: 'Comprehensive keyboard shortcut system with full customization',
+        name: 'Advanced Keyboard Shortcuts V2',
+        description: 'Professional keyboard system with Vim mode, macros, and full customization',
         details: [
+          'Vim-style command mode (Normal, Insert, Visual, Command modes)',
+          'Vim navigation: h/j/k/l movement, gg/G jump, w/b word movement',
+          'Vim commands: dd delete line, yy yank, p paste, u undo, :w save, :q quit',
+          'Macro recording and playback with adjustable speed (0.5x-4x)',
+          'Save and name custom macros for reuse',
+          'Custom shortcut mapping with conflict detection',
+          'Key sequence support (e.g., g+g for go to top)',
+          'Count prefix support (e.g., 5j to move down 5 times)',
           '100+ pre-defined shortcuts across all features',
-          'Category-based shortcut organization',
-          'Custom shortcut mapping and remapping',
-          'Shortcut conflict detection',
           'Import/export shortcut profiles',
           'Visual shortcut reference guide',
-          'Quick search for any shortcut',
         ],
         shortcut: 'Ctrl+/',
         isNew: true,
@@ -340,6 +362,40 @@ const featureCategories: FeatureCategory[] = [
           'Detailed change tracking and attribution',
           'Version tagging and naming',
           'Storage optimization with compression',
+        ],
+        isNew: true,
+      },
+      {
+        name: 'Undo/Redo Timeline',
+        description: 'Visual history scrubber with thumbnails and branching support',
+        details: [
+          'Visual timeline scrubber for navigating history',
+          'Thumbnail previews for each history state',
+          'Named checkpoints for important milestones',
+          'Branch-based history with create, switch, and merge',
+          'Auto-save with configurable interval',
+          'Go to any version with one click',
+          'Action labels showing what changed',
+          'Changed elements count per state',
+          'Time-ago display for recent edits',
+          'Filter view: all history or checkpoints only',
+        ],
+        shortcut: 'Ctrl+H',
+        isNew: true,
+      },
+      {
+        name: 'Activity Heatmaps',
+        description: 'Visual timeline and spatial heatmap of design activity',
+        details: [
+          'Spatial heatmap showing most-edited canvas regions',
+          'Activity timeline showing edits over time',
+          'Statistics dashboard with productivity metrics',
+          'Track actions: create, update, delete, select, move, resize, style',
+          'Peak activity hours analysis',
+          'Most active days visualization',
+          'Color-coded intensity levels',
+          'Filter by time period (7, 14, 30, 90 days)',
+          'Export activity reports',
         ],
         isNew: true,
       },
@@ -1044,7 +1100,7 @@ const FeaturesGuide: React.FC = () => {
             <h2 className="text-3xl font-bold mb-8 text-center">Keyboard Shortcuts</h2>
           </ScrollReveal>
 
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-3 gap-6 mb-8">
             <GlassPanel className="p-6">
               <h3 className="type-subsection mb-4 flex items-center gap-2">
                 <i className="fas fa-compass text-indigo-400" />
@@ -1107,6 +1163,7 @@ const FeaturesGuide: React.FC = () => {
                 {[
                   { keys: 'Ctrl + /', action: 'Shortcut Guide' },
                   { keys: 'Ctrl + K', action: 'Command Palette' },
+                  { keys: 'Ctrl + H', action: 'History Timeline' },
                   { keys: 'Escape', action: 'Close Modal' },
                   { keys: 'Space', action: 'Play/Pause (Video)' },
                   { keys: '+/-', action: 'Zoom In/Out' },
@@ -1120,6 +1177,93 @@ const FeaturesGuide: React.FC = () => {
                     </code>
                   </div>
                 ))}
+              </div>
+            </GlassPanel>
+          </div>
+
+          {/* Vim Mode & Macros Section */}
+          <ScrollReveal>
+            <h3 className="text-2xl font-bold mb-6 text-center text-purple-400">Vim Mode & Macros</h3>
+          </ScrollReveal>
+
+          <div className="grid md:grid-cols-3 gap-6">
+            <GlassPanel className="p-6">
+              <h3 className="type-subsection mb-4 flex items-center gap-2">
+                <i className="fas fa-terminal text-green-400" />
+                Vim Navigation
+              </h3>
+              <div className="space-y-3">
+                {[
+                  { keys: 'Ctrl + Shift + V', action: 'Toggle Vim Mode' },
+                  { keys: 'h / j / k / l', action: 'Move Left/Down/Up/Right' },
+                  { keys: 'w / b', action: 'Word Forward/Back' },
+                  { keys: 'g g', action: 'Go to Top' },
+                  { keys: 'G', action: 'Go to Bottom' },
+                  { keys: '0 / $', action: 'Line Start/End' },
+                  { keys: '[n] j/k', action: 'Move n Times' },
+                ].map(shortcut => (
+                  <div key={shortcut.keys} className="flex items-center justify-between">
+                    <span className="text-slate-400">{shortcut.action}</span>
+                    <code className="px-2 py-1 bg-green-500/20 rounded text-xs font-mono text-green-300">
+                      {shortcut.keys}
+                    </code>
+                  </div>
+                ))}
+              </div>
+            </GlassPanel>
+
+            <GlassPanel className="p-6">
+              <h3 className="type-subsection mb-4 flex items-center gap-2">
+                <i className="fas fa-code text-cyan-400" />
+                Vim Commands
+              </h3>
+              <div className="space-y-3">
+                {[
+                  { keys: 'i', action: 'Insert Mode' },
+                  { keys: 'v', action: 'Visual Mode' },
+                  { keys: 'Esc', action: 'Normal Mode' },
+                  { keys: 'd d', action: 'Delete Line/Element' },
+                  { keys: 'y y', action: 'Yank (Copy)' },
+                  { keys: 'p', action: 'Paste' },
+                  { keys: 'u', action: 'Undo' },
+                  { keys: ': w', action: 'Save' },
+                  { keys: ': q', action: 'Quit/Close' },
+                ].map(shortcut => (
+                  <div key={shortcut.keys} className="flex items-center justify-between">
+                    <span className="text-slate-400">{shortcut.action}</span>
+                    <code className="px-2 py-1 bg-cyan-500/20 rounded text-xs font-mono text-cyan-300">
+                      {shortcut.keys}
+                    </code>
+                  </div>
+                ))}
+              </div>
+            </GlassPanel>
+
+            <GlassPanel className="p-6">
+              <h3 className="type-subsection mb-4 flex items-center gap-2">
+                <i className="fas fa-circle-dot text-rose-400" />
+                Macro Recording
+              </h3>
+              <div className="space-y-3">
+                {[
+                  { keys: 'q [a-z]', action: 'Start Recording Macro' },
+                  { keys: 'q', action: 'Stop Recording' },
+                  { keys: '@ [a-z]', action: 'Play Macro' },
+                  { keys: '@ @', action: 'Replay Last Macro' },
+                  { keys: '[n] @ [a-z]', action: 'Play Macro n Times' },
+                ].map(shortcut => (
+                  <div key={shortcut.keys} className="flex items-center justify-between">
+                    <span className="text-slate-400">{shortcut.action}</span>
+                    <code className="px-2 py-1 bg-rose-500/20 rounded text-xs font-mono text-rose-300">
+                      {shortcut.keys}
+                    </code>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-4 pt-4 border-t border-white/10">
+                <p className="text-xs text-slate-500">
+                  Macros can be saved with custom names and played at 0.5x to 4x speed from the Shortcuts panel.
+                </p>
               </div>
             </GlassPanel>
           </div>

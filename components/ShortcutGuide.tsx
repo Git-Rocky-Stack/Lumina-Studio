@@ -21,6 +21,7 @@ const ShortcutGuide: React.FC<ShortcutGuideProps> = ({ isOpen, onClose }) => {
         { key: '⌘ + P', label: 'PDF Suite' },
         { key: '⌘ + B', label: 'Brand Hub' },
         { key: '⌘ + M', label: 'Marketing Hub' },
+        { key: '⌘ + H', label: 'History Timeline' },
       ],
     },
     {
@@ -50,6 +51,27 @@ const ShortcutGuide: React.FC<ShortcutGuideProps> = ({ isOpen, onClose }) => {
         { key: 'L', label: 'Toggle Element Lock' },
       ],
     },
+    {
+      title: 'Vim Mode (Toggle: ⌘ + Shift + V)',
+      shortcuts: [
+        { key: 'h / j / k / l', label: 'Move Left / Down / Up / Right' },
+        { key: 'w / b', label: 'Word Forward / Backward' },
+        { key: 'g g / G', label: 'Go to Top / Bottom' },
+        { key: 'i / Esc', label: 'Insert Mode / Normal Mode' },
+        { key: 'd d / y y / p', label: 'Delete / Yank / Paste' },
+        { key: ': w / : q', label: 'Save / Quit' },
+      ],
+    },
+    {
+      title: 'Macro Recording',
+      shortcuts: [
+        { key: 'q [a-z]', label: 'Start Recording to Register' },
+        { key: 'q', label: 'Stop Recording' },
+        { key: '@ [a-z]', label: 'Play Macro from Register' },
+        { key: '@ @', label: 'Replay Last Macro' },
+        { key: '[n] @ [a-z]', label: 'Play Macro n Times' },
+      ],
+    },
   ];
 
   return (
@@ -76,7 +98,7 @@ const ShortcutGuide: React.FC<ShortcutGuideProps> = ({ isOpen, onClose }) => {
         </header>
 
         <div className="p-12 overflow-y-auto max-h-[70vh] scrollbar-hide">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
             {sections.map((section) => (
               <div key={section.title} className="space-y-6">
                 <h3 className="text-[10px] font-black text-accent uppercase tracking-[0.4em] pb-2 border-b border-accent/10">
