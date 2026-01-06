@@ -32,13 +32,6 @@ const footerLinks = {
   ],
 };
 
-const socialLinks = [
-  { icon: 'fa-twitter', href: '#', label: 'Twitter' },
-  { icon: 'fa-discord', href: '#', label: 'Discord' },
-  { icon: 'fa-github', href: '#', label: 'GitHub' },
-  { icon: 'fa-linkedin', href: '#', label: 'LinkedIn' },
-  { icon: 'fa-youtube', href: '#', label: 'YouTube' },
-];
 
 const Footer: React.FC = () => {
   return (
@@ -198,21 +191,6 @@ const Footer: React.FC = () => {
               </div>
             </div>
 
-            {/* Social links */}
-            <div className="flex items-center gap-2">
-              {socialLinks.map((social) => (
-                <motion.a
-                  key={social.label}
-                  href={social.href}
-                  whileHover={{ scale: 1.1, y: -2 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="w-11 h-11 rounded-xl glass-card flex items-center justify-center text-slate-500 hover:text-white hover:border-indigo-500/30 transition-all"
-                  aria-label={social.label}
-                >
-                  <i className={`fab ${social.icon}`} />
-                </motion.a>
-              ))}
-            </div>
           </div>
 
           {/* Strategia-X Logo */}

@@ -60,7 +60,7 @@ const CheckoutCancel: React.FC = () => {
           </div>
 
           <p className="text-sm text-slate-500">
-            Questions? <a href="mailto:support@lumina-os.com" className="text-indigo-400 hover:underline">Contact support</a>
+            Questions? <a href="mailto:support@strategia-x.com" className="text-indigo-400 hover:underline">Contact support</a>
           </p>
         </div>
       </motion.div>

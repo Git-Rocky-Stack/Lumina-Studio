@@ -174,7 +174,7 @@ const FAQSection: React.FC = () => {
           <div className="glass-card rounded-2xl p-8 inline-block">
             <p className="text-slate-400 mb-4">Still have questions?</p>
             <a
-              href="mailto:support@lumina.ai"
+              href="mailto:support@strategia-x.com"
               className="inline-flex items-center gap-3 px-6 py-3 rounded-xl bg-gradient-to-r from-indigo-500 to-violet-600 font-semibold hover:from-indigo-600 hover:to-violet-700 transition-all hover:scale-105 shadow-lg shadow-indigo-500/25"
             >
               <i className="fas fa-envelope" />

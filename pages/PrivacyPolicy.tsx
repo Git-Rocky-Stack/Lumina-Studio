@@ -220,7 +220,7 @@ While we strive to protect your information, no method of transmission over the 
 - File a complaint with your local data protection authority
 
 **Exercising Your Rights:**
-To exercise these rights, contact us at privacy@lumina-os.com or through your account settings. We will respond to requests within 30 days (or as required by applicable law).
+To exercise these rights, contact us at support@strategia-x.com or through your account settings. We will respond to requests within 30 days (or as required by applicable law).
 
 **Non-Discrimination:**
 We will not discriminate against you for exercising your privacy rights.`,
@@ -258,7 +258,7 @@ By using our Service, you consent to the transfer of your information as describ
 - Users must confirm they meet the minimum age requirement during registration
 
 **Parental Rights:**
-If you are a parent or guardian and believe your child has provided personal information to us, please contact us at privacy@lumina-os.com to request deletion.`,
+If you are a parent or guardian and believe your child has provided personal information to us, please contact us at support@strategia-x.com to request deletion.`,
     },
     {
       id: 'cookies',
@@ -342,17 +342,12 @@ We encourage you to review this Privacy Policy periodically to stay informed abo
       title: 'Contact Us',
       content: `If you have questions, concerns, or requests regarding this Privacy Policy or our privacy practices, please contact us:
 
-**Email:** privacy@lumina-os.com
+**Email:** support@strategia-x.com
 
-**General Support:** support@lumina-os.com
-
-**Mailing Address:**
-Lumina Studio OS
-Privacy Team
-[Address to be added]
+**General Support:** support@strategia-x.com
 
 **Data Protection Officer:**
-For EU/EEA residents, you may contact our Data Protection Officer at dpo@lumina-os.com
+For EU/EEA residents, you may contact our Data Protection Officer at support@strategia-x.com
 
 **Response Time:**
 We aim to respond to all privacy-related inquiries within 30 days.

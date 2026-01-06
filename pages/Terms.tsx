@@ -263,8 +263,7 @@ const termsData = [
 
       <h4>12.6 Contact Information</h4>
       <p>For questions about these Terms, please contact us at:</p>
-      <p>Email: legal@luminastudio.com</p>
-      <p>Address: Lumina Studio, 123 Creative Ave, San Francisco, CA 94102</p>
+      <p>Email: support@strategia-x.com</p>
     `,
   },
 ];
