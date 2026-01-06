@@ -186,7 +186,7 @@ const SignInPage: React.FC = () => {
         aria-label="Strategia-X"
       >
         <img
-          src="/footer_logo.png"
+          src="/logos/1.png"
           alt="Strategia-X"
           className="h-12 w-auto mix-blend-lighten"
         />
