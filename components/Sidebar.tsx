@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { StudioMode } from '../types';
 import LEDProgressBar from './LEDProgressBar';
 import UserMenu from './UserMenu';
+import { useAuthContext } from '../contexts/AuthContext';
 
 interface SidebarProps {
   currentMode: StudioMode;
@@ -11,14 +13,21 @@ interface SidebarProps {
   isSyncing?: boolean;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ 
-  currentMode, 
-  setMode, 
-  onOpenShortcuts, 
-  onDriveSync, 
-  isSyncing = false 
+const Sidebar: React.FC<SidebarProps> = ({
+  currentMode,
+  setMode,
+  onOpenShortcuts,
+  onDriveSync,
+  isSyncing = false
 }) => {
   const [syncProgress, setSyncProgress] = useState(0);
+  const { signOut } = useAuthContext();
+  const navigate = useNavigate();
+
+  const handleSignOut = async () => {
+    await signOut();
+    navigate('/');
+  };
 
   useEffect(() => {
     let interval: any;
@@ -52,13 +61,13 @@ const Sidebar: React.FC<SidebarProps> = ({
     <aside className="w-20 md:w-64 bg-slate-900 text-white h-screen flex flex-col border-r border-slate-800 transition-all duration-300 z-50">
       <div className="p-6 mb-8">
         {/* Typography: Custom brand lockup - matches type-section weight but smaller */}
-        <h1 className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-accent rounded-xl flex items-center justify-center type-micro shadow-elevated shadow-accent transition-all duration-500 hover:rotate-12">L</div>
+        <Link to="/" className="flex items-center gap-2 group cursor-pointer" aria-label="Go to homepage">
+          <div className="w-8 h-8 bg-accent rounded-xl flex items-center justify-center type-micro shadow-elevated shadow-accent transition-all duration-500 group-hover:rotate-12 group-hover:scale-110">L</div>
           <span className="hidden md:flex items-center gap-2">
-            <span className="text-[1.25rem] font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">Lumina Studio</span>
+            <span className="text-[1.25rem] font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400 group-hover:from-indigo-400 group-hover:to-violet-400 transition-all">Lumina Studio</span>
             <span className="px-1.5 py-0.5 type-micro bg-gradient-to-r from-indigo-500 to-violet-600 rounded-lg text-white">OS</span>
           </span>
-        </h1>
+        </Link>
       </div>
 
       <nav className="flex-1 px-4 space-y-2 overflow-y-auto scrollbar-hide" role="navigation" aria-label="Main navigation">
@@ -129,6 +138,16 @@ const Sidebar: React.FC<SidebarProps> = ({
         <div className="pt-4 border-t border-slate-700/50">
           <UserMenu />
         </div>
+
+        {/* Logout button */}
+        <button
+          onClick={handleSignOut}
+          aria-label="Sign out of your account"
+          className="w-full flex items-center gap-4 px-4 py-3 mt-2 rounded-xl text-slate-400 hover:bg-red-500/10 hover:text-red-400 transition-all duration-300 group border border-transparent hover:border-red-500/20"
+        >
+          <i className="fas fa-sign-out-alt text-lg w-6 transition-transform group-hover:-translate-x-0.5" aria-hidden="true"></i>
+          <span className="hidden md:block type-body-sm font-medium">Sign Out</span>
+        </button>
       </div>
     </aside>
   );

@@ -1,13 +1,14 @@
-
 import React, { useState, useMemo, useEffect, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import LEDProgressBar from './LEDProgressBar';
-import { 
-  generateText, 
-  suggestAssetMetadata, 
-  generateHighQualityImage, 
+import { useAuthContext } from '../contexts/AuthContext';
+import {
+  generateText,
+  suggestAssetMetadata,
+  generateHighQualityImage,
   analyzeAssetDeep,
   bulkSuggestTags,
-  suggestRelatedAssets 
+  suggestRelatedAssets
 } from '../services/geminiService';
 
 interface AssetVersion {
@@ -24,7 +25,7 @@ interface Asset {
   name: string;
   type: 'image' | 'video' | 'pdf' | 'design' | 'audio' | 'model3d';
   project: string;
-  date: number; // timestamp
+  date: number;
   size: string;
   tags: string[];
   thumbnail?: string;
@@ -33,60 +34,268 @@ interface Asset {
   versions: AssetVersion[];
   priority: 'low' | 'medium' | 'high';
   resolution?: { width: number; height: number };
-  duration?: number; // seconds
+  duration?: number;
   dominantColors?: string[];
   telemetry?: any;
 }
 
-const INITIAL_ASSETS: Asset[] = [
-  { 
-    id: '1', name: 'Summer_Campaign_v2.mp4', type: 'video', project: 'Summer Launch 2025', 
-    date: Date.now() - 1000 * 60 * 60 * 2, size: '42.5 MB', 
-    tags: ['outdoor', 'bright', 'marketing'], color: 'text-purple-500',
-    description: "Cinematic drone shots of the coastal product line.",
-    priority: 'high',
-    resolution: { width: 3840, height: 2160 },
-    duration: 15,
-    dominantColors: ['#0ea5e9', '#f8fafc', '#f59e0b'],
-    versions: [
-      { id: 'v1', url: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&q=80', date: Date.now() - 1000 * 60 * 60 * 5, label: 'Initial Cut', changeLog: 'Raw drone ingest', metadata: { codec: 'H.264', bitrate: '15Mbps' } },
-      { id: 'v2', url: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1200&q=80', date: Date.now() - 1000 * 60 * 60 * 2, label: 'Final Edit', changeLog: 'Color graded and stabilized', metadata: { codec: 'ProRes 422', bitrate: '120Mbps' } },
-    ]
-  },
-  { 
-    id: '2', name: 'Brand_Guide_2025.pdf', type: 'pdf', project: 'General Brand Assets', 
-    date: Date.now() - 1000 * 60 * 60 * 24, size: '4.2 MB', 
-    tags: ['branding', 'manual'], color: 'text-rose-500',
-    description: "Complete visual identity guidelines for Lumina ecosystem.",
-    priority: 'medium',
-    dominantColors: ['#e11d48', '#ffffff'],
-    versions: [{ id: 'v1', url: 'https://images.unsplash.com/photo-1586717791821-3f44a563dc4c?w=800&q=80', date: Date.now() - 1000 * 60 * 60 * 24, label: 'Master Copy', changeLog: 'Initial release', metadata: { pages: 42, format: 'PDF/X-4' } }]
-  },
-  { 
-    id: '3', name: 'Nebula_City_Concept.png', type: 'image', project: 'Project Odyssey', 
-    date: Date.now() - 1000 * 60 * 60 * 48, size: '12.8 MB', 
-    tags: ['ai-gen', 'sci-fi', 'neon'], color: 'text-emerald-500',
-    description: "AI-generated cityscape with bioluminescent architecture.",
-    priority: 'high',
-    resolution: { width: 4096, height: 2304 },
-    dominantColors: ['#10b981', '#7c3aed', '#000000'],
-    versions: [{ id: 'v1', url: 'https://images.unsplash.com/photo-1614728263952-84ea256f9679?w=800&q=80', date: Date.now() - 1000 * 60 * 60 * 48, label: 'Render 1.0', metadata: { model: 'Gemini 3 Pro', seed: 42 } }]
-  },
-  {
-    id: '4', name: 'Lumina_Drone_V3.obj', type: 'model3d', project: 'Hardware R&D',
-    date: Date.now() - 1000 * 60 * 60 * 12, size: '156 MB',
-    tags: ['industrial', '3d-model', 'cad'], color: 'text-indigo-500',
-    description: "3D mesh of the Lumina specialized cinematography drone.",
-    priority: 'high',
-    dominantColors: ['#334155', '#94a3b8'],
-    thumbnail: 'https://images.unsplash.com/photo-1508614589041-895b88991e3e?w=800&q=80',
-    telemetry: { vertices: '1.2M', triangles: '2.4M', materials: 12 },
-    versions: [{ id: 'v1', url: 'https://images.unsplash.com/photo-1508614589041-895b88991e3e?w=800&q=80', date: Date.now() - 1000 * 60 * 60 * 12, label: 'Final Mesh', metadata: { polygons: '2.4M', textures: '4K' } }]
+// File type configurations
+const FILE_TYPE_CONFIG: Record<string, { icon: string; color: string; bgColor: string; label: string }> = {
+  image: { icon: 'fa-image', color: 'text-emerald-500', bgColor: 'bg-emerald-500/10', label: 'Image' },
+  video: { icon: 'fa-video', color: 'text-purple-500', bgColor: 'bg-purple-500/10', label: 'Video' },
+  pdf: { icon: 'fa-file-pdf', color: 'text-rose-500', bgColor: 'bg-rose-500/10', label: 'PDF' },
+  design: { icon: 'fa-pen-ruler', color: 'text-indigo-500', bgColor: 'bg-indigo-500/10', label: 'Design' },
+  audio: { icon: 'fa-music', color: 'text-amber-500', bgColor: 'bg-amber-500/10', label: 'Audio' },
+  model3d: { icon: 'fa-cube', color: 'text-cyan-500', bgColor: 'bg-cyan-500/10', label: '3D Model' },
+};
+
+// Empty state component
+const EmptyState: React.FC<{ onUpload: () => void }> = ({ onUpload }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.6 }}
+    className="flex-1 flex items-center justify-center p-12"
+  >
+    <div className="max-w-lg text-center">
+      <div className="relative mb-8">
+        <div className="w-32 h-32 mx-auto rounded-3xl bg-gradient-to-br from-indigo-500/10 to-violet-500/10 flex items-center justify-center">
+          <i className="fas fa-cloud-arrow-up text-5xl text-indigo-400" />
+        </div>
+        <motion.div
+          className="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-emerald-500 flex items-center justify-center"
+          animate={{ scale: [1, 1.1, 1] }}
+          transition={{ duration: 2, repeat: Infinity }}
+        >
+          <i className="fas fa-plus text-white text-sm" />
+        </motion.div>
+      </div>
+
+      <h3 className="text-2xl font-bold text-slate-900 mb-3">
+        Your creative workspace awaits
+      </h3>
+      <p className="text-slate-500 mb-8 leading-relaxed">
+        Upload your first asset to get started. We support images, videos, PDFs, 3D models, and more.
+        Your files are securely stored and synced across all your devices.
+      </p>
+
+      <div className="flex flex-col sm:flex-row gap-4 justify-center">
+        <button
+          onClick={onUpload}
+          className="px-8 py-4 rounded-2xl bg-gradient-to-r from-indigo-500 to-violet-600 text-white font-semibold shadow-lg shadow-indigo-500/25 hover:shadow-xl hover:shadow-indigo-500/30 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 flex items-center justify-center gap-3"
+        >
+          <i className="fas fa-upload" />
+          Upload Assets
+        </button>
+        <button className="px-8 py-4 rounded-2xl bg-white border border-slate-200 text-slate-700 font-semibold hover:bg-slate-50 hover:border-slate-300 transition-all duration-300 flex items-center justify-center gap-3">
+          <i className="fab fa-google-drive" />
+          Import from Drive
+        </button>
+      </div>
+
+      <div className="mt-12 pt-8 border-t border-slate-100">
+        <p className="text-sm text-slate-400 mb-4">Supported formats</p>
+        <div className="flex flex-wrap justify-center gap-2">
+          {['PNG', 'JPG', 'SVG', 'MP4', 'MOV', 'PDF', 'OBJ', 'GLB', 'PSD', 'AI'].map(format => (
+            <span key={format} className="px-3 py-1.5 rounded-lg bg-slate-100 text-slate-500 text-xs font-medium">
+              {format}
+            </span>
+          ))}
+        </div>
+      </div>
+    </div>
+  </motion.div>
+);
+
+// Asset card component - redesigned for clarity
+const AssetCard: React.FC<{
+  asset: Asset;
+  isSelected: boolean;
+  view: 'grid' | 'list';
+  onSelect: () => void;
+  onPreview: () => void;
+}> = ({ asset, isSelected, view, onSelect, onPreview }) => {
+  const config = FILE_TYPE_CONFIG[asset.type] || FILE_TYPE_CONFIG.image;
+  const formattedDate = new Date(asset.date).toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: asset.date < Date.now() - 365 * 24 * 60 * 60 * 1000 ? 'numeric' : undefined
+  });
+
+  if (view === 'list') {
+    return (
+      <motion.div
+        layout
+        initial={{ opacity: 0, x: -10 }}
+        animate={{ opacity: 1, x: 0 }}
+        onClick={onSelect}
+        className={`group flex items-center gap-6 p-4 rounded-2xl bg-white border-2 cursor-pointer transition-all duration-300 hover:shadow-lg ${
+          isSelected
+            ? 'border-indigo-500 ring-4 ring-indigo-500/10 shadow-lg'
+            : 'border-transparent hover:border-slate-200'
+        }`}
+      >
+        {/* Thumbnail */}
+        <div className="w-20 h-20 rounded-xl bg-slate-100 flex-shrink-0 overflow-hidden relative">
+          {asset.thumbnail ? (
+            <img src={asset.thumbnail} alt={asset.name} className="w-full h-full object-cover" />
+          ) : (
+            <div className={`w-full h-full flex items-center justify-center ${config.bgColor}`}>
+              <i className={`fas ${config.icon} text-2xl ${config.color}`} />
+            </div>
+          )}
+        </div>
+
+        {/* Info */}
+        <div className="flex-1 min-w-0">
+          <h3 className="font-semibold text-slate-900 truncate mb-1" title={asset.name}>
+            {asset.name}
+          </h3>
+          <div className="flex items-center gap-3 text-sm text-slate-500">
+            <span className={`flex items-center gap-1.5 ${config.color}`}>
+              <i className={`fas ${config.icon} text-xs`} />
+              {config.label}
+            </span>
+            <span className="text-slate-300">•</span>
+            <span>{asset.size}</span>
+            <span className="text-slate-300">•</span>
+            <span>{formattedDate}</span>
+          </div>
+          {asset.tags.length > 0 && (
+            <div className="flex gap-1.5 mt-2">
+              {asset.tags.slice(0, 3).map(tag => (
+                <span key={tag} className="px-2 py-0.5 rounded-md bg-slate-100 text-slate-500 text-xs">
+                  {tag}
+                </span>
+              ))}
+              {asset.tags.length > 3 && (
+                <span className="px-2 py-0.5 rounded-md bg-slate-100 text-slate-400 text-xs">
+                  +{asset.tags.length - 3}
+                </span>
+              )}
+            </div>
+          )}
+        </div>
+
+        {/* Actions */}
+        <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+          <button
+            onClick={(e) => { e.stopPropagation(); onPreview(); }}
+            className="w-10 h-10 rounded-xl bg-slate-100 text-slate-600 hover:bg-indigo-500 hover:text-white transition-colors flex items-center justify-center"
+            title="Preview"
+          >
+            <i className="fas fa-eye" />
+          </button>
+          <button
+            className="w-10 h-10 rounded-xl bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors flex items-center justify-center"
+            title="Download"
+          >
+            <i className="fas fa-download" />
+          </button>
+          <button
+            className="w-10 h-10 rounded-xl bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors flex items-center justify-center"
+            title="More options"
+          >
+            <i className="fas fa-ellipsis-v" />
+          </button>
+        </div>
+      </motion.div>
+    );
   }
-];
+
+  // Grid view (default)
+  return (
+    <motion.div
+      layout
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      onClick={onSelect}
+      className={`group relative rounded-3xl bg-white overflow-hidden cursor-pointer transition-all duration-300 hover:shadow-xl ${
+        isSelected
+          ? 'ring-4 ring-indigo-500/20 shadow-xl'
+          : 'shadow-sm hover:shadow-lg'
+      }`}
+    >
+      {/* Thumbnail area */}
+      <div className="aspect-[4/3] relative bg-slate-100 overflow-hidden">
+        {asset.thumbnail ? (
+          <img
+            src={asset.thumbnail}
+            alt={asset.name}
+            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+          />
+        ) : (
+          <div className={`w-full h-full flex items-center justify-center ${config.bgColor}`}>
+            <i className={`fas ${config.icon} text-5xl ${config.color} opacity-40`} />
+          </div>
+        )}
+
+        {/* Hover overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between">
+            <button
+              onClick={(e) => { e.stopPropagation(); onPreview(); }}
+              className="px-4 py-2 rounded-xl bg-white/90 backdrop-blur-sm text-slate-900 text-sm font-medium hover:bg-white transition-colors flex items-center gap-2"
+            >
+              <i className="fas fa-expand" />
+              Preview
+            </button>
+            <div className="flex gap-2">
+              <button className="w-9 h-9 rounded-xl bg-white/90 backdrop-blur-sm text-slate-700 hover:bg-white transition-colors flex items-center justify-center">
+                <i className="fas fa-download text-sm" />
+              </button>
+              <button className="w-9 h-9 rounded-xl bg-white/90 backdrop-blur-sm text-slate-700 hover:bg-white transition-colors flex items-center justify-center">
+                <i className="fas fa-ellipsis-h text-sm" />
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* File type badge */}
+        <div className={`absolute top-3 left-3 px-2.5 py-1 rounded-lg ${config.bgColor} backdrop-blur-sm flex items-center gap-1.5`}>
+          <i className={`fas ${config.icon} text-xs ${config.color}`} />
+          <span className={`text-xs font-semibold ${config.color}`}>{config.label}</span>
+        </div>
+
+        {/* Selection indicator */}
+        {isSelected && (
+          <div className="absolute top-3 right-3 w-7 h-7 rounded-full bg-indigo-500 flex items-center justify-center">
+            <i className="fas fa-check text-white text-xs" />
+          </div>
+        )}
+      </div>
+
+      {/* Content area */}
+      <div className="p-5">
+        <h3 className="font-semibold text-slate-900 leading-snug mb-2 line-clamp-2" title={asset.name}>
+          {asset.name}
+        </h3>
+
+        <div className="flex items-center justify-between text-sm">
+          <span className="text-slate-500">{asset.size}</span>
+          <span className="text-slate-400">{formattedDate}</span>
+        </div>
+
+        {/* Tags (optional, show on hover) */}
+        {asset.tags.length > 0 && (
+          <div className="mt-3 pt-3 border-t border-slate-100 flex flex-wrap gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
+            {asset.tags.slice(0, 3).map(tag => (
+              <span key={tag} className="px-2 py-0.5 rounded-md bg-slate-100 text-slate-500 text-xs">
+                {tag}
+              </span>
+            ))}
+          </div>
+        )}
+      </div>
+    </motion.div>
+  );
+};
 
 const AssetHub: React.FC = () => {
-  const [assets, setAssets] = useState<Asset[]>(INITIAL_ASSETS);
+  const { isAuthenticated } = useAuthContext();
+
+  // Start with empty array for authenticated users
+  const [assets, setAssets] = useState<Asset[]>([]);
   const [view, setView] = useState<'grid' | 'list'>('grid');
   const [searchQuery, setSearchQuery] = useState('');
   const [isSemanticSearching, setIsSemanticSearching] = useState(false);
@@ -94,32 +303,21 @@ const AssetHub: React.FC = () => {
 
   const [filterType, setFilterType] = useState<string | 'all'>('all');
   const [filterProject, setFilterProject] = useState<string | 'all'>('all');
-  const [sortBy, setSortBy] = useState<'date' | 'name' | 'size' | 'duration'>('date');
-  
+  const [sortBy, setSortBy] = useState<'date' | 'name' | 'size'>('date');
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
+
   const [selectedAssetId, setSelectedAssetId] = useState<string | null>(null);
   const [activeVersionId, setActiveVersionId] = useState<string | null>(null);
   const [isAnalyzingDeep, setIsAnalyzingDeep] = useState(false);
   const [deepAnalysis, setDeepAnalysis] = useState<any>(null);
   const [previewAsset, setPreviewAsset] = useState<Asset | null>(null);
 
-  const [recommendations, setRecommendations] = useState<Asset[]>([]);
-  const [isGeneratingRecs, setIsGeneratingRecs] = useState(false);
-
-  const [mediaLoading, setMediaLoading] = useState(false);
-  const [playbackSpeed, setPlaybackSpeed] = useState(1);
-  const [volume, setVolume] = useState(0.8);
-  const [currentTime, setCurrentTime] = useState(0);
-  const [duration, setDuration] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [rotation, setRotation] = useState(0);
-  const [viewMode, setViewMode] = useState<'mesh' | 'wireframe' | 'render'>('render');
-
   const [analysisProgress, setAnalysisProgress] = useState(0);
 
   const projects = useMemo(() => Array.from(new Set(assets.map(a => a.project))), [assets]);
-  
-  const selectedAsset = useMemo(() => 
-    assets.find(a => a.id === selectedAssetId), 
+
+  const selectedAsset = useMemo(() =>
+    assets.find(a => a.id === selectedAssetId),
     [assets, selectedAssetId]
   );
 
@@ -130,55 +328,28 @@ const AssetHub: React.FC = () => {
 
   const filteredAssets = useMemo(() => {
     let results = assets.filter(asset => {
-      const matchesSearch = asset.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                           asset.tags.some(t => t.toLowerCase().includes(searchQuery.toLowerCase()));
+      const matchesSearch = asset.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        asset.tags.some(t => t.toLowerCase().includes(searchQuery.toLowerCase()));
       const matchesType = filterType === 'all' || asset.type === filterType;
       const matchesProject = filterProject === 'all' || asset.project === filterProject;
       return matchesSearch && matchesType && matchesProject;
     });
 
     return results.sort((a, b) => {
-      if (sortBy === 'name') return a.name.localeCompare(b.name);
-      if (sortBy === 'size') return parseFloat(b.size) - parseFloat(a.size);
-      return b.date - a.date;
+      let comparison = 0;
+      if (sortBy === 'name') comparison = a.name.localeCompare(b.name);
+      else if (sortBy === 'size') comparison = parseFloat(b.size) - parseFloat(a.size);
+      else comparison = b.date - a.date;
+      return sortOrder === 'asc' ? -comparison : comparison;
     });
-  }, [assets, searchQuery, filterType, filterProject, sortBy]);
-
-  useEffect(() => {
-    const fetchRecs = async () => {
-      if (!selectedAsset && filterProject === 'all') {
-        setRecommendations([]);
-        return;
-      }
-
-      setIsGeneratingRecs(true);
-      try {
-        const sourceContext = selectedAsset 
-          ? { id: selectedAsset.id, name: selectedAsset.name, tags: selectedAsset.tags, type: selectedAsset.type }
-          : { project: filterProject, assetsCount: assets.filter(a => a.project === filterProject).length };
-
-        const otherAssets = assets.filter(a => a.id !== selectedAssetId);
-        
-        const recIds = await suggestRelatedAssets(sourceContext, otherAssets);
-        const recList = assets.filter(a => recIds.includes(a.id));
-        setRecommendations(recList);
-      } catch (e) {
-        console.error("Recommendations failed", e);
-      } finally {
-        setIsGeneratingRecs(false);
-      }
-    };
-
-    const debounceTimer = setTimeout(fetchRecs, 500);
-    return () => clearTimeout(debounceTimer);
-  }, [selectedAssetId, filterProject, assets]);
+  }, [assets, searchQuery, filterType, filterProject, sortBy, sortOrder]);
 
   const handleDeepAnalysis = async () => {
     if (!selectedAsset) return;
     setIsAnalyzingDeep(true);
     setAnalysisProgress(0);
     const interval = setInterval(() => setAnalysisProgress(p => p < 90 ? p + 2 : p), 100);
-    
+
     try {
       const analysis = await analyzeAssetDeep(selectedAsset.name, selectedAsset.description || "", selectedAsset.tags);
       setDeepAnalysis(analysis);
@@ -191,222 +362,428 @@ const AssetHub: React.FC = () => {
     }
   };
 
-  const handleSemanticSearch = async () => {
-    if (!searchQuery) return;
-    setIsSemanticSearching(true);
-    setSemanticSearchType('lumina');
-    try {
-      const res = await generateText(`User wants to find assets matching this concept: "${searchQuery}". 
-      From this list, rank them by conceptual match. Return ONLY a JSON array of asset IDs.
-      Assets: ${JSON.stringify(assets.map(a => ({id: a.id, name: a.name, tags: a.tags, desc: a.description})))}`, { fast: true });
-      
-      const cleanJson = res.text?.replace(/```json|```/g, '').trim();
-      const rankedIds = JSON.parse(cleanJson || "[]");
-      
-      if (rankedIds.length > 0) {
-        const reordered = [...assets].sort((a, b) => {
-          const idxA = rankedIds.indexOf(a.id);
-          const idxB = rankedIds.indexOf(b.id);
-          if (idxA === -1 && idxB === -1) return 0;
-          if (idxA === -1) return 1;
-          if (idxB === -1) return -1;
-          return idxA - idxB;
-        });
-        setAssets(reordered);
+  const handleUpload = () => {
+    // Trigger file upload dialog
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.multiple = true;
+    input.accept = 'image/*,video/*,.pdf,.obj,.glb,.gltf,.psd,.ai,.svg';
+    input.onchange = (e) => {
+      const files = (e.target as HTMLInputElement).files;
+      if (files) {
+        // Handle file upload logic here
+        console.log('Files to upload:', files);
       }
-    } catch (e) {
-      console.error("Semantic search failed", e);
-    } finally {
-      setIsSemanticSearching(false);
-    }
+    };
+    input.click();
   };
 
-  const videoRef = useRef<HTMLVideoElement>(null);
-
-  const togglePlay = () => {
-    if (videoRef.current) {
-      if (isPlaying) videoRef.current.pause();
-      else videoRef.current.play();
-      setIsPlaying(!isPlaying);
-    }
-  };
-
-  const handleSpeedCycle = () => {
-    const speeds = [0.5, 1, 1.5, 2];
-    const next = speeds[(speeds.indexOf(playbackSpeed) + 1) % speeds.length];
-    setPlaybackSpeed(next);
-    if (videoRef.current) videoRef.current.playbackRate = next;
-  };
-
-  const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const val = parseFloat(e.target.value);
-    if (videoRef.current) {
-      videoRef.current.currentTime = (val / 100) * duration;
-      setCurrentTime(videoRef.current.currentTime);
-    }
-  };
-
-  const formatTime = (sec: number) => {
-    const mins = Math.floor(sec / 60);
-    const s = Math.floor(sec % 60);
-    return `${mins}:${s.toString().padStart(2, '0')}`;
-  };
-
-  useEffect(() => {
-    let timer: any;
-    if (previewAsset?.type === 'model3d' && isPlaying) {
-      timer = setInterval(() => setRotation(r => (r + 1) % 360), 30);
-    }
-    return () => clearInterval(timer);
-  }, [previewAsset, isPlaying]);
+  const assetTypes = [
+    { id: 'all', label: 'All Types', icon: 'fa-layer-group' },
+    { id: 'image', label: 'Images', icon: 'fa-image' },
+    { id: 'video', label: 'Videos', icon: 'fa-video' },
+    { id: 'pdf', label: 'PDFs', icon: 'fa-file-pdf' },
+    { id: 'model3d', label: '3D Models', icon: 'fa-cube' },
+    { id: 'design', label: 'Designs', icon: 'fa-pen-ruler' },
+    { id: 'audio', label: 'Audio', icon: 'fa-music' },
+  ];
 
   return (
     <div className="flex h-full bg-slate-50 overflow-hidden font-sans">
-      <div className="w-72 bg-white border-r border-slate-200 flex flex-col p-8 gap-10 overflow-y-auto scrollbar-hide z-30 shadow-xl">
-        <div className="space-y-6 scroll-reveal">
-          <div className="flex items-center justify-between px-2">
-            <h4 className="type-label text-slate-400">Workspaces</h4>
-            <button className="text-accent hover:scale-125 transition-transform duration-300"><i className="fas fa-plus-circle text-sm"></i></button>
-          </div>
-          <div className="space-y-1">
-             <button
-               onClick={() => setFilterProject('all')}
-               className={`w-full flex items-center gap-3 px-4 py-3 rounded-2xl transition-all duration-300 hover:translate-x-1 ${filterProject === 'all' ? 'bg-accent text-white shadow-elevated' : 'text-slate-500 hover:bg-slate-50'}`}
-             >
-               <i className="fas fa-border-all text-xs"></i>
-               <span className="type-caption font-bold uppercase">All Assets</span>
-             </button>
-             {projects.map((p, i) => (
-               <button
-                key={p}
-                onClick={() => setFilterProject(p)}
-                className={`w-full flex items-center gap-3 px-4 py-3 rounded-2xl transition-all duration-300 hover:translate-x-1 scroll-reveal ${filterProject === p ? 'bg-indigo-600 text-white shadow-elevated' : 'text-slate-500 hover:bg-slate-50'}`}
-                style={{ animationDelay: `${i * 0.05}s` }}
-               >
-                 <i className="fas fa-folder-open text-xs"></i>
-                 <span className="type-caption font-bold uppercase truncate">{p}</span>
-               </button>
-             ))}
+      {/* Left Sidebar - Workspaces */}
+      <div className="w-72 bg-white border-r border-slate-200 flex flex-col overflow-hidden">
+        <div className="p-6 border-b border-slate-100">
+          <div className="flex items-center justify-between mb-4">
+            <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider">Workspaces</h4>
+            <button className="w-7 h-7 rounded-lg bg-indigo-500 text-white hover:bg-indigo-600 transition-colors flex items-center justify-center">
+              <i className="fas fa-plus text-xs" />
+            </button>
           </div>
         </div>
 
-        <div className="space-y-6 scroll-reveal" style={{ animationDelay: '0.3s' }}>
-           <h4 className="type-label text-slate-400 px-2">Production Status</h4>
-           <div className="space-y-2">
-              {[
-                { label: 'Synced', icon: 'fa-cloud-check', color: 'text-emerald-500' },
-                { label: 'In Review', icon: 'fa-clock', color: 'text-amber-500' },
-                { label: 'Drafts', icon: 'fa-file-signature', color: 'text-indigo-500' },
-                { label: 'Archive', icon: 'fa-box-archive', color: 'text-slate-400' },
-              ].map((status, i) => (
-                <button key={status.label} className="w-full flex items-center justify-between px-4 py-2 hover:bg-slate-50 rounded-xl transition-all duration-300 group hover:translate-x-1 scroll-reveal" style={{ animationDelay: `${0.4 + (i * 0.05)}s` }}>
-                  <div className="flex items-center gap-3">
-                    <i className={`fas ${status.icon} ${status.color} text-xs transition-transform duration-300 group-hover:scale-110`}></i>
-                    <span className="type-label text-slate-600 group-hover:text-slate-900">{status.label}</span>
-                  </div>
-                </button>
-              ))}
-           </div>
+        <div className="flex-1 overflow-y-auto p-4 space-y-1">
+          <button
+            onClick={() => setFilterProject('all')}
+            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${
+              filterProject === 'all'
+                ? 'bg-indigo-500 text-white shadow-lg shadow-indigo-500/25'
+                : 'text-slate-600 hover:bg-slate-100'
+            }`}
+          >
+            <i className="fas fa-border-all text-sm w-5" />
+            <span className="font-medium">All Assets</span>
+            <span className={`ml-auto text-xs px-2 py-0.5 rounded-full ${
+              filterProject === 'all' ? 'bg-white/20' : 'bg-slate-200'
+            }`}>
+              {assets.length}
+            </span>
+          </button>
+
+          {projects.map((project) => {
+            const projectCount = assets.filter(a => a.project === project).length;
+            return (
+              <button
+                key={project}
+                onClick={() => setFilterProject(project)}
+                className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${
+                  filterProject === project
+                    ? 'bg-indigo-500 text-white shadow-lg shadow-indigo-500/25'
+                    : 'text-slate-600 hover:bg-slate-100'
+                }`}
+              >
+                <i className="fas fa-folder text-sm w-5" />
+                <span className="font-medium truncate flex-1 text-left">{project}</span>
+                <span className={`text-xs px-2 py-0.5 rounded-full ${
+                  filterProject === project ? 'bg-white/20' : 'bg-slate-200'
+                }`}>
+                  {projectCount}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Production Status */}
+        <div className="p-4 border-t border-slate-100">
+          <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3 px-2">Status</h4>
+          <div className="space-y-1">
+            {[
+              { label: 'Synced', icon: 'fa-cloud-check', color: 'text-emerald-500', count: 0 },
+              { label: 'In Review', icon: 'fa-clock', color: 'text-amber-500', count: 0 },
+              { label: 'Drafts', icon: 'fa-file-pen', color: 'text-indigo-500', count: 0 },
+              { label: 'Archived', icon: 'fa-box-archive', color: 'text-slate-400', count: 0 },
+            ].map((status) => (
+              <button
+                key={status.label}
+                className="w-full flex items-center gap-3 px-4 py-2 rounded-lg text-slate-600 hover:bg-slate-50 transition-colors group"
+              >
+                <i className={`fas ${status.icon} ${status.color} text-sm w-5`} />
+                <span className="text-sm">{status.label}</span>
+                <span className="ml-auto text-xs text-slate-400 bg-slate-100 px-2 py-0.5 rounded-full group-hover:bg-slate-200">
+                  {status.count}
+                </span>
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
-      <div className="flex-1 flex flex-col overflow-hidden relative">
-        <header className="px-10 py-10 bg-white border-b border-slate-200 flex flex-col gap-10 shadow-subtle z-20 animate-in fade-in duration-700">
-          <div className="flex items-center justify-between">
-            <div className="flex flex-col gap-1">
-              <h2 className="type-page text-slate-900">Your Assets</h2>
-              <div className="flex items-center gap-2">
-                <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></div>
-                <p className="type-label text-slate-400">
-                  Live Syncing with Project: <span className="text-indigo-600">{filterProject}</span>
-                </p>
+      {/* Main Content */}
+      <div className="flex-1 flex flex-col overflow-hidden">
+        {/* Header */}
+        <header className="bg-white border-b border-slate-200 p-6">
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h1 className="text-2xl font-bold text-slate-900">Your Assets</h1>
+              <div className="flex items-center gap-2 mt-1">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                <span className="text-sm text-slate-500">
+                  Live syncing with project: <span className="text-indigo-600 font-medium">{filterProject === 'all' ? 'All' : filterProject}</span>
+                </span>
               </div>
+            </div>
+
+            <div className="flex items-center gap-3">
+              <button
+                onClick={handleUpload}
+                className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-indigo-500 to-violet-600 text-white font-medium shadow-lg shadow-indigo-500/25 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 flex items-center gap-2"
+              >
+                <i className="fas fa-plus" />
+                Upload
+              </button>
             </div>
           </div>
 
-          <div className="flex items-center gap-6 scroll-reveal">
-            <div className="flex-1 relative group">
+          {/* Search and filters */}
+          <div className="flex items-center gap-4">
+            {/* Search */}
+            <div className="flex-1 relative">
+              <i className="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
               <input
                 type="text"
                 value={searchQuery}
-                onChange={(e) => { setSearchQuery(e.target.value); setSemanticSearchType('keyword'); }}
-                placeholder={semanticSearchType === 'lumina' ? "Describe what you're looking for..." : "Search tags, names, or metadata..."}
-                className={`lumina-input w-full pl-14 pr-40 py-5 rounded-4xl ${semanticSearchType === 'lumina' ? 'ring-2 ring-purple-500/20' : ''}`}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search by name, tag, or description..."
+                className="w-full pl-11 pr-4 py-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 transition-all outline-none"
               />
-              <i className={`fas ${semanticSearchType === 'lumina' ? 'fa-wand-magic-sparkles text-purple-500' : 'fa-search text-slate-300'} absolute left-6 top-1/2 -translate-y-1/2 group-focus-within:text-accent transition-colors`}></i>
+            </div>
+
+            {/* Type filter */}
+            <select
+              value={filterType}
+              onChange={(e) => setFilterType(e.target.value)}
+              className="px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-700 font-medium focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 outline-none cursor-pointer"
+            >
+              {assetTypes.map(type => (
+                <option key={type.id} value={type.id}>{type.label}</option>
+              ))}
+            </select>
+
+            {/* Sort */}
+            <select
+              value={`${sortBy}-${sortOrder}`}
+              onChange={(e) => {
+                const [sort, order] = e.target.value.split('-');
+                setSortBy(sort as 'date' | 'name' | 'size');
+                setSortOrder(order as 'asc' | 'desc');
+              }}
+              className="px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-700 font-medium focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 outline-none cursor-pointer"
+            >
+              <option value="date-desc">Newest First</option>
+              <option value="date-asc">Oldest First</option>
+              <option value="name-asc">Name (A-Z)</option>
+              <option value="name-desc">Name (Z-A)</option>
+              <option value="size-desc">Largest First</option>
+              <option value="size-asc">Smallest First</option>
+            </select>
+
+            {/* View toggle */}
+            <div className="flex bg-slate-100 p-1 rounded-xl">
+              <button
+                onClick={() => setView('grid')}
+                className={`px-4 py-2 rounded-lg font-medium transition-all ${
+                  view === 'grid'
+                    ? 'bg-white text-slate-900 shadow-sm'
+                    : 'text-slate-500 hover:text-slate-700'
+                }`}
+              >
+                <i className="fas fa-grid-2" />
+              </button>
+              <button
+                onClick={() => setView('list')}
+                className={`px-4 py-2 rounded-lg font-medium transition-all ${
+                  view === 'list'
+                    ? 'bg-white text-slate-900 shadow-sm'
+                    : 'text-slate-500 hover:text-slate-700'
+                }`}
+              >
+                <i className="fas fa-list" />
+              </button>
             </div>
           </div>
         </header>
 
+        {/* Asset Grid/List */}
         <div className="flex-1 flex overflow-hidden">
-          <div className="flex-1 overflow-y-auto p-12 bg-slate-50/40 scrollbar-hide">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10">
-              {filteredAssets.map((asset, i) => (
-                <div
-                  key={asset.id}
-                  onClick={() => { setSelectedAssetId(asset.id); setActiveVersionId(null); setDeepAnalysis(null); }}
-                  className={`group lumina-card-interactive rounded-4xl border-2 overflow-hidden relative cursor-pointer scroll-reveal ${selectedAssetId === asset.id ? 'border-accent ring-[15px] ring-accent/5' : 'border-white hover:border-slate-100'}`}
-                  style={{ animationDelay: `${(i % 12) * 0.05}s` }}
-                >
-                  <div className="aspect-video w-full flex items-center justify-center bg-slate-900 relative overflow-hidden">
-                      {asset.thumbnail ? (
-                        <img src={asset.thumbnail} className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" alt={asset.name} />
-                      ) : (
-                        <i className={`fas ${asset.type === 'video' ? 'fa-file-video' : asset.type === 'pdf' ? 'fa-file-pdf' : asset.type === 'model3d' ? 'fa-cube' : 'fa-file-image'} text-5xl text-white/10 group-hover:scale-125 transition-transform duration-1000`}></i>
-                      )}
-
-                      <div className="absolute inset-0 bg-slate-950/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[2px]">
-                        <button
-                          onClick={(e) => { e.stopPropagation(); setPreviewAsset(asset); setMediaLoading(true); }}
-                          className="w-16 h-16 bg-white rounded-full text-slate-900 flex items-center justify-center shadow-prominent hover:scale-110 active:scale-90 transition-transform"
-                        >
-                          <i className="fas fa-expand-alt text-xl"></i>
-                        </button>
-                      </div>
-                  </div>
-
-                  <div className="card-spacious">
-                    <h3 className="type-card text-slate-900 truncate pr-4 mb-4">{asset.name}</h3>
-                    <div className="flex gap-2 mb-6">
-                      <span className="px-2 py-1 bg-slate-900 text-white type-micro rounded-lg">{asset.type}</span>
-                      <span className="px-2 py-1 bg-slate-100 text-slate-400 type-micro rounded-lg">{asset.size}</span>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className={`w-[500px] bg-white border-l border-slate-200 transition-all duration-500 flex flex-col z-40 ${selectedAssetId ? 'mr-0' : '-mr-[500px]'}`}>
-            {selectedAsset && (
-              <div className="flex-1 flex flex-col overflow-hidden">
-                 <div className="p-12 border-b border-slate-100 flex items-center justify-between bg-white sticky top-0 z-10 shadow-subtle animate-in slide-in-from-right-4 duration-500">
-                    <h3 className="type-subsection text-slate-900 uppercase tracking-tighter">Asset Intelligence</h3>
-                    <button onClick={() => setSelectedAssetId(null)} className="text-slate-300 hover:text-slate-900 hover:rotate-90 transition-all text-2xl"><i className="fas fa-times text-2xl"></i></button>
-                 </div>
-
-                 <div className="flex-1 overflow-y-auto p-12 space-y-12 scrollbar-hide">
-                    <div className="aspect-video w-full bg-slate-950 rounded-4xl border border-white/5 flex items-center justify-center overflow-hidden relative group shadow-prominent scroll-reveal">
-                       <img
-                        src={activeVersion?.url || selectedAsset.thumbnail}
-                        className="w-full h-full object-cover transition-all duration-1000 group-hover:scale-105 opacity-80"
-                       />
-                    </div>
-
-                    <div className="space-y-6 scroll-reveal">
-                       <div className="flex items-center justify-between px-2">
-                         <h4 className="type-label text-slate-400">AI Generated Preview</h4>
-                         <button onClick={handleDeepAnalysis} className="type-label text-accent flex items-center gap-2 hover:underline hover:scale-105 transition-transform active:scale-95">
-                           {isAnalyzingDeep ? <i className="fas fa-spinner fa-spin"></i> : <i className="fas fa-wand-magic"></i>} Synthesize Summary
-                         </button>
-                       </div>
-                    </div>
-                 </div>
+          <div className="flex-1 overflow-y-auto p-6">
+            {filteredAssets.length === 0 ? (
+              <EmptyState onUpload={handleUpload} />
+            ) : (
+              <div className={
+                view === 'grid'
+                  ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6'
+                  : 'space-y-3'
+              }>
+                <AnimatePresence mode="popLayout">
+                  {filteredAssets.map((asset) => (
+                    <AssetCard
+                      key={asset.id}
+                      asset={asset}
+                      isSelected={selectedAssetId === asset.id}
+                      view={view}
+                      onSelect={() => {
+                        setSelectedAssetId(asset.id);
+                        setActiveVersionId(null);
+                        setDeepAnalysis(null);
+                      }}
+                      onPreview={() => setPreviewAsset(asset)}
+                    />
+                  ))}
+                </AnimatePresence>
               </div>
             )}
           </div>
+
+          {/* Detail Panel */}
+          <AnimatePresence>
+            {selectedAsset && (
+              <motion.div
+                initial={{ x: 400, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                exit={{ x: 400, opacity: 0 }}
+                transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+                className="w-[420px] bg-white border-l border-slate-200 flex flex-col overflow-hidden"
+              >
+                {/* Panel header */}
+                <div className="p-6 border-b border-slate-100 flex items-center justify-between">
+                  <h3 className="font-bold text-slate-900">Asset Details</h3>
+                  <button
+                    onClick={() => setSelectedAssetId(null)}
+                    className="w-8 h-8 rounded-lg hover:bg-slate-100 text-slate-400 hover:text-slate-600 transition-colors flex items-center justify-center"
+                  >
+                    <i className="fas fa-times" />
+                  </button>
+                </div>
+
+                {/* Panel content */}
+                <div className="flex-1 overflow-y-auto p-6 space-y-6">
+                  {/* Preview */}
+                  <div className="aspect-video rounded-2xl bg-slate-100 overflow-hidden relative">
+                    {activeVersion?.url || selectedAsset.thumbnail ? (
+                      <img
+                        src={activeVersion?.url || selectedAsset.thumbnail}
+                        alt={selectedAsset.name}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className={`w-full h-full flex items-center justify-center ${FILE_TYPE_CONFIG[selectedAsset.type]?.bgColor}`}>
+                        <i className={`fas ${FILE_TYPE_CONFIG[selectedAsset.type]?.icon} text-4xl ${FILE_TYPE_CONFIG[selectedAsset.type]?.color}`} />
+                      </div>
+                    )}
+                  </div>
+
+                  {/* File info */}
+                  <div className="space-y-4">
+                    <h4 className="font-semibold text-slate-900 text-lg leading-snug">
+                      {selectedAsset.name}
+                    </h4>
+
+                    {selectedAsset.description && (
+                      <p className="text-slate-500 text-sm leading-relaxed">
+                        {selectedAsset.description}
+                      </p>
+                    )}
+
+                    <div className="grid grid-cols-2 gap-3">
+                      <div className="p-3 rounded-xl bg-slate-50">
+                        <p className="text-xs text-slate-400 mb-1">Type</p>
+                        <p className="font-medium text-slate-700">{FILE_TYPE_CONFIG[selectedAsset.type]?.label}</p>
+                      </div>
+                      <div className="p-3 rounded-xl bg-slate-50">
+                        <p className="text-xs text-slate-400 mb-1">Size</p>
+                        <p className="font-medium text-slate-700">{selectedAsset.size}</p>
+                      </div>
+                      <div className="p-3 rounded-xl bg-slate-50">
+                        <p className="text-xs text-slate-400 mb-1">Project</p>
+                        <p className="font-medium text-slate-700 truncate">{selectedAsset.project}</p>
+                      </div>
+                      <div className="p-3 rounded-xl bg-slate-50">
+                        <p className="text-xs text-slate-400 mb-1">Priority</p>
+                        <p className="font-medium text-slate-700 capitalize">{selectedAsset.priority}</p>
+                      </div>
+                    </div>
+
+                    {/* Tags */}
+                    {selectedAsset.tags.length > 0 && (
+                      <div>
+                        <p className="text-xs text-slate-400 mb-2">Tags</p>
+                        <div className="flex flex-wrap gap-2">
+                          {selectedAsset.tags.map(tag => (
+                            <span key={tag} className="px-3 py-1 rounded-lg bg-indigo-50 text-indigo-600 text-sm font-medium">
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* AI Analysis */}
+                    <div className="pt-4 border-t border-slate-100">
+                      <div className="flex items-center justify-between mb-3">
+                        <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">AI Intelligence</p>
+                        <button
+                          onClick={handleDeepAnalysis}
+                          disabled={isAnalyzingDeep}
+                          className="text-xs text-indigo-600 hover:text-indigo-700 font-medium flex items-center gap-1.5 disabled:opacity-50"
+                        >
+                          {isAnalyzingDeep ? (
+                            <>
+                              <i className="fas fa-spinner fa-spin" />
+                              Analyzing...
+                            </>
+                          ) : (
+                            <>
+                              <i className="fas fa-wand-magic-sparkles" />
+                              Analyze
+                            </>
+                          )}
+                        </button>
+                      </div>
+
+                      {isAnalyzingDeep && (
+                        <div className="mb-4">
+                          <LEDProgressBar progress={analysisProgress} segments={10} />
+                        </div>
+                      )}
+
+                      {deepAnalysis && (
+                        <div className="p-4 rounded-xl bg-gradient-to-br from-indigo-50 to-violet-50 border border-indigo-100">
+                          <p className="text-sm text-slate-700 leading-relaxed">
+                            {deepAnalysis.summary || 'Analysis complete.'}
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Panel actions */}
+                <div className="p-6 border-t border-slate-100 flex gap-3">
+                  <button className="flex-1 px-4 py-3 rounded-xl bg-indigo-500 text-white font-medium hover:bg-indigo-600 transition-colors flex items-center justify-center gap-2">
+                    <i className="fas fa-download" />
+                    Download
+                  </button>
+                  <button className="px-4 py-3 rounded-xl bg-slate-100 text-slate-700 font-medium hover:bg-slate-200 transition-colors">
+                    <i className="fas fa-share-alt" />
+                  </button>
+                  <button className="px-4 py-3 rounded-xl bg-slate-100 text-slate-700 font-medium hover:bg-slate-200 transition-colors">
+                    <i className="fas fa-trash" />
+                  </button>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </div>
+
+      {/* Preview Modal */}
+      <AnimatePresence>
+        {previewAsset && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 bg-black/90 backdrop-blur-sm flex items-center justify-center p-8"
+            onClick={() => setPreviewAsset(null)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              transition={{ type: 'spring', damping: 25 }}
+              className="relative max-w-5xl max-h-full"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button
+                onClick={() => setPreviewAsset(null)}
+                className="absolute -top-12 right-0 text-white/70 hover:text-white transition-colors flex items-center gap-2"
+              >
+                <span className="text-sm">Close</span>
+                <i className="fas fa-times" />
+              </button>
+
+              {previewAsset.thumbnail ? (
+                <img
+                  src={previewAsset.thumbnail}
+                  alt={previewAsset.name}
+                  className="max-w-full max-h-[80vh] rounded-2xl shadow-2xl"
+                />
+              ) : (
+                <div className={`w-96 h-64 rounded-2xl flex items-center justify-center ${FILE_TYPE_CONFIG[previewAsset.type]?.bgColor}`}>
+                  <i className={`fas ${FILE_TYPE_CONFIG[previewAsset.type]?.icon} text-6xl ${FILE_TYPE_CONFIG[previewAsset.type]?.color}`} />
+                </div>
+              )}
+
+              <div className="mt-4 text-center">
+                <h3 className="text-white font-semibold text-lg">{previewAsset.name}</h3>
+                <p className="text-white/60 text-sm mt-1">
+                  {FILE_TYPE_CONFIG[previewAsset.type]?.label} • {previewAsset.size}
+                </p>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
